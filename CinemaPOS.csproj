@@ -147,6 +147,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="ModelosPropios\MailSender.cs" />
     <Compile Include="ModelosPropios\Model.cs" />
     <Compile Include="ModelosPropios\Util.cs" />
     <Compile Include="Models\Actividades.cs">
@@ -516,6 +517,11 @@
     <Content Include="Content\js\bootstrap-fileupload.js" />
     <Content Include="Content\js\bootstrap.js" />
     <Content Include="Content\js\bootstrap.min.js" />
+    <Content Include="Content\js\Calendar\fullcalendar.css" />
+    <Content Include="Content\js\Calendar\fullcalendar.js" />
+    <Content Include="Content\js\Calendar\fullcalendar.min.css" />
+    <Content Include="Content\js\Calendar\fullcalendar.min.js" />
+    <Content Include="Content\js\Calendar\fullcalendar.print.css" />
     <Content Include="Content\js\demo\bg-images.js" />
     <Content Include="Content\js\demo\charts.js" />
     <Content Include="Content\js\demo\dashboard.js" />
@@ -2269,16 +2275,6 @@
     <Content Include="Views\VentaEmpresarial\VistaVentaEmpresarial.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\CRM\Actividades.cshtml" />
-    <Content Include="Views\CRM\ClienteRoyal.cshtml" />
-    <Content Include="Views\CRM\Cotizaciones.cshtml" />
-    <Content Include="Views\CRM\ListadoActividades.cshtml" />
-    <Content Include="Views\CRM\ListadoCotizaciones.cshtml" />
-    <Content Include="Views\CRM\ModalReferenciado.cshtml" />
-    <Content Include="Views\CRM\NuevoClienteRoyal.cshtml" />
-    <Content Include="Views\CRM\RegistroClienteTarjeta.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Pelicula\ModalTeatroPelicula.cshtml" />
     <Content Include="Views\POS\MapaVenta.cshtml" />
     <Content Include="Views\POS\Mapa_Sala_funcion.cshtml" />
@@ -2311,6 +2307,14 @@
       <DependentUpon>DB_9CAC35_cinemaposDataSet.xsd</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\Royal.pubxml" />
+    <Content Include="Views\CRM\Actividades.cshtml" />
+    <Content Include="Views\CRM\ClienteRoyal.cshtml" />
+    <Content Include="Views\CRM\Cotizaciones.cshtml" />
+    <Content Include="Views\CRM\ListadoActividades.cshtml" />
+    <Content Include="Views\CRM\ListadoCotizaciones.cshtml" />
+    <Content Include="Views\CRM\ModalReferenciado.cshtml" />
+    <Content Include="Views\CRM\NuevoClienteRoyal.cshtml" />
+    <Content Include="Views\CRM\RegistroClienteTarjeta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

@@ -5,7 +5,6 @@ using System.Web;
 using CinemaPOS.Models;
 using CinemaPOS.Controllers;
 using System.Globalization;
-
 namespace CinemaPOS.ModelosPropios
 {
     public class Util
@@ -23,7 +22,7 @@ namespace CinemaPOS.ModelosPropios
             public string telefono { get; set; }
             public string ciudades { get; set; }
             public string genero { get; set; }
-            public string fechanacimiento { get; set; }
+            public string fechanacimiento { get; set;}
             public string tarjetaid { get; set; }
             public string informacion { get; set; }
             public string clasificacion { get; set; }
@@ -36,10 +35,10 @@ namespace CinemaPOS.ModelosPropios
         }
         public class Cotizaciones
         {
-
+            
             public int? rowid { get; set; }
             public string prospecto { get; set; }
-            public string teatro { get; set; }
+            public string teatro { get; set;}
             public string contacto { get; set; }
             public Contacto contactos { get; set; }
             public string titulo { get; set; }
@@ -92,6 +91,8 @@ namespace CinemaPOS.ModelosPropios
 
             /*ESTADOS DE OPORTUNIDAD DE VENTA*/
             public const int OPORTUNIDAD_VENTA = 43;
+            /*TIPO SELLO*/
+            public const int TIPO_SELLO = 99;
         }
         public class Actividades
         {
@@ -116,7 +117,17 @@ namespace CinemaPOS.ModelosPropios
             public string columna3 { get; set; }
             public string columna4 { get; set; }
         }
-
+        public class fullCalendar
+        {
+            public int id { get; set; }
+            public string title { get; set; }
+            public string start { get; set; }
+            public string end { get; set; }
+            public string backgroundColor { get; set; }
+            public string borderColor { get; set; }
+            public bool allDay { get; set; }
+            public bool url { get; set; }
+        }
         public static DateTime HoraInsertar(string FechaConvertir)
         {
             try
@@ -129,8 +140,7 @@ namespace CinemaPOS.ModelosPropios
 
                 return DateTime.MinValue;
             }
-            
-        }
 
+        }
     }
 }

@@ -3,10 +3,18 @@
     ViewBag.Title = "ListadoActividades";
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
+<script src="~/Content/js/jquery-2.2.4.min.js"></script>
+<!--DataTables [ OPTIONAL ]-->
+<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+<script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<!--DataTables Sample [ SAMPLE ]-->
+<script src="~/Content/js/demo/tables-datatables.js"></script>
 <p>
     <a class="btn btn-success" href='@Url.Action("Actividades", "CRM")'>Crear Actividad</a>
 </p>
-
+<script>
+</script>
 <div class="panel">
     <div class="panel-heading">
         <h3 class="panel-title">Lista Terceros</h3>
