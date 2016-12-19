@@ -5,13 +5,20 @@ using System.Web;
 using System.Web.Mvc;
 using CinemaPOS.Models;
 using System.Security.Cryptography;
+using Microsoft.Reporting.WebForms;
 using System.Text;
+using iTextSharp.text.pdf;
+using System.Web.UI.WebControls;
+using System.Drawing;
+using System.IO;
+using iTextSharp.text;
+using System.Diagnostics;
+using System.Drawing.Printing;
 
 namespace CinemaPOS.Controllers
 {
     public class ConveniosCuponesController : Controller
     {
-        //
         // GET: /ConveniosCupones/
 
         CinemaPOSEntities db = new CinemaPOSEntities();
@@ -32,16 +39,152 @@ namespace CinemaPOS.Controllers
             ViewBag.ListaTeatro = db.Teatro;
             ViewBag.Clientes = db.Tercero.Where(f => f.Activo == true && f.Opcion2.Codigo == "EMPRESA").ToList();
             ViewBag.TipoEstado = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOCONVENIO").ToList();
+
+
+            ///***********Reporte de convenio *************//
+            List<DetalleConvenio> detalle = new List<DetalleConvenio>();
+            detalle = db.DetalleConvenio.Where(f => f.EncabezadoConvenioID == RowId_Covenio).ToList();
+            ReportViewer reportViewer = new ReportViewer();
+            reportViewer.ProcessingMode = ProcessingMode.Local;
+            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Content/Reportes/Report1.rdlc";
+
+            ////Parametros del reporte
+            ReportParameter p1 = new ReportParameter("NombreConvenio", detalle.FirstOrDefault().EncabezadoConvenio.Nombre);
+            ReportParameter p2 = new ReportParameter("FechaInicio", detalle.FirstOrDefault().EncabezadoConvenio.FechaInicio.Value.ToShortDateString());
+            ReportParameter p3 = new ReportParameter("FechaFinal", detalle.FirstOrDefault().EncabezadoConvenio.FechaFinal.Value.ToShortDateString());
+            ReportParameter p4 = new ReportParameter("Formato", detalle.FirstOrDefault().EncabezadoConvenio.Opcion1.Nombre);
+            ReportParameter p5 = new ReportParameter("condiciones", detalle.FirstOrDefault().EncabezadoConvenio.Descripcion);
+
+
+            reportViewer.LocalReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p5 });
+            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
+            reportViewer.SizeToReportContent = true;
+            reportViewer.Width = Unit.Percentage(100);
+            reportViewer.Height = Unit.Percentage(100);
+            ViewBag.ReportViewer = reportViewer;
+            ///***********FIN reporte de convenio *************//
+
             if (RowId_Covenio != null && RowId_Covenio != 0)
             {
                 RowId_Covenio = int.Parse(Request.Params["RowId_Covenio"].ToString());
-                ViewBag.listaDetalleConvenio = db.DetalleConvenio.Where(f => f.EncabezadoConvenioID == RowId_Covenio).OrderBy(f=> f.RowID).ToList();
+                ViewBag.listaDetalleConvenio = db.DetalleConvenio.Where(f => f.EncabezadoConvenioID == RowId_Covenio).OrderBy(f => f.RowID).ToList();
                 return View(db.EncabezadoConvenio.Where(t => t.RowID == RowId_Covenio).FirstOrDefault());
             }
             else
             {
                 return View(new EncabezadoConvenio());
             }
+        }
+
+        public void PrintFile(int? RowId_Covenio)
+        {
+            try
+            {
+                List<DetalleConvenio> detalle = new List<DetalleConvenio>();
+                detalle = db.DetalleConvenio.Where(f => f.EncabezadoConvenioID == RowId_Covenio).ToList();
+                foreach (var det in detalle)
+                {
+                    LocalReport localReport = new LocalReport();
+                    localReport.ReportPath = @"Content/Reportes/Report1.rdlc";
+
+                    ////Parametros del reporte
+                    ReportParameter p1 = new ReportParameter("NombreConvenio", det.EncabezadoConvenio.Nombre);
+                    ReportParameter p2 = new ReportParameter("FechaInicio", det.EncabezadoConvenio.FechaInicio.Value.ToShortDateString());
+                    ReportParameter p3 = new ReportParameter("FechaFinal", det.EncabezadoConvenio.FechaFinal.Value.ToShortDateString());
+                    ReportParameter p4 = new ReportParameter("Formato", det.EncabezadoConvenio.Opcion1.Nombre);
+                    ReportParameter p5 = new ReportParameter("condiciones", det.EncabezadoConvenio.Descripcion);
+                    localReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p5 });
+                    localReport.DataSources.Add(new ReportDataSource("DataSet1", det));
+                    string deviceInfo =
+                     @"<DeviceInfo>
+                <OutputFormat>PDF</OutputFormat>
+               <PageWidth>12in</PageWidth>
+                <PageHeight>25in</PageHeight>
+                <MarginTop>0in</MarginTop>
+                <MarginLeft>0in</MarginLeft>
+                <MarginRight>0in</MarginRight>
+                <MarginBottom>0in</MarginBottom>
+                </DeviceInfo>";
+                    byte[] bytes1 = localReport.Render("PDF", deviceInfo);
+                    var doc = new Document();
+                    var reader = new PdfReader(bytes1);
+                    using (FileStream fs = new FileStream(Server.MapPath("~/Content/Reportes/Convenios.pdf"), FileMode.Create))
+                    {
+                        PdfStamper stamper = new PdfStamper(reader, fs);
+                        string Printer = "";
+                        if (Printer == null || Printer == "")
+                        {
+                            stamper.JavaScript = "var pp = getPrintParams();pp.interactive = pp.constants.interactionLevel.automatic;pp.printerName = getPrintParams().printerName;print(pp);\r";
+                            stamper.Close();
+                        }
+                        else
+                        {
+                            stamper.JavaScript = "var pp = getPrintParams();pp.interactive = pp.constants.interactionLevel.automatic;pp.printerName = " + Printer + ";print(pp);\r";
+                            stamper.Close();
+                        }
+                    }
+                    reader.Close();
+                    SendToPrinter();
+                    System.IO.File.Delete(Server.MapPath("~/Content/Reportes/Convenios.pdf"));
+                }
+            }
+            catch (Exception e) { }
+        }
+
+
+        private void SendToPrinter()
+        {
+            ProcessStartInfo info = new ProcessStartInfo();
+            info.Verb = "print";
+            info.FileName = @"I:/Pangea/Desktop/Proyecto con Reportes Funcionando/CinemaPOS/CinemaPOS/Content/Reportes/Convenios.pdf";
+            info.CreateNoWindow = false;
+            info.WindowStyle = ProcessWindowStyle.Hidden;
+            Process p = new Process();
+            p.StartInfo = info;
+
+            p.Start();
+            p.WaitForInputIdle();
+            System.Threading.Thread.Sleep(3000);
+            if (false == p.CloseMainWindow())
+                p.Kill();
+        }
+
+        /*    public bool PrintPDF(string ghostScriptPath, int numberOfCopies, string printerName, string pdfFileName)
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.Arguments = " -dPrinted -dBATCH -dNOPAUSE -dNOSAFER -q -dNumCopies=" + Convert.ToString(numberOfCopies) + " -sDEVICE=ljet4 -sOutputFile=\"\\\\spool\\%printer%EPSON TM-T88IV Receip";
+                startInfo.FileName = ghostScriptPath; 
+                startInfo.UseShellExecute = false;
+
+                startInfo.RedirectStandardError = true;
+                startInfo.RedirectStandardOutput = true;
+
+                Process process = Process.Start(startInfo);
+
+                Console.WriteLine(process.StandardError.ReadToEnd() + process.StandardOutput.ReadToEnd());
+
+                process.WaitForExit(30000);
+                if (process.HasExited == false) process.Kill();
+
+
+                return process.ExitCode == 0;
+            }*/
+
+
+        private System.Drawing.Image CreateBarcode(string data)
+        {
+
+            Barcode128 code128 = new Barcode128(); // barcode type
+            code128.Code = data;
+            System.Drawing.Image barCode = code128.CreateDrawingImage(System.Drawing.Color.Black, System.Drawing.Color.White);
+            //barCode.Save(Server.MapPath(“~/barcode.gif”), System.Drawing.Imaging.ImageFormat.Gif); //save file
+            return barCode;
+        }
+
+        public static byte[] ImageToByte(System.Drawing.Image img)
+        {
+            ImageConverter converter = new ImageConverter();
+            return (byte[])converter.ConvertTo(img, typeof(byte[]));
         }
 
 
@@ -96,7 +239,7 @@ namespace CinemaPOS.Controllers
             int? cantidad = 0;
 
             List<DetalleConvenio> listaConvenio = db.DetalleConvenio.Where(f => f.EncabezadoConvenioID == RowID_Encabezado).ToList();
-            if (listaConvenio.Count!=0)
+            if (listaConvenio.Count != 0)
             {
                 foreach (DetalleConvenio convenio in listaConvenio)
                 {
@@ -113,7 +256,7 @@ namespace CinemaPOS.Controllers
                 idE = listaConvenio[0].EncabezadoConvenioID;
                 cantidad = (db.EncabezadoConvenio.Where(f => f.RowID == idE).FirstOrDefault().Cantidad);
             }
-           
+
             var data = new { tabla = tabla, cantidad = cantidad };
 
             return Json(data);
@@ -127,8 +270,7 @@ namespace CinemaPOS.Controllers
             ObjEncabezado.FechaInicio = ModelosPropios.Util.HoraInsertar(formulario["FechaInicial"]);
             ObjEncabezado.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["FechaFinal"]);
             ObjEncabezado.EstadoID = db.Estado.FirstOrDefault().RowID; //Cambiar por el que es
-            ObjEncabezado.Descripcion = ""; //Validar si toca meterla
-
+            ObjEncabezado.Descripcion = formulario["descripcion"]; //Validar si toca meterla
             ObjEncabezado.TerceroID = Convert.ToInt32(formulario["Cliente"]);
             ObjEncabezado.TipoID = Convert.ToInt32(formulario["TipoConvenio"]);
             ObjEncabezado.FormatoID = Convert.ToInt32(formulario["Formato"]);
@@ -216,11 +358,12 @@ namespace CinemaPOS.Controllers
                         objDetalle.FechaCreacion = DateTime.Now;
                         convenio = db.DetalleConvenio.Add(objDetalle);
                         db.SaveChanges();
-                        convenio.Codigo = Hash(RowID_EncabezadoConvenio + "-" + convenio.RowID+"-"+convenio.FechaCreacion.Value.ToString("dd/MM/yyyy"));
+                        convenio.Codigo = Hash(RowID_EncabezadoConvenio + "-" + convenio.RowID + "-" + convenio.FechaCreacion.Value.ToString("dd/MM/yyyy"));
                         con++;
 
-                                       
-                }catch (Exception ex)
+
+                    }
+                    catch (Exception ex)
                     { return Json(new { respuesta = "Error " + ex.Message }); }
                     respuesta = "Guardado Correctamente";
                 }
@@ -239,22 +382,22 @@ namespace CinemaPOS.Controllers
         {
             String respuesta = "";
             if (RowID_Detalle != 0)
-            {             
-                    try
-                    {
-                        DetalleConvenio convenio;
-                        EncabezadoConvenio encabezado;
-                        convenio = db.DetalleConvenio.Where(f => f.RowID == RowID_Detalle).FirstOrDefault();
-                        encabezado = db.EncabezadoConvenio.Where(f => f.RowID == convenio.EncabezadoConvenioID).FirstOrDefault();
-                        encabezado.Cantidad = (encabezado.Cantidad - 1);
-                        db.DetalleConvenio.Remove(convenio);
-                        db.SaveChanges();
+            {
+                try
+                {
+                    DetalleConvenio convenio;
+                    EncabezadoConvenio encabezado;
+                    convenio = db.DetalleConvenio.Where(f => f.RowID == RowID_Detalle).FirstOrDefault();
+                    encabezado = db.EncabezadoConvenio.Where(f => f.RowID == convenio.EncabezadoConvenioID).FirstOrDefault();
+                    encabezado.Cantidad = (encabezado.Cantidad - 1);
+                    db.DetalleConvenio.Remove(convenio);
+                    db.SaveChanges();
 
-                    }
-                    catch (Exception ex)
-                    { return Json(new { respuesta = "Error " + ex.Message }); }
-                    respuesta = "Guardado Correctamente";
                 }
+                catch (Exception ex)
+                { return Json(new { respuesta = "Error " + ex.Message }); }
+                respuesta = "Guardado Correctamente";
+            }
             return Json(respuesta);
 
         }

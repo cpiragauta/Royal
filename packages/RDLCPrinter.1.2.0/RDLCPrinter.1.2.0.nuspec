@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>RDLCPrinter</id>
+    <version>1.2.0</version>
+    <title>RDLC Printer (WPF ReportViewer)</title>
+    <authors>Derek Tremblay</authors>
+    <owners>Derek Tremblay</owners>
+    <projectUrl>https://rdlcprinter.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>RDLCPrinter is a library for RDLC LocalReport. You can use by exemple with SQL Server dataset.
+
+With RDLCPrinter, you can export report. A Powerfull WPF Preview control it's also include. 
+
+RDLCPrinter, This powerful class encapsulates a LocalReport with a lot of functionnality (ex: export to pdf, print, image decoder...)
+RDLCReportViewer, WPF RDLC report viewer usercontrol for previewing report, zoom, print or export them in various file format.
+RDLCPrinterDialog, WPF dialog use with RDLCPrinter class for printing... You can by exemple select the printer or page range.
+LightIntergerSpinner, Light WPF usercontrol for spinning number with some useful functionnality
+LightDoubleSlider, Light WPF usercontrol for using with RDLCPrinter class (demo will come soon)</description>
+    <summary>RDLCPrinter is a library for RDLC LocalReport. You can use by exemple with SQL Server dataset.
+
+With RDLCPrinter, you can export report. A Powerfull WPF Preview control it's also include.</summary>
+    <language>en-US</language>
+    <tags>RDLC WPF UserControl C# Printer Report word excel png pdf RDLCPrinter RDLC Printer SQL Printer ReportViewer</tags>
+  </metadata>
+</package>
