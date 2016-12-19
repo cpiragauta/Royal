@@ -16,6 +16,16 @@
     <script src="~/Content/js/demo/tables-datatables.js"></script>
 </head>
 
+<style>
+    .Verde {
+        background-color: rgb(139, 195, 74);
+    }
+
+    .Rojo {
+        background-color: rgba(236, 64, 64, 0.71);
+    }
+</style>
+
 <p>
     <a class="btn btn-success" href='@Url.Action("Teatro", "Maestro")'>Crear Teatro</a>
 </p>
@@ -24,7 +34,7 @@
         <h3 class="panel-title">Lista Teatro</h3>
     </div>
     <div class="panel-body">
-        <table id="demo-dt-basic" class="table table-striped table-bordered table-funcion" cellspacing="0" >
+        <table id="demo-dt-basic" class="table table-striped table-bordered table-funcion" cellspacing="0">
             <thead>
                 <tr>
                     <th>Nombre</th>
@@ -34,12 +44,14 @@
                     <th class="min-desktop">Estado</th>
                     <th class="min-desktop">Creado Por</th>
                     <th class="min-desktop">Fecha Creación</th>
+                    <th class="ion-ios-loop-strong center"></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (CinemaPOS.Models.Teatro teatro in ViewBag.Teatros)
                 {
+                    String Color = teatro.Sincronizado == true ? "Verde" : "Rojo";
                     <tr>
                         <td>@teatro.Nombre</td>
                         <td>@teatro.CentroOperacion</td>
@@ -52,9 +64,10 @@
                         {
                             <td></td>
                         }
-                        <td>@teatro.Estado.Descripcion</td>
+                        <td>@teatro.EstadoID</td>
                         <td>@teatro.CreadoPor</td>
                         <td>@teatro.FechaCreacion.ToString("dd/MM/yyyy")</td>
+                        <td class="@Color"></td>
                         <td><a href="@Url.Action("Teatro","Maestro",new {RowID_Teatro=teatro.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
                     </tr>
                 }
