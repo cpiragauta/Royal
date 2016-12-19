@@ -1,0 +1,187 @@
+﻿@model CinemaPOS.Models.Taquilla
+
+@{
+    ViewBag.Title = "Taquilla";
+    Layout = "~/Views/Inicio/Diseño.cshtml";}
+
+<script>
+    function valida_formulario() {
+        hasChangue = false;
+        var validator = $("#formulario_taquilla").validate();
+        if (validator.form()) {
+            guardar_taquilla();
+        }
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        new Switchery(document.getElementById("demo-sw-checked"));
+    });
+</script>
+<script>
+        function guardar_taquilla(encabezado) {
+            if (!$("#formulario_taquilla").validate().form()) {
+                return false;
+            }
+            if ($(".RowID_Encabezado").val() == 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Maestro/Guardar_Taquilla",
+                    data: {
+                        RowID_Encabezado: $(".RowID_Encabezado").val(),
+                        formulario: $("#formulario_taquilla").serialize(),
+                    },
+                    success: function (data) {
+                        debugger;
+                        if (data) {
+                            swal("OK", "Creado...", "success");
+                            window.location = "/Maestro/VistaTaquilla"
+                        } else {
+                            swal("ERROR", "Error al guardar...", "ERROR");
+                        }
+                    },
+                    error: function () {
+                        swal("Error al guardar la informacion de taquilla", "");
+                    }
+                });
+            }
+
+
+            if ($(".RowID_Encabezado").val() != 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Maestro/Guardar_Taquilla",
+                    data: {
+                        RowID_Encabezado: jQuery(".RowID_Encabezado").val(),
+                        RowID_Detalle: jQuery(".RowID_Detalle").val(),
+                        formulario: $("#formulario_taquilla").serialize(),
+                    },
+
+                    success: function (data) {
+                        debugger;
+
+                        if (data) {
+                            swal("OK", "ACTUALIZADO...", "success");
+                            window.location = "/Maestro/VistaTaquilla"
+                        } else {
+                            sweetAlert("ERROR", "ERROR ACTUALIZANDO", "error");
+                        }
+                    },
+                    error: function (data) {
+                        sweetAlert("", data.respuesta, "error");
+                    }
+
+                });
+            }
+        }
+    </script>
+
+
+
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+
+
+
+<!--Masked Input [ OPTIONAL ]-->
+
+<script src="~/Content/plugins/masked-input/jquery.maskedinput.js"></script>
+
+<!--Form validation [ SAMPLE ]-->
+<script src="~/Content/js/demo/form-validation.js"></script>
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaTaquilla", "Maestro")'>Volver</a>
+    </p>
+</div>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Taquilla</h3>
+    </div>
+
+    <form id="formulario_taquilla" data-toggle="validator" role="form">
+        <input type="hidden" class="RowID_Encabezado" name="RowID_Encabezado" value="@Model.RowID" />
+        <input type="hidden" class="RowID_Detalle" name="RowID_Detalle" />
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Nombre:</label>
+                        <input name="nombre" id="nombre" class="form-control" value="@Model.Nombre">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Resoluciones:</label>
+                        <input name="resoluciones" id="resoluciones" class="form-control" value="@Model.Resoluciones">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">*Teatro:</label>
+                        <select name="teatro" class="chosen  form-control" required>
+                            <option value="" disabled selected>Seleccione una opcion</option>
+                            @foreach (CinemaPOS.Models.Teatro teatros in ViewBag.Teatros)
+                            {
+                                if (@Model.TeatroID.Equals(@teatros.RowID))
+                                {
+                                    <option value="@teatros.RowID" selected>@teatros.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@teatros.RowID">@teatros.Nombre</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Estado:</label>
+                        <select name="estado" class="chosen form-control" required>
+                            <option value="" disabled selected>Seleccione una opcion</option>
+                            @foreach (CinemaPOS.Models.Estado estado in ViewBag.Estado)
+                            {
+                                if (@Model.EstadoID.Equals(@estado.RowID))
+                                {
+                                    <option value="@estado.RowID" selected>@estado.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@estado.RowID">@estado.Nombre</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">               
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Sincronizado:</label> &nbsp; &nbsp;
+                        @if (@Model.Sincronizado.Equals(true))
+                        {
+                            <input id="demo-sw-checked" type="checkbox" name="sincronizado" checked>
+                        }
+                        else
+                        {
+                            <input id="demo-sw-checked" type="checkbox" name="sincronizado">
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer text-right">
+            @if (Model.RowID == 0)
+            {
+                <input class="btn btn-success" value="Guardar" onclick="javascript:valida_formulario()">
+            }
+            else
+            {
+                <input class="btn btn-success" value="Actualizar" onclick="javascript:valida_formulario()">
+            }
+        </div>
+    </form>
+
+</div>

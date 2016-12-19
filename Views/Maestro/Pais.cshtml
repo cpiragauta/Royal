@@ -1,0 +1,126 @@
+﻿@model CinemaPOS.Models.Pais
+
+@{
+    ViewBag.Title = "Pais";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+<script>
+    function valida_formulario() {
+        hasChangue = false;
+        var validator = $("#formulario_paises").validate();
+        if (validator.form()) {
+            guardar_pais();
+        }
+    }
+</script>
+<script>
+    function guardar_pais(encabezado) {
+        if (!$("#formulario_paises").validate().form()) {
+            return false;
+        }
+        if ($(".RowID_Encabezado").val() == 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/Guardar_Pais",
+                data: {
+                    RowID_Encabezado: $(".RowID_Encabezado").val(),
+                    formulario: $("#formulario_paises").serialize(),
+                },
+                success: function (data) {
+                    swal("OK", "Creado...", "success");
+                    window.location = "/Maestro/VistaPais"
+                    
+                },
+                error: function () {
+                    swal("Error al guardar la informacion de taquilla", "");
+                }
+            });
+        }
+
+
+        if ($(".RowID_Encabezado").val() != 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/Guardar_Pais",
+                data: {
+                    RowID_Encabezado: jQuery(".RowID_Encabezado").val(),
+                    RowID_Detalle: jQuery(".RowID_Detalle").val(),
+                    formulario: $("#formulario_paises").serialize(),
+                },
+
+                success: function (data) {
+                    debugger;
+
+                    if (data) {
+                        swal("OK", "ACTUALIZADO...", "success");
+                        window.location = "/Maestro/VistaPais"
+                    } else {
+                        sweetAlert("ERROR", "ERROR ACTUALIZANDO", "error");
+                    }
+                },
+                error: function (data) {
+                    sweetAlert("", data.respuesta, "error");
+                }
+
+            });
+        }
+    }
+</script>
+
+
+
+
+    <script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+
+
+
+<!--Masked Input [ OPTIONAL ]-->
+
+<script src="~/Content/plugins/masked-input/jquery.maskedinput.js"></script>
+
+<!--Form validation [ SAMPLE ]-->
+<script src="~/Content/js/demo/form-validation.js"></script>
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaPais", "Maestro")'>Volver</a>
+    </p>
+</div>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Paises</h3>
+    </div>
+
+    <form id="formulario_paises" data-toggle="validator" role="form">
+        <input type="hidden" class="RowID_Encabezado" name="RowID_Encabezado" value="@Model.RowID" />
+        <input type="hidden" class="RowID_Detalle" name="RowID_Detalle" />
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">*Nombre:</label>
+                        <input name="nombre" id="nombre" class="form-control" value="@Model.Nombre" required>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Descripción:</label>
+                        <textarea name="descripcion" class="form-control" cols="20" rows="3">@Model.Descripcion</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                @if (Model.RowID == 0)
+                {
+                    <input class="btn btn-success" value="Guardar" onclick="javascript:valida_formulario()">
+                }
+                else
+                {
+                    <input class="btn btn-success" value="Actualizar" onclick="javascript:valida_formulario()">
+                }
+            </div>
+
+        </div>
+    </form>
+
+</div>

@@ -1,0 +1,224 @@
+﻿@model CinemaPOS.Models.Opcion
+
+@{
+    ViewBag.Title = "Opcion";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+<!--Bootstrap Validator [ OPTIONAL ]-->
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.js"></script>
+<script src="~/Content/js/demo/form-wizard.js"></script>
+<script src="~/Content/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+<script src="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+<link href="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
+<link href="~/Content/plugins/switchery/switchery.min.css" rel="stylesheet" />
+<script src="~/Content/plugins/switchery/switchery.js"></script>
+<script>
+    function valida_formulario() {
+        hasChangue = false;
+        var validator = $("#formulario_lista_opciones").validate();
+        if (validator.form()) {
+            guardar_lista_opciones();
+        }
+    }
+</script>
+
+<script>
+    function guardar_lista_opciones(encabezado) {
+        if (!$("#formulario_lista_opciones").validate().form()) {
+            return false;
+        }
+        if ($(".RowID_Encabezado").val() == 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/Guardar_Opcion",
+                data: {
+                    RowID_Encabezado: $(".RowID_Encabezado").val(),
+                    formulario: $("#formulario_lista_opciones").serialize(),
+                },
+
+                success: function (data) {
+                    if (data != false) {
+                        swal("OK", "Almacenado exitosamente", "success")
+                        window.location = "/Maestro/VistaOpcion"
+                    }
+                    else {
+                        swal("ERROR", "Error almacenando el registro", "error");
+                        return;
+                    }
+
+                },
+                error: function (data) {
+                    swal("ERROR", data, "error");
+                }
+
+            });
+        }
+
+
+        if ($(".RowID_Encabezado").val() != 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/Guardar_Opcion",
+                data: {
+                    RowID_Encabezado: jQuery(".RowID_Encabezado").val(),
+                    formulario: $("#formulario_lista_opciones").serialize(),
+                },
+                success: function (data) {
+                    if (data != false) {
+                        swal("OK", "Actualización exitosa", "success")
+                        window.location = "/Maestro/VistaOpcion"
+
+                    } else {
+                        swal("ERROR", "Error actualizando el registro", "error");
+                        return;
+                    }
+
+                },
+                error: function (data) {
+                    swal("ERROR", data, "error");
+                }
+
+            });
+        }
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        new Switchery(document.getElementById('demo-sw-checked'));
+    });
+</script>
+
+
+
+
+<!--Masked Input [ OPTIONAL ]-->
+
+<script src="~/Content/plugins/masked-input/jquery.maskedinput.js"></script>
+
+<!--Form validation [ SAMPLE ]-->
+<script src="~/Content/js/demo/form-validation.js"></script>
+
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaOpcion", "Maestro")'>Volver</a>
+    </p>
+</div>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Opción</h3>
+    </div>
+
+    <form id="formulario_lista_opciones" data-toggle="validator" role="form">
+        <input type="hidden" class="RowID_Encabezado" name="RowID_Encabezado" value="@Model.RowID" />
+        <div class="panel-body">
+            <div class="row">
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">*Tipo:</label>
+                        <select name="tipo" class="chosen form-control" required>
+                            <option value="" disabled selected>Seleccione una opcion</option>
+                            @foreach (CinemaPOS.Models.Tipo tipos in ViewBag.Tipos)
+                            {
+                                if (@Model.TipoID.Equals(tipos.RowID))
+                                {
+                                    <option value="@tipos.RowID" selected>@tipos.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@tipos.RowID">@tipos.Nombre</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">*Nombre:</label>
+                        <input name="nombre" id="nombre" class="form-control" value="@Model.Nombre" required>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">*Código:</label>
+                        <input name="codigo" id="codigo" class="form-control" value="@Model.Codigo" required>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Código2:</label>
+                        <input name="codigo2" id="codigo2" class="form-control" value="@Model.Codigo2">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Descripción:</label>
+                        <textarea name="descripcion" class="form-control" style="resize: none" cols="20" rows="3">@Model.Descripcion</textarea>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Valor por defecto:</label>
+                        <input name="valorDefecto" id="valorDefecto" class="form-control" value="@Model.ValorDefecto">
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Número orden:</label>
+                        <select name="numOrden" class="chosen-teatro form-control" required>
+                            <option value="" disabled selected>Seleccione una opcion</option>
+                            <option value="1" selected>1</option>
+                            <option value="2" selected>2</option>
+                            <option value="3" selected>3</option>
+                            <option value="4" selected>4</option>
+                            <option value="5" selected>5</option>
+                            <option value="6" selected>6</option>
+                            <option value="7" selected>7</option>
+                            <option value="8" selected>8</option>
+                            <option value="9" selected>9</option>
+                            <option value="10" selected>10</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Activo:</label>
+                        @if (@Model.Activo.Equals(true))
+                        {
+                        <input id="demo-sw-checked" type="checkbox" name="activo" checked>
+                        }
+                        else
+                        {
+                        <input id="demo-sw-checked" type="checkbox" name="activo">
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                @if (Model.RowID == 0)
+                {
+                    <input class="btn btn-success" value="Guardar" onclick="javascript:valida_formulario()">
+                }
+                else
+                {
+                    <input class="btn btn-success" value="Actualizar" onclick="javascript:valida_formulario()">
+                }
+            </div>
+
+        </div>
+    </form>
+
+</div>

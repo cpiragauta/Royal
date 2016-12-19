@@ -1,0 +1,56 @@
+﻿@model CinemaPOS.Models.Zona
+
+@{
+    ViewBag.Title = "Crear Zona";
+}
+<script>
+    function Guardar() {
+        $.ajax({
+            type: "POST",
+            url: "/Zonas/Guardar",
+            data: {
+                formulario: $("#formulario_zona").serialize(),
+            },
+            success: function (data) {
+                console.log("Realizado");
+            },
+            error: function () {
+                console.log("Error");
+            }
+        });
+    }
+</script>
+<h2>Create</h2>
+<div id="page-content">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Zona</h3>
+        </div>
+        <form name="formulario_zona" id="formulario_zona">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label">Nombre</label>
+                            <input type="text" class="form-control" name="nombre">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label">Prioridad</label>
+                            <input type="range" name="prioridad">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                <a href="#" style="text-decoration: none; color: black; font-size: 12px; " onclick="Guardar()">
+                    <i class="glyphicon glyphicon-floppy-disk"></i>&nbsp;Guardar&Cerrar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

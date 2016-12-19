@@ -1,0 +1,68 @@
+﻿@model CinemaPOS.Models.EncabezadoPelicula
+
+@{
+    ViewBag.Title = "VistaPelicula";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<a class="btn btn-success" href='@Url.Action("Pelicula", "Pelicula")'>Crear Pelicula</a>
+<h2>Vista Pelicula</h2>
+
+<div class="panel">
+    <div class="panel-body">
+        <table id="demo-dt-basic" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Titulo local</th>
+                    <th>Distribuidor</th>
+                    <th class="min-tablet">Estado</th>
+                    <th class="min-desktop">Fecha estreno</th>
+                    <th>Formato / Version</th>
+                    <th>Genero</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (CinemaPOS.Models.EncabezadoPelicula peliculas in ViewBag.Peliculas)
+                {
+                    <tr>
+                        <td>@peliculas.TituloLocal</td>
+                        <td>@peliculas.Tercero.Nombre</td>
+                        <td>@peliculas.Estado.Nombre</td>
+                        <td>@peliculas.FechaEstreno.Value.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <table>
+                                @foreach (CinemaPOS.Models.DetallePelicula detalle_pelicula in peliculas.DetallePelicula)
+                                {
+                                    <tr>
+                                        <td>@detalle_pelicula.Opcion.Nombre</td>
+                                        <td>@detalle_pelicula.Opcion1.Nombre</td>
+                                    </tr>
+                                }
+                            </table> 
+                        </td>
+                        <td>
+                            <table>
+                                @foreach (CinemaPOS.Models.GeneroPelicula generos in peliculas.GeneroPelicula)
+                                {
+                                    <tr>
+                                        <td>@generos.Opcion.Nombre</td>
+                                    </tr>
+                                }
+                            </table>
+                        </td>
+                        <td>
+                            @if (peliculas.MedioPelicula.Count() != 0)
+                            {
+                                <img style="width:50px;" src="/@peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().Afiche">
+                            }
+                           
+                        </td>
+                        <td><a href="@Url.Action("Pelicula", "Pelicula", new { @RowID_Pelicula =peliculas.RowID})"><i class="btn icon-lg demo-psi-pen-5"></i></a> </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

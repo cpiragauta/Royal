@@ -1,0 +1,392 @@
+﻿@model CinemaPOS.Models.Sala
+@{
+    ViewBag.Title = "MapaSala";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+<script>
+    function calcular_cantidad_sillas() {
+        var cantidadSilla = 0;
+        $(".Silla").each(function (index) {
+            cantidadSilla++;
+        })
+        $(".cantidad_sillas").empty().append(cantidadSilla);
+    }
+    function asignar_nombres() {
+        var fila = "";
+        var cantidadfila=$(".cantidad_fila").val();
+        var cantiadcolumna=$('.cantidad_columna').val() ;
+        for (var i = 0; i < cantiadcolumna ; i++) {
+            var numero = 1;
+            for (var j = 0; j <cantidadfila  ; j++) {
+
+                if (j >= 27) {
+                    fila = String.fromCharCode(0 + 97) + String.fromCharCode((i - 26));
+                }
+                else {
+                    fila = String.fromCharCode((96+parseInt( $('.cantidad_columna').val())) - i);
+                }
+                if ($(".posicion_objeto" + i + "_" + j + "").find(".tipo_silla").length) {
+                    $(".posicion_objeto" + i + "_" + j + " small").empty().append(fila.toUpperCase() + "-" + numero);
+                    $(".posicion_objeto" + i + "_" + j + " .posicion_columna"+ i + "_" + j +" ").remove();
+                    $(".posicion_objeto" + i + "_" + j + "").append("<input type='hidden' class='posicion_columna"+ i + "_" + j +"' name='posicion_columna"+ i + "_" + j +"' value='"+fila.toUpperCase()+"' />");
+                    numero = numero + 1;
+                }
+                console.log(fila+"  Columna"+ (122 - i));
+
+            }
+
+        }
+    }
+    function crear_sillas(clase) {
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/CargarImagenSilla",
+                data: {
+                    RowID_TipoSilla: $(".TipoSilla").val()
+                },
+                success: function (data) {
+                    var Ruta = "/"
+                    var RowID_TipoSilla;
+                    var Numerar;
+                    var tipobjeto = "objeto";
+                    var claseObjeto="";
+                    data.forEach(function (da) {
+                        Ruta = Ruta + da.ruta;
+                        RowID_TipoSilla = da.RowID;
+                        claseObjeto=da.TipoObjeto;
+                        if (da.Numeracion == 1) {
+                            tipobjeto = "" + da.TipoObjeto + "  tipo_silla objeto";
+                        }
+                    });
+
+
+                    $("#Silla").attr({ 'src': Ruta, style: "width:30px" });
+                    //adicionar_cantidad();
+                    if ($("." + clase + "").find("img").length) {
+                        $("." + clase + "").find("img").remove();
+                        $("." + clase + "").find(".objeto").remove();
+                        $("." + clase + "").find("small").empty();
+                    }
+                    else {
+                        if ($(".cantidad_sillas").text()<(@Model.Capacidad)||claseObjeto!="Silla") {
+                            $("." + clase + "").append("<strong><small></small></strong><img  src='" + Ruta + "' style='width:50px'/><input type='hidden' class='" + tipobjeto + "' name='" + clase + "' value='" + RowID_TipoSilla + "'/>");
+                        }
+                        else{
+                            swal("La capacidad máxima de la sala ha sido alcanzada", "");
+                        }
+
+                    }
+                    calcular_cantidad_sillas();
+                    asignar_nombres();
+                },
+                error: function (data) {
+                    swal("Advertenvia", data, "warning");
+                }
+            });
+
+
+    }
+    function CargarMapaSala(){
+        $.ajax({
+            type:"POST",
+            url:"/Maestro/Get_Mapa_Sala",
+            data:{
+                RowID_Sala:@Request.Params["RowID_Sala"].ToString(),
+            },
+            success:function(data){
+                $("#esquema_mapa").empty().append(data);
+                calcular_cantidad_sillas();
+                asignar_nombres();
+            },
+            error:function(){
+                swal("Advertencia", data, "Advertencia");
+            }
+        })
+    }
+    function rellenar_mapa(){
+        swal({
+            title: '¿Esta seguro?',
+            text: "¿Desea rellenar la sala con el objeto  "+$(".TipoSilla option:selected").text()+"?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        },
+        function (isConfirm) {
+            debugger
+            if (isConfirm) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Maestro/CargarImagenSilla",
+                    data: {
+                        RowID_TipoSilla: $(".TipoSilla").val()
+                    },
+                    success: function (data) {
+                        var Ruta = "/"
+                        var RowID_TipoSilla;
+                        var Numerar;
+                        var tipobjeto = "objeto";
+                        var claseObjeto="";
+                        data.forEach(function (da) {
+                            Ruta = Ruta + da.ruta;
+                            RowID_TipoSilla = da.RowID;
+                            claseObjeto=da.TipoObjeto;
+                            if (da.Numeracion == 1) {
+                                tipobjeto = "" + da.TipoObjeto + "  tipo_silla objeto";
+                            }
+                        });
+                        for (var i = 0; i < $(".cantidad_columna").val(); i++) {
+                            for (var j = 0; j < $(".cantidad_fila").val(); j++) {
+                                var clase="posicion_objeto"+i+"_"+j+"";
+                                debugger;
+                                $("#Silla").attr({ 'src': Ruta, style: "width:30px" });
+                                //adicionar_cantidad();
+                                    $("." + clase + "").find("img").remove();
+                                    $("." + clase + "").find(".objeto").remove();
+                                    $("." + clase + "").find("small").empty();
+                                    if ($(".cantidad_sillas").text()<(@Model.Capacidad)||claseObjeto!="Silla") {
+                                        $("." + clase + "").append("<strong><small></small></strong><img  src='" + Ruta + "' style='width:50px'/><input type='hidden' class='" + tipobjeto + "' name='" + clase + "' value='" + RowID_TipoSilla + "'/>");
+                                    }
+                                    else{
+                                        swal("La capacidad máxima de la sala ha sido alcanzada", "");
+                                    }
+
+                            }
+                        }
+
+                   
+                        calcular_cantidad_sillas();
+                        asignar_nombres();
+                    },
+                    error: function (data) {
+                        swal("Advertenvia", data, "warning");
+                    }
+                });
+            } else {
+            }
+        });
+   }
+    function crear_esquema_sala() {
+        $.ajax({
+            type: "POST",
+            url: "/Maestro/MapaSala",
+            data: {
+                filas: $(".cantidad_fila").val(),
+                columnas: $(".cantidad_columna").val(),
+                RowID_Sala: $(".RowID_Sala").val(),
+            },success:function(){location.reload();}
+        });
+        $("#esquema_mapa").empty();
+
+        CargarMapaSala();
+        asignar_nombres();
+        //for (var i = 0; i < $(".cantidad_fila").val() ; i++) {
+        //    $("#esquema_mapa").append("<tr style='padding:0px;' class=fila_" + i + ">");
+        //    for (var j = 0; j < $(".cantidad_columna").val() ; j++) {
+        //        $("#esquema_mapa .fila_" + i + "").append("<td  style='padding:0px; border:solid 1px; WIDTH: 50PX; HEIGHT: 50PX;' class=posicion_objeto" + i + "_" + j + " onclick=asignar_silla('posicion_objeto" + i + "_" + j + "')><strong><small></small></strong><input type='hidden' name='posicionx[]' value='" + i + "'/><input type='hidden' name='posiciony[]' value='" + j + "'/>");
+        //    }
+        //}
+    }
+    function asignar_silla(clase) {
+        crear_sillas(clase);
+    }
+    function guardar_sala() {
+        $.blockUI({ message: '<img style="width:30%;"src="@("/Repositorio_Imagenes/Imagenes_Generales/Cargando.gif")" />' });
+        $.ajax({
+            type: "POST",
+            url: '/Maestro/Guardar_Mapa_Sala',
+            data: {
+                RowID_Sala: $(".RowID_Sala").val(),
+                formulario: $("#mapa_sala").serialize()
+            },
+
+            success: function (data) {
+                swal("OK", data, "success");
+                $.unblockUI();
+
+            },
+            error: function (data) {
+                swal("Advertencia", data, "warning");
+                $.unblockUI();
+            }
+        });
+    }
+
+    //$(document).ready(function () {
+    //    for (var i = 0; i < $(".cantidad_fila").val() ; i++) {
+    //        for (var j = 0; j < $(".cantidad_columna").val() ; j++) {
+    //           var fila = '';
+    //            if (i>=26) {
+    //                fila = String.fromCharCode(0 + 97)+String.fromCharCode((i - 26) + 97) +j;
+    //                debugger;
+    //            }
+    //            else {
+    //                fila = String.fromCharCode(i+97)+j;
+    //            }
+    //            $("#esquema_mapa .fila_" + i + "").append("<strong><small>" + fila.toUpperCase() + "</small></strong>");
+    //        }
+    //    }
+    //})
+
+
+    //for (var i = 0, row; row = table.rows[i]; i++) {
+    //    //iterate through rows
+    //    //rows would be accessed using the "row" variable assigned in the for loop
+    //    for (var j = 0, col; col = row.cells[j]; j++) {
+    //        var fila = '';
+    //        if (i >= 26) {
+    //            fila = String.fromCharCode(0 + 97) + String.fromCharCode((i - 26) + 97) + j;
+    //            debugger;
+    //        }
+    //        else {
+    //            fila = String.fromCharCode(i + 97) + j;
+    //        }
+    //        //iterate through columns
+    //        //columns would be accessed using the "col" variable assigned in the for loop
+    //    }
+    //    $("#esquema_mapa .fila_" + i + "").append("<strong><small>" + fila.toUpperCase() + "</small></strong>")
+    //}
+</script>
+<script>
+
+    $(document).ready(function () {
+        calcular_cantidad_sillas();
+        var fila = '';
+        var clase = "";
+        for (var i = $(".cantidad_columna").val()-1; i >=0; i--) {
+            for (var j = $(".cantidad_fila").val()-1; j >=0; j--) {
+                if (i >= 26) {
+                    fila = String.fromCharCode(0 + 97) + String.fromCharCode(i + 97);
+                }
+                else {
+                    fila = String.fromCharCode(i + 97);
+                }
+                $(".fila_"+i+" .posicion_objeto" + i + "_" + j + "").append("<strong><small>" + fila.toUpperCase() + "</small></strong>");
+            }
+
+        }
+        asignar_nombres();
+        CargarMapaSala();
+
+    })
+</script>
+<style>
+    td {
+        padding: 0px;
+        border: solid 1px;
+    }
+
+    img {
+        width: 50px;
+        z-index: 0;
+    }
+
+    small {
+        margin-left: 1.3%;
+        display: inline;
+        position: absolute;
+        z-index: 99999;
+        display: none;
+    }
+
+    td:hover small {
+        display: block;
+        position: absolute;
+        z-index: 8888;
+        margin-top: -3%;
+        margin-left: 17px;
+    }
+
+    #esquema_mapa {
+        width: 50%;
+        height: 50%;
+        margin-right: auto;
+        margin-left: auto;
+        
+    }
+</style>
+
+<h2>Mapa Sala</h2>
+
+<div class="row">
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label class="control-label">Tipo Silla</label>
+            <select class="chosen TipoSilla form-control">
+                @foreach (CinemaPOS.Models.SalaObjeto silla in ViewBag.TipoSillas)
+                {
+                    <option value="@silla.RowID">@silla.Nombre</option>
+                }
+
+            </select>
+        </div>
+    </div>
+    <input type="hidden" class="RowID_Sala" value="@Request.Params["RowID_Sala"].ToString()" />
+    <div class="col-lg-2">
+        <div class="form-group">
+            <label class="control-label">Cantidad columnas </label>
+            <input type="number" min="5" max="30" value="@Model.Cantidad_Columnas" class="cantidad_columna form-control" />
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="form-group">
+            <label class="control-label">Cantidad filas</label>
+            <input type="number" min="5" max="30" value="@Model.Cantidad_Filas" class="cantidad_fila  form-control" />
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="form-group">
+            <label class="control-label">Cantidad Sillas</label>
+            <label class="cantidad_sillas"></label>
+        </div>
+    </div>
+</div>
+<div class="col-lg-2">
+    <button onclick="javascript:crear_esquema_sala()" class="form-control btn btn-mint btn-icon"><i class="icon-lg demo-psi-pen-5"></i>&nbsp; <strong>Adicionar</strong></button>
+</div>
+<div class="col-lg-2">
+    <button onclick="javascript:guardar_sala()" class="form-control btn btn-success btn-icon"><i class="icon-lg ion-plus"></i>&nbsp; <strong>Guardar</strong></button>
+</div>
+<div class="col-lg-2">
+    <button onclick="javascript:rellenar_mapa()" class="form-control btn btn-warning btn-icon"><i class="icon-lg ion-android-checkmark-circle"></i>&nbsp; <strong>Asignar por defecto</strong></button>
+</div>
+<div style="overflow-x:scroll;margin-top:90px;">
+    <form id="mapa_sala">
+        <table id="esquema_mapa" style="border:double;width:@(Model.Cantidad_Filas *50)px" class="table table-responsive">
+            @*@if (Model.MapaSala.Count != 0)
+                {
+
+                    for (int i = 0; i < Model.Cantidad_Columnas; i++)
+                    {
+                        <tr class="fila_@i" style="padding:0px,0px,0px,0px;">
+                            @for (int j = 0; j < Model.Cantidad_Filas; j++)
+                            {
+                                string clase ="posicion_objeto"+i+"_"+j+"";
+                                <td style='padding:0px;border:solid 1px; WIDTH: 50PX; HEIGHT: 50PX;'  class=@clase onclick=asignar_silla('@clase')><input type='hidden' name='posicionx[]' value='@i'/><input type='hidden' name='posiciony[]' value='@j'/>
+
+                                    @if (Model.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault() != null)
+                                    {
+                                        var tipoobjeto = "objeto  "+ Model.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault().SalaObjeto.Opcion.Nombre;
+                                        if (Model.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault().SalaObjeto.Numeracion==true)
+                                        {
+                                            tipoobjeto = tipoobjeto+" tipo_silla";
+                                        }
+                                        <input type="hidden" class="@tipoobjeto" name="@clase" value="@Model.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault().ObjetoID">
+                                        <img style="width:50px" src="/@Model.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault().SalaObjeto.Imagen" />
+
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+
+                }*@
+        </table>
+        <center><h1>Pantalla</h1></center>
+    </form>
+</div>

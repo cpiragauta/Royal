@@ -1,0 +1,52 @@
+﻿@model CinemaPOS.Models.Ciudad
+@{
+    ViewBag.Title = "VistaCiudad";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+
+
+<head>
+    <!--jQuery [ REQUIRED ]-->
+    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
+    <!--DataTables [ OPTIONAL ]-->
+    <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+    <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <!--DataTables Sample [ SAMPLE ]-->
+    <script src="~/Content/js/demo/tables-datatables.js"></script>
+</head>
+<p>
+    <a class="btn btn-success" href='@Url.Action("Ciudad", "Maestro")'>+ Adicionar Ciudad</a>
+</p>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Ciudades</h3>
+    </div>
+    <div class="panel-body">
+        <table id="demo-dt-basic" class="table table-striped table-bordered table-funcion">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>   
+                    <th>Departamento</th>                 
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (CinemaPOS.Models.Ciudad lista_Ciudad in ViewBag.Ciudad)
+                {
+                    <tr>
+                        <td>@lista_Ciudad.RowID</td>
+                        <td>@lista_Ciudad.Nombre</td>
+                        <td>@lista_Ciudad.Descripcion</td>
+                        <td>@lista_Ciudad.Departamento.Nombre</td>                    
+                        <td><a href="@Url.Action("Ciudad", "Maestro", new { RowID_Lista = lista_Ciudad.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

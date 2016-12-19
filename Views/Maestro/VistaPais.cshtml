@@ -1,0 +1,51 @@
+﻿@model CinemaPOS.Models.Pais
+
+@{
+    ViewBag.Title = "VistaPais";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<head>
+    <!--jQuery [ REQUIRED ]-->
+    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
+    <!--DataTables [ OPTIONAL ]-->
+    <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+    <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <!--DataTables Sample [ SAMPLE ]-->
+    <script src="~/Content/js/demo/tables-datatables.js"></script>
+</head>
+<p>
+    <a class="btn btn-success" href='@Url.Action("Pais", "Maestro")'>Crear país</a>
+</p>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Paises</h3>
+    </div>
+    <div class="panel-body">
+        <table id="demo-dt-basic" class="table table-striped table-bordered table-funcion">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (CinemaPOS.Models.Pais lista_pais in ViewBag.Pais)
+                {
+                    <tr>
+                        <td>@lista_pais.RowID</td>
+                        <td>@lista_pais.Nombre</td>
+                        <td>@lista_pais.Descripcion</td>
+                        <td><a href="@Url.Action("Pais", "Maestro", new { RowID_Lista = lista_pais.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

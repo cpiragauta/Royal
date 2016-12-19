@@ -1,0 +1,273 @@
+﻿@model CinemaPOS.Models.Sala
+@{
+    ViewBag.Title = "MapaSala";
+    // Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+<!--STYLESHEET-->
+<!--=================================================-->
+<!--Open Sans Font [ OPTIONAL ]-->
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+<!--Bootstrap Stylesheet [ REQUIRED ]-->
+<link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
+
+<!--Nifty Stylesheet [ REQUIRED ]-->
+<link href="~/Content/css/nifty.min.css" rel="stylesheet">
+
+<!--Nifty Premium Icon [ DEMONSTRATION ]-->
+<link href="~/Content/css/demo/nifty-demo-icons.min.css" rel="stylesheet">
+
+<!--Demo [ DEMONSTRATION ]-->
+<link href="~/Content/css/demo/nifty-demo.min.css" rel="stylesheet">
+
+<!--Morris.js [ OPTIONAL ]-->
+@*<link href="~/Content/plugins/morris-js/morris.min.css" rel="stylesheet">*@
+
+<link href="~/Content/plugins/ionicons/css/ionicons.min.css" rel="stylesheet">
+<!--Magic Checkbox [ OPTIONAL ]-->
+<link href="~/Content/plugins/magic-check/css/magic-check.min.css" rel="stylesheet">
+
+<!--JAVASCRIPT-->
+<!--=================================================-->
+<!--Pace - Page Load Progress Par [OPTIONAL]-->
+<link href="~/Content/plugins/pace/pace.min.css" rel="stylesheet">
+<script src="~/Content/plugins/pace/pace.min.js"></script>
+
+<!--jQuery [ REQUIRED ]-->
+<script src="~/Content/js/jquery-2.2.4.min.js"></script>
+
+<!--BootstrapJS [ RECOMMENDED ]-->
+<script src="~/Content/js/bootstrap.min.js"></script>
+
+<!--NiftyJS [ RECOMMENDED ]-->
+<script src="~/Content/js/nifty.min.js"></script>
+
+<!--=================================================-->
+<!--Demo script [ DEMONSTRATION ]-->
+<script src="~/Content/js/demo/nifty-demo.min.js"></script>
+
+<!--Morris.js [ OPTIONAL ]-->
+@*<script src="~/Content/plugins/morris-js/morris.min.js"></script>
+    <script src="~/Content/plugins/morris-js/raphael-js/raphael.min.js"></script>*@
+
+<!--Sparkline [ OPTIONAL ]-->
+<script src="~/Content/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+<!--Specify page [ SAMPLE ]-->
+@*<script src="~/Content/js/demo/dashboard.js"></script>*@
+
+<style>
+    table#esquema_mapa td {
+        border: none;
+        padding: 0px;
+        WIDTH: 50PX;
+        HEIGHT: 50PX;
+    }
+</style>
+
+<link href="~/Content/plugins/chosen/chosen.min.css" rel="stylesheet">
+<script src="~/Content/plugins/chosen/chosen.jquery.min.js"></script>
+<script src="~/Content/plugins/blockUI/jquery.blockUI.js"></script>
+<script>
+    $(document).ready(function () {
+
+
+        $("#myModal1").modal('show')})
+    function asignar_nombres() {
+        var fila = "";
+        var cantidadfila=$(".cantidad_fila").val();
+        var cantiadcolumna=$('.cantidad_columna').val() ;
+        for (var i = 0; i < cantidadfila ; i++) {
+            var numero = 1;
+            for (var j = 0; j < cantiadcolumna ; j++) {
+
+                if (j >= 27) {
+                    fila = String.fromCharCode(0 + 97) + String.fromCharCode((i - 26));
+                }
+                else {
+                    fila = String.fromCharCode((96+parseInt( $('.cantidad_columna').val())) - i);
+                }
+                if ($(".posicion_objeto" + i + "_" + j + "").find(".tipo_silla").length) {
+                    $(".posicion_objeto" + i + "_" + j + " small").empty().append(fila.toUpperCase() + "-" + numero);
+                    $(".posicion_objeto" + i + "_" + j + " .posicion_columna"+ i + "_" + j +" ").remove();
+                    $(".posicion_objeto" + i + "_" + j + "").append("<input type='hidden' class='posicion_columna"+ i + "_" + j +"' name='posicion_columna"+ i + "_" + j +"' value='"+fila.toUpperCase()+"' />");
+                    numero = numero + 1;
+                }
+
+            }
+
+        }
+    }
+    function CargarMapaSala(){
+        $.ajax({
+            type:"POST",
+            url:"/POS/Get_Mapa_Sala",
+            data:{
+                RowID_Sala:@Request.Params["RowID_Sala"].ToString(),
+                RowID_Funcion:@ViewBag.Funcion.RowID,
+            },
+            success:function(data){
+                $("#esquema_mapa").empty().append(data);
+                asignar_nombres();
+            },
+            error:function(){
+                swal("Error", data, "error");
+            }
+        })
+    }
+    function crear_esquema_sala() {
+        $.ajax({
+            type: "POST",
+            url: "/Maestro/MapaSala",
+            data: {
+                filas: $(".cantidad_fila").val(),
+                columnas: $(".cantidad_columna").val(),
+                RowID_Sala: $(".RowID_Sala").val(),
+            },success:function(){location.reload();}
+        });
+        $("#esquema_mapa").empty();
+
+        CargarMapaSala();
+        asignar_nombres();
+    }
+    function asignar_silla(clase) {
+        crear_sillas(clase);
+    }
+</script>
+<script>
+
+    $(document).ready(function () {
+        console.clear();
+        var fila = '';
+        var clase = "";
+        for (var i = $(".cantidad_columna").val()-1; i >=0; i--) {
+            for (var j = $(".cantidad_fila").val()-1; j >=0; j--) {
+                if (i >= 26) {
+                    fila = String.fromCharCode(0 + 97) + String.fromCharCode(i + 97);
+                }
+                else {
+                    fila = String.fromCharCode(i + 97);
+                }
+                $(".fila_"+i+" .posicion_objeto" + i + "_" + j + "").append("<strong><small>" + fila.toUpperCase() + "</small></strong>");
+            }
+
+        }
+        asignar_nombres();
+        CargarMapaSala();
+
+    })
+    function vender_silla(element){
+        debugger
+        if ($(element).hasClass('Seleccionada') == true) {
+            $(element).removeAttr("class");
+            $(element).removeAttr("style");
+        }
+        else{
+            if ($('.Seleccionada').length==$("#cantidad-ventas").val()) {
+                alert("Maximo seleccionado");
+            }
+            else{
+                $(element).attr('style','background: #4DB6AC;').addClass("Seleccionada");
+            }
+        }
+    }
+
+    function TerminarVenta(){
+        var boletas=0;
+        var idsillas="";
+        $(".Seleccionada").each(function (index,element){
+            console.log($(this).attr('id'));
+            idsillas+=$(this).attr('id')+',';
+            boletas++;
+        })
+        if ($("#cantidad-ventas").val() !=boletas) {
+            alert("Faltan sillas por seleccionar");
+        }
+        if ($("#cantidad-ventas").val() ==boletas) {
+            $.ajax({
+                url:'/POS/TerminarVenta/',
+                data:{
+                    IDSillas:idsillas,
+                    IDTarifas:$("#tarifaID").val(),
+                    RowIDFuncion:$("#RowIDFuncion").val()
+                },succes:function(data){
+                    swal('','Venta terminada');
+                },error:function(){
+                    swal('','Verifica la información','warning')
+                }
+
+            })
+        }
+    }
+</script>
+<style>
+    td {
+        padding: 0px;
+        border: solid 1px;
+    }
+
+    img {
+        width: 50px;
+        z-index: 0;
+    }
+
+    small {
+        margin-left: 1.3%;
+        display: inline;
+        position: absolute;
+        z-index: 99999;
+        display: none;
+    }
+
+    td:hover small {
+        display: block;
+        position: absolute;
+        z-index: 8888;
+    }
+
+    #esquema_mapa {
+        width: 50%;
+        height: 50%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    tr{
+        height:50px;
+    }
+</style>
+
+<div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="true">
+    <div class="modal-dialog" style="width:100%;margin-top: 20px;">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 10px; ">
+                <button type="button" class="close salir" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <p>Cantidad sillas a vender <h3 id="cantidad_selecionadas"> @ViewBag.CantidadSillasVenta</h3></p>
+                <p>Tarifa de venta <h3 id="tarifa_venta"> @ViewBag.Tarifa.Nombre</h3></p>
+                <input type="hidden" value="@ViewBag.Tarifa.RowID" id="tarifaID"/>
+                <input type="hidden" id="cantidad-ventas" value="@ViewBag.CantidadSillasVenta" />
+                <input type="hidden" id="RowIDFuncion" value="@ViewBag.Funcion.RowID" />
+                <h4 class="modal-title"><b>@Model.Nombre</b></h4>
+            </div>
+            <div class="modal-body" style="height: auto;">
+                <div class="row" id="div_btns">
+                    <div class="col-md-12">
+                        <div class="nav">
+                            <div id="Dialog"></div><!--Abre el modal  -->
+                            <div class="row">
+                                <input type="hidden" class="RowID_Sala" value="@Request.Params["RowID_Sala"].ToString()" />
+                                
+
+                                    <table id="esquema_mapa" align="center" style="width:@(Model.Cantidad_Filas *50)px;margin:0 auto;" ></table>
+                                    <h1 class="text-center">Pantalla</h1>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="TerminarVenta()">Terminar Venta</button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

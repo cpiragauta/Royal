@@ -1,0 +1,468 @@
+﻿@model CinemaPOS.Models.EncabezadoConvenio
+@{
+    ViewBag.Title = "Crear Convenio";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+
+}
+
+<link href="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.css" rel="stylesheet">
+
+<!--Bootstrap Validator [ OPTIONAL ]-->
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.js"></script>
+<script src="~/Content/js/demo/form-wizard.js"></script>
+<script src="~/Content/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+<script src="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+<link href="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
+<!--DataTables [ OPTIONAL ]-->
+<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+<script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<!--DataTables Sample [ SAMPLE ]-->
+<script src="~/Content/js/demo/tables-datatables.js"></script>
+
+<script>
+
+    function guardar_EncabezadoConvenio() {
+        var validator = $("#formulario_Convenio_Encabezado").validate();
+        if (validator.form()) {
+            ModalProcesandoShow();
+            var inicio = document.getElementById('FechaInicial').value;
+            var finalq = document.getElementById('FechaFinal').value;
+            inicio = new Date(inicio);
+            finalq = new Date(finalq);
+            if (inicio > finalq) {
+                swal("", "La fecha inicial no puede ser mayor a la final", "error");
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/ConveniosCupones/GuardarConvenio",
+                    data: {
+                        RowID_EncabezadoConvenio: $("#row_id").val(),
+                        formulario: $("#formulario_Convenio_Encabezado").serialize(),
+                    },
+                    success: function (data) {
+                        if (data.respuesta.includes("Error")) {
+                            swal("ERROR", data.respuesta, "error");
+                            return;
+                        } else {
+                            swal("OK", data.respuesta, "success");
+                            $("#row_id").val(data.RowID_EncabezadoConvenio);
+                             window.location = "/ConveniosCupones/ConveniosCupones/?RowId_Covenio=" + data.RowID_EncabezadoConvenio;
+                            jQuery(".Ocultar").slideDown();
+
+
+                        }
+                    },
+                    error: function (data) {
+                        swal("ERROR", data.respuesta, "error");
+                    }
+
+                });
+            }
+        }
+    }
+
+    function guardar_DetalleConvenio() {
+        debugger;
+        var validator = $("#formulario_Convenio_Detalle").validate();
+        if (validator.form()) {
+            ModalProcesandoShow();
+            if ($("#ValorItem").val() >= 0 && $("#ValorItem").val() < 101) {
+                $.ajax({
+                    type: "POST",
+                    url: "/ConveniosCupones/GuardarDetalleConvenio",
+                    data: {
+                        formulario: $("#formulario_Convenio_Detalle").serialize(),
+                        RowID_EncabezadoConvenio: $("#row_id").val(),
+                        Cantidad: $("#CantidadItem").val(),
+                    },
+                    success: function (data) {
+                        if (data.includes("Error")) {
+                            swal("ERROR", data, "error");
+                            window.location = "/ConveniosCupones/ConveniosCupones/?RowId_Covenio=" + $("#row_id").val();
+
+                            return;
+                        } else {
+                            swal("OK", data, "success");
+                            window.location = "/ConveniosCupones/ConveniosCupones/?RowId_Covenio=" + $("#row_id").val();
+
+                        }
+                    },
+                    error: function (data) {
+                        swal("ERROR", data, "error");
+                        window.location = "/ConveniosCupones/ConveniosCupones/?RowId_Covenio=" + $("#row_id").val();
+
+                    }
+                });
+
+            } else {
+                swal("ERROR", "Ingrese un porcentaje entre 0 y 100 %", "error");
+
+            }
+        }
+    }
+
+    function EliminarItems(RowID_Detalle) {
+        $.ajax({
+            type: "POST",
+            url: "/ConveniosCupones/EliminarItems",
+            data: {
+                RowID_Detalle: RowID_Detalle,
+            },
+            success: function (data) {
+                debugger;
+                cargarItems();
+            },
+            error: function (data) {
+                swal("ERROR", data, "error");
+            }
+        });
+    }
+
+
+    function cargarItems() {
+        //$(".tablaItems").empty();
+
+        //  $('#tablaItems tbody').empty().trigger("chosen:updated");
+        $.ajax({
+            type: "POST",
+            url: "/ConveniosCupones/cargarItemsApe",
+            data: {
+                RowID_Encabezado: $("#row_id").val(),
+            },
+            success: function (data) {
+                debugger;
+                $("#tablaItems").empty();
+                $("#tablaItems").append(data.tabla);
+                $("#Cantidad").val(data.cantidad);
+
+            },
+            error: function (data) {
+                debugger;
+                swal("ERROR", data, "error");
+            }
+        });
+    }
+
+
+
+    $(document).ready(function () {
+        debugger;
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        if ($("#row_id").val() != null && $("#row_id").val() != 0) {
+            $(".Ocultar").slideDown();
+        } else {
+            $(".Ocultar").slideUp();
+
+        }
+
+
+        $('#demo-tp-textinput').timepicker({
+            minuteStep: 1,
+            showInputs: false,
+            disableFocus: true
+        });
+
+        $('#demo-dp-range .input-daterange').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+
+        $('.solo-numero').keyup(function () {
+            this.value = (this.value + '').replace(/[^0-9]/g, '');
+        });
+
+    });
+
+</script>
+
+
+
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaConveniosCupones", "ConveniosCupones")'>Vista Convenios</a>
+    </p>
+</div>
+<div class="panel panel-dark">
+    <div id="panel-heading">
+        <div class="panel-control">
+            <!--Nav tabs-->
+            <ul class="nav nav-tabs">
+                <li class="active" id="tabEncabezado"><a data-toggle="tab" href="#Convenio">Convenio</a></li>
+                <li><a data-toggle="tab" href="#Items">Items</a></li>
+            </ul>
+        </div>
+        <h3 class="panel-title">Convenios</h3>  
+            </div>
+    <div class="tab-content">
+        @*****************TAB CREAR CONVENIO ******************@
+
+        <div id="Convenio" class="tab-pane fade in active">
+            <form name="formulario_teatro" id="formulario_Convenio_Encabezado" onsubmit="return false">
+                <input type="hidden" class="row_id" id="row_id" name="RowID_EncabezadoConvenio" value="@Model.RowID" />
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">Nombre:*</label>
+                                <input type="text" name="Nombre" class="form-control" value="@Model.Nombre" maxlength="100" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">Cliente:*</label>
+                                <select name="Cliente" id="Cliente" class="form-control chosen">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    @foreach (CinemaPOS.Models.Tercero terceros in ViewBag.Clientes)
+                                    {
+                                        if (Model.RowID != 0 && terceros.RowID == Model.Tercero.RowID)
+                                        {
+                                            <option value="@terceros.RowID" selected>@terceros.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@terceros.RowID">@terceros.Nombre</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">Tipo Convenio:*</label>
+                                <select name="TipoConvenio" id="TipoConvenio" class="form-control">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    @foreach (CinemaPOS.Models.Opcion item in ViewBag.TipoConvenio)
+                                    {
+                                        if (Model.RowID != 0 && item.RowID == Model.TipoID)
+                                        {
+                                            <option value="@item.RowID" selected>@item.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.RowID">@item.Nombre</option>
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">Motivo:*</label>
+                                <select name="MotivoConvenio" id="MotivoConvenio" class="form-control">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    @foreach (CinemaPOS.Models.Opcion item in ViewBag.TipoMotivo)
+                                    {
+                                        if (Model.RowID != 0 && item.RowID == Model.MotivoID)
+                                        {
+                                            <option value="@item.RowID" selected>@item.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.RowID">@item.Nombre</option>
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">Clasificación:*</label>
+                                <select name="Clasificacion" id="Clasificacion" class="form-control">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    @foreach (CinemaPOS.Models.Opcion item in ViewBag.TipoClasificacion)
+                                    {
+                                        if (Model.RowID != 0 && item.RowID == Model.ClasificacionID)
+                                        {
+                                            <option value="@item.RowID" selected>@item.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.RowID">@item.Nombre</option>
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">Estado:*</label>
+                                <select name="EstadoConvenio" id="EstadoConvenio" data-toggle="tooltip" class="form-control add-tooltip" data-original-title="Recuerde que si cambia el estado, se le asignara este estado a todos los items">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    @foreach (CinemaPOS.Models.Estado item in ViewBag.TipoEstado)
+                                    {
+                                        if (Model.RowID != 0 && item.RowID == Model.EstadoID)
+                                        {
+                                            <option value="@item.RowID" selected>@item.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.RowID">@item.Nombre</option>
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group" id="demo-dp-range">
+                                <label class="control-label">Fecha vigencia:*</label>
+                                <div class="input-daterange input-group" id="datepicker">
+                                    @if (Model.RowID != 0)
+                                    {
+                                        <input type="text" class="form-control" name="FechaInicial" id="FechaInicial" value="@Model.FechaInicio.Value.ToString("dd/MM/yyyy")" required>
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control" name="FechaInicial" id="FechaInicial" value="@Model.FechaInicio" required>
+                                    }
+                                    <span class="input-group-addon">a:</span>
+                                    @if (Model.RowID != 0)
+                                    {
+                                        <input type="text" class="form-control" name="FechaFinal" id="FechaFinal" value="@Model.FechaFinal.Value.ToString("dd/MM/yyyy")" required>
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control" name="FechaFinal" id="FechaFinal" value="@Model.FechaFinal" required>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <label class="control-label">Formato:*</label>
+                                <select name="Formato" id="Formato" class="form-control">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    @foreach (CinemaPOS.Models.Opcion item in ViewBag.TipoFormato)
+                                    {
+                                        if (Model.RowID != 0 && item.RowID == Model.FormatoID)
+                                        {
+                                            <option value="@item.RowID" selected>@item.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.RowID">@item.Nombre</option>
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-1 ">
+                            <div class="form-group">
+                                <label class="control-label"># Items:</label>
+                                <input value="@Model.Cantidad" name="Cantidad" id="Cantidad" class="form-control solo-numero" readonly>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                @if (Model.RowID == 0)
+                                {
+                                    <input class="btn btn-success" type="submit" value="Crear Convenio" onclick="guardar_EncabezadoConvenio()">
+                                }
+                                else
+                                {
+                                    <input class="btn btn-success" type="submit" value="Actualizar Convenio" onclick="guardar_EncabezadoConvenio()">
+                                }
+                            </div>
+
+                        </div>
+                </div>
+            </form>
+        </div>
+        @*****************TAB ASIGNAR ITEMS******************@
+        <div id="Items" class="tab-pane fade">
+            <div id="page-content" class="Ocultar">
+                <div class="panel ">
+                    <div>
+                        <div class="panel-body">
+                            <form name="formulario_Convenio_Detalle" id="formulario_Convenio_Detalle" onsubmit="return false">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Nombre:*</label>
+                                            <input type="text" name="NombreItem" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="col-sm-3 ">
+                                        <div class="form-group">
+                                        <label class="control-label">Teatro:*</label>
+                                        <select name="Teatro" id="Teatro" class="form-control chosen" required>
+                                        <option value="" disabled selected>Seleccione una opción</option>
+                                        @foreach (CinemaPOS.Models.Teatro reg in ViewBag.ListaTeatro)
+                                        {
+                                        <option value="@reg.RowID">@reg.Nombre</option>
+                                        }
+                                        </select>
+                                        </div>
+                                        </div>*@
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label class="control-label">Descuento(%):*</label>
+                                            <input type="text" name="ValorItem" id="ValorItem" class="form-control solo-numero" maxlength="3">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label class="control-label">Cantidad:*</label>
+                                            <input type="text" id="CantidadItem" class="form-control" maxlength="8" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <input class="btn btn-success" type="submit" value="Adicionar" onclick="guardar_DetalleConvenio()">
+                                    </div>
+                                </div><br/>
+
+                            </form>
+                            <table class="table table-striped table-bordered tablaItems" cellspacing="0" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Código</th>
+                                        <th>Estado</th>
+                                        <th>Descuento</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaItems">
+                                    @if (ViewBag.listaDetalleConvenio != null)
+                                    {
+                                        foreach (CinemaPOS.Models.DetalleConvenio item in ViewBag.listaDetalleConvenio)
+                                        {
+                                            <tr>
+                                                <td>@item.RowID </td>
+                                                <td>@item.Nombre </td>
+                                                <td>@item.Codigo </td>
+                                                <td>@item.Estado.Nombre </td>
+                                                <td><center>@item.Porcentaje%</center></td>
+                                                <td><a href='javascript:EliminarItems(@item.RowID);' class="ion-trash-a"></a></td>
+
+
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

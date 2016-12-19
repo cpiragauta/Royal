@@ -1,0 +1,244 @@
+﻿@model CinemaPOS.Models.ClienteRoyal
+
+@{
+    ViewBag.Title = "RegistroClienteTarjeta";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+    ///Layout = "~/Views/Inicio/Cabecera.cshtml";
+
+}
+<link href="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.css" rel="stylesheet">
+
+<!--Bootstrap Validator [ OPTIONAL ]-->
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.js"></script>
+<script>
+    function guardar_tercero() {
+        var validator = $("#formulario_tercero").validate();
+        if (validator.form()) {
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/GuardarTercero",
+                data: {
+                    RowID_Tercero: $("#row_id").val(),
+                    formulario: $("#formulario_tercero").serialize(),
+                },
+                success: function (data) {
+                    debugger;
+                    if (data.respuesta.includes("Error")) {
+                        swal("ERROR", data.respuesta, "error");
+                        return;
+                    } else {
+                        swal("OK", data.respuesta, "success")
+                        window.location = "/Maestro/VistaTercero"
+                    }
+
+                },
+                error: function (data) {
+                    swal("ERROR", data.respuesta, "error");
+                }
+            });
+        }
+    }
+
+
+
+    function OcultarCampos() {
+        if ($("#tipo_tercero option:selected").val() == "")
+        { return;  }
+        if ($("#tipo_tercero option:selected").html() != "Natural") {
+            $("#PanelApellido").hide();
+            $("#tipoID").hide();
+            $("#PanelSexo").hide();
+            $("#lblNombre").empty().append("*Razón Social:");
+            $("#lblIdentificacion").empty().append("*NIT:")
+            $("#lblFechaNacimiento").empty().append("*Fecha Creación:");
+            $("#tipo_identificacion").prop('required', false);
+            $("#sexo").prop('required', false);
+            $("#Apellido").prop('required', false);
+            $(".Ocultar").addClass("CorrerIzquierda");
+            $(".Descripcion1").addClass("Descripcion");
+
+
+        } else {
+            $("#PanelApellido").show();
+            $("#tipoID").show();
+            $("#PanelSexo").show();
+            $("#lblNombre").empty().append("*Nombre:");
+            $("#lblIdentificacion").empty().append("*Identificacion:");
+            $("#lblFechaNacimiento").empty().append("*Fecha Nacimiento:");
+            $("#tipo_identificacion").prop('required', true);
+            $("#sexo").prop('required', true);
+            $("#Apellido").prop('required', true);
+            $(".Ocultar").removeClass("CorrerIzquierda");
+            $(".Descripcion1").removeClass("Descripcion");
+
+
+        }
+    }
+
+    $(document).ready(function () {
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+        jQuery.validator.messages.number = '*Esta campo debe ser num&eacute;rico.';
+        jQuery.validator.messages.email = '*La direcci&oacute;n de correo es incorrecta.';
+
+        $('#demo-dp-range .input-daterange').datepicker({
+            format: "dd/MM/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+        OcultarCampos();
+
+
+    })
+</script>
+
+<style>
+    .CorrerIzquierda {
+        margin-left: -102%;
+        margin-right: 104%;
+    }
+
+    .Descripcion {
+        margin: 7% 0% 0% -67%;
+    }
+</style>
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaClientesRoyal", "CRM")'>Clientes Royal</a>
+    </p>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="panel-heading">
+                    <h3 class="panel-title">Cliente Royal</h3>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="panel">
+
+
+                    <form name="formulario_cliente_royal" id="formulario_cliente_royal" onsubmit="return false">
+                        <div class="panel-body">
+                            <div class="row ">
+                                <div class="col-sm-4">
+                                    <label class="control-label">Nº Identificación</label>
+                                    <input type="text" name="identificacion" class="form-control" required/>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="control-label">Nombres</label>
+                                    <input type="text" name="nombres" class="form-control" required/>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="control-label">Apellidos</label>
+                                    <input type="text" name="apellidos" class="form-control" required/>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col-sm-4">
+                                    <label class="control-label">Correo Electrónico</label>
+                                    <input type="email" name="correo" class="form-control" required />
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="control-label">Telefono</label>
+                                    <input type="text" name="telefono" class="form-control" required />
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="control-label">Ciudad</label>
+                                    <select class="chosen-ciudad form-control" name="ciudad" required>
+                                        @foreach (CinemaPOS.Models.Ciudad ciudad in ViewBag.Ciudades)
+                                        {
+                                            <option value="@ciudad.RowID">@ciudad.Nombre</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col-sm-4">
+                                    <label class="control-label">Genero</label>
+                                    <select class="chosen-genero form-control" name="genero"  required>
+                                        @foreach (CinemaPOS.Models.Opcion genero in ViewBag.Generos)
+                                        {
+                                            <option value="@genero.RowID">@genero.Nombre</option>
+                                        }
+                                    </select> 
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="control-label">Fecha Nacimiento</label>
+                                    <input type="text" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control" required />
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="control-label">Clasificación</label>
+                                    <select class="chosen-clasificacion form-control" data-placeholder="Elija una clasificación" name="clasificacion">
+                                        @foreach (CinemaPOS.Models.Opcion clasificacion in ViewBag.TipoCliente)
+                                        {
+                                            <option value="@clasificacion.RowID">@clasificacion.Nombre</option>
+                                        }
+                                    </select>
+                                </div>
+                                
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label class="control-label">Deseo recibir información en mi correo electrónico</label>
+                                    <input id="recibir_informacion" type="checkbox" name="recibir_informacion" checked>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer text-right">
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" onclick="javascript:GuardarCliente()" class="btn btn-success">Guardar información</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<style>
+    .error{
+        color:red;
+
+    }
+
+</style>
+<script>
+    $(document).ready(function () {
+        $("#myModal").modal("show");
+        new Switchery(document.getElementById('recibir_informacion'));
+        $(".chosen-ciudad").chosen({ width: "100%;" });
+        $("#fecha_nacimiento").datepicker();
+        $(".chosen-clasificacion").chosen({ width: "100%;" });
+    });
+    function GuardarCliente() {
+        var validator = $("#formulario_cliente_royal").validate();
+        if (validator.form()) {
+            $.ajax({
+                type:"POST",
+                url: "/CRM/GuardarCliente",
+                data: {
+                    formulario: $("#formulario_cliente_royal").serialize()
+                },
+                success: function (data) {
+                    swal("", "Información guardada exitosamente");
+                },
+                error: function (data) {
+                    swal("", "Surgio una excepcion al guardar la informacion");
+                }
+            });
+        }
+        
+    }
+   
+</script>

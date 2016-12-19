@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ae8727279e94475199cbe851b869d483" Name="Diagram1" ZoomLevel="88">
+        <EntityTypeShape EntityType="CinemaPOSModel.DetalleConvenio" Width="1.5" PointX="20.75" PointY="80.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoConvenio" Width="1.5" PointX="10.5" PointY="76.5" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Actividades" Width="1.5" PointX="15.25" PointY="64.875" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ClienteRoyal" Width="1.5" PointX="10.25" PointY="70.625" />
+        <EntityTypeShape EntityType="CinemaPOSModel.OportunidadVenta" Width="1.5" PointX="15.5" PointY="76" />
+        <EntityTypeShape EntityType="CinemaPOSModel.TarjetaMembresia" Width="1.5" PointX="15.25" PointY="56.875" />
+        <EntityTypeShape EntityType="CinemaPOSModel.TarjetaMembresiaClienteRoyal" Width="1.5" PointX="17.5" PointY="71.625" />
+        <EntityTypeShape EntityType="CinemaPOSModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.CentroOperacion" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Ciudad" Width="1.5" PointX="16.25" PointY="94.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Contacto" Width="1.5" PointX="7.5" PointY="82.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Departamento" Width="1.5" PointX="14" PointY="94.625" />
+        <EntityTypeShape EntityType="CinemaPOSModel.EnvioMail" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Estado" Width="1.5" PointX="16.25" PointY="87.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Impuesto" Width="1.5" PointX="13.25" PointY="77.125" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Opcion" Width="1.5" PointX="3" PointY="68.5" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Pais" Width="1.5" PointX="11.75" PointY="94.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Parametros" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Plantillas" Width="1.5" PointX="2.75" PointY="4.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.SalaObjeto" Width="1.5" PointX="5.25" PointY="117.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Sello_Distribuidor" Width="1.5" PointX="7.5" PointY="86.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Teatro" Width="1.5" PointX="18.5" PointY="82.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Tercero" Width="1.5" PointX="5.25" PointY="69.5" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Tipo" Width="1.5" PointX="0.75" PointY="67.125" />
+        <EntityTypeShape EntityType="CinemaPOSModel.TipoEstado" Width="1.5" PointX="14" PointY="89.625" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Zona" Width="1.5" PointX="5.25" PointY="98" />
+        <EntityTypeShape EntityType="CinemaPOSModel.DetallePelicula" Width="1.5" PointX="14.75" PointY="71.125" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Elenco" Width="1.5" PointX="9.75" PointY="67" />
+        <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoPelicula" Width="1.5" PointX="7.5" PointY="69.625" />
+        <EntityTypeShape EntityType="CinemaPOSModel.GeneroPelicula" Width="1.5" PointX="15.75" PointY="82.5" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ImpuestoPelicula" Width="1.5" PointX="22.5" PointY="73.625" />
+        <EntityTypeShape EntityType="CinemaPOSModel.MedioPelicula" Width="1.5" PointX="19.75" PointY="71.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.PorcentajeParticipacion" Width="1.5" PointX="12.75" PointY="82.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.TeatroPelicula" Width="1.5" PointX="14.75" PointY="60.875" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Menu" Width="1.5" PointX="3" PointY="63.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Rol" Width="1.5" PointX="3" PointY="58.875" />
+        <EntityTypeShape EntityType="CinemaPOSModel.RolMenu" Width="1.5" PointX="5.25" PointY="61.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.TipoMenu" Width="1.5" PointX="0.75" PointY="62.875" />
+        <EntityTypeShape EntityType="CinemaPOSModel.UsuarioSistema" Width="1.5" PointX="25.75" PointY="79.875" />
+        <EntityTypeShape EntityType="CinemaPOSModel.EvidenciaPqrs" Width="1.5" PointX="23" PointY="110.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Pqrs" Width="1.5" PointX="20.75" PointY="109.125" />
+        <EntityTypeShape EntityType="CinemaPOSModel.SeguientoEvidencia" Width="1.5" PointX="10.5" PointY="83.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Seguimiento" Width="1.5" PointX="8.25" PointY="77.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.TipoSolicitud" Width="1.5" PointX="5.25" PointY="150.125" />
+        <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoProgramacion" Width="1.5" PointX="23.75" PointY="85.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Funcion" Width="1.5" PointX="18" PointY="76.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ListaPrecioFuncion" Width="1.5" PointX="22.25" PointY="70" />
+        <EntityTypeShape EntityType="CinemaPOSModel.SincronizacionMaestros" Width="1.5" PointX="4.75" PointY="4.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ListaDetalle" Width="1.5" PointX="12.25" PointY="62.875" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ListaEncabezado" Width="1.5" PointX="8.25" PointY="62.125" />
+        <EntityTypeShape EntityType="CinemaPOSModel.BoletaVendida" Width="1.5" PointX="23.25" PointY="80.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.FormatoSala" Width="1.5" PointX="5.25" PointY="65.625" />
+        <EntityTypeShape EntityType="CinemaPOSModel.MapaSala" Width="1.5" PointX="7.5" PointY="97" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Sala" Width="1.5" PointX="5.25" PointY="77.625" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ServicioSala" Width="1.5" PointX="10.5" PointY="86" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Taquilla" Width="1.5" PointX="20.75" PointY="85.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.DetalleVentaEmpresarial" Width="1.5" PointX="17.75" PointY="63.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoVentaEmpresarial" Width="1.5" PointX="12.5" PointY="70.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.TeatroVentaEmpresarial" Width="1.5" PointX="17.75" PointY="67.875" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Funciones" Width="1.5" PointX="6.75" PointY="0.75" />
+        <AssociationConnector Association="CinemaPOSModel.FK__DetalleCo__Encab__51851410" />
+        <AssociationConnector Association="CinemaPOSModel.FK__DetalleCo__Estad__5090EFD7" />
+        <AssociationConnector Association="CinemaPOSModel.FK__DetalleCo__Teatr__52793849" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__Clasi__3C89F72A" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__Estad__39AD8A7F" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__Forma__3E723F9C" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__Terce__3AA1AEB8" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__TipoI__3B95D2F1" />
+        <AssociationConnector Association="CinemaPOSModel.fk_estado_actividad" />
+        <AssociationConnector Association="CinemaPOSModel.fk_Prioridad" />
+        <AssociationConnector Association="CinemaPOSModel.fk_tipo_Actividad" />
+        <AssociationConnector Association="CinemaPOSModel.fk_tipo_Referencia" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ClienteRo__Ciuda__09C96D33" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ClienteRo__Clasi__0BB1B5A5" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ClienteRo__Gener__0ABD916C" />
+        <AssociationConnector Association="CinemaPOSModel.FK__TarjetaMe__Clien__162F4418" />
+        <AssociationConnector Association="CinemaPOSModel.fk_preferencias" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Conta__4C564A9F" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Lista__4979DDF4" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Prosp__4A6E022D" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Teatr__4B622666" />
+        <AssociationConnector Association="CinemaPOSModel.fk_estado_cotizacion" />
+        <AssociationConnector Association="CinemaPOSModel.FK__TarjetaMe__Estad__1D9B5BB6" />
+        <AssociationConnector Association="CinemaPOSModel.FK__TarjetaMe__Tarje__153B1FDF" />
+        <AssociationConnector Association="CinemaPOSModel.FK__TarjetaMe__Estad__1E8F7FEF" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Ciudad__Departam__7CA47C3F" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Teatro__CiudadID__7F80E8EA" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Tercero__CiudadI__7E8CC4B1" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Contacto__Empres__19FFD4FC" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Departame__PaisI__79C80F94" />
+        <AssociationConnector Association="CinemaPOSModel.FK__DetallePe__Estad__571DF1D5" />
+        <AssociationConnector Association="CinemaPOSModel.FK__DetalleVe__Estad__48BAC3E5" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__Estad__4119A21D" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__Estad__5CD6CB2B" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__Estad__636EBA21" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Funcion__EstadoI__6EF57B66" />
+        <AssociationConnector Association="CinemaPOSModel.FK__GeneroPel__Estad__619B8048" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Impuesto__Estado__5070F446" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ListaDeta__Estad__71D1E811" />
+        <AssociationConnector Association="CinemaPOSModel.FK__MedioPeli__Estad__2A164134" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Porcentaj__Estad__68487DD7" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Pqrs__EstadoID__50C5FA01" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Sala__EstadoID__787EE5A0" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Seguimien__Estad__5B438874" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Silla__EstadoID__7D439ABD" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Taquilla__Estado__01142BA1" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Teatro__EstadoID__76818E95" />
+        <AssociationConnector Association="CinemaPOSModel.FK_TipoEstado" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Impuesto__TipoIm__5165187F" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ImpuestoP__Impue__6477ECF3" />
+        <AssociationConnector Association="CinemaPOSModel.FK__DetallePe__TipoF__5812160E" />
+        <AssociationConnector Association="CinemaPOSModel.FK__DetallePe__TipoI__59063A47" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Elenco__TipoElen__5AEE82B9" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__Clasi__40257DE4" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__Forma__420DC656" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__TipoC__5EBF139D" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__TipoI__5FB337D6" />
+        <AssociationConnector Association="CinemaPOSModel.FK__FormatoSa__TipoF__778AC167" />
+        <AssociationConnector Association="CinemaPOSModel.FK__GeneroPel__TipoG__628FA481" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ListaDeta__TipoF__74AE54BC" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ListaDeta__TipoL__61BB7BD9" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ListaDeta__TipoS__2B0A656D" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ListaEnca__Estad__75A278F5" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Sala__TipoAudioI__7A672E12" />
+        <AssociationConnector Association="CinemaPOSModel.FK__SalaObjet__Servi__1B7E091A" />
+        <AssociationConnector Association="CinemaPOSModel.FK__SalaObjet__TipoO__66EA454A" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Seguimien__AreaA__595B4002" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Seguimien__AreaA__5A4F643B" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ServicioS__TipoS__7C4F7684" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Tercero__SexoID__3FD07829" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Tercero__TipoIde__2CBDA3B5" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Tercero__TipoTer__5535A963" />
+        <AssociationConnector Association="CinemaPOSModel.FK__TipoSolic__AreaI__473C8FC7" />
+        <AssociationConnector Association="CinemaPOSModel.FKEC4991158B6B12E" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__PaisI__5DCAEF64" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Silla__SillaTipo__7F2BE32F" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Sello_Dis__Distr__3572E547" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Sello_Dis__Sello__347EC10E" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__Teatr__6462DE5A" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ListaEnca__Teatr__7D2E8C24" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Pqrs__TeatroID__4DE98D56" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Sala__TeatroID__797309D9" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Taquilla__Teatro__02084FDA" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Teatro__Compania__534D60F1" />
+        <AssociationConnector Association="CinemaPOSModel.FK__TeatroPel__Teatr__68336F3E" />
+        <AssociationConnector Association="CinemaPOSModel.FK__TeatroVen__Teatr__4D7F7902" />
+        <AssociationConnector Association="CinemaPOSModel.FK__UsuarioSi__Teatr__353DDB1D" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__Distr__5BE2A6F2" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__Terce__43F60EC8" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Pqrs__TerceroID__4FD1D5C8" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Menu__TipoMenuID__0169315C" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Menu__TipoMenuID__035179CE" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Silla__ZonaID__00200768" />
+        <AssociationConnector Association="CinemaPOSModel.FK__DetallePe__Encab__5629CD9C" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Funcion__Detalle__6D0D32F4" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Elenco__Encabeza__59FA5E80" />
+        <AssociationConnector Association="CinemaPOSModel.FK__GeneroPel__Encab__60A75C0F" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ImpuestoP__Encab__6383C8BA" />
+        <AssociationConnector Association="CinemaPOSModel.FK__MedioPeli__Encab__29221CFB" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Porcentaj__Encab__6754599E" />
+        <AssociationConnector Association="CinemaPOSModel.FK__TeatroPel__Encab__673F4B05" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Menu__TipoMenuID__15DA3E5D" />
+        <AssociationConnector Association="CinemaPOSModel.FK__RolMenu__MenuID__18B6AB08" />
+        <AssociationConnector Association="CinemaPOSModel.FK__RolMenu__RolID__19AACF41" />
+        <AssociationConnector Association="CinemaPOSModel.FK__UsuarioSi__RolID__7BE56230" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Evidencia__PqrsI__53A266AC" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Pqrs__TipoSolici__2A6B46EF" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Seguimien__PQRS___297722B6" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Seguiento__Segui__5E1FF51F" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Funcion__Encabez__6E01572D" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Funci__5303482E" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Funcion__SalaID__70DDC3D8" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ListaPrec__Funci__5FD33367" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ListaPrec__Lista__60C757A0" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Tarif__511AFFBC" />
+        <AssociationConnector Association="CinemaPOSModel.FK__DetalleVe__Lista__505BE5AD" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ListaDeta__Lista__72C60C4A" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Silla__5026DB83" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Taqui__520F23F5" />
+        <AssociationConnector Association="CinemaPOSModel.FK__FormatoSa__SalaI__76969D2E" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Silla__SalaID__7E37BEF6" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ServicioS__SalaI__7B5B524B" />
+        <AssociationConnector Association="CinemaPOSModel.FK__DetalleVe__Venta__47C69FAC" />
+        <AssociationConnector Association="CinemaPOSModel.FK__TeatroVen__Venta__4C8B54C9" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

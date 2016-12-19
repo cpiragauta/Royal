@@ -1,0 +1,38 @@
+﻿@model CinemaPOS.Models.Zona
+
+@{
+    ViewBag.Title = "Vista Zonas";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<h2>Lista Zonas</h2>
+<p>
+    @Html.ActionLink("Crear Zona", "Formulario")
+</p>
+<div id="page-content">
+    <div class="panel">
+        <div class="panel-body">
+            <table id="demo-dt-basic" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Prioridad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (CinemaPOS.Models.Zona zona in ViewBag.Zonas)
+                    {
+                        <tr>
+                            <td>@zona.Nombre</td>
+                            <td>@zona.Prioridad</td>
+                            <td>@zona.RowID</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

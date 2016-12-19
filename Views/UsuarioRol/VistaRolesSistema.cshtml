@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CinemaPOS.Models.UsuarioSistema>
+
+@{
+    ViewBag.Title = "Lista roles";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+<head>
+    <!--jQuery [ REQUIRED ]-->
+    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
+    <!--DataTables [ OPTIONAL ]-->
+    <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+    <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <!--DataTables Sample [ SAMPLE ]-->
+    <script src="~/Content/js/demo/tables-datatables.js"></script>
+</head>
+
+<p>
+    <a class="btn btn-success" href='@Url.Action("RolesSistema", "UsuarioRol")'>Crear Rol</a>
+
+</p>
+<div class="panel">
+
+
+    <div class="panel-heading">
+        <h3 class="panel-title">Lista Roles</h3>
+    </div>
+    <div class="panel-body">
+        <table id="demo-dt-basic" class="table table-striped table-bordered table-funcion" cellspacing="0" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Rol</th>
+                    <th>Creado Por</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (CinemaPOS.Models.Rol item in ViewBag.Roles)
+                {
+                    <tr>
+                        <td>@item.RowID</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.CreadoPor</td>
+                        <td>
+                            <a href="@Url.Action("RolesSistema", "UsuarioRol", new { @RowID_Roles = item.RowID })"><i class="glyphicon glyphicon-pencil"> </i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

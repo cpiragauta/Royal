@@ -1,0 +1,68 @@
+﻿@model IEnumerable<CinemaPOS.Models.Tercero>
+
+@{
+    ViewBag.Title = "Lista Terceros";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<head>
+    <!--jQuery [ REQUIRED ]-->
+    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
+    <!--DataTables [ OPTIONAL ]-->
+    <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+    <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <!--DataTables Sample [ SAMPLE ]-->
+    <script src="~/Content/js/demo/tables-datatables.js"></script>
+</head>
+
+<p>
+    <a class="btn btn-success" href='@Url.Action("Tercero", "Maestro")'>Crear Tercero</a>
+</p>
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Lista Terceros</h3>
+    </div>
+    <div class="panel-body">
+        <table id="demo-dt-basic" class="table table-striped table-bordered table-funcion" cellspacing="0" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombres</th>
+                    <th>Tipo Tercero</th>
+                    <th>Identificacion</th>
+                    <th>Telefono</th>
+                    <th>Correo</th>
+                    <th>Ciudad</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (CinemaPOS.Models.Tercero Terceros in ViewBag.Tercero)
+                {
+                    <tr>
+                        <td>@Terceros.RowID</td>
+                        <td>@Terceros.Nombre @Terceros.Apellidos</td>
+                        @if (Terceros.Opcion2 == null)
+                        {
+                            <td></td>
+                        }
+                        else
+                        {
+                            <td>@Terceros.Opcion2.Nombre</td>
+                        }
+                        <td>@Terceros.Identificacion</td>
+                        <td>@Terceros.Telefono</td>
+                        <td>@Terceros.Correo</td>
+                        <td>@Terceros.Ciudad.Nombre</td>
+                        <td>
+                            <a href="@Url.Action("Tercero", "Maestro", new { @RowID_Tercero = Terceros.RowID })"><i class="glyphicon glyphicon-pencil"> </i></a>
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

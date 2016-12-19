@@ -1,0 +1,162 @@
+﻿@model CinemaPOS.Models.Ciudad
+
+@{
+    ViewBag.Title = "Ciudad";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<script>
+    function valida_formulario() {
+        hasChangue = false;
+        var validator = $("#formulario_ciudad").validate();
+        if (validator.form()) {
+            guardar_departamento();
+        }
+    }
+</script>
+<script>
+    function guardar_departamento(encabezado) {
+        if (!$("#formulario_ciudad").validate().form()) {
+            return false;
+        }
+        if ($(".RowID_Encabezado").val() == 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/Guardar_Ciudad",
+                data: {
+                    RowID_Encabezado: $(".RowID_Encabezado").val(),
+                    formulario: $("#formulario_ciudad").serialize(),
+                },
+                success: function (data) {
+                    debugger;
+                    if (data) {
+                        swal("OK", "Creado...", "success");
+                        window.location = "/Maestro/VistaCiudad"
+                    } else {
+                        swal("Advertencia", "Error al guardar...", "warning");
+                    }
+                },
+                error: function () {
+                    swal("Error al guardar la informacion de ciudad", "");
+                }
+            });
+        }
+
+
+        if ($(".RowID_Encabezado").val() != 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/Guardar_Ciudad",
+                data: {
+                    RowID_Encabezado: jQuery(".RowID_Encabezado").val(),
+                    RowID_Detalle: jQuery(".RowID_Detalle").val(),
+                    formulario: $("#formulario_ciudad").serialize(),
+                },
+
+                success: function (data) {
+                    debugger;
+
+                    if (data) {
+                        swal("OK", "ACTUALIZADO...", "success");
+                        window.location = "/Maestro/VistaCiudad"
+                    } else {
+                        sweetAlert("Advertencia", "ERROR ACTUALIZANDO", "warning");
+                    }
+                },
+                error: function (data) {
+                    sweetAlert("", data.respuesta, "warning");
+                }
+
+            });
+        }
+    }
+</script>
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+
+
+
+<!--Masked Input [ OPTIONAL ]-->
+
+<script src="~/Content/plugins/masked-input/jquery.maskedinput.js"></script>
+
+<!--Form validation [ SAMPLE ]-->
+<script src="~/Content/js/demo/form-validation.js"></script>
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaCiudad", "Maestro")'>Volver</a>
+    </p>
+</div>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Departamento</h3>
+    </div>
+
+    <form id="formulario_ciudad" data-toggle="validator" role="form">
+        <input type="hidden" class="RowID_Encabezado" name="RowID_Encabezado" value="@Model.RowID" />
+        <input type="hidden" class="RowID_Detalle" name="RowID_Detalle" />
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">*País:</label>
+                        <select name="pais" class="chosen form-control" required>
+                            <option value="" disabled selected>Seleccione una opcion</option>
+                            @foreach (CinemaPOS.Models.Pais pais in ViewBag.Pais)
+                            {
+                              <option value="@pais.RowID">@pais.Nombre</option>
+                                
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">*Departamento:</label>
+                        <select name="departamento" class="chosen form-control" required>
+                            <option value="" disabled selected>Seleccione una opcion</option>
+                            @foreach (CinemaPOS.Models.Departamento departamento in ViewBag.Departamento)
+                            {
+                                if (@Model.DepartamentoID.Equals(@departamento.RowID))
+                                {
+                                    <option value="@departamento.RowID" selected>@departamento.Nombre</option>
+
+                                }
+                                else
+                                {
+                                    <option value="@departamento.RowID">@departamento.Nombre</option>
+
+
+                                }
+
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">*Nombre:</label>
+                        <input name="nombre" id="nombre" class="form-control" value="@Model.Nombre" required>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Descripción:</label>
+                        <textarea name="descripcion" class="form-control" cols="20" rows="3" style="resize:none">@Model.Descripcion</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer text-right">
+            @if (Model.RowID == 0)
+            {
+                <input class="btn btn-success" value="Guardar" onclick="javascript:valida_formulario()">
+            }
+            else
+            {
+                <input class="btn btn-success" value="Actualizar" onclick="javascript:valida_formulario()">
+            }
+        </div>
+    </form>
+
+</div>

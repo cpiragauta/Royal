@@ -1,0 +1,1031 @@
+﻿@model CinemaPOS.Models.EncabezadoPelicula
+
+@{
+    ViewBag.Title = "Formulario";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+<link href="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.css" rel="stylesheet">
+
+<!--Bootstrap Validator [ OPTIONAL ]-->
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.js"></script>
+<script src="~/Content/js/demo/form-wizard.js"></script>
+<script src="~/Content/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+<script src="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+<link href="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
+<script>
+    function valida_formulario() {
+        hasChangue = false;
+        var validator = $("#formulario_pelicula").validate();
+        if (validator.form()) {
+            enviar_formulario();
+        }
+    }
+    function enviar_formulario() {
+        $("#formulario_pelicula").on("submit", function (e) {
+            e.preventDefault();
+            var f = $(this);
+            var formData = new FormData(document.getElementById("formulario_pelicula"));
+            var RowID_Pelicula = $(".RowID_Pelicula").val();
+            //formData.append(f.attr("name"), $(this)[0].files[0]);
+            $.ajax({
+                url: "/Pelicula/GuardarPelicula?RowID_Pelicula=" + RowID_Pelicula,
+                type: "post",
+                dataType: "html",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    swal("","Informacion Guardada");
+                    window.location = "/Pelicula/VistaPelicula/"
+
+                },
+                error: function () {
+                    swal("","Verifica la informacion que estas guardando","warning")
+                }
+
+            })
+        });
+    }
+</script>
+<script>
+    var cantidadcontrol = 0;
+    $(document).ready(function () {
+        $("#genero_pelicula").chosen();
+        $('.fecha_estreno').datepicker({
+            format: "dd/MM/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+        function clonar_config_film() {
+
+            new_config = jQuery(".control-film").clone(true).removeClass("control-film").hide().appendTo(".ultimocontrol").slideDown().addClass("control-film" + cantidadcontrol);
+            new_config.find(".listaformato").attr("name", "formato[]");
+            new_config.find(".listaversion").attr("name", "version[]");
+            close_box_mediopago();
+            cantidadcontrol++;
+        }
+
+        $('.addmediopago').click(function () {
+
+            clonar_config_film();
+        });
+        function close_box_mediopago() {
+            jQuery(".controls .close").unbind('click').bind('click', function (e) {
+                e.preventDefault();
+                jQuery(this).closest('.controls').fadeOut('400', function () {
+                    jQuery(this).closest('.controls').remove();
+                });
+            });
+        }
+
+        var quantitybox = 0;
+        function clone_panel_porcentaje() {
+            new_porcentaje = jQuery(".control-clone").clone().removeClass("control-clone").hide().appendTo(".contenido").slideDown().addClass("control-porcentaje controls" + quantitybox);
+            new_porcentaje.find(".fecha_inicial_porcentaje").attr("name", "fecha_inicial_porcentaje[]").datepicker({ format: "dd/MM/yyyy", todayBtn: "linked", autoclose: true, todayHighlight: false });
+            new_porcentaje.find(".fecha_final_porcentaje").attr("name", "fecha_final_porcentaje[]").datepicker({ format: "dd/MM/yyyy", todayBtn: "linked", autoclose: true, todayHighlight: false });
+            new_porcentaje.find(".porcentaje").attr("name", "porcentaje[]");
+            new_porcentaje.find(".nombre_porcentaje").attr("name", "nombre_porcentaje[]");
+            close_box_price();
+            quantitybox++;
+        }
+        $('.add-panel-porcentaje').click(function () {
+            clone_panel_porcentaje();
+        });
+        $('.contenido .close').click(function () {
+
+            close_box_price();
+        });
+        close_box_mediopago();
+        function close_box_price() {
+            jQuery(".contenido .close").unbind('click').bind('click', function (e) {
+                e.preventDefault();
+                jQuery(this).closest('.controls').fadeOut('400', function () {
+                    jQuery(this).closest('.controls').remove();
+                });
+            });
+        }
+
+        $('.fecha_inicial_porcentaje ').datepicker({
+            format: "dd/MM/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+
+        $('.fecha_final_porcentaje ').datepicker({
+            format: "dd/MM/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+
+        $(".duracion").timepicker({
+            defaultTime: 'value',
+            minuteStep: 5,
+            disableFocus: true,
+            template: 'dropdown',
+            showMeridian: false
+        });
+        new Switchery(document.getElementById('demo-sw-checked'));
+        jQuery("#select-distribuidor").chosen({ width: "95%;" });
+        jQuery("#select-clasificacion").chosen({ width: "95%;" });
+        jQuery("#select-pais").chosen({ width: "95%;" });
+        jQuery("#select-idioma").chosen({ width: "95%;" });
+        //jQuery(".listaformato").chosen({ width: "95%;" });
+        //jQuery(".listaversion").chosen({ width: "95%;" });
+
+    });
+
+
+
+    
+    //GUARDAR TEATRO
+    function GuardarTeatro() {
+        debugger;
+        ModalProcesandoShow();
+        $.ajax({
+            type: "POST",
+            url: "/Pelicula/GuardarTeatro",
+            data: {
+                rowidPelicula: $(".RowID_Pelicula").val(),
+                rowidTeatro: $("#rowidTeatro").val(),
+
+            },
+            success: function (data) {
+                debugger;
+                if(data=="ok"){
+                    Alerts("Teatro agregado!", "success")
+                    CargarTeatro();
+                }else{
+                    swal(
+                            'El teatro ya se encuentra asociado a la venta empresarial',
+                            '',
+                            'error'
+                            )  
+                }
+                RefrescarTabla();
+
+            },
+            error: function (request) {
+                hasChangue = true;
+            }
+        });
+    }
+
+    
+    
+    //GUARDAR TEATRO
+    function GuardarTodos() {
+        debugger;
+        ModalProcesandoShow();
+        $.ajax({
+            type: "POST",
+            url: "/Pelicula/GuardarTodos",
+            data: {
+                rowidPelicula: $(".RowID_Pelicula").val(),
+                rowidTeatro: $("#rowidTeatro").val(),
+
+            },
+            success: function (data) {
+                debugger;
+                if(data=="ok"){
+                    Alerts("Teatros agregados con exito!", "success")
+                   
+                    CargarTeatro();
+
+                }else{
+                    swal(
+                            'El teatro ya se encuentra asociado a la venta empresarial',
+                            '',
+                            'error'
+                            )  
+                }
+                RefrescarTabla();
+
+            },
+            error: function (request) {
+                hasChangue = true;
+            }
+        });
+    }
+
+
+    function CargarTeatro() {
+        debugger;
+        $("#rowidTeatro").empty();
+        $.ajax({
+            type: "POST",
+            url: "/Pelicula/CargarTeatro",
+            data: {
+                rowidPelicula: $(".RowID_Pelicula").val(),
+            },
+            success: function (data) {
+                $("#rowidTeatro").empty()
+                $("#rowidTeatro").append("<option disabled selected value='' >Seleccione una Opción</option>").trigger("chosen:updated");
+                data.forEach(function (Teatro) {
+                    $("#rowidTeatro").append("<option value='" + Teatro.RowId + "' >" + Teatro.Nombre
+                        + " " + Teatro.Ciudad + " " +"</option>").trigger("chosen:updated");
+                    $("#rowidTeatro").trigger("chosen:updated");
+                });
+            },
+            error: function (data) {
+                swal("ERROR", data, "error");
+            }
+        });
+    }
+</script>
+<style>
+    .close {
+        color: red;
+        font-size: 20px;
+    }
+
+        .close:hover {
+            color: red;
+            font-size: 20px;
+        }
+</style>
+
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaPelicula", "Pelicula")'>Vista Película</a>
+    </p>
+</div>
+<div id="Dialog"></div>
+<div class="panel">   
+    <div class="panel-body">
+        <div id="demo-cls-wz">
+
+            <!--Nav-->
+            <ul class="wz-nav-off wz-icon-inline">
+                <li class="col-xs-3 bg-mint">
+                    <a data-toggle="tab" href="#demo-cls-tab1">
+                        <span class="icon-wrap icon-wrap-xs bg-trans-dark"><i class="demo-pli-information icon-lg"></i></span> Informacion General
+                    </a>
+                </li>
+                <li class="col-xs-3 bg-mint">
+                    <a data-toggle="tab" href="#demo-cls-tab2">
+                        <span class="icon-wrap icon-wrap-xs bg-trans-dark"><i class="demo-pli-male icon-lg"></i></span> Media
+                    </a>
+                </li>
+                <li class="col-xs-3 bg-mint">
+                    <a data-toggle="tab" href="#demo-cls-tab3">
+                        <span class="icon-wrap icon-wrap-xs bg-trans-dark"><i class="demo-pli-home icon-lg"></i></span> Porcentajes
+                    </a>
+                </li>
+                <li class="col-xs-3 bg-mint">
+                    <a data-toggle="tab" href="#demo-cls-tab4">
+                        <span class="icon-wrap icon-wrap-xs bg-trans-dark"><i class="glyphicon glyphicon-edit"></i></span> Asignar Teatros
+                    </a>
+                </li>
+                @*<li class="col-xs-3 bg-mint">
+                <a data-toggle="tab" href="#demo-cls-tab4">
+                <span class="icon-wrap icon-wrap-xs bg-trans-dark"><i class="demo-pli-medal-2 icon-lg"></i></span> Impuestos
+                </a>
+                </li>*@
+                @*<li class="col-xs-3 bg-mint">
+                <a>
+                <span class="icon-wrap icon-wrap-xs bg-trans-dark"><i class="demo-pli-medal-2 icon-lg"></i></span> Finalizar
+                </a>
+                </li>*@
+
+            </ul>
+
+            <!--Progress bar-->
+            <div class="progress progress-xs progress-striped active">
+                <div class="progress-bar progress-bar-dark"></div>
+            </div>
+
+
+            <!--Form-->
+
+            <form id="formulario_pelicula" enctype="multipart/form-data">
+                <input type="hidden" class="RowID_Pelicula" name="RowID_Pelicula" value="@Model.RowID" />
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <!--First tab-->
+                        <div id="demo-cls-tab1" class="tab-pane">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Distribuidor:</label>
+                                        <select name="distribuidor" id="select-distribuidor" class="form-control">
+                                            <option value="" disabled selected>Seleccione una opcion</option>
+                                            @foreach (CinemaPOS.Models.Tercero terceros in ViewBag.Distribuidor)
+                                            {
+                                                if (Model.RowID != 0 && terceros.RowID == Model.Tercero.RowID)
+                                                {
+                                                    <option value="@terceros.RowID" selected>@terceros.Nombre</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@terceros.RowID">@terceros.Nombre</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Clasificación:</label>
+                                        <select name="clasificacion" id="select-clasificacion" class="form-control">
+                                            <option value="" disabled selected>Seleccione una opcion</option>
+                                            @foreach (CinemaPOS.Models.Opcion clasificacion in ViewBag.Clasificacion)
+                                            {
+                                                if (Model.RowID != 0 && Model.Opcion.RowID == clasificacion.RowID)
+                                                {
+                                                    <option value="@clasificacion.RowID" selected>@clasificacion.Nombre</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@clasificacion.RowID">@clasificacion.Nombre</option>
+                                                }
+
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Género Película:</label>
+                                        <select name="genero_pelicula" multiple id="genero_pelicula" class="form-control">
+                                            @foreach (CinemaPOS.Models.Opcion genero_pelicula in ViewBag.GeneroPelicula)
+                                            {
+                                                var genero = Model.GeneroPelicula.Where(gp => gp.EncabezadoPeliculaID == Model.RowID && gp.TipoGeneroID == genero_pelicula.RowID).ToList();
+                                                if (genero.Count != 0)
+                                                {
+                                                    foreach (var item in genero)
+                                                    {
+                                                        if (genero_pelicula.RowID == item.TipoGeneroID)
+                                                        {
+                                                            <option value="@genero_pelicula.RowID" selected>@genero_pelicula.Nombre</option>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <option value="@genero_pelicula.RowID">@genero_pelicula.Nombre</option>
+                                                }
+
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Titulo Original:</label>
+                                        <input type="text" name="titulo_original" class="form-control Mayus" value="@Model.TituloOriginal">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Título Local:</label>
+                                        <input type="text" name="titulo_local" class="form-control Mayus" value="@Model.TituloLocal">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">País Origen:</label>
+                                        <select name="pais" id="select-pais" class="form-control">
+                                            <option value="" disabled selected>Seleccione una opcion</option>
+                                            @foreach (CinemaPOS.Models.Pais pais in ViewBag.Pais)
+                                            {
+                                                if (Model.RowID != 0 && pais.RowID == Model.PaisID)
+                                                {
+                                                    <option value="@pais.RowID" selected>@pais.Nombre</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@pais.RowID">@pais.Nombre</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Idioma Original:</label>
+                                        <select name="idioma" id="select-idioma" class="form-control">
+                                            <option value="" disabled selected>Seleccione una opcion</option>
+                                            @foreach (CinemaPOS.Models.Opcion idioma in ViewBag.Idioma)
+                                            {
+                                                if (Model.RowID != 0 && idioma.RowID == Model.Opcion1.RowID)
+                                                {
+                                                    <option value="@idioma.RowID" selected>@idioma.Nombre</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@idioma.RowID">@idioma.Nombre</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="control-label">Número Acta:</label>
+                                        <input type="text" name="numero_acta" class="form-control" value="@Model.NumeroActa">
+                                    </div>
+                                </div>
+                                <div class="col-sm-1">
+                                    <div class="form-group">
+                                        <label class="control-label">Duración:</label>
+                                        @if (Model.RowID != 0)
+                                        {
+                                            int? Hora = Model.Duracion / 60;
+                                            int? Minutos = (Model.Duracion - (Hora * 60));
+                                            string val = Hora + ":" + Minutos;
+                                            <input type="text" name="duracion" class="form-control" value="@Model.Duracion">
+                                        }
+                                        else
+                                        {
+                                            <input type="text" name="duracion" class="duracion form-control">
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="control-label">Fecha Estreno:</label>
+                                        <input type="text" name="fecha_estreno" class="fecha_estreno form-control" value="@Model.FechaEstreno.Value.ToString("dd/MM/yyyy")">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Directores:</label>
+                                        @if (Model.RowID != 0)
+                                        {
+                                            string elenco = "";
+                                            foreach (CinemaPOS.Models.Elenco elencopelicula in Model.Elenco.Where(ep => ep.EncabezadoPelicula.RowID == Model.RowID && ep.Opcion.Codigo == "DIRECTORES").ToList())
+                                            {
+                                                elenco = elenco + elencopelicula.Nombre + ",";
+                                            }
+                                            <input type="text" class="form-control" placeholder="Add a tag" name="directores" data-role="tagsinput" value="@elenco">
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" placeholder="Add a tag" name="directores" data-role="tagsinput">
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Reparto:</label>
+                                        @if (Model.RowID != 0)
+                                        {
+                                            string elenco = "";
+
+                                            foreach (CinemaPOS.Models.Elenco elencopelicula in Model.Elenco.Where(ep => ep.EncabezadoPelicula.RowID == Model.RowID && ep.Opcion.Codigo == "ACTOR"))
+                                            {
+                                                elenco = elenco + elencopelicula.Nombre + ",";
+                                            }
+                                            <input type="text" class="form-control" placeholder="Add a tag" name="actores" data-role="tagsinput" value="@elenco">
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" placeholder="Add a tag" name="actores" data-role="tagsinput">
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Web Oficial:</label>
+                                        <input type="text" name="web_oficial" class="form-control" value="@Model.WebOficial">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="control-label">Derecho a Corto:</label>
+                                        <div class="form-control">
+                                            <input id="demo-sw-checked" type="checkbox" name="derecho_corto" checked>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="form-group">
+                                        <label class="control-label">Sinopsis:</label>
+                                        <textarea name="sinopsis" class="form-control" cols="80" rows="3">@Model.Sinopsis</textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row ultimocontrol">
+
+                                @if (Model.RowID != 0)
+                                {
+                                    foreach (CinemaPOS.Models.DetallePelicula DetallesPeliculas in Model.DetallePelicula.Where(dp => dp.EncabezadoPeliculaID == Model.RowID))
+                                    {
+                                        <div class="row  controls">
+                                            <input type="hidden" value="@DetallesPeliculas.RowID" name="RowId_DetallePelicula" />
+
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">Formato:</label>
+                                                    <select name="formato[]" class="form-control listaformato">
+                                                        <option value="" disabled selected>Seleccione una opción</option>
+                                                        @foreach (CinemaPOS.Models.Opcion formato in ViewBag.Formato)
+                                                        {
+                                                            if (DetallesPeliculas.Opcion.RowID == formato.RowID)
+                                                            {
+                                                                <option value="@formato.RowID" selected>@formato.Nombre</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@formato.RowID">@formato.Nombre</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">Versión:</label>
+                                                    <select name="version[]" class="form-control listaversion">
+                                                        <option value="" disabled>Seleccione una opción</option>
+                                                        @foreach (CinemaPOS.Models.Opcion version in ViewBag.Version)
+                                                        {
+                                                            if (DetallesPeliculas.Opcion1.RowID == version.RowID)
+                                                            {
+                                                                <option value="@version.RowID" selected>@version.Nombre</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@version.RowID">@version.Nombre</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            @*<div class="col-sm-1" style="width: 27.5px;">
+                            <a href="#" class="close"><i class="ion-ios-close"></i></a>
+                        </div>
+                        <div class="col-sm-1" style="width: 27.5px;">
+                            <hr class="btn-danger" />
+                        </div>*@
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            <div class="row config-film control-film controls" style="display:none;">
+                                <div class="">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Formato:</label>
+                                            <select name="" class="form-control listaformato">
+                                                <option value="" selected>Seleccione una opción</option>
+                                                @foreach (CinemaPOS.Models.Opcion formato in ViewBag.Formato)
+                                                {
+                                                    <option value="@formato.RowID">@formato.Nombre</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Versión:</label>
+                                            <select name="" class="form-control listaversion">
+                                                <option value="" selected> Seleccione una opción:</option>
+                                                @foreach (CinemaPOS.Models.Opcion version in ViewBag.Version)
+                                                {
+                                                    <option value="@version.RowID">@version.Nombre</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-1" style="width: 27.5px;">
+                                        <a href="#" class="close"><i class="ion-ios-close"></i></a>
+                                    </div>
+
+                                </div>
+                            </div>
+                            @*<a href="javascript:;" class="btn-default  "><i class="icon-plus">Agregar Configuración</i></a>*@
+                            @*<a class="btn btn-success btn-rounded addmediopago"></a>*@
+                            <input class="btn btn-success btn-rounded addmediopago" type="submit" value="Agregar Configuración" onclick="return false">
+                        </div>
+                        <!--Second tab-->
+                        <div id="demo-cls-tab2" class="tab-pane fade">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Afiche</label>
+                                        <div class="fileupload fileupload-new" data-provides="fileupload">
+                                            <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
+                                                @if (Model.RowID != 0 && Model.MedioPelicula.Count() != 0)
+                                                {
+
+                                                <img src="/@Model.MedioPelicula.Where(mp => mp.EncabezadoPeliculaID == Model.RowID).OrderByDescending(mp=>mp.RowID).FirstOrDefault().Afiche" alt="">
+                                                }
+                                                else
+                                                {
+                                                <img src="fdsadsa/Repositorio_Imagenes/Imagenes_Generales/thumbnail-default.png" />
+                                                }
+                                            </div>
+                                            <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
+                                            </div>
+                                            <div>
+                                                <span class="btn btn-file">
+                                                    <span class="fileupload-new">Select image</span>
+                                                    <span class="fileupload-exists">Change</span>
+                                                    <input type="file" accept="image/jpeg,image/png,image/gif" class="default image_invoice_clone" name="afiche">
+                                                </span>
+                                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Thumbnail</label>
+                                        <div class="fileupload fileupload-new" data-provides="fileupload">
+                                            <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
+
+                                                @if (Model.RowID != 0 && Model.MedioPelicula.Count() != 0)
+                                                {
+
+                                                <img src="/@Model.MedioPelicula.Where(mp => mp.EncabezadoPeliculaID == Model.RowID).OrderByDescending(mp=>mp.RowID).FirstOrDefault().AficheMiniatura" alt="">
+                                                }
+                                                else
+                                                {
+                                                <img src="/Repositorio_Imagenes/Imagenes_Generales/thumbnail-default.png" />
+                                                }
+                                            </div>
+                                            <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
+                                            </div>
+                                            <div>
+                                                <span class="btn btn-file">
+                                                    <span class="fileupload-new">Select image</span>
+                                                    <span class="fileupload-exists">Change</span>
+                                                    <input type="file" accept="image/jpeg,image/png,image/gif" class="default image_invoice_clone" name="thumbnail">
+                                                </span>
+                                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Teaser</label>
+                                        @if (Model.RowID != 0 && Model.MedioPelicula.Count() != 0)
+                                        {
+                                        <input type="text" name="teaser" class="form-control" value="@Model.MedioPelicula.Where(mp => mp.EncabezadoPeliculaID == Model.RowID).OrderByDescending(mp=>mp.RowID).FirstOrDefault().Teaser">
+                                        }
+                                        else
+                                        {
+                                        <input type="text" name="teaser" class="form-control">
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Trailer</label>
+                                        @if (Model.RowID != 0 && Model.MedioPelicula.Count() != 0)
+                                        {
+                                        <input type="text" name="trailer" class="form-control" value="@Model.MedioPelicula.Where(mp => mp.EncabezadoPeliculaID == Model.RowID).OrderByDescending(mp=>mp.RowID).FirstOrDefault().Trailer">
+                                        }
+                                        else
+                                        {
+                                        <input type="text" name="trailer" class="form-control">
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Third tab-->
+                        <div id="demo-cls-tab3" class="tab-pane">
+                            @if (Model.RowID != 0 && Model.PorcentajeParticipacion.Count != 0)
+                            {
+                            foreach (CinemaPOS.Models.PorcentajeParticipacion porcentajespeliculas in Model.PorcentajeParticipacion)
+                            {
+                            <div class="controls">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <a href="#" class="close"><i class="ion-ios-close"></i></a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Porcentaje</label>
+                                            <input type="text" value="@porcentajespeliculas.Porcentaje" name="porcentaje[]" class="porcentaje form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Fecha vigencia</label>
+                                            <div class="input-daterange input-group">
+                                                <input type="text" value="@porcentajespeliculas.FechaInicial.Value.ToString("dd/MM/yyyy")" name="fecha_inicial_porcentaje[]" class="fecha_inicial_porcentaje form-control" />
+                                                <span class="input-group-addon">to</span>
+                                                <input type="text" value="@porcentajespeliculas.FechaFinal.Value.ToString("dd/MM/yyyy")" name="fecha_final_porcentaje[]" class="fecha_final_porcentaje form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row ultimo-control ">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Nombre </label>
+                                            <input type="text" value="@porcentajespeliculas.Nombre" name="nombre_porcentaje[]" class="nombre_porcentaje form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            }
+
+                            }
+                            <div class="contenido">
+                                @*@if (Model.RowID == 0 && Model.PorcentajeParticipacion.Count == 0)
+                                {
+                                <div class="controls">
+                                <div class="row">
+                                <div class="col-sm-12">
+                                <a href="#" class="close"><i class="ion-ios-close"></i></a>
+                                </div>
+                                </div>
+                                <div class="row">
+                                <div class="col-sm-6">
+                                <div class="form-group">
+                                <label class="control-label">Porcentaje</label>
+                                <input type="number" min="1" max="100" name="porcentaje[]" class="porcentaje form-control">
+                                </div>
+                                </div>
+                                <div class="col-sm-6">
+                                <div class="form-group">
+                                <label class="control-label">Fecha vigencia</label>
+                                <div class="input-daterange input-group">
+                                <input type="text" name="fecha_inicial_porcentaje[]" class="fecha_inicial_porcentaje form-control" />
+                                <span class="input-group-addon">to</span>
+                                <input type="text" name="fecha_final_porcentaje[]" class="fecha_final_porcentaje form-control" />
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                <div class="row ultimo-control ">
+                                <div class="col-sm-6">
+                                <div class="form-group">
+                                <label class="control-label">Nombre</label>
+                                <input type="text" name="nombre_porcentaje[]" class="nombre_porcentaje form-control">
+                                </div>
+                                </div>
+                                </div>
+
+                                </div>
+
+                                }*@
+                                <div class="control-clone controls" style="display:none">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a href="#" class="close"><i class="ion-ios-close"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Porcentaje</label>
+                                                <input type="text" class="porcentaje form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Fecha vigencia</label>
+                                                <div class="input-daterange input-group">
+                                                    <input type="text" class="fecha_inicial_porcentaje form-control" />
+                                                    <span class="input-group-addon">to</span>
+                                                    <input type="text" class="fecha_final_porcentaje form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row ultimo-control ">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Nombre</label>
+                                                <input type="text" class="nombre_porcentaje form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <a href="javascript:;" class="btn btn-success btn-hover-warning add-panel-porcentaje"><i class="icon-plus">&nbsp;&nbsp;Agregar Porcentaje</i></a>
+
+
+                            <!--Fourth tab-->
+                            @*<div id="demo-cls-tab4" class="tab-pane mar-btm">
+                            <div class="row">
+                            <div class="col-sm-6">
+                            <div class="form-group">
+                            <label class="control-label">Porcentaje</label>
+                            <input type="text" class="form-control">
+                            </div>
+                            </div>
+                            <div class="col-sm-6">
+                            <div class="form-group">
+                            <label class="control-label">Fecha vigencia</label>
+                            <div class="input-daterange input-group" id="datepicker">
+                            <input type="text" class="form-control" name="start" />
+                            <span class="input-group-addon">to</span>
+                            <input type="text" class="form-control" name="end" />
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-sm-6">
+                            <div class="form-group">
+                            <label class="control-label">Nombre </label>
+                            <input type="text" class="form-control">
+                            </div>
+                            </div>
+                            </div>
+                            </div>*@
+                        </div>
+
+                        <!--TAB ASIGNAR TEATROS-->
+                        <div id="demo-cls-tab4" class="tab-pane">
+                        
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <input type="hidden" name="rowidEmpresarial" value="@ViewBag.RowEmpresa" id="rowidEmpresarial" />
+                                    <label for="TEATRO">Teatros</label>
+                                    <select class="form-control" id="rowidTeatro" name="rowidTeatro">
+                                        @foreach (var item in (List<CinemaPOS.Models.Teatro>)ViewBag.TeatrosDisp)
+                                        {
+                                        <option value="@item.RowID">@item.Nombre - @item.Ciudad.Nombre</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <p>
+                                        <br />
+                                        <a onclick="javascript:GuardarTeatro()" class="btn btn-success">Asociar Teatro</a>
+                                        <a onclick="javascript:GuardarTodos()" class="btn btn-success">Asociar todos los teatros</a>
+
+                                        @*<a class="btn btn-success" href='javascript:ModalTeatroVentaEmpresarial(@Model.RowID)'><i class="glyphicon glyphicon-plus"></i> Asociar Teatro</a>
+                                        <a class="btn btn-success" href='javascript:RefrescarTabla(@Model.RowID)' id="pelicula"><i class="glyphicon glyphicon-refresh"></i> Refrescar</a>*@
+                                    </p>
+                                </div>
+                            </div>
+                            <table class="table table-hover table-responsive table-bordered table-condensed table-striped" id="TeatroPelicula">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Teatro</th>
+                                        <th>Ubicaci&oacute;n</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in (List<CinemaPOS.Models.TeatroPelicula>)ViewBag.Teatros)
+                                    {
+                                    <tr>
+                                        <td><input type="checkbox" name="check[]" value="@item.RowID" id="@item.RowID" checked onclick="javascript:eliminarTeatro(this)" /></td>
+                                        <td>@item.Teatro.Nombre</td>
+                                        <td>@item.Teatro.Ciudad.Nombre</td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <div class="box-inline">
+                            <button type="button" class="previous btn btn-mint">Anterior</button>
+                            <button type="button" class="next btn btn-mint">Siguiente</button>
+
+                        </div>
+                    </div>
+                    @*<button type="submit" class="btn btn btn-danger" onclick="javascript:valida_formulario()">Crear Pelicula</button>*@
+
+                    <div class="panel-footer text-right">
+                        @if (Model.RowID == 0)
+                        {
+                        <input class="btn btn-success" type="submit" value="Crear Película" onclick="javascript:valida_formulario()">
+                        }
+                        else
+                        {
+                        <input class="btn btn-success" type="submit" value="Actualizar Película" onclick="javascript:valida_formulario()">
+                        }
+
+                    </div>
+                </div>
+            </form>
+            <!--Footer button-->
+        </div>
+    </div>
+</div>
+<!--REFRESCAR TABLA-->
+<script>
+    function RefrescarTabla() {
+        ModalProcesandoShow();
+        $.ajax({
+            type: "POST",
+            url: "/Pelicula/RefrescarTabla",
+            data: {
+                rowID: @Model.RowID,
+            },
+            success: function (data) {
+                $("#TeatroPelicula tbody").empty();
+                data.forEach(function (tabla) {
+                    $("#TeatroPelicula tbody").append(
+                                "<tr>"+
+                                    "<td><input type='checkbox' name='check[]' value=" + tabla.rowid + " id=" + tabla.rowid + " checked onclick='eliminarTeatro(this)'/></td>" +
+                                    "<td>"+tabla.teatro+"</td>"+
+                                    "<td>"+tabla.ubicacion+"</td>"+
+                                "</tr>"
+                        );
+                })
+                ModalProcesandoHiden();
+            },
+            error: function (request) {
+                hasChangue = true;
+            }
+        });
+    }
+</script>
+<!--ELIMINAR -->
+<script>
+    function eliminarTeatro(teatro) {
+        if ($(teatro).is(':checked')) {
+            } else {
+                swal({
+                    title: '¿Esta seguro?',
+                    text: "¿Desea remover este teatro de la pelicula?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si',
+                    cancelButtonText: 'No',
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger',
+                    buttonsStyling: false
+                },
+                function (isConfirm) {
+                    debugger
+                    if (isConfirm) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/Pelicula/EliminarTeatroPelicula",
+                            data: {
+                                rowID: $(teatro).val()
+                            },
+                            success: function (data) {
+                                debugger
+                                if (data == "ok") {
+                                    swal(
+                                        'Teatro Eliminado!',
+                                        '',
+                                        'success'
+                                        );
+                                    CargarTeatro();
+                                    RefrescarTabla();
+                                    $(teatro).css("display", "none");
+                                    $(teatro).parents("tr").find("td").each(function () {
+                                        $(this).css("background", "#F44336");
+                                        $(this).css("color", "#fff");
+                                    });
+                                } else {
+                                    'Error al eliminar el teatro',
+                                    '',
+                                    'error'
+                                }
+
+                            },
+                            error: function (request) {
+                                hasChangue = true;
+                            }
+                        });
+                    } else {
+                    }
+                });
+            }
+
+    }
+    function ModalTeatroPelicula(rowid) {
+        ModalProcesandoShow();
+        var urlWithCont = '../Pelicula/ModalTeatroPelicula?rowid=' + rowid;
+        $("#Dialog")
+        .load(urlWithCont.trim())
+        .dialog('open');
+    }
+</script>

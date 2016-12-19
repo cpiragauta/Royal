@@ -1,0 +1,310 @@
+﻿@model CinemaPOS.Models.Funcion
+@{
+    Layout = null;
+}
+
+<!--Demo script [ DEMONSTRATION ]-->
+<script src="~/Content/js/demo/nifty-demo.min.js"></script>
+<!--Bootbox Modals [ OPTIONAL ]-->
+<script src="~/Content/plugins/bootbox/bootbox.min.js"></script>
+<!--Modals [ SAMPLE ]-->
+<script src="~/Content/js/demo/ui-modals.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#myModal1").modal(); //Para Mostrar el modal
+
+
+        $('#demo-dp-range .input-daterange').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false,
+            minDate: 0, // 0 days offset = today
+        });
+
+    });
+
+    function EditarFuncion(rowIdFuncion) {
+        debugger
+        $.ajax({
+            type: "POST",
+            url: "/Programacion/EditarFuncion",
+            data: {
+                rowIdFuncion: rowIdFuncion,
+                formulario: $("#formulario_Funcion").serialize(),
+            },
+            success: function (data) {
+                $('#myModal1').modal('toggle');
+                Alerts(data.respuesta, data.tipoRespuesta) ;
+            },
+            error: function (data) {
+                $('#myModal1').modal('toggle');
+                Alerts(data.respuesta, data.tipoRespuesta) ;
+            }
+        });
+    }
+
+    function EliminarFuncion(RowID_Funcion) {
+        $.ajax({
+            type: "POST",
+            url: "/Programacion/EliminarFuncion",
+            data: {
+                RowID_Funcion: RowID_Funcion,
+            },
+            success: function (data) {
+                $('#myModal1').modal('toggle');
+                Alerts("Eliminado Correctamente", "success") ;
+            },
+            error: function (data) {
+                $('#myModal1').modal('toggle');
+                Alerts("Error", "danger") ;
+            }
+        });
+    }
+
+
+    function AsignarListaPrecioFuncion() {
+        debugger
+        var asd = $("#ListaPreciosDisponibles option:selected").val();
+        $.ajax({
+            type: "POST",
+            url: "/Programacion/AsignarListaPrecioFuncion",
+            data: {
+                RowID_ListaPrecios: $("#ListaPreciosDisponibles option:selected").val(),
+                RowID_Funcion: $("#RowID_Funcion").val(),
+            },
+            success: function (data) {
+                Alerts(data.respuesta, data.tipoRespuesta);
+            },
+            error: function (data) {
+                Alerts(data.respuesta, data.tipoRespuesta);                
+            }
+        });
+    }
+
+    function CargarPeliculas(IdSala) {
+
+        $("#DetallePelicula").empty();
+        $.ajax({
+            type: "POST",
+            url: "/Programacion/CargarPeliculas",
+            data: {
+                IdSala: IdSala,
+            },
+            success: function (data) {
+                $("#DetallePelicula").empty()
+                $("#DetallePelicula").append("<option disabled selected value='' >Seleccione una Opción</option>").trigger("chosen:updated");
+                data.forEach(function (detallePelicula) {
+                    $("#DetallePelicula").append("<option value='" + detallePelicula.RowId + "' >" + detallePelicula.Nombre
+                        + " " + detallePelicula.Formato + " " + detallePelicula.Version + " " + "</option>").trigger("chosen:updated");
+                    $("#DetallePelicula").trigger("chosen:updated");
+                });
+            },
+            error: function (data) {
+                Alerts(data, "danger") ;
+            }
+        });
+    }
+
+
+</script>
+
+
+<div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="false" style="overflow: hidden;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <i class="pci-cross pci-circle"></i>
+                </button>
+                @{System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");}
+
+                <h3 class="modal-title title">
+                    Editar función
+                    @if (Model.Fecha != null)
+                    {
+                        @ci.DateTimeFormat.GetDayName(@Model.Fecha.Value.DayOfWeek).ToString().ToUpper();
+                    }
+                    @Model.Fecha.Value.ToString("dd/MM/yyyy")
+                    @Model.HoraInicial.Value - @Model.HoraFinal.Value
+                </h3>
+
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <form id="formulario_Funcion">
+                        <input type="hidden" id="RowID_Funcion" name="RowID_Funcion" value="@Model.RowID" />
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">Teatro:</label>
+                                <input class="bootbox-input bootbox-input-text form-control" type="text" value="@Model.Sala.Teatro.Nombre" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group" id="PanelFechaNacimiento">
+                                <div id="demo-dp-range">
+                                    <label class="control-label" id="lblFechaNacimiento">Fecha Función:</label>
+                                    <div class="input-daterange ">
+                                        @if (Model.Fecha != null)
+                                        {
+                                            <input type="text" class="form-control" name="FechaFuncion" id="FechaFuncion" value="@Model.Fecha.Value.ToString("dd/MM/yyyy")" required>
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" name="FechaFuncion" id="FechaNacimiento" value="@Model.Fecha" required>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">Sala:</label>
+                                <select name="Sala" id="Sala" class="form-control SalaChosen" onchange="CargarPeliculas(this.value)" required>
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    @if (ViewBag.listaSalas != null)
+                                    {
+                                        foreach (CinemaPOS.Models.Sala item in ViewBag.listaSalas)
+                                        {
+                                            if (Model.RowID != 0 && item.RowID == Model.SalaID)
+                                            {
+                                                <option value="@item.RowID" selected>
+                                                    @item.Nombre
+                                                    @foreach (CinemaPOS.Models.FormatoSala itemSala in item.FormatoSala)
+                                                    {
+                                                        @itemSala.Opcion.Codigo;@:
+                                                                                        }
+                                                </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.RowID">
+                                                    @item.Nombre
+                                                    @foreach (CinemaPOS.Models.FormatoSala itemSala in item.FormatoSala)
+                                                    {
+                                                        @itemSala.Opcion.Codigo;@:
+                                                }
+                                                </option>
+                                            }
+
+
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Película:</label>
+                                <select name="DetallePelicula" id="DetallePelicula" class="form-control PeliculaChosen" required>
+                                    <option value=" " disabled selected>Seleccione una opción</option>
+                                    @if (ViewBag.ListaPeliculas != null)
+                                    {
+                                        foreach (CinemaPOS.Models.TeatroPelicula pelicula in ViewBag.ListaPeliculas)
+                                        {
+                                            foreach (CinemaPOS.Models.DetallePelicula DetallePelicula in pelicula.EncabezadoPelicula.DetallePelicula)
+                                            {
+
+                                                if (Model.RowID != 0 && DetallePelicula.RowID == Model.DetallePeliculaID)
+                                                {
+                                                    <option value="@DetallePelicula.RowID" selected>@DetallePelicula.EncabezadoPelicula.TituloLocal @DetallePelicula.Opcion.Codigo @DetallePelicula.Opcion1.Codigo2</option>
+
+                                                }
+                                                else
+                                                {
+                                                    <option value="@DetallePelicula.RowID">@DetallePelicula.EncabezadoPelicula.TituloLocal @DetallePelicula.Opcion.Codigo @DetallePelicula.Opcion1.Codigo2</option>
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">Estado:</label>
+                                <select name="Estado" id="Estado" class="form-control chosen" required>
+                                    <option value="" disabled selected> Seleccione una opción:</option>
+                                    @foreach (CinemaPOS.Models.Estado item in ViewBag.ListaEstados)
+                                    {
+                                        if (Model.RowID != 0 && item.RowID == Model.EstadoID)
+                                        {
+                                            <option value="@item.RowID" selected>@item.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.RowID">@item.Nombre</option>
+                                        }
+                                    }
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">Lista de Precio - Tarifas Asignadas:</label>
+                                    <select name="ListaPreciosAsignadas" id="ListaPreciosAsignadas" class="form-control">
+                                        @if (ViewBag.ListasPreciosAsignados != null)
+                                        {
+                                            foreach (CinemaPOS.Models.ListaPrecioFuncion item in ViewBag.ListasPreciosAsignados)
+                                            {
+                                                <option value="@item.RowID">
+                                                    @item.ListaDetalle.ListaEncabezado.Nombre - @item.ListaDetalle.Nombre
+                                                    @if (item.ListaDetalle.Opcion1 != null)
+                                                    {
+                                                        @: -
+                                                        @item.ListaDetalle.Opcion1.Nombre
+                                                    }
+                                                    - @item.ListaDetalle.Precio.Value.ToString("N0")
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">Lista de Precio - Tarifas Disponibles:</label>
+                                    <select name="ListaPreciosDisponibles" id="ListaPreciosDisponibles" class="form-control">
+                                        <option value="" disabled selected> Seleccione una opción:</option>
+                                        @if (ViewBag.ListasPreciosDisponibles != null)
+                                        {
+                                            foreach (CinemaPOS.Models.ListaDetalle item in ViewBag.ListasPreciosDisponibles)
+                                            {
+                                                <option value="@item.RowID">
+                                                    @item.ListaEncabezado.Nombre - @item.Nombre
+                                                    @if (item.Opcion1 != null)
+                                                    {
+                                                        @: -
+                                                        @item.Opcion1.Nombre
+                                                    }
+                                                    - @item.Precio.Value.ToString("N0")
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                                <button data-bb-handler="confirm" type="button" class="btn btn-success" onclick="AsignarListaPrecioFuncion()">Asignar</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="confirm" type="button" class="btn btn-success" onclick="EditarFuncion(@Model.RowID)">Editar</button>
+                <button data-bb-handler="confirm" type="button" class="btn btn-danger-basic" onclick="EliminarFuncion(@Model.RowID)">Eliminar</button>
+                <button data-bb-handler="cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

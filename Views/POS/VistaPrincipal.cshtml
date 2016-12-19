@@ -1,0 +1,989 @@
+﻿@model CinemaPOS.ModelosPropios.Model.Funcion_Vista
+
+@{
+    ViewBag.Title = "VistaPrincipal";
+
+}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@ViewBag.Title - CinemaPOS</title>
+
+
+<!--STYLESHEET-->
+<!--=================================================-->
+<!--Open Sans Font [ OPTIONAL ]-->
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+<!--Bootstrap Stylesheet [ REQUIRED ]-->
+<link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
+
+<!--Nifty Stylesheet [ REQUIRED ]-->
+<link href="~/Content/css/nifty.min.css" rel="stylesheet">
+
+<!--Nifty Premium Icon [ DEMONSTRATION ]-->
+<link href="~/Content/css/demo/nifty-demo-icons.min.css" rel="stylesheet">
+
+<!--Demo [ DEMONSTRATION ]-->
+<link href="~/Content/css/demo/nifty-demo.min.css" rel="stylesheet">
+
+<!--Morris.js [ OPTIONAL ]-->
+@*<link href="~/Content/plugins/morris-js/morris.min.css" rel="stylesheet">*@
+
+<link href="~/Content/plugins/ionicons/css/ionicons.min.css" rel="stylesheet">
+<!--Magic Checkbox [ OPTIONAL ]-->
+<link href="~/Content/plugins/magic-check/css/magic-check.min.css" rel="stylesheet">
+
+<!--JAVASCRIPT-->
+<!--=================================================-->
+<!--Pace - Page Load Progress Par [OPTIONAL]-->
+<link href="~/Content/plugins/pace/pace.min.css" rel="stylesheet">
+<script src="~/Content/plugins/pace/pace.min.js"></script>
+
+<!--jQuery [ REQUIRED ]-->
+<script src="~/Content/js/jquery-2.2.4.min.js"></script>
+
+<!--BootstrapJS [ RECOMMENDED ]-->
+<script src="~/Content/js/bootstrap.min.js"></script>
+
+<!--NiftyJS [ RECOMMENDED ]-->
+<script src="~/Content/js/nifty.min.js"></script>
+
+<!--=================================================-->
+<!--Demo script [ DEMONSTRATION ]-->
+<script src="~/Content/js/demo/nifty-demo.min.js"></script>
+
+<!--Morris.js [ OPTIONAL ]-->
+@*<script src="~/Content/plugins/morris-js/morris.min.js"></script>
+    <script src="~/Content/plugins/morris-js/raphael-js/raphael.min.js"></script>*@
+
+<!--Sparkline [ OPTIONAL ]-->
+<script src="~/Content/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+<!--Specify page [ SAMPLE ]-->
+@*<script src="~/Content/js/demo/dashboard.js"></script>*@
+
+
+
+<link href="~/Content/plugins/chosen/chosen.min.css" rel="stylesheet">
+<script src="~/Content/plugins/chosen/chosen.jquery.min.js"></script>
+<script src="~/Content/plugins/blockUI/jquery.blockUI.js"></script>
+<!--jQuery [ REQUIRED ]-->
+<script src="~/Content/js/jquery-2.2.4.min.js"></script>
+<!--DataTables [ OPTIONAL ]-->
+<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+<script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<!--DataTables Sample [ SAMPLE ]-->
+<script src="~/Content/js/demo/tables-datatables.js"></script>
+<script>
+    $(document).ready(function () {
+        $("").hide();
+    })
+</script>
+<style>
+    /* Animación con keyframe llamada "latidos" */
+    @@keyframes latidos {
+        from {
+            transform: none;
+        }
+
+        60% {
+            transform: scale(1.1);
+        }
+
+        to {
+            transform: none;
+        }
+    }
+    /* En la clase corazon vamos a llamar latidos en la animación  */
+    .proximamente_iniciar {
+        display: inline-block;
+        font-size: 18px;
+        text-shadow: 0 0 10px #222,1px 1px 0 #450505;
+        color: red;
+        animation: latidos .8s infinite;
+        transform-origin: center;
+    }
+
+    .proximamente_cerrar {
+        display: inline-block;
+        font-size: 18px;
+        text-shadow: 0 0 10px #222,1px 1px 0 #450505;
+        color: blue;
+        animation: latidos .8s infinite;
+        transform-origin: center;
+    }
+    /*.horarios{
+        font-size:150%;
+    }
+    .caja-horario{
+        height:10%;
+    }*/
+    /*img{
+        margin-left:15%;
+        margin-right:auto;
+    }*/
+</style>
+<style>
+    .name-tab {
+        font-size: 150%;
+    }
+
+    .poster-peliculas {
+        width: 75px;
+        margin: 1px;
+    }
+
+    .nombre-peliculas {
+        margin-left: 20px;
+    }
+
+
+    .tarifas {
+        text-align: center;
+        height: 30%;
+        background-color: #ecf0f5;
+    }
+
+    body {
+        overflow-y: hidden;
+        overflow-x: hidden;
+    }
+
+    #caja-funciones::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #F5F5F5;
+    }
+
+    #caja-funciones::-webkit-scrollbar {
+        width: 10px;
+        background-color: #F5F5F5;
+    }
+
+    #caja-funciones::-webkit-scrollbar-thumb {
+        background-color: #808080;
+        background-image: -webkit-gradient(linear, 0 0, 0 75%, color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.5, transparent), to(transparent));
+    }
+
+    #panel-tarifas-funcion::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #F5F5F5;
+    }
+
+    #panel-tarifas-funcion::-webkit-scrollbar {
+        width: 10px;
+        background-color: #F5F5F5;
+    }
+
+    #panel-tarifas-funcion::-webkit-scrollbar-thumb {
+        background-color: #808080;
+        background-image: -webkit-gradient(linear, 0 0, 0 75%, color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.5, transparent), to(transparent));
+    }
+
+    #boletas-comprar::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #F5F5F5;
+    }
+
+    #boletas-comprar::-webkit-scrollbar {
+        width: 10px;
+        background-color: #F5F5F5;
+    }
+
+    #boletas-comprar::-webkit-scrollbar-thumb {
+        background-color: #808080;
+        background-image: -webkit-gradient(linear, 0 0, 0 75%, color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.5, transparent), to(transparent));
+    }
+
+    p {
+        color: #2b425b;
+    }
+
+    .funcion {
+        background-color: #dddddd;
+    }
+
+    .funciones {
+        margin-left: 0px;
+    }
+
+    input[type="search"] {
+        height: 25px;
+    }
+
+    .dataTables_length {
+        display: none;
+    }
+</style>
+<script>
+
+</script>
+<div class="panel">
+    <input type="hidden" id="cantidad_boletas" />
+    <div class="tab-content">
+        <div class="row">
+
+            <div class="col-sm-9" style="float:right;">
+                <ul class="nav nav-tabs tabs-right" style="margin-top:30px;border-bottom:none;">
+                    <li>
+                        <a class="" href="javascript:Fechas(0)" style="font-size:20px">Hoy&nbsp;<i class="ion-calendar"></i></a>
+                    </li>
+                    <li>
+                        <a class="" href="javascript:Fechas(2)" style="font-size:20px"><i class="ion-arrow-left-b "></i>&nbsp;<i class="ion-calendar"></i></a>
+                    </li>
+                    <li>
+                        <a id="fecha_filtro" style="font-size:20px"><i class="ion-calendar"></i>&nbsp;@DateTime.Now.ToLongDateString()</a>
+                    </li>
+                    <li>
+                        <a class="" href="javascript:Fechas(1)" style="font-size:20px"><i class="ion-calendar"></i>&nbsp;<i class="ion-arrow-right-b"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="panel-funciones" class="tab-pane fade active in">
+
+            <div class="row panel-visualizacion-funciones">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="row" id="caja-funciones" style="height:70%;overflow-y: scroll; overflow-x:hidden;">
+                                <input type="search" id="myInput" class="form-control col-sm-4" onkeyup="myFunction()" placeholder="Nombre de la pelicula..">
+                                <table id="tabla-funciones" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                    <thead style="display:none;">
+                                        <tr>
+                                            <th>Poster</th>
+                                            <th>Descripcion</th>
+                                            <th>Funciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <img class="poster-peliculas" src="~/Repositorio_Imagenes/Poster_Peliculas/LA VIDA SECRETA DE LAS MASCOTAS.jpg" />
+                                            </td>
+                                            <td>
+                                                <h5>LA VIDA SECRETA DE LAS MASCOTAS</h5>
+                                                <h5>2D Doblada</h5>
+                                                <h5>Infantil / Comedia</h5>
+                                                <h5>Capacidad de la sala</h5>
+                                            </td>
+                                            <td>
+                                                <div id="carrusel-funciones-rowiddetallepeliculas1" class="carousel slide" data-ride="carousel" data-interval="false">
+                                                    <div class="carousel-inner text-center " style="margin-left:30px;">
+
+                                                        <!--Item 1-->
+                                                        <div class='item active'>
+                                                            <div class='col-sm-3 funcion mar-hor'>
+                                                                <h5 class='text-main'>10:00 AM</h5>
+                                                                <p>
+                                                                    Sala 1 Ultra<br />
+                                                                    Disponible: 120
+                                                                </p>
+                                                            </div>
+                                                            <div class='col-sm-3 funcion mar-hor'>
+                                                                <h5 class='text-main'>10:00 AM</h5>
+                                                                <p>
+                                                                    Sala 1 Ultra<br />
+                                                                    Disponible: 120
+                                                                </p>
+                                                            </div>
+                                                            <div class='col-sm-3 funcion mar-hor'>
+                                                                <h5 class='text-main'>10:00 AM</h5>
+                                                                <p>
+                                                                    Sala 1 Ultra<br />
+                                                                    Disponible: 120
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="item">
+                                                            <div class="col-sm-3 funcion mar-hor">
+                                                                <h5 class="text-main">10:00 AM</h5>
+                                                                <p>
+                                                                    Sala 1 Ultra<br />
+                                                                    Disponible: 120
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-sm-3 funcion mar-hor">
+                                                                <h5 class="text-main">10:00 AM</h5>
+                                                                <p>
+                                                                    Sala 1 Ultra<br />
+                                                                    Disponible: 120
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-sm-3 funcion mar-hor">
+                                                                <h5 class="text-main">10:00 AM</h5>
+                                                                <p>
+                                                                    Sala 1 Ultra<br />
+                                                                    Disponible: 120
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--carousel-control-->
+                                                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                                    <a class='carousel-control left' data-slide='prev' href='#carrusel-funciones-rowiddetallepeliculas1'><i class='demo-pli-arrow-left icon-3x'></i></a>
+                                                    <a class='carousel-control right' data-slide='next' href='#carrusel-funciones-rowiddetallepeliculas1' style='margin-right:-20px;'><i class='demo-pli-arrow-right icon-3x'></i></a>
+                                                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img class="poster-peliculas" src="~/Repositorio_Imagenes/Poster_Peliculas/LA VIDA SECRETA DE LAS MASCOTAS.jpg" />
+                                            </td>
+                                            <td>
+                                                <h5>LA VIDA SECRETA DE LAS MASCOTAS</h5>
+                                                <h5>2D Doblada</h5>
+                                                <h5>Infantil / Comedia</h5>
+                                                <h5>Capacidad de la sala</h5>
+                                            </td>
+                                            <td>
+                                                <div id="carrusel-funciones-rowiddetallepeliculas1" class="carousel slide" data-ride="carousel" data-interval="false">
+                                                    <div class="carousel-inner text-center " style="margin-left:30px;">
+
+                                                        <!--Item 1-->
+                                                        <div class='item active'>
+                                                            <div class='col-sm-3 funcion mar-hor'>
+                                                                <h5 class='text-main'>10:00 AM</h5>
+                                                                <p>
+                                                                    Sala 1 Ultra<br />
+                                                                    Disponible: 120
+                                                                </p>
+                                                            </div>
+                                                            <div class='col-sm-3 funcion mar-hor'>
+                                                                <h5 class='text-main'>10:00 AM</h5>
+                                                                <p>
+                                                                    Sala 1 Ultra<br />
+                                                                    Disponible: 120
+                                                                </p>
+                                                            </div>
+                                                            <div class='col-sm-3 funcion mar-hor'>
+                                                                <h5 class='text-main'>10:00 AM</h5>
+                                                                <p>
+                                                                    Sala 1 Ultra<br />
+                                                                    Disponible: 120
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="item">
+                                                            <div class="col-sm-3 funcion mar-hor">
+                                                                <h5 class="text-main">10:00 AM</h5>
+                                                                <p>
+                                                                    Sala 1 Ultra<br />
+                                                                    Disponible: 120
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-sm-3 funcion mar-hor">
+                                                                <h5 class="text-main">10:00 AM</h5>
+                                                                <p>
+                                                                    Sala 1 Ultra<br />
+                                                                    Disponible: 120
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-sm-3 funcion mar-hor">
+                                                                <h5 class="text-main">10:00 AM</h5>
+                                                                <p>
+                                                                    Sala 1 Ultra<br />
+                                                                    Disponible: 120
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--carousel-control-->
+                                                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                                    <a class='carousel-control left' data-slide='prev' href='#carrusel-funciones-rowiddetallepeliculas1'><i class='demo-pli-arrow-left icon-3x'></i></a>
+                                                    <a class='carousel-control right' data-slide='next' href='#carrusel-funciones-rowiddetallepeliculas1' style='margin-right:-20px;'><i class='demo-pli-arrow-right icon-3x'></i></a>
+                                                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                                @*<div class="row funciones">
+                                        <div class="col-sm-1">
+                                            <img class="poster-peliculas" src="~/Repositorio_Imagenes/Poster_Peliculas/LA VIDA SECRETA DE LAS MASCOTAS.jpg" />
+                                        </div>
+                                        <div class="col-sm-3 nombre-peliculas">
+                                            <h5>LA VIDA SECRETA DE LAS MASCOTAS</h5>
+                                            <h5>2D Doblada</h5>
+                                            <h5>Infantil / Comedia</h5>
+                                            <h5>Capacidad de la sala</h5>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div id="carrusel-funciones-rowiddetallepeliculas1" class="carousel slide" data-ride="carousel" data-interval="false">
+                                                <div class="carousel-inner text-center "style="margin-left:30px;">
+
+                                                    <!--Item 1-->
+                                                    <div class='item active'>
+                                                        <div class='col-sm-3 funcion mar-hor'>
+                                                            <h5 class='text-main'>10:00 AM</h5>
+                                                            <p>
+                                                                Sala 1 Ultra<br />
+                                                                Disponible: 120
+                                                            </p>
+                                                        </div>
+                                                        <div class='col-sm-3 funcion mar-hor'>
+                                                            <h5 class='text-main'>10:00 AM</h5>
+                                                            <p>
+                                                                Sala 1 Ultra<br />
+                                                                Disponible: 120
+                                                            </p>
+                                                        </div>
+                                                        <div class='col-sm-3 funcion mar-hor'>
+                                                            <h5 class='text-main'>10:00 AM</h5>
+                                                            <p>
+                                                                Sala 1 Ultra<br />
+                                                                Disponible: 120
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="item">
+                                                        <div class="col-sm-3 funcion mar-hor">
+                                                            <h5 class="text-main">10:00 AM</h5>
+                                                            <p>
+                                                                Sala 1 Ultra<br />
+                                                                Disponible: 120
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-sm-3 funcion mar-hor">
+                                                            <h5 class="text-main">10:00 AM</h5>
+                                                            <p>
+                                                                Sala 1 Ultra<br />
+                                                                Disponible: 120
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-sm-3 funcion mar-hor">
+                                                            <h5 class="text-main">10:00 AM</h5>
+                                                            <p>
+                                                                Sala 1 Ultra<br />
+                                                                Disponible: 120
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--carousel-control-->
+                                                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                                <a class='carousel-control left' data-slide='prev' href='#carrusel-funciones-rowiddetallepeliculas1'><i class='demo-pli-arrow-left icon-3x'></i></a>
+                                                <a class='carousel-control right' data-slide='next' href='#carrusel-funciones-rowiddetallepeliculas1' style='margin-right:-20px;'><i class='demo-pli-arrow-right icon-3x'></i></a>
+                                                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row funciones">
+                                        <div class="col-sm-1">
+                                            <img class="poster-peliculas" src="~/Repositorio_Imagenes/Poster_Peliculas/LA VIDA SECRETA DE LAS MASCOTAS.jpg" />
+                                        </div>
+                                        <div class="col-sm-3 nombre-peliculas">
+                                            <h5>LA VIDA SECRETA DE LAS MASCOTAS</h5>
+                                            <h5>2D Doblada</h5>
+                                            <h5>Infantil / Comedia</h5>
+                                            <h5>Capacidad de la sala</h5>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div id="carrusel-funciones-rowiddetallepeliculas1" class="carousel slide" data-ride="carousel" data-interval="false">
+                                                <div class="carousel-inner text-center " style="margin-left:30px;">
+
+                                                    <!--Item 1-->
+                                                    <div class="item active">
+                                                        <div class="col-sm-3 funcion mar-hor">
+                                                            <h5 class="text-main">10:00 AM</h5>
+                                                            <p>
+                                                                Sala 1 Ultra<br />
+                                                                Disponible: 120
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-sm-3 funcion mar-hor">
+                                                            <h5 class="text-main">10:00 AM</h5>
+                                                            <p>
+                                                                Sala 1 Ultra<br />
+                                                                Disponible: 120
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-sm-3 funcion mar-hor">
+                                                            <h5 class="text-main">10:00 AM</h5>
+                                                            <p>
+                                                                Sala 1 Ultra<br />
+                                                                Disponible: 120
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--carousel-control-->
+                                                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                                <a class="carousel-control left" data-slide="prev" href="#carrusel-funciones-rowiddetallepeliculas1"><i class="demo-pli-arrow-left icon-3x"></i></a>
+                                                <a class="carousel-control right" data-slide="next" href="#carrusel-funciones-rowiddetallepeliculas1" style="margin-right:-20px;"><i class="demo-pli-arrow-right icon-3x"></i></a>
+                                                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+                                            </div>
+                                        </div>
+
+                                    </div>*@
+
+
+                                @*<div class="row">
+                                        <div class="col-sm-1">
+                                            <img class="poster-peliculas" src="~/Repositorio_Imagenes/Poster_Peliculas/LA VIDA SECRETA DE LAS MASCOTAS.jpg" />
+                                        </div>
+                                        <div class="col-sm-3 nombre-peliculas">
+                                            <h5>LA VIDA SECRETA DE LAS MASCOTAS</h5>
+                                            <h5>2D Doblada</h5>
+                                            <h5>Infantil / Comedia</h5>
+                                            <h5>Capacidad de la sala</h5>
+                                        </div>
+                                        <div class="col-sm-7">
+
+
+                                            <div id="carrusel-funcionesrowiddetallepeliculas4" class="carousel slide" data-ride="carousel" data-interval="false">
+                                                <div class="carousel-inner text-center">
+
+                                                    <!--Item 1-->
+                                                    <div class="item active">
+                                                        <div class="col-sm-6" style="background-color:#ecf0f5;">
+                                                            <h5 class="text-main">10:00 AM</h5>
+                                                            <p>
+                                                                Sala 1 Ultra<br />
+                                                                Disponible: 120
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-sm-6" style="background-color:#ecf0f5;">
+                                                            <h4 class="text-main">First slide label</h4>
+                                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <!--Item 2-->
+                                                    <div class="item">
+                                                        <h4 class="text-main">Second slide label</h4>
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                                    </div>
+
+                                                    <!--Item 3-->
+                                                    <div class="item">
+                                                        <h4 class="text-main">Third slide label</h4>
+                                                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                                                    </div>
+                                                </div>
+
+                                                <!--carousel-control-->
+                                                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                                <a class="carousel-control left" data-slide="prev" href="#carrusel-funcionesrowiddetallepeliculas4"><i class="demo-pli-arrow-left icon-2x"></i></a>
+                                                <a class="carousel-control right" data-slide="next" href="#carrusel-funcionesrowiddetallepeliculas4"><i class="demo-pli-arrow-right icon-2x"></i></a>
+                                                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-sm-1">
+                                            <img class="poster-peliculas" src="~/Repositorio_Imagenes/Poster_Peliculas/LA VIDA SECRETA DE LAS MASCOTAS.jpg" />
+                                        </div>
+                                        <div class="col-sm-3 nombre-peliculas">
+                                            <h5>LA VIDA SECRETA DE LAS MASCOTAS</h5>
+                                            <h5>2D Doblada</h5>
+                                            <h5>Infantil / Comedia</h5>
+                                            <h5>Capacidad de la sala</h5>
+                                        </div>
+                                        <div class="col-sm-7">
+
+
+                                            <div id="carrusel-funciones" class="carousel slide" data-ride="carousel" data-interval="false">
+                                                <div class="carousel-inner text-center">
+
+                                                    <!--Item 1-->
+                                                    <div class="item active">
+                                                        <div class="col-sm-6" style="background-color:#ecf0f5;">
+                                                            <h5 class="text-main">10:00 AM</h5>
+                                                            <p>
+                                                                Sala 1 Ultra<br />
+                                                                Disponible: 120
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-sm-6" style="background-color:#ecf0f5;">
+                                                            <h4 class="text-main">First slide label</h4>
+                                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <!--Item 2-->
+                                                    <div class="item">
+                                                        <h4 class="text-main">Second slide label</h4>
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                                    </div>
+
+                                                    <!--Item 3-->
+                                                    <div class="item">
+                                                        <h4 class="text-main">Third slide label</h4>
+                                                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                                                    </div>
+                                                </div>
+
+                                                <!--carousel-control-->
+                                                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                                <a class="carousel-control left" data-slide="prev" href="#carrusel-funciones"><i class="demo-pli-arrow-left icon-2x"></i></a>
+                                                <a class="carousel-control right" data-slide="next" href="#carrusel-funciones"><i class="demo-pli-arrow-right icon-2x"></i></a>
+                                                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-1">
+                                            <img class="poster-peliculas" src="~/Repositorio_Imagenes/Poster_Peliculas/LA VIDA SECRETA DE LAS MASCOTAS.jpg" />
+                                        </div>
+                                        <div class="col-sm-3 nombre-peliculas">
+                                            <h5>LA VIDA SECRETA DE LAS MASCOTAS</h5>
+                                            <h5>2D Doblada</h5>
+                                            <h5>Infantil / Comedia</h5>
+                                            <h5>Capacidad de la sala</h5>
+                                        </div>
+                                        <div class="col-sm-7">
+
+
+                                            <div id="carrusel-funciones" class="carousel slide" data-ride="carousel" data-interval="false">
+                                                <div class="carousel-inner text-center">
+
+                                                    <!--Item 1-->
+                                                    <div class="item active">
+                                                        <div class="col-sm-6" style="background-color:#ecf0f5;">
+                                                            <h5 class="text-main">10:00 AM</h5>
+                                                            <p>
+                                                                Sala 1 Ultra<br />
+                                                                Disponible: 120
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-sm-6" style="background-color:#ecf0f5;">
+                                                            <h4 class="text-main">First slide label</h4>
+                                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <!--Item 2-->
+                                                    <div class="item">
+                                                        <h4 class="text-main">Second slide label</h4>
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                                    </div>
+
+                                                    <!--Item 3-->
+                                                    <div class="item">
+                                                        <h4 class="text-main">Third slide label</h4>
+                                                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                                                    </div>
+                                                </div>
+
+                                                <!--carousel-control-->
+                                                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                                <a class="carousel-control left" data-slide="prev" href="#carrusel-funciones"><i class="demo-pli-arrow-left icon-2x"></i></a>
+                                                <a class="carousel-control right" data-slide="next" href="#carrusel-funciones"><i class="demo-pli-arrow-right icon-2x"></i></a>
+                                                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+                                            </div>
+                                        </div>
+                                    </div>*@
+                            </div>
+
+                            <div class="row " style="border:solid 1px rgba(174, 174, 174, 0.43);">
+                                <div class="col-sm-4">
+                                    <img src="~/Repositorio_Imagenes/Imagenes_Generales/logo1.png" style="height:75px;width:200px;" />
+                                </div>
+                                <a class="col-sm-1" style="float:right;">
+                                    <div class="row text-center">
+                                        <i style="color:red;font-size:40px" class="ion-close"></i>
+                                    </div>
+                                    <div class="row text-center pad-no" style="margin-top:-10%;">
+                                        <h5>Cancelar pedido</h5>
+
+                                    </div>
+                                </a>
+
+                                <a class="col-sm-1" style="float:right;">
+                                    <div class="row text-center">
+                                        <div id="ver_sala" style="color:black;font-size:50px" class="ion-easel" disabled></div>
+                                    </div>
+                                    <div class="row text-center pad-no" style="margin-top:-10%;">
+                                        <h5>Ver sala</h5>
+
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-4" style="margin-top:-100px;">
+                            <div class="row panel">
+                                <div class="panel-heading" style="background-color:#c3c3c3">
+                                    <h3 class="panel-title text-center">Tarifas para la función</h3>
+                                </div>
+                                <div id="panel-tarifas-funcion" style="height:30%;overflow-y:scroll;overflow-x:hidden;">
+                                    <div class="row">
+                                        <div class="col-sm-6 mar-hor" style="width:40%;">
+                                            <div class="panel panel-mint panel-colorful" style="height:50%">
+                                                <div class="pad-all bg-mint text-center">
+                                                    <span class="text-2x text-thin">$15.000</span>
+                                                    <p>Adulto 2D</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 mar-hor" style="width:40%;">
+                                            <div class="panel panel-mint panel-colorful" style="height:50%">
+                                                <div class="pad-all bg-mint text-center">
+                                                    <span class="text-2x text-thin">$12.000</span>
+                                                    <p>Militares 2D</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 mar-hor" style="width:40%;">
+                                            <div class="panel panel-mint panel-colorful" style="height:50%">
+                                                <div class="pad-all text-center">
+                                                    <span class="text-2x text-thin">$12.000</span>
+                                                    <p>Niños 2D</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 mar-hor" style="width:40%;">
+                                            <div class="panel panel-mint panel-colorful" style="height:50%">
+                                                <div class="pad-all text-center">
+                                                    <span class="text-2x text-thin valor_item">$12.000</span>
+                                                    <p>TCR 2D</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="row panel" style="height:60%;overflow-y:hidden;overflow-x:hidden;">
+                                <div class="panel-heading" style="background-color:#c3c3c3;">
+                                    <h3 class="panel-title text-center">Items a vender</h3>
+                                </div>
+                                <div id="boletas-comprar" style="height:80%;overflow-y:scroll;overflow-x:hidden;">
+
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6" id="precio-items"><h4>Total $</h4></div>
+                                    <div class="col-sm-6" id="cantidad-items"><h4>Total #:</h4></div>
+                                    <input type="hidden" id="cantidad_sillas" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <input type="hidden" id="RowID_Funcion" />
+</div>
+<div id="Dialog"></div>
+<script>
+
+    function Fechas(accion) {
+        debugger;
+        $.ajax({
+            url: "/POS/GetFechaFiltro",
+            data: { accion: accion, fechavista: $("#fecha_filtro").text() },
+            success: function (data) {
+                $("#fecha_filtro").text(data)
+                buscar_funciones();
+            },
+            error: function(data){
+                console.log(data)
+            }
+        })
+    }
+    function buscar_funciones(fecha) {
+        $.ajax({
+            url: "/POS/htmlvista",
+            data: { fecha_programacion: $("#fecha_filtro").text(), multicineID: 1 },
+            cache: false,
+            success: function (data) {
+                $("#tabla-funciones tbody").empty().append(data);
+
+            },
+            error:console.log("error")
+        })
+    }
+    function get_tarifas(rowid_funcion) {
+        $.ajax({
+            url: "/POS/Get_Tarifas_Funcion",
+            data: {
+                RowID_Funcion: rowid_funcion
+            },
+            success:function(data){
+                $("#panel-tarifas-funcion").empty().append(data);
+                $("#boletas-comprar").empty();
+                
+                $("#ver_sala").attr('onclick', 'javascrip:ver_mapa_sala(' + $("#SalaID").val() + ',0,' + rowid_funcion + ')');
+                ContarBoletasVender();
+            },
+            error: function () {
+                Console.log("Error");
+            }
+        })
+    }
+    function adicionar_item(rowid_funcion) {
+
+        $.ajax({
+            url: "/POS/AdicionarItemVenta",
+            data: {
+                RowID_ListaFuncion: rowid_funcion,
+                cantidad: $('.' + rowid_funcion + '').length + 1,
+
+            },
+            success: function (data) {
+                console.log($("#boletas-comprar").find())
+                $('.item-elimina' + rowid_funcion + '').remove();
+                 $(".cantidad-boleta").remove()
+                $("#boletas-comprar").append(data);
+                ContarBoletasVender();
+            },
+            error: function () {
+                Console.log("Error");
+            }
+        })
+    }
+    function ContarBoletasVender() {
+        var boletas = 0;
+        var precios = 0;
+        $(".item-ventas").each(function (index) {
+            boletas++;
+        })
+        //$(".suma-costo-pedido").each(function (index, text) {
+        //    console.log(text.text);
+        //})
+        $(".suma-costo-pedido").each(function (index, element) {
+            precios+=parseInt( $(this).text().replace('$',''));
+        });
+        $("#precio-items").text("$" + precios);
+        $("#precio-items").empty().append("<h4>Total $:" + precios + "</h4>");
+        $("#cantidad_boletas").val(boletas);
+        $("#cantidad-items").empty().append("<h4>Total #:"+ boletas+"</h4>");
+        $("#cantidad_sillas").val(boletas);
+    }
+    function eliminar_item(clase) {
+        if (parseInt($(".cantidad-boleta-" + clase + "").val()-1) <= 0) {
+            console.log(".item-elimina" + clase + "");
+            $(".item-elimina" + clase + "").remove();
+        }
+        var boletas=1;
+        $("." + clase + "").each(function () {
+
+            if (boletas==1) {
+               $(this).remove();
+            }
+
+            boletas++;
+        })
+
+        $(".cantidad-boleta-" + clase + "").val(($(".cantidad-boleta-" + clase + "").val() - 1));
+        $("#total-costo" + clase + "").text("$"+parseFloat($(".precio-items-" + clase + "").val()) * parseFloat($(".cantidad-boleta-" + clase + "").val()));
+        $("#cantidad-total-" + clase + "").text($(".cantidad-boleta-" + clase + "").val());
+
+        ContarBoletasVender();
+    }
+    //function ver_mapa_sala(SalaID) {
+    //    if ($("#cantidad_boletas").val()!=0) {
+    //        $.ajax({
+    //            url: "/POS/Mapa_Sala_funcion",
+    //            data: {
+    //                RowID_Sala: $("#SalaID").val()
+    //            },
+    //            success: function (data) {
+    //                //$("#boletas-comprar").append(data);
+    //                ContarBoletasVender();
+    //            },
+    //            error: function () {
+    //                Console.log("Error");
+    //            }
+    //        })
+    //    }
+    //    else {
+    //        alert("No tiene boletas para la venta");
+    //    }
+
+    //}
+
+    function ver_mapa_sala(SalaID, cantidad, RowID_Funcion) {
+        debugger;
+        cantidad = $("#cantidad_sillas").val();
+        //ModalProcesandoShow();
+        var RowID_Tarifas = "";
+        $(".tarifas_id").each(function (index, element) {
+            RowID_Tarifas += $(this).val()+',';
+        })
+
+        
+
+        
+        var urlWithCont = '../POS/Mapa_Sala_funcion?RowID_Sala=' + SalaID + '&cantidad_sillas_venta=' + cantidad + '&RowIDFuncion=' + RowID_Funcion + '&RowIDTarifas=' + RowID_Tarifas + '';
+        console.log(urlWithCont);
+        $("#Dialog").load(urlWithCont.trim()).dialog('open');
+    }
+    $(document).ready(function () {
+        buscar_funciones();
+    })
+
+</script>
+<script>
+    function myFunction() {
+        var input, filter, table, tr, td, i, ocultos, mensaje;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("tabla-funciones");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                    ocultos++;
+                }
+            }
+            if (tr.length==ocultos) {
+                mensaje="si"
+            }
+
+        }
+        debugger;
+        if (mensaje == "si") {
+            alert("no hay elementos");
+        }
+    }
+    function cancelar_venta(clase, rowid) {
+        debugger
+        $(".item-ventas, ." + clase + "").remove();
+        $("." + clase + "").remove();
+        $("." + rowid + "").each(function () {
+            $(this).remove();
+        })
+
+        ContarBoletasVender();
+    }
+</script>

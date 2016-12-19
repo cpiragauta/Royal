@@ -1,0 +1,258 @@
+﻿@model CinemaPOS.Models.OportunidadVenta
+@{
+    ViewBag.Title = "Cotizaciones";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+<p>
+    <a class="btn btn-success" href='@Url.Action("ListadoCotizaciones", "CRM")'>Vista</a>
+</p>
+<div id="content"></div>
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Oportunidad de Venta</h3>
+    </div>
+    <form name="form_cotizacion" id="form_cotizacion" onsubmit="return false">
+        <input type="hidden" id="rowID" value="@Model.RowID" name="rowID" />
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="TITULO">T&iacute;tulo</label>
+                        <input type="text" name="Titulo" value="@Model.Titulo" id="Titulo" class="form-control" required/>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="PROSPECTO">*Prospecto:</label>
+                        <select name="ProspectoIDx" id="ProspectoIDx" required>
+                            <option value="" selected>Seleccione una Opci&oacute;n</option>
+                            @foreach (var item in (List<CinemaPOS.Models.Tercero>)ViewBag.prospectos)
+                            {
+                                if (Model.ProspectoID == item.RowID)
+                                {<option value="@item.RowID" selected>@item.Nombre - @item.Apellidos</option>}
+                                else
+                                {<option value="@item.RowID">@item.Nombre - @item.Apellidos</option>}
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="TEATRO">*Sucursal:</label>
+                        <select name="TeatroID" id="TeatroID" required>
+                            <option value="" selected>Seleccione una Opci&oacute;n</option>
+                            @foreach (var item in (List<CinemaPOS.Models.Teatro>)ViewBag.teatros)
+                            {
+                                if (Model.TeatroID == item.RowID)
+                                {<option value="@item.RowID" selected>@item.Nombre</option>}
+                                else
+                                {<option value="@item.RowID">@item.Nombre</option>}
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="CONTACTO">Nombre Contacto:</label>
+                        <input type="text" name="contactoID" value="" id="contactoID" class="form-control" readonly="readonly"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="ESTADOS">*Estado:</label>
+                        <select name="estadoID" id="estadoID" required>
+                            <option value="">Seleccione una Opci&oacute;n</option>
+                            @foreach (var item in (List<CinemaPOS.Models.Estado>)ViewBag.estado)
+                            {
+                                if (Model.EstadoID == item.RowID)
+                                {
+                            <option value="@item.RowID" selected>@item.Nombre</option>}
+                                else
+                                {
+                            <option value="@item.RowID">@item.Nombre</option>}
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="CELULAR">Celular Contacto:</label>
+                        <input type="text" name="celular" value="" id="celular" class="form-control" readonly="readonly"/>
+                        <input type="hidden" name="ContactoHiden" value="" id="ContactoHiden" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="VALOR">*Valor:</label>
+                        <input type="text" name="Valor" value="@Model.Valor" id="Valor" class="form-control" required style="width:100%"/>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="FECHAAPERTURA">*Fecha Apertura:</label>
+                        <input type="text" name="FechaApertura" value="@Model.FechaApertura" id="FechaApertura" class="form-control"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="LISTAPRECIOS">*Lista Precios:</label>
+                        <select name="ListaPrecioID" id="ListaPrecioID" class="form-control">
+                            <option value="">Seleccione un Opci&oacute;n</option>
+                            @foreach (var item in (List<CinemaPOS.Models.ListaEncabezado>)ViewBag.ListaPrecios)
+                            {
+                                if (Model.ListaPrecioID == item.RowID)
+                                {<option value="@item.RowID" selected>@item.Nombre</option>}
+                                else
+                                {<option value="@item.RowID">@item.Nombre</option>}
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="FECHAENTREGA">*Fecha Entrega:</label>
+                        <input type="text" name="FechaEntrega" value="@Model.FechaEntrega" id="FechaEntrega" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="DESCRIPCION">Descripci&oacute;n:</label>
+                        <textarea name="Descripcion" id="Descripcion" class="form-control" placeholder="---">@Model.Descripcion</textarea>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="FECHACIERRE">*Fecha Cirre:</label>
+                        <input type="text" name="FechaCierra" value="@Model.FechaCierra" id="FechaCierra" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <a onclick="javascript:GuardarCotizacion();" class="btn btn-success" style="cursor:pointer">Guardar Cotizaci&oacute;n</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        jQuery("#ProspectoIDx").chosen({ width: "100%;" });
+        jQuery("#TeatroID").chosen({ width: "100%;" });
+        jQuery("#estadoID").chosen({ width: "100%;" });
+        jQuery("#ListaPrecioID").chosen({ width: "98%;" });
+        jQuery.validator.messages.required = 'Este campo es obligatorio.';
+        jQuery.validator.messages.mail = 'Ingrese un correo valido.';
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+    });
+    $(document).ready(function () {
+        ModalProcesandoShow();
+        if ($("#ProspectoIDx") != "") {
+            $.ajax({
+                type: "POST",
+                url: "/CRM/ContactoAsignado",
+                data: {
+                    ProspectoID: $("#ProspectoIDx").val(),
+                },
+                success: function (data) {
+                    debugger
+                    ModalProcesandoHiden();
+                    $("#contactoID").val(data.nombreContacto);
+                    $("#ContactoHiden").val(data.rowidContacto);
+                    $("#celular").val(data.celular);
+                    $("#contactoID").attr("disabled", true);
+                    $("#celular").attr("disabled", true);
+                },
+                error: function (data) {
+                    ModalProcesandoHiden();
+                }
+            });
+        }
+    });
+    $("#ProspectoIDx").change(function () {
+        ModalProcesandoShow();
+        $.ajax({
+            type: "POST",
+            url: "/CRM/ContactoAsignado",
+            data: {
+                ProspectoID: $("#ProspectoIDx").val(),
+            },
+            success: function (data) {
+                debugger
+                ModalProcesandoHiden();
+                $("#contactoID").val(data.nombreContacto);
+                $("#ContactoHiden").val(data.rowidContacto);
+                $("#celular").val(data.celular);
+                $("#contactoID").attr("disabled", true);
+                $("#celular").attr("disabled", true);
+            },
+            error: function (data) {
+                ModalProcesandoHiden();
+            }
+        });
+    });
+    $('#FechaEntrega').datepicker({
+        format: "dd/MM/yyyy",
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: false
+    });
+    $('#FechaApertura').datepicker({
+        format: "dd/MM/yyyy",
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: false
+    });
+    $('#FechaCierra').datepicker({
+        format: "dd/MM/yyyy",
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: false
+    });
+</script>
+
+<!--GUARDAR COTIZACIÓN-->
+<script>
+    function GuardarCotizacion() {
+        debugger
+        ModalProcesandoShow();
+        $.ajax({
+            type: "POST",
+            url: "/CRM/GuardarCotizacion",
+            data: {
+                rowID: $("#RowID").val(),
+                formulario: $("#form_cotizacion").serialize(),
+            },
+            success: function (data) {
+                
+                ModalProcesandoHiden();
+                if (data.respuesta == "ok") {
+                    swal("Datos almecenados correctamente.", "", "success");
+                    window.location = "/CRM/ListadoCotizaciones"
+                    return;
+                } else {
+                    ModalProcesandoHiden();
+                    swal("ERROR", data.respuesta, "error");
+                }
+
+            },
+            error: function (data) {
+                ModalProcesandoHiden();
+                swal("ERROR", data.respuesta, "error");
+            }
+        });
+    }
+</script>

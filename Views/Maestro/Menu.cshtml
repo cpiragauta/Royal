@@ -1,0 +1,176 @@
+﻿@model ARC.Models.Menu
+@{
+    ViewBag.Title = "Menu";
+    Layout = "~/Views/Inicio/Diseño.cshtml";}
+<script>
+    function valida_formulario() {
+        debugger;
+        hasChangue = false;
+        var validator = $("#formulario_Menu").validate();      
+            if (validator.form()) {
+                guardar_menu();
+            }
+    }    
+</script>
+<script>
+    $(document).ready(function () {
+        new Switchery(document.getElementById("demo-sw-checked"));
+        new Switchery(document.getElementById("demo-sw-checked1"));
+    });
+</script>
+
+<script>
+    function guardar_menu(encabezado) {
+        if (!$("#formulario_Menu").validate().form()) {
+            return false;
+        }
+        if ($(".RowID_Encabezado").val() == 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Perfil/Guardar_Menu",
+                data: {
+                    RowID_Encabezado: $(".RowID_Encabezado").val(),
+                    formulario: $("#formulario_Menu").serialize(),
+                },
+                success: function (data) {
+                    debugger;
+                    if (data) {
+                        swal("OK", "Creado...", "success");
+                        window.location = "/Perfil/VistaMenu"
+                    } else {
+                        swal("ERROR", "Error al guardar...", "ERROR");
+                    }
+                },
+                error: function () {
+                    swal("Error al guardar la informacion de Menu", "");
+                }
+            });
+        }
+
+
+        if ($(".RowID_Encabezado").val() != 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Perfil/Guardar_Menu",
+                data: {
+                    RowID_Encabezado: jQuery(".RowID_Encabezado").val(),
+                    RowID_Detalle: jQuery(".RowID_Detalle").val(),
+                    formulario: $("#formulario_Menu").serialize(),
+                },
+
+                success: function (data) {
+                    debugger;
+
+                    if (data) {
+                        swal("OK", "ACTUALIZADO...", "success");
+                        window.location = "/Perfil/VistaMenu"
+                    } else {
+                        sweetAlert("ERROR", "ERROR ACTUALIZANDO", "error");
+                    }
+                },
+                error: function (data) {
+                    sweetAlert("", data.respuesta, "error");
+                }
+
+            });
+        }
+    }
+</script>
+
+
+
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+
+
+
+<!--Masked Input [ OPTIONAL ]-->
+
+<script src="~/Content/plugins/masked-input/jquery.maskedinput.js"></script>
+
+<!--Form validation [ SAMPLE ]-->
+<script src="~/Content/js/demo/form-validation.js"></script>
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaMenu", "Perfil")'>Volver</a>
+    </p>
+</div>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Menu</h3>
+    </div>
+    <form id="formulario_Menu" data-toggle="validator" role="form">
+        <input type="hidden" class="RowID_Encabezado" name="RowID_Encabezado" value="@Model.RowID" />
+        <input type="hidden" class="RowID_Detalle" name="RowID_Detalle" />
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-offset-2 col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Nombre:</label>
+                        <input name="nombre" id="nombre" class="form-control" value="@Model.Nombre" maxlength="30">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Url:</label>
+                        <input name="url" id="url" class="form-control" value="@Model.URL" maxlength="200">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">*Tipo menu:</label>
+                        <select name="menu" class="chosen form-control" required>
+                            <option value="" disabled selected>Seleccione una opcion</option>
+                            @foreach (ARC.Models.Tipo tipo in ViewBag.Tipo)
+                            {
+                                <option value="@tipo.RowID">@tipo.Nombre</option>
+                            }
+                        </select>
+                    </div>
+                </div>                              
+            </div>
+            <div class="row">
+                <div class="col-sm-offset-2 col-sm-6 ">
+                    <div class="form-group">
+                        <label class="control-label">Descripción:</label>
+                        <textarea name="descripcion" class="form-control" cols="40" rows="3" style="resize:none" maxlength="50">@Model.Descripcion</textarea>
+                    </div>
+                </div><br/>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Sincronizado:</label> &nbsp; &nbsp;
+                        @if (@Model.Sincronizado.Equals(true))
+                        {
+                            <input id="demo-sw-checked" type="checkbox" name="sincronizado" checked>
+                        }
+                        else
+                        {
+                            <input id="demo-sw-checked" type="checkbox" name="sincronizado">
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Activo:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        @if (@Model.Activo.Equals(true))
+                        {
+                            <input id="demo-sw-checked1" type="checkbox" name="activo" checked>
+                        }
+                        else
+                        {
+                            <input id="demo-sw-checked1" type="checkbox" name="activo">
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                @if (Model.RowID == 0)
+            {
+                    <input class="btn btn-success" value="Guardar" onclick="javascript:valida_formulario()">
+                }
+                else
+                {
+                    <input class="btn btn-success" value="Actualizar" onclick="javascript:valida_formulario()">
+                }
+            </div>
+    </form>
+
+</div>

@@ -1,0 +1,71 @@
+﻿@model CinemaPOS.ModelosPropios.Model.UsuarioRolSistema
+
+@{
+    ViewBag.Title = "Lista Usuarios";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<head>
+    <!--jQuery [ REQUIRED ]-->
+    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
+    <!--DataTables [ OPTIONAL ]-->
+    <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+    <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <!--DataTables Sample [ SAMPLE ]-->
+    <script src="~/Content/js/demo/tables-datatables.js"></script>
+</head>
+
+<style>
+
+    .Verde {
+        background-color: rgb(139, 195, 74);
+    }
+    .Rojo {
+        background-color: rgba(236, 64, 64, 0.71);
+    }
+</style>
+<p>
+    <a class="btn btn-success" href='@Url.Action("UsuarioSistema", "UsuarioRol")'>Crear Usuario</a>
+    <a class="text-right btn btn-success" href='@Url.Action("VistaRolesSistema", "UsuarioRol")'>Roles - Permisos</a>
+</p>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Lista Usuarios</h3>
+    </div>
+    <div class="panel-body">
+        <table id="demo-dt-basic" class="table table-striped table-bordered table-funcion" cellspacing="0" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre Usuario</th>
+                    <th>Nombres</th>
+                    <th>Rol</th>
+                    <th>Activo</th>
+                    <th class="ion-ios-loop-strong center"></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (CinemaPOS.Models.UsuarioSistema Usuario in ViewBag.Usuarios)
+                {
+                    String Color = Usuario.Sincronizado == true ? "Verde" : "Rojo";
+                    <tr>
+                        <td>@Usuario.RowID</td>
+                        <td>@Usuario.NombreUsuario</td>
+                        <td>@Usuario.Nombre @Usuario.Apellido</td>
+                        <td>@Usuario.Rol.Nombre</td>
+                        <td>@Usuario.Activo</td>
+                        <td class="@Color"></td>
+                        <td>
+                            <a href="@Url.Action("UsuarioSistema", "UsuarioRol", new { @RowID_UsuarioSistema = Usuario.RowID })"><i class="glyphicon glyphicon-pencil"> </i></a>
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

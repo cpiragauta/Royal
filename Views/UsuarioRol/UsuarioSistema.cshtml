@@ -1,0 +1,166 @@
+﻿@model CinemaPOS.Models.UsuarioSistema
+
+@{
+    ViewBag.Title = "Crear Usuario Sistema";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<script>
+    function guardar_UsuarioSistema() {
+        var validator = $("#formulario_UsuarioSistema").validate();
+        if (validator.form()) {
+
+            $.ajax({
+                type: "POST",
+                url: "/UsuarioRol/GuardarUsuarioSistema",
+                data: {
+                    RowID_UsuarioSistema: $("#row_id").val(),
+                    formulario: $("#formulario_UsuarioSistema").serialize(),
+                },
+                success: function (data) {
+                    swal("OK", data, "success")
+                    window.location = "/UsuarioRol/VistaUsuarioSistema/"
+                },
+                error: function (data) {
+                    swal("ERROR", data, "error");
+                }
+            });
+        }
+    }
+
+    
+    $(document).ready(function () {
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+        jQuery.validator.messages.number = '*Esta campo debe ser num&eacute;rico.';
+    })
+
+</script>
+
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaUsuarioSistema", "UsuarioRol")'>Vista Usuario</a>
+    </p>
+    
+</div>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Usuario</h3>
+    </div>
+    
+
+        <form name="formulario_UsuarioSistema" id="formulario_UsuarioSistema" onsubmit="return false">
+            <input type="hidden" class="row_id" id="row_id" name="RowID_UsuarioSistema" value="@Model.RowID" />
+            <div class="panel-body">
+                <div class="row">
+                    
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label">*Nombre:</label>
+                            <input type="text" class="form-control" value="@Model.Nombre" name="nombre" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label">*Apellido:</label>
+                            <input type="text" class="form-control" value="@Model.Apellido" name="apellido" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label">*Rol:</label>
+                            <select name="rol" class="chosen form-control" required>
+                                @*<option disabled selected>Seleccione una opcion</option>*@
+                                @foreach (CinemaPOS.Models.Rol roles in ViewBag.Roles)
+                                {
+                                    if (Model.RowID != 0 && roles.RowID == Model.RolID)
+                                    {
+                                        <option value="@roles.RowID" selected>@roles.Nombre</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@roles.RowID">@roles.Nombre</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label">Teatro:</label>
+                            <select name="teatro" id="teatro" class="chosen form-control">
+                                <option value="" disabled selected>Seleccione una opción</option>
+                                @foreach (CinemaPOS.Models.Teatro item in ViewBag.Teatros)
+                                {
+                                    if (Model.TeatroID == item.RowID)
+                                    {
+                                        <option value="@item.RowID" selected>@item.Nombre - @item.Ciudad.Nombre</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.RowID">@item.Nombre - @item.Ciudad.Nombre</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">*Nombre Usuario:</label>
+                            <input type="text" class="form-control" value="@Model.NombreUsuario" name="nombreUsuario" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">*Contraseña:</label>
+                            <input type="password" class="form-control" value="@Model.Contrasena" name="contrasena" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Correo:</label>
+                            <input type="email" class="form-control" value="@Model.Correo" name="correo">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Telefono:</label>
+                            <input type="text" class="form-control" value="@Model.Telefono" name="telefono">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label">Activo:</label>
+                            <div class="form-control">
+                                @{string Activo = Model.Activo == true ? "checked" : ""; }
+                                <input id="demo-sw-checked" type="checkbox" name="activo"  @Activo>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="panel-footer text-right">
+                @*<a class="btn btn-success" href="javascript:guardar_tercero();">Crear Tercero</a>*@
+                @if (Model.RowID == 0)
+                {
+                    <input class="btn btn-success" type="submit" value="Crear Usuario" onclick="guardar_UsuarioSistema()">
+                }
+                else
+                {
+                    <input class="btn btn-success" type="submit" value="Actualizar Usuario" onclick="guardar_UsuarioSistema()">
+                }
+            </div>
+        </form>
+
+    
+</div>

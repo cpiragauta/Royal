@@ -1,0 +1,80 @@
+﻿@model CinemaPOS.Models.TeatroVentaEmpresarial
+@{
+    ViewBag.Title = "ModalTeatroVentaEmpresarial";
+    Layout = null;
+}
+
+<div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="false" style="overflow: auto; border-radius:2px;">
+    <div class="modal-dialog" style="width:600px ;margin-top:-25px">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 5px;">
+                <button type="button" class="close salir" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" style="padding:1px;color:#455A64"><b>@ViewBag.Empresarial</b></h4>
+            </div>
+            <div class="modal-body" style="overflow-x: hidden; overflow-y: hidden; height: 400px">
+                <form method="post" id="FormTeatro" name="FormTeatro">
+                    <input type="hidden" name="rowidEmpresarial" value="@ViewBag.RowEmpresa" id="rowidEmpresarial" />
+                    <label for="TEATRO">Teatros</label>
+                    <select class="form-control" id="rowidTeatro" name="rowidTeatro">
+                        @foreach (var item in (List<CinemaPOS.Models.Teatro>)ViewBag.TeatrosDisp)
+                        {
+                            <option value="@item.RowID">@item.Nombre - @item.Ciudad.Nombre</option>
+                        }
+                    </select>
+                </form>
+                <br />
+                <a onclick="javascript:GuardarTeatro()" class="btn btn-success">+ Añadir teatro</a>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+</div>
+
+    <!-- /.modal -->
+    <script>
+        ModalProcesandoHiden();
+        $("#myModal1").modal('show')
+
+        $(document).ready(function () {
+            $("#rowidTeatro").chosen({ width: '100%' });
+        });
+        
+        //GUARDAR TEATRO
+        function GuardarTeatro() {
+            debugger;
+            ModalProcesandoShow();
+            $.ajax({
+                type: "POST",
+                url: "/VentaEmpresarial/GuardarTeatro",
+                data: {
+                    rowidEmpresarial: $("#rowidEmpresarial").val(),
+                    rowidTeatro: $("#rowidTeatro").val(),
+
+                },
+                success: function (data) {
+                    if (data == "ok") {
+                        debugger;
+                        ModalProcesandoHiden();
+                        swal(
+                            'Teatro agregado!',
+                            '',
+                            'success'
+                            )
+                        $("#myModal1 .modal-body").load(target, function () {
+                            $("#myModal1").modal("show");
+                        });
+                    } else {
+                        ModalProcesandoHiden();
+                        'Error al agregar Teatro',
+                        '',
+                        'error'
+                    }
+                },
+                error: function (request) {
+                    ModalProcesandoHiden();
+                    hasChangue = true;
+                }
+            });
+        }
+    </script>

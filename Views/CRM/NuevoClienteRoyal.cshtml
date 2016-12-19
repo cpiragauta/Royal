@@ -1,0 +1,238 @@
+﻿@model CinemaPOS.Models.ClienteRoyal
+@{
+    ViewBag.Title = "NuevoClienteRoyal";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+<p>
+    <a class="btn btn-success" href='@Url.Action("ClienteRoyal", "CRM")'>Vista</a>
+</p>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Cliente Royal</h3>
+    </div>
+    <form name="form_clienteRoyal" id="form_clienteRoyal" onsubmit="return false">
+        <input type="hidden" id="RowID" value="@Model.RowID" name="RowID"/>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="NOMBRES" class="control-label">*Nombre:</label>
+                        <input type="text" name="Nombre" value="@Model.Nombre" class="form-control" required id="Nombre"/>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="APELLIDOS" class="control-label">*Apellidos:</label>
+                        <input type="text" name="Apellido" value="@Model.Apellido" class="form-control" id="Apellido" required/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group" name="TipoID" id="tipoID">
+                        <label class="control-label">*Tipo Identificaci&oacute;n:</label>
+                        <select name="tipo_identificacion" id="tipo_identificacion" class="form-control" required>
+                            <option value="" disabled selected>Seleccione una opcion</option>
+                            @*@foreach (var Tipo_Id in (List<CinemaPOS.Models.Opcion>)ViewBag.TipoIdentificacion)
+                            {
+
+                                <option value="@Tipo_Id.RowID">@Tipo_Id.Nombre</option>
+                            }*@
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group" name="TipoID" id="tipoID">
+                        <label for="DOCUMENTO">*Identificaci&oacute;n:</label>
+                        <input type="text" name="Documento" value="@Model.Documento" class="form-control" id="Documento" required/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="CORREO" class="control-label">*Correo:</label>
+                        <input type="email" name="CorreoElectronico" value="@Model.CorreoElectronico" class="form-control" id="CorreoElectronico" required/>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">*Genero:</label>
+                        <select name="GeneroID" id="GeneroID" class="form-control" required>
+                            <option value="" disabled selected>Seleccione una opci&oacute;n</option>
+                            @*@foreach (var opciones in (List<CinemaPOS.Models.Opcion>)ViewBag.SexoID)
+                            {
+                                if (Model.GeneroID == opciones.RowID)
+                                {
+                                    <option value="@opciones.RowID" selected>@opciones.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@opciones.RowID">@opciones.Nombre</option>
+                                }
+
+                            }*@
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="CIUDAD" class="control-label">*Ciudad:</label>
+                        <select name="CiudadResidenciaID" id="CiudadResidenciaID" class="form-control" required>
+                            <option value="" disabled selected>Seleccione una opci&oacute;n</option>
+                            @foreach (var item in (List<CinemaPOS.Models.Ciudad>)ViewBag.Ciudades)
+                            {
+                                if (Model.CiudadResidenciaID == item.RowID)
+                                {
+                                    <option value="@item.RowID" selected>@item.Departamento.Nombre - @item.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.RowID">@item.Departamento.Nombre - @item.Nombre</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="FECHANAC" class="control-label">*Fecha de Nacimiento:</label>
+                        <input type="text" name="FechaNacimiento" value="@Model.FechaNacimiento" class="form-control" id="FechaNacimiento" required/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="TELEFONO" class="control-label">*Tel&eacute;fono:</label>
+                        <input type="text" name="Telefono" value="@Model.Telefono" class="form-control" id="Telefono" required/>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">*Clasificaci&oacute;n:</label>
+                        <select name="ClasificacionID" id="ClasificacionID" class="form-control" required>
+                            <option value="" disabled selected>Seleccione una opci&oacute;n</option>
+                            @foreach (var opciones2 in (List<CinemaPOS.Models.Opcion>)ViewBag.Clasificacion)
+                            {
+                                if (Model.ClasificacionID == opciones2.RowID)
+                                {
+                                    <option value="@opciones2.RowID" selected>@opciones2.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@opciones2.RowID">@opciones2.Nombre</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="TARJETAID" class="control-label">*Tarjeta de Membres&iacute;a:</label>
+                        <input type="number" name="TarjetaMembresiaClienteRoyal" value="@ViewBag.Tarjeta" class="form-control"  required id="TarjetaMembresiaClienteRoyal"/>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <divv class="form-group">
+                        <label class="control-label">Preferencias:</label>
+                        <select name="preferenciasID" id="preferenciasID" class="form-control" required>
+                            <option value="" disabled selected>Seleccione una opci&oacute;n</option>
+                            @foreach (var opciones3 in (List<CinemaPOS.Models.Opcion>)ViewBag.preferencias)
+                            {
+                                if (Model.preferenciasID == opciones3.RowID)
+                                {
+                                    <option value="@opciones3.RowID" selected>@opciones3.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@opciones3.RowID">@opciones3.Nombre</option>
+                                }
+
+                            }
+                        </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="RECIBIRINFORMACION" class="control-label">*Recibir Informaci&oacute;n:</label>
+                        <input type="checkbox" name="RecibirInformacion" value="@Model.RecibirInformacion" id="checkInfo" required/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <a onclick="javascript:GuardarClienteRoyal()" class="btn btn-success" style="cursor:pointer">Registrar</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--ESTILO FORMULARIO -->
+<script>
+    $(document).ready(function () {
+        new Switchery(document.getElementById('checkInfo'));
+        jQuery("#preferenciasID").chosen({ width: "95%;" });
+        jQuery("#ClasificacionID").chosen({ width: "95%;" });
+        jQuery("#CiudadResidenciaID").chosen({ width: "95%;" });
+        jQuery("#GeneroID").chosen({ width: "95%;" });
+        jQuery("#tipo_identificacion").chosen({ width: "95%;" });
+
+        $('#FechaNacimiento').datepicker({
+            format: "dd/MM/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+        jQuery.validator.messages.required = 'Este campo es obligatorio.';
+        jQuery.validator.messages.mail = 'Ingrese un correo valido.';
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        debugger
+        if ('@Model.RecibirInformacion' == 'True') {
+            $('.switchery').trigger('click');
+        }
+    });
+
+</script>
+
+<!--GUARDAR CLIENTE-->
+<script>
+    function GuardarClienteRoyal() {
+        ModalProcesandoShow();
+        var validator = $("#form_clienteRoyal").validate();
+        if (validator.form()) {
+            $.ajax({
+                type: "POST",
+                url: "/CRM/GuardarClienteRoyal",
+                data: {
+                    rowID: $("#RowID").val(),
+                    formulario: $("#form_clienteRoyal").serialize(),
+                },
+                success: function (data) {
+                    ModalProcesandoHiden();
+                    
+                    if (data.respuesta == "ok") {
+                        swal("Datos almecenados correctamente.","", "success");
+                        window.location = "/CRM/ClienteRoyal"
+                        return;
+                    } else {
+                        swal("ERROR", data.respuesta, "error");
+                    }
+
+                },
+                error: function (data) {
+                    ModalProcesandoHiden();
+                    swal("ERROR", data.respuesta, "error");
+                }
+            });
+        }
+    }
+</script>

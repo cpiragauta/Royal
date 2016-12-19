@@ -1,0 +1,188 @@
+﻿@{
+    ViewBag.Title = "pruebabuscador";
+}
+<body>
+
+    @*<h2>My Customers</h2>
+
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+
+    <table id="myTable">
+        <tr class="header">
+            <th style="width:60%;">Name</th>
+            <th style="width:40%;">Country</th>
+        </tr>
+        <tr>
+            <td>Alfreds Futterkiste</td>
+            <td>Germany</td>
+        </tr>
+        <tr>
+            <td>Berglunds snabbkop</td>
+            <td>Sweden</td>
+        </tr>
+        <tr>
+            <td>Island Trading</td>
+            <td>UK</td>
+        </tr>
+        <tr>
+            <td>Koniglich Essen</td>
+            <td>Germany</td>
+        </tr>
+        <tr>
+            <td>Laughing Bacchus Winecellars</td>
+            <td>Canada</td>
+        </tr>
+        <tr>
+            <td>Magazzini Alimentari Riuniti</td>
+            <td>Italy</td>
+        </tr>
+        <tr>
+            <td>North/South</td>
+            <td>UK</td>
+        </tr>
+        <tr>
+            <td>Paris specialites</td>
+            <td>France</td>
+        </tr>
+    </table>
+
+    <script>
+function myFunction() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+    </script>*@
+    <div class="span5 col-md-5" id="sandbox-container"><input type="text" class="form-control"></div>
+    
+</body>
+<!--STYLESHEET-->
+<!--=================================================-->
+<!--Open Sans Font [ OPTIONAL ]-->
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+<!--Bootstrap Stylesheet [ REQUIRED ]-->
+<link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
+
+<!--Nifty Stylesheet [ REQUIRED ]-->
+<link href="~/Content/css/nifty.min.css" rel="stylesheet">
+
+<!--Nifty Premium Icon [ DEMONSTRATION ]-->
+<link href="~/Content/css/demo/nifty-demo-icons.min.css" rel="stylesheet">
+
+<!--Demo [ DEMONSTRATION ]-->
+<link href="~/Content/css/demo/nifty-demo.min.css" rel="stylesheet">
+
+<!--Morris.js [ OPTIONAL ]-->
+@*<link href="~/Content/plugins/morris-js/morris.min.css" rel="stylesheet">*@
+
+<link href="~/Content/plugins/ionicons/css/ionicons.min.css" rel="stylesheet">
+<!--Magic Checkbox [ OPTIONAL ]-->
+<link href="~/Content/plugins/magic-check/css/magic-check.min.css" rel="stylesheet">
+
+<!--JAVASCRIPT-->
+<!--=================================================-->
+<!--Pace - Page Load Progress Par [OPTIONAL]-->
+<link href="~/Content/plugins/pace/pace.min.css" rel="stylesheet">
+<script src="~/Content/plugins/pace/pace.min.js"></script>
+
+<!--jQuery [ REQUIRED ]-->
+<script src="~/Content/js/jquery-2.2.4.min.js"></script>
+
+<!--BootstrapJS [ RECOMMENDED ]-->
+<script src="~/Content/js/bootstrap.min.js"></script>
+
+<!--NiftyJS [ RECOMMENDED ]-->
+<script src="~/Content/js/nifty.min.js"></script>
+
+<!--=================================================-->
+<!--Demo script [ DEMONSTRATION ]-->
+<script src="~/Content/js/demo/nifty-demo.min.js"></script>
+
+<!--Morris.js [ OPTIONAL ]-->
+@*<script src="~/Content/plugins/morris-js/morris.min.js"></script>
+    <script src="~/Content/plugins/morris-js/raphael-js/raphael.min.js"></script>*@
+
+<!--Sparkline [ OPTIONAL ]-->
+<script src="~/Content/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+<!--Specify page [ SAMPLE ]-->
+@*<script src="~/Content/js/demo/dashboard.js"></script>*@
+
+
+
+<link href="~/Content/plugins/chosen/chosen.min.css" rel="stylesheet">
+<script src="~/Content/plugins/chosen/chosen.jquery.min.js"></script>
+<script src="~/Content/plugins/blockUI/jquery.blockUI.js"></script>
+<!--jQuery [ REQUIRED ]-->
+<script src="~/Content/js/jquery-2.2.4.min.js"></script>
+<!--DataTables [ OPTIONAL ]-->
+<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+<script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<!--DataTables Sample [ SAMPLE ]-->
+<script src="~/Content/js/demo/tables-datatables.js"></script>
+@*<script src="~/Content/plugins/date-picker/js/bootstrap-datepicker.js"></script>
+
+<script src="~/Content/plugins/date-picker/js/locales/bootstrap-datepicker.es.js"></script>
+<script src="~/Content/plugins/date-picker/dist/js/bootstrap-datepicker.js"></script>
+<link href="~/Content/plugins/date-picker/dist/css/bootstrap-datepicker.css" rel="stylesheet"/>
+<link href="~/Content/plugins/date-picker/dist/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+<link href="~/Content/plugins/date-picker/dist/css/bootstrap-datepicker3.css" rel="stylesheet" />*@
+<script src="~/Content/plugins/datetimepicker/js/bootstrap-datepicker.js"></script>
+<script src="~/Content/plugins/datetimepicker/locales/bootstrap-datepicker.es.min.js"></script>
+<link href="~/Content/plugins/datetimepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+<link href="~/Content/plugins/datetimepicker/css/bootstrap-datepicker.css.map" rel="stylesheet" />
+<link href="~/Content/plugins/datetimepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+<link href="~/Content/plugins/datetimepicker/css/bootstrap-datepicker3.css" rel="stylesheet" />
+<script>
+    $(document).ready(function () {
+        //$('input').datepicker({
+        //    format: "dd/mm/yyyy",
+        //    language: "es",
+        //    daysOfWeekDisabled: "0,2",
+        //    daysOfWeekHighlighted: "1",
+        //    beforeShowMonth: function (date) {
+        //        if (date.getMonth() == 8) {
+        //            return false;
+        //        }
+        //    },
+        //    datesDisabled: ['11/06/2016', '11/21/2016'],
+        //    toggleActive: true
+        //});
+        $('#sandbox-container .input-daterange').datepicker({
+            format: "dd/mm/yyyy",
+            language: "es",
+            daysOfWeekDisabled: "0,2",
+            daysOfWeekHighlighted: "1",
+            todayHighlight: true,
+            beforeShowMonth: function (date) {
+                if (date.getMonth() == 8) {
+                    return false;
+                }
+            },
+            datesDisabled: ['11/06/2016', '11/21/2016'],
+            toggleActive: true
+        });
+    })
+    
+</script>
+<div class="span5 col-md-5" id="sandbox-container">
+    <div class="input-daterange input-group" id="datepicker">
+        <input type="text" class="input-sm form-control" value="@DateTime.Now" name="start">
+        <span class="input-group-addon">to</span>
+        <input type="text" class="input-sm form-control" value="@DateTime.Now" name="end">
+    </div>
+</div>

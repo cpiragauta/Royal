@@ -1,0 +1,680 @@
+﻿@model CinemaPOS.Models.ListaEncabezado
+
+@{
+    ViewBag.Title = " Crear Lista Precios";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+
+<link href="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.css" rel="stylesheet">
+
+<!--Bootstrap Validator [ OPTIONAL ]-->
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.js"></script>
+<script src="~/Content/js/demo/form-wizard.js"></script>
+<script src="~/Content/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+<script src="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+<link href="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
+<!--DataTables [ OPTIONAL ]-->
+<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+<script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<!--DataTables Sample [ SAMPLE ]-->
+<script src="~/Content/js/demo/tables-datatables.js"></script>
+
+@*LIBRERIAS CALENDARIO*@
+<link href="~/Content/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet">
+<link href="~/Content/plugins/fullcalendar/nifty-skin/fullcalendar-nifty.min.css" rel="stylesheet">
+<script src="~/Content/plugins/fullcalendar/lib/moment.min.js"></script>
+<script src="~/Content/plugins/fullcalendar/lib/jquery-ui.custom.min.js"></script>
+<script src="~/Content/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="~/Content/js/demo/misc-fullcalendar.js"></script>
+
+<script>
+    function valida_formulario() {
+        debugger
+        hasChangue = false;
+        var validator = $("#formulario_lista_precio").validate();
+        if (validator.form()) {
+            guardar_lista_precios();
+        }
+    }
+</script>
+<script>
+    function guardar_lista_precios(encabezado) {
+        if (!$("#formulario_lista_precio").validate().form()) {
+            return false;
+        }
+            debugger
+            $.ajax({
+
+                type: "POST",
+                url: "/Maestro/Guardar_Lista_Precio",
+                data: {
+                    RowID_Encabezado:$(".RowID_Encabezado").val(),
+
+                    formulario: $("#formulario_lista_precio").serialize(),
+                },
+                success: function (data) {
+
+                    jQuery(".detalle_lista").slideDown();
+                    swal("OK", data.respuesta, "success");
+                    $("#RowID_Encabezado").val(data.RowID_Encabezado);
+                    debugger
+                    $("#detalles").focus();
+
+                    jQuery(".select-dia").chosen({ widht: "100%;" });
+
+                    jQuery(".RowID_Encabezado").attr({ name: "RowID_Encabezado", value: data });
+                },
+                error: function () {
+                    swal("Error al guardar la información de la lista de precios", "");
+                }
+            });
+
+        }
+
+    function guardar_precio(encabezado){
+            if ($(".RowID_Encabezado").val() != 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Maestro/Guardar_Precio",
+                    data: {
+
+                        RowID_Encabezado:jQuery(".RowID_Encabezado").val(),
+                        RowID_Detalle:jQuery(".RowID_Detalle").val(),
+                        formulario: $("#formulario_precio").serialize(),
+                    },
+                    success: function (data) {
+                        debugger
+                        llenar_tabla($(".RowID_Encabezado").val());
+                        if (data.tipoAlert==1) {
+                            swal("",data.respuesta,"success");
+                        }
+                        else{
+                            sweetAlert("",data.respuesta,"error");
+                        }
+                    },
+                    error: function (data) {
+                        sweetAlert("",data.respuesta,"error");
+                    }
+
+                });
+            }
+        }
+
+    function llenar_tabla(RowId_Encabezado)
+    {
+        $.ajax({
+            type: "POST",
+            url: "/Maestro/CrearTabla",
+            data: {
+                RowID_Encabezado:RowId_Encabezado,
+            },
+            success: function (data) {
+                console.log();
+                debugger
+                jQuery(".tabla_detalle_lista > tbody").empty().append(data);
+            },
+            error: function () {
+                swal("Error al retornar la informacion de la lista de precios", "");
+            }
+        })
+    }
+    $(document).ready(function () {
+        jQuery(".hora_final").timepicker({ minuteStep: 1, showInputs: true, autoclose:true, disableFocus: false,showMeridian: false });
+        jQuery(".hora_inicial").timepicker({ minuteStep: 1, showInputs: true, disableFocus: false, autoclose:true, showMeridian: false });
+        jQuery(".fecha_inicial ").datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+        jQuery(".fecha_final ").datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+        jQuery(".select-dia").chosen({ width: " 100%;" });
+        if (@Model.RowID!=0) {
+            $(".detalle_lista").slideDown();
+        }
+
+    });
+    function EliminarItem(RowID_Detalle) {
+        $.ajax({
+            type: "POST",
+            url: "/Maestro/EliminarItem",
+            data: {
+                RowID_Encabezado: jQuery(".RowID_Encabezado").val(),
+                RowID_Detalle
+                },
+            success: function (data) {
+                llenar_tabla(data);
+            },
+            error: function () {
+                swal("Error al eliminar el registro " +RowID_Tarifa+" ", "");
+            }
+
+        });
+    }
+</script>
+<script>
+    function Bucar_Tarifa(RowID_Tarifa,Accion){
+        $.ajax({
+
+            type:"POST",
+            url:"/Maestro/Buscar_Tarifa",
+            data:{ RowID_Tarifa:RowID_Tarifa},
+            success:function(data){
+                data.forEach(function( da){
+                    if (Accion==1) {
+                        $(".RowID_Detalle").val(da.RowID);
+                        $(".chosen-teatro").attr("selected","selected").val(da.TeatroID);
+                        $(".chosen-formato").val(da.TipoFormato).attr('disabled', 'disabled');
+                        $(".precio").val(da.Precio).attr('disabled', 'disabled');
+                        $(".nombre_detalle").val(da.Nombre).attr('disabled', 'disabled');
+                        $(".select-servicio").val(da.TipoServicioID).attr('disabled', 'disabled');
+                        $(".precio_distribuidor").val(da.PrecioDistribuidor).attr('disabled', 'disabled');
+                        $(".fecha_inicial").val(da.FechaInicial).attr('disabled', 'disabled');
+                        $(".fecha_final").val(da.FechaFinal ).attr('disabled', 'disabled');
+                        $(".hora_inicial").val(da.HoraInicial);
+                        $(".hora_final").val(da.HoraFinal);
+                        var list=da.DiasAsignados.split(",");
+                        for (var i = 0; i < list.length ; i++) {
+                            $(".select-dia option[value='"+list[i]+"']").attr('selected', 'selected');
+                        }
+                        $(".select-dia").attr('disabled', true).trigger("chosen:updated");
+                    }
+                    else{
+                        $(".RowID_Detalle").val("");
+                        $(".chosen-teatro").val(da.TeatroID).removeAttr('disabled');
+                        $(".chosen-formato").val(da.TipoFormato).removeAttr('disabled');
+                        $(".precio").val(da.Precio).removeAttr('disabled');
+                        $(".nombre_detalle").val(da.Nombre).removeAttr('disabled');
+                        $(".select-servicio").val(da.TipoServicioID).removeAttr('disabled');
+                        $(".precio_distribuidor").val(da.PrecioDistribuidor).removeAttr('disabled');
+                        $(".fecha_inicial").val(da.FechaInicial).removeAttr('disabled');
+                        $(".fecha_final").val(da.FechaFinal).removeAttr('disabled');
+                        $(".hora_inicial").val(da.HoraInicial).removeAttr('disabled');
+                        $(".hora_final").val(da.HoraFinal).removeAttr('disabled');
+                        var list=da.DiasAsignados.split(",");
+                        for (var i = 0; i < list.length ; i++) {
+                            $(".select-dia option[value='"+list[i]+"']").attr('selected', 'selected');
+                        }
+                        $(".select-dia").attr('disabled', false).trigger("chosen:updated");
+                    }
+                });
+                //$(".select-dia").val(da.DiasAsignados.split(",")[i]);
+
+                //$(".precio_distribuidor ").val(da[2p
+                //$(".select-servicio option[value='"+da[10]+"']").attr("selected","selected");
+
+            },
+            error:function(){
+                swal("Error al obtener la informacion de la tarifa " +RowID_Tarifa+" ", "");
+            }
+        });
+    }
+    function habilitar_controles(){
+        jQuery(".RowID_Detalle").val("")
+        $(".chosen-teatro").attr('disabled', false);
+        $(".chosen-formato").attr('disabled', false);
+        $(".precio").attr('disabled', false).val("");
+        $(".nombre_detalle").attr('disabled', false).val("");
+        $(".select-servicio").attr('disabled', false);
+        $(".precio_distribuidor").attr('disabled', false).val("");
+        $(".fecha_inicial").attr('disabled', false).val("");
+        $(".fecha_final").attr('disabled', false).val("");
+        $(".hora_inicial").attr('disabled', false).val("");
+        $(".hora_final").attr('disabled', false).val("");
+        $(".select-dia").val("").attr('disabled', false).trigger("chosen:updated");
+    }
+
+    $(document).ready(function () {
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+
+        $('.solo-numero').keyup(function () {
+            this.value = (this.value + '').replace(/[^0-9]/g, '');
+        });
+
+        $(".chosen-teatro").chosen({
+            disable_search_threshold: 10,
+            no_results_text: "Oops, nothing found!",
+            width: "95%"
+        });
+
+        if (@Model.RowID!=0) {
+            $(".detalle_lista").slideDown();
+        }else{
+            $(".detalle_lista").slideUp();
+        }
+        $('#demo-dp-range .input-daterange').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+
+    })
+
+
+</script>
+
+
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+
+
+
+<!--Masked Input [ OPTIONAL ]-->
+
+<script src="~/Content/plugins/masked-input/jquery.maskedinput.js"></script>
+
+<!--Form validation [ SAMPLE ]-->
+<script src="~/Content/js/demo/form-validation.js"></script>
+@*<scrpt>
+         var quantitybox=0;
+         $(document).ready(function () {
+
+            function clone_box_price(){
+
+                new_box_price = jQuery(".control-clone").clone().removeClass("control-clone").hide().appendTo(".panel-price").slideDown().addClass("control-film" + quantitybox);
+                new_box_price.find(".nombre_detalle").attr("name", "nombre_detalle[]");
+                new_box_price.find(".select-servicio").attr("name", "servicio[]");
+                new_box_price.find(".precio_distribuidor").attr("name", "precio_distribuidor[]");
+                new_box_price.find(".precio").attr("name", "precio[]");
+                new_box_price.find(".chosen-formato").attr("name", "formato[]");
+                new_box_price.find(".hora_final").attr("name","hora_final[]").timepicker({ minuteStep: 1, showInputs: true, disableFocus: false });
+                new_box_price.find(".hora_inicial").attr("name","hora_inicial[]").timepicker({ minuteStep: 1, showInputs: true, disableFocus: false });
+                new_box_price.find(".fecha_inicial ").datepicker({
+                    format: "dd/MM/yyyy",
+                    todayBtn: "linked",
+                    autoclose: true,
+                    todayHighlight: false
+                }).attr("name","fecha_inicial[]");
+                new_box_price.find(".fecha_final").datepicker({
+                    format: "dd/MM/yyyy",
+                    todayBtn: "linked",
+                    autoclose: true,
+                    todayHighlight: false
+                }).attr("name","fecha_final[]");
+                close_box_price();
+
+                quantitybox++;
+            }
+            $('.add-box-price').click(function(){
+
+                clone_box_price();
+            });
+            $('.panel-price .close').click(function(){
+
+                close_box_price();
+            });
+            function close_box_price(){
+                jQuery(".controls .close").unbind('click').bind('click',function(e) {
+                    e.preventDefault();
+                    jQuery(this).closest('.controls').fadeOut('400', function() {
+                        jQuery(this).closest('.controls').remove();
+                    });
+                });
+            }
+            close_box_price();
+             $('#input-timer').timepicker({
+                    minuteStep: 1,
+                    showInputs: true,
+                    disableFocus: false
+             });
+             jQuery(".hora_final").timepicker({ minuteStep: 1, showInputs: true, autoclose: true, disableFocus: false });
+             jQuery(".hora_inicial").timepicker({ minuteStep: 1, showInputs: true, disableFocus: false, autoclose: true });
+             jQuery(".hora_inicial").on("blur", function (e) { $(this).off("focus").timepicker("hide"); })
+             jQuery(".hora_final").on("blur", function (e) { $(this).off("focus").timepicker("hide"); })
+             jQuery(".select-dia").chosen({ widht: "100%" });
+        });
+    </script>*@
+@*<script>
+        $(document).ready(function () {
+            var cantidad_caja_registro = 0;
+            function clonar_caja_precio() {
+                new_fila_registro = jQuery(".fila_registro").clone().removeClass("fila_registro").hide().appendTo(".tabla_detalle_lista").slideDown().addClass("control-film" + cantidad_caja_registro);;
+                new_fila_registro.find(".td_nombre").append("" + jQuery(".nombre_detalle").val() + "<input type='hidden'name='nombre_detalle[]' value=" + jQuery(".nombre_detalle").val() + ">");
+                new_fila_registro.find(".td_servicio").append("" + jQuery(".select-servicio option:selected").text() + "<input type='hidden'name='servicio[]' value=" + jQuery(".select-servicio").val() + ">");
+                new_fila_registro.find(".td_precio_distribuidor").append("" + jQuery(".precio_distribuidor ").val() + "<input type='hidden'name='precio_distribuidor[]' value=" + jQuery(".precio_distribuidor ").val() + ">");
+                new_fila_registro.find(".td_precio").append("" + jQuery(".precio").val() + "<input type='hidden'name='precio[]' value=" + jQuery(".precio").val() + ">");
+                new_fila_registro.find(".td_formato").append("" + jQuery(".chosen-formato option:selected").text() + "<input type='hidden'name='formato[]' value=" + jQuery(".chosen-formato").val() + ">");
+                new_fila_registro.find(".td_fecha_vigencia").append("" + jQuery(".fecha_inicial ").val() + " a " + jQuery(".fecha_final ").val() + "<input type='hidden'name='fecha_inicial[]' value=" + jQuery(".fecha_inicial ").val() + ">"+"<input type='hidden'name='fecha_final[]' value=" + jQuery(".fecha_final").val() + ">");
+                new_fila_registro.find(".td_horario_vigencia").append("" + jQuery(".hora_inicial ").val() + " a " + jQuery(".hora_final ").val() + "<input type='hidden'name='hora_inicial[]' value=" + jQuery(".hora_inicial").val() + ">" + "<input type='hidden'name='hora_final[]' value=" + jQuery(".hora_final").val() + ">");
+                new_fila_registro.find(".td_dias").append("" + jQuery(".select-dia ").val() + "<input type='hidden'name='dias[]' value=" + jQuery(".select-dia").val.replace(",", "/") + ">");
+            }
+            $('.add-box-price').click(function () {
+                clonar_caja_precio();
+            });
+        });
+    </script>*@
+@*<link href="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.css" rel="stylesheet">*@
+
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaPrecio", "Maestro")'>Lista de Precios</a>
+    </p>
+</div>
+
+<div class="panel panel-dark">
+
+    <!--Panel heading-->
+    <div class="panel-heading">
+        <div class="panel-control">
+            <!--Nav tabs-->
+            <ul class="nav nav-tabs">
+                <li class="active" id="tabEncabezado"><a data-toggle="tab" href="#Encabezado">Encabezado</a></li>
+                <li><a data-toggle="tab" href="#detalles" id="tabFunciones" class="detalle_lista">Detalles</a></li>
+            </ul>
+        </div>
+        <h3 class="panel-title">Precio</h3>
+    </div>
+
+    <div class="panel-body">
+
+        <!--Tabs content-->
+        <div class="tab-content">
+            <div id="Encabezado" class="tab-pane fade in active">
+                <form id="formulario_lista_precio" data-toggle="validator" role="form" onsubmit="return false">
+                    <input type="hidden" class="RowID_Encabezado" id="RowID_Encabezado" name="RowID_Encabezado" value="@Model.RowID" />
+                    <input type="hidden" class="RowID_Detalle" name="RowID_Detalle" />
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">*Nombre:</label>
+                                <input name="nombre" id="nombre" class="form-control mayusculas" value="@Model.Nombre" onkeyup="this.value=this.value.toUpperCase()" required="required">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">*Teatro:</label>
+                                <select name="teatro" class="chosen-teatro form-control" required>
+                                    <option value="" disabled selected>Seleccione una opcion</option>
+                                    @foreach (CinemaPOS.Models.Teatro teatros in ViewBag.Teatros)
+                                    {
+                                        if (Model.TeatroID == teatros.RowID)
+                                        {
+                                            <option value="@teatros.RowID" selected>@teatros.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@teatros.RowID">@teatros.Nombre</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group" id="demo-dp-range">
+                                <label class="control-label">Fecha vigencia:*</label>
+                                <div class="input-daterange input-group" id="datepicker">
+                                    @if (Model.FechaInicial != null)
+                                    {
+                                        <input type="text" class="form-control" name="fechainicialvigencia" id="fechainicialvigencia" value="@Model.FechaInicial.Value.ToString("dd/MM/yyyy")">
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control" name="fechainicialvigencia" id="fechainicialvigencia" value="@Model.FechaInicial">
+                                    }
+                                    <span class="input-group-addon">a:</span>
+                                    @if (Model.FechaInicial != null)
+                                    {
+                                        <input type="text" class="form-control" name="fechafinalvigencia" id="fechafinalvigencia" value="@Model.FechaFinal.Value.ToString("dd/MM/yyyy")">
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control" name="fechafinalvigencia" id="fechafinalvigencia" value="@Model.FechaFinal">
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">Estado:*</label>
+                                <select name="Estado" id="Estado" class="form-control chosen" required>
+                                    <option value="" disabled selected> Seleccione una opción:</option>
+                                    @foreach (CinemaPOS.Models.Estado item in ViewBag.ListaEstados)
+                                    {
+
+                                        if (Model.RowID != 0 && item.RowID == Model.EstadoID)
+                                        {
+                                            <option value="@item.RowID" selected>@item.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.RowID">@item.Nombre</option>
+                                        }
+                                    }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 ">
+                            <div class="form-group">
+                                <label class="control-label">Descripción:</label>
+                                <textarea name="descripcion" class="form-control" cols="20" rows="3">@Model.Descripcion</textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 pull-right" style="margin-top:60px">
+                            <div class="form-group">
+                                @if (Model.RowID == 0)
+                                {
+                                    <input type="submit" class="btn btn-success" value="Crear lista de precios" onclick="javascript:valida_formulario()">
+                                }
+                                else
+                                {
+                                    <input type="submit" class="btn btn-success" value="Guardar lista de precios" onclick="javascript:valida_formulario()">
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div id="detalles" class="tab-pane fade">
+                <form id="formulario_precio" data-toggle="validator" role="form">
+                    <div class="panel-price">
+                        <div class="row">
+                            <div class="col-sm-2" style="width:180px">
+                                <div class="form-group">
+                                    <label class="control-label">Nombre: </label>
+                                    <input type="text" id="nombre_detalle" name="nombre_detalle" onkeyup="this.value=this.value.toUpperCase()" class="nombre_detalle form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2" style="width:140px">
+                                <div class="form-group">
+                                    <label class="control-label">Servicio: </label>
+                                    <select name="servicios" id="servicios" class="select-servicio form-control" style="width:120px">
+                                        @foreach (CinemaPOS.Models.Opcion servicio in ViewBag.Servicios)
+                                        {
+                                            <option value="@servicio.RowID">@servicio.Nombre</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2" style="width:140px">
+                                <div class="form-group">
+                                    <label for="" class="control-label">Precio Distribuidor: </label>
+                                    <input type="text" name="precio_distribuidor" id="precio_distibuidor" class="precio_distribuidor form-control solo-numero" style="width:120px" />
+                                </div>
+                            </div>
+                            <div class="col-sm-2" style="width:140px">
+                                <div class="form-group">
+                                    <label for="" class="control-label">Precio: </label>
+                                    <input type="text" name="precio" id="precio" class="precio form-control solo-numero" style="width:120px" />
+                                </div>
+                            </div>
+                            <div class="col-sm-2" style="width:100px">
+                                <div class="form-group">
+                                    <label for="" class="control-label">Formato: </label>
+                                    <select name="formato" id="formato" class="chosen-formato form-control" style="width:70px">
+                                        @foreach (CinemaPOS.Models.Opcion formatos in ViewBag.Formatos)
+                                        {
+                                            <option value="@formatos.RowID">@formatos.Nombre</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label class="">Tipo tarifa: </label>
+                                    <select class="form-control" id="tipo_tarifa" name="tipo_tarifa" style="width:150px">
+                                        @foreach (CinemaPOS.Models.Opcion tipo_tarifa in ViewBag.TipoTarifa)
+                                        {
+                                            <option value="@tipo_tarifa.RowID">@tipo_tarifa.Nombre</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group" id="demo-dp-range">
+                            <label class="control-label">Fecha de vigencia: </label>
+                            <div class="input-daterange input-group" id="datepicker">
+                                <input type="text" name="fecha_inicial" class="form-control">
+                                <span class="input-group-addon">a:</span>
+                                <input type="text" name="fecha_final" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label">Horario de vigencia: </label>
+                            <div class="input-daterange input-group" id="datepicker">
+                                <input type="text" id="hora_inicial" class="hora_inicial form-control" name="hora_inicial" />
+                                <span class="input-group-addon">a:</span>
+                                <input type="text" id="hora_final" class="hora_final form-control" name="hora_final" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" style="width:530px">
+                        <div class="form-group">
+                            <label class="control-label">Dias de vigencia: </label>
+                            <select style="width:10px" class="select-dia" name="dias" multiple="">
+                                <option value="Lunes">Lunes</option>
+                                <option value="Martes">Martes</option>
+                                <option value="Miercoles">Miercoles</option>
+                                <option value="Jueves">Jueves</option>
+                                <option value="Viernes">Viernes</option>
+                                <option value="Sabado">Sabado</option>
+                                <option value="Domingo">Domingo</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <div class="col-sm-2">
+                    <input style="margin-top:23px" class="btn btn-success" value="Guardar precio" onclick="javascript:guardar_precio()">
+                </div>
+
+                <table id="demo-dt-basic_wrapper" class="table table-striped table-bordered tabla_detalle_lista dataTables_filter" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nombre</th>
+                            <th>Servicio</th>
+                            <th>Precio Distribuidor</th>
+                            <th>Precio</th>
+                            <th>Formato</th>
+                            <th>Tipo tarifa</th>
+                            <th>Fecha Vigencia</th>
+                            <th>Horario de vigencia</th>
+                            <th>Dias de vigencia</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.RowID == 0)
+                        {
+                            <tr class="fila_registro">
+                                <td class="td_nombre"></td>
+                                <td class="td_servicio"></td>
+                                <td class="td_precio_distribuidor"></td>
+                                <td class="td_precio"></td>
+                                <td class="td_formato"></td>
+                                <td class="td_fecha_vigencia"></td>
+                                <td class="td_horario_vigencia"></td>
+                                <td class="td_dias"></td>
+
+                            </tr>
+                        }
+
+                        @if (Model.RowID != 0)
+                        {
+                            foreach (CinemaPOS.Models.ListaDetalle item in Model.ListaDetalle)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle rowlink" data-toggle="dropdown" href="#" title="Opciones función #@item.RowID">
+                                                <i class="glyphicon glyphicon-th-list"></i>
+                                            </a>
+                                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                                <li>
+                                                    <a href='javascript: EliminarItem(@item.RowID)' class="ion-trash-a">
+                                                        Eliminar
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="ion-edit" href="javascript:Bucar_Tarifa(@item.RowID,1)">
+                                                        Editar
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="ion-clipboard" href="javascript:Bucar_Tarifa(@item.RowID,2)">
+                                                        Duplicar
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td>@item.Nombre</td>
+                                    @if (item.TipoServicioID != null)
+                                    {
+                                        <td>@item.Opcion2.Nombre</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+
+                                    <td>@item.PrecioDistribuidor</td>
+                                    <td>@item.PrecioDistribuidor</td>
+                                    <td>@item.Opcion.Nombre</td>
+                                    @if (item.TipoListaDetalle != null)
+                                    {
+                                        <td>@item.Opcion1.Nombre</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    <td>@item.FechaInicial.Value.ToString("dd/MM/yyyy") a: @item.FechaFinal.Value.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.HoraInicial.Value.ToString(@"hh\:mm") a: @item.HoraFinal.Value.ToString(@"hh\:mm")</td>
+                                    <td>@item.DiasAsignados</td>
+                                    <td>@item.Estado.Nombre</td>
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="panel-footer text-right">
+        <a class="btn btn-warning" href="#" onclick="javascript:valida_formulario()">Guardar</a>
+    </div>*@
+
+
+
+

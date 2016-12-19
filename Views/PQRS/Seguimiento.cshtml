@@ -1,0 +1,123 @@
+﻿@model  CinemaPOS.Models.Pqrs
+
+@{
+    ViewBag.Title = "Seguimiento";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Seguimiento PQRS</h3>
+    </div>vb
+    <div class="panel-body">
+        <div class="col-lg-4">
+            <div class="panel-body text-center">
+                @if (Model.Seguimiento.Count() != 0)
+                {
+                    <p class="text-muted">Administrator</p>
+                    <p class="text-sm">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. </p>
+                    <button class="btn btn-primary mar-ver"><i class="demo-pli-male icon-fw"></i>Follow</button>
+                    <ul class="list-unstyled text-center bord-top pad-top mar-no row">
+                        <li class="col-xs-4">
+                            <span class="text-lg text-semibold text-main">1,345</span>
+                            <p class="text-muted mar-no">Fecha suceso</p>
+                        </li>
+                        <li class="col-xs-4">
+                            <span class="text-lg text-semibold text-main">23K</span>
+                            <p class="text-muted mar-no">Fecha Creación</p>
+                        </li>
+                        <li class="col-xs-4">
+                            <span class="text-lg text-semibold text-main">278</span>
+                            <p class="text-muted mar-no">Creado por</p>
+                        </li>
+                    </ul>
+                }
+                
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">Informacion de la PQRS</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Datos del cliente</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label class="control-label">Nombre:  @Model.Tercero.Nombre</label> 
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="control-label">Identificacion:  @Model.Tercero.Identificacion</label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <label class="control-label">Telefono:  @Model.Tercero.Telefono</label>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label class="control-label">Ciudad:  @Model.Tercero.Ciudad.Nombre</label>
+                                        </div>
+                   
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <label class="control-label">Correo:  @Model.Tercero.Correo</label>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label class="control-label">Fecha de nacimiento:  @Model.Tercero.FechaNacimiento.Value.ToString("dd/MM/yyyy")</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Informacion de la PQRS</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Titulo:  @Model.Titulo</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Teatro:  @Model.Teatro.Nombre</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Tipo solicitud:  @Model.TipoSolicitud.Nombre</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Estado:  @Model.Estado.Nombre</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Fecha creación:  @Model.FechaCreacion.Value.ToString("dd/MM/yyyy")</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Fecha del suceso:  @Model.FechaSuceso.Value.ToString("dd/MM/yyyy")</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="control-label">Descripción de la PQRS <br />@Model.Descripcion</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+</div>

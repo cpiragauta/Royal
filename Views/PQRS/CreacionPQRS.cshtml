@@ -1,0 +1,575 @@
+﻿@model CinemaPOS.ModelosPropios.Model.Modelos_Pqrs
+
+@{
+    ViewBag.Title = "CreacionPQRS";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+@*<script>
+        $(document).ready(function () {
+            $("#select_tercero").autocomplete({
+                source: "CargarCLiente",
+
+                select: function (e, ui) {
+                    //Console.log(ui);
+                    debugger;
+                    $("#RowId_tercero").val(ui.item.rowid)
+                }
+            })
+            $(".list-teatro").chosen();
+        })
+    </script>
+    <style>
+            .ui-autocomplete {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        float: left;
+        display: none;
+        min-width: 160px;
+        padding: 4px 0;
+        margin: 0 0 10px 25px;
+        list-style: none;
+        background-color: #ffffff;
+        border-color: #ccc;
+        border-color: rgba(0, 0, 0, 0.2);
+        border-style: solid;
+        border-width: 1px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        -webkit-background-clip: padding-box;
+        -moz-background-clip: padding;
+        background-clip: padding-box;
+        *border-right-width: 2px;
+        *border-bottom-width: 2px;
+    }
+
+    .ui-menu-item > a.ui-corner-all {
+        display: block;
+        padding: 3px 15px;
+        clear: both;
+        font-weight: normal;
+        line-height: 18px;
+        color: #555555;
+        white-space: nowrap;
+        text-decoration: none;
+    }
+
+    .ui-state-hover, .ui-state-active {
+        color: #ffffff;
+        text-decoration: none;
+        background-color: #0088cc;
+        border-radius: 0px;
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+        background-image: none;
+    }
+    .ui-helper-hidden-accessible{
+        display:none;
+    }
+    </style>
+    <script src="~/Content/js/jquery-ui.js"></script>*@
+
+@*<div>
+        <p>
+            <a class="btn btn-success" href='@Url.Action("VistaSilla", "Maestro")'>Vista Objetos Sala</a>
+        </p>
+    </div>
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Creacion PQRS</h3>
+        </div>
+
+        <!--Block Styled Form -->
+        <!--===================================================-->
+        <form name="" id="form_pqrs" enctype="multipart/form-data">
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label">Titulo PQRS</label>
+                            <input type="text"  class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label">Fecha del sucesso</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label">Tipo solicitud</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label">Teatro</label>
+                            <select class="list-teatro form-control">
+                                @foreach (CinemaPOS.Models.Teatro teatros in ViewBag.Teatros)
+                                {
+                                    <option value="@teatros.RowID">@teatros.Nombre</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label">Cliente</label>
+                            <input type="hidden" id="RowId_tercero" />
+                            <input type="text" id="select_tercero" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label">Telefono</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label">Correo Eletronico</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label">Ciudad</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label">Genero</label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="panel-footer text-right">
+                    <input class="btn btn-success" type="submit" value="Crear Objeto Sala">
+            </div>
+
+        </form>
+        </div>
+        <!--===================================================-->
+        <!--End Block Styled Form -->
+        <button type="button" class="btn btn-primary" onclick="llamarVistaParcial();" data-toggle="modal" data-target="#myModal">
+            La llamada ganadora a la vista parcial
+        </button>
+    <div id="Dialog"></div>
+
+        <!-- Modal -->
+
+        <script>
+            @*function llamarVistaParcial() {
+                var laURLDeLaVista = '@Url.Action("ModalTercero", "PQRS")';
+                $.ajax({
+                    cache: false,
+                    async: true,
+                    type: "GET",
+                    url: laURLDeLaVista,
+                    data: {},
+                    success: function (response) {
+                        $('#resultado').html('');
+                        $('#resultado').html(response);
+                    }
+                });
+            }
+            function llamarVistaParcial() {
+                debugger
+                //ModalProcesandoShow();
+                var urlWithCont = '../PQRS/ModalTercero';
+                $("#Dialog")
+                .load(urlWithCont.trim())
+                .dialog('open');
+            }
+        </script>*@
+<script>
+    function guardar_tercero() {
+        var validator = $("#formulario_tercero").validate();
+        debugger
+        if (validator.form()) {
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/GuardarTercero",
+                data: {
+                    RowID_Tercero: $("#row_id").val(),
+                    formulario: $("#formulario_tercero").serialize(),
+                },
+                success: function (data) {
+                    debugger;
+                    if (data.respuesta.includes("Error")) {
+                        swal("ERROR", data.repuesta, "error");
+                        return;
+                    } else {
+                        swal("OK", data.repuesta, "success")
+                        $("#divpqrs").slideDown();
+                        $("#row_id").val(data.rowid_tercero);
+                        var url = "../PQRS/ModalTercero?rowid_tercero=" + data.rowid_tercero;
+                        $("#Dialog").load(url.trim());
+                    }
+
+                },
+                error: function (data) {
+                    swal("ERROR", data.repuesta, "error");
+                }
+            });
+        }
+    }
+
+
+
+    function OcultarCampos() {
+        if ($("#tipo_tercero option:selected").val() == "")
+        { return; }
+        if ($("#tipo_tercero option:selected").html() != "Natural") {
+            $("#PanelApellido").hide();
+            $("#tipoID").hide();
+            $("#PanelSexo").hide();
+            $("#lblNombre").empty().append("*Razón Social:");
+            $("#lblIdentificacion").empty().append("*NIT:")
+            $("#lblFechaNacimiento").empty().append("*Fecha Creación:");
+            $("#tipo_identificacion").prop('required', false);
+            $("#sexo").prop('required', false);
+            $("#Apellido").prop('required', false);
+            $(".Ocultar").addClass("CorrerIzquierda");
+            $(".Descripcion1").addClass("Descripcion");
+
+
+        } else {
+            $("#PanelApellido").show();
+            $("#tipoID").show();
+            $("#PanelSexo").show();
+            $("#lblNombre").empty().append("*Nombre:");
+            $("#lblIdentificacion").empty().append("*Identificacion:");
+            $("#lblFechaNacimiento").empty().append("*Fecha Nacimiento:");
+            $("#tipo_identificacion").prop('required', true);
+            $("#sexo").prop('required', true);
+            $("#Apellido").prop('required', true);
+            $(".Ocultar").removeClass("CorrerIzquierda");
+            $(".Descripcion1").removeClass("Descripcion");
+
+
+        }
+    }
+
+    $(document).ready(function () {
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+        jQuery.validator.messages.number = '*Esta campo debe ser num&eacute;rico.';
+        jQuery.validator.messages.email = '*La direcci&oacute;n de correo es incorrecta.';
+
+        $('#FechaNacimiento').datepicker({
+            format: "dd/MM/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+        OcultarCampos();
+
+
+    })
+</script>
+
+<style>
+    .CorrerIzquierda {
+        margin-left: -102%;
+        margin-right: 104%;
+    }
+
+    .Descripcion {
+        margin: 7% 0% 0% -67%;
+    }
+</style>
+<div id="Dialog"></div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+<form name="formulario_tercero" id="formulario_tercero" onsubmit="return false">
+    <input type="hidden" id="row_id" value="0" />
+    <div class="panel-body">
+        <div class="row ">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label">*Tipo Tercero:</label>
+                    <select name="tipo_tercero" id="tipo_tercero" onchange="javascript:OcultarCampos()" class="form-control" required>
+                        <option value="" disabled selected>Seleccione una opción</option>
+                        @foreach (CinemaPOS.Models.Opcion tipo_tercero in ViewBag.TipoTerceroID)
+                        {
+                            if (Model.Terceros != null)
+                            {
+                                if (Model.Terceros.RowID != 0 && tipo_tercero.RowID == Model.Terceros.TipoTerceroID)
+                                {
+                                    <option value="@tipo_tercero.RowID" selected>@tipo_tercero.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@tipo_tercero.RowID">@tipo_tercero.Nombre</option>
+                                }
+
+                            }
+                            else
+                            {
+                                <option value="@tipo_tercero.RowID">@tipo_tercero.Nombre</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group" name="TipoID" id="tipoID">
+                    <label class="control-label">*Tipo Identificación:</label>
+                    <select name="tipo_identificacion" id="tipo_identificacion" class="form-control">
+                        <option value="" disabled selected>Seleccione una opcion</option>
+                        @foreach (CinemaPOS.Models.Opcion Tipo_Id in ViewBag.TipoIdentificacion)
+                        {
+                            if (Model.Terceros != null)
+                            {
+                                if (Model.Terceros.RowID != 0 && Tipo_Id.RowID == Model.Terceros.TipoIdentificacionID)
+                                {
+                                    <option value="@Tipo_Id.RowID" selected>@Tipo_Id.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@Tipo_Id.RowID">@Tipo_Id.Nombre</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="@Tipo_Id.RowID">@Tipo_Id.Nombre</option>
+                            }
+
+                        }
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group Ocultar" id="PanelIdentificacion">
+                    <label class="control-label" id="lblIdentificacion">*Identificacion:</label>
+                    @if (Model.Terceros != null)
+                    {
+                        <input type="number" value="@Model.Terceros.Identificacion" name="Identificacion" id="Identificacion" class="form-control" onblur="validar_existencia_tercero()" required>
+                    }
+                    <input type="number" name="Identificacion" id="Identificacion" class="form-control" onblur="validar_existencia_tercero()" required>
+                </div>
+            </div>
+
+
+
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" id="lblNombre">*Nombre:</label>
+                    @if (Model.Terceros != null)
+                    {
+                        <input type="text" name="nombre" id="nombre" value="@Model.Terceros.Nombre" class="form-control" required>
+                    }
+                    <input type="text" name="nombre" id="nombre" class="form-control" required>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group" id="PanelApellido">
+                    <label class="control-label">*Apellido:</label>
+                    @if (Model.Terceros != null)
+                    {
+                        <input type="text" name="Apellido" id="Apellido" value="@Model.Terceros.Apellidos" class="form-control">
+                    }
+                    <input type="text" name="Apellido" id="Apellido" class="form-control">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group Ocultar" id="PanelFechaNacimiento">
+                    <label class="control-label" id="lblFechaNacimiento">*Fecha Nacimiento:</label>
+                    @if (Model.Terceros != null)
+                    {
+                        if (Model.Terceros.FechaNacimiento != null)
+                        {
+                            <input type="text" class="form-control" name="FechaNacimiento" id="FechaNacimiento" value="@Model.Terceros.FechaNacimiento.Value.ToString("dd/MM/yyyy")" required>
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" name="FechaNacimiento" id="FechaNacimiento" value="@Model.Terceros.FechaNacimiento" required>
+                        }
+                    }
+                    else
+                    {
+                        <input type="text" class="form-control" name="FechaNacimiento" id="FechaNacimiento" required>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4" id="demo-dp-range">
+                <div class="form-group" id="PanelSexo">
+                    <label class="control-label">*Sexo:</label>
+                    <select name="sexo" id="sexo" class="form-control">
+                        <option value="" disabled selected>Seleccione una opción</option>
+                        @foreach (CinemaPOS.Models.Opcion Opciones in ViewBag.SexoID)
+                        {
+                            if (Model.Terceros != null)
+                            {
+                                if (Model.Terceros.RowID != 0 && Opciones.RowID == Model.Terceros.SexoID)
+                                {
+                                    <option value="@Opciones.RowID" selected>@Opciones.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@Opciones.RowID">@Opciones.Nombre</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="@Opciones.RowID">@Opciones.Nombre</option>
+                            }
+
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group Ocultar">
+                    <label class="control-label">*Telefono:</label>
+                    @if (Model.Terceros != null)
+                    {
+                        <input type="text" name="telefono" id="telefono" value="@Model.Terceros.Telefono" class="form-control" required>
+                    }
+                    else
+                    {
+                        <input type="text" name="telefono" id="telefono" class="form-control" required>
+                    }
+
+                </div>
+            </div>
+
+            <div class="col-sm-4 ">
+                <div class="form-group Ocultar">
+                    <label class="control-label">*Ciudad:</label>
+                    <select name="ciudad" class="form-control chosen" id="ciudad" required>
+                        <option value="" disabled selected>Seleccione una opción</option>
+                        @foreach (CinemaPOS.Models.Ciudad Ciudades in ViewBag.CiudadID)
+                        {
+                            if (Model.Terceros != null)
+                            {
+                                if (Model.Terceros.RowID != 0 && Ciudades.RowID == Model.Terceros.CiudadID)
+                                {
+                                    <option value="@Ciudades.RowID" selected>@Ciudades.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@Ciudades.RowID">@Ciudades.Nombre</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="@Ciudades.RowID">@Ciudades.Nombre</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label">*Dirección:</label>
+                    @if (Model.Terceros != null)
+                    {
+                        <input type="text" name="direccion" id="direccion" value="@Model.Terceros.Direccion" class="form-control" required>
+                    }
+                    else
+                    {
+                        <input type="text" id="direccion" name="direccion" class="form-control" required>
+                    }
+
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label">*Correo:</label>
+                    @if (Model.Terceros != null)
+                    {
+                        <input type="email" value="@Model.Terceros.Correo" id="correo" name="correo" class="form-control" required>
+                    }
+                    else
+                    {
+                        <input type="email" name="correo" id="correo" class="form-control" required>
+                    }
+
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer text-right">
+            <input class="btn btn-success" value="Guardar información" onclick="guardar_tercero()">
+        </div>
+    </div>
+</form>
+   
+
+
+<script>
+    function validar_existencia_tercero() {
+        $.ajax({
+            url: "/Maestro/ValidarExistenciaTercero",
+            data: {
+                Identificacion: $("#Identificacion").val()
+            },
+            success: function (data) {
+                debugger;
+                if (data.length != 0) {
+                    data.forEach(function (da) {
+                        $("#row_id").val(da.rowid);
+                        $("#tipo_tercero option[value='" + da.tipotercero + "']").attr('selected', 'selected').trigger('change');
+                        $("#tipo_identificacion option[value='" + da.tipoidentificacion + "']").attr('selected', 'selected').trigger('change');
+                        $("#sexo option[value='" + da.genero + "']").attr('selected', 'selected').trigger('change');
+                        $("#ciudad option[value='" + da.ciudad + "']").attr('selected', 'selected').trigger("chosen:updated");
+                        $("#nombre").val(da.nombre);
+                        $("#apellido").val(da.apellido);
+                        $("#FechaNacimiento").val(da.fechanacimiento);
+                        $("#telefono").val(da.telefono);
+                        $("#direccion").val(da.direccion);
+                        $("#correo").val(da.correo);
+
+                        //$("#myModal").modal({
+                        //    show: 'false'
+                        //});
+                    });
+                }
+                else {
+                    //$("#divpqrs").hide();
+                }
+
+
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+        
+
+    }
+    
+</script>

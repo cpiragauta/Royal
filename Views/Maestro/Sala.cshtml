@@ -1,0 +1,223 @@
+﻿@model CinemaPOS.Models.Sala
+@{
+    ViewBag.Title = "Crear Sala";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<script>
+    function guardar_sala() {
+        var validator = $("#formulario_sala").validate();
+
+        if (validator.form()) {
+
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/GuardarSala",
+                data: {
+                    RowID_Sala: $("#row_id").val(),
+                    formulario: $("#formulario_sala").serialize(),
+                },
+                success: function (data) {
+                    swal("OK", data, "success")
+                    window.location = "/Maestro/VistaSala/";
+
+                },
+                error: function (data) {
+                    swal("ERROR", data, "error");
+                }
+            });
+        }
+
+    }
+
+    var cantidadcontrol = 0;
+    $(document).ready(function () {
+        if ($(".row_id").val() != 0) {
+            $(".editar_mapa").slideDown();
+        }
+        jQuery(".listaformato").chosen({ width: "100%;" });
+        jQuery(".chosen-servicio").chosen({ width: "100%;" });
+
+        $('.solo-numero').keyup(function () {
+            this.value = (this.value + '').replace(/[^0-9]/g, '');
+        });
+
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+        
+    });
+</script>
+
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaSala", "Maestro")'>Vista Salas</a>
+    </p>
+</div>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Sala</h3>
+    </div>
+    <form id="formulario_sala" name="formulario_sala" onsubmit="return false">
+        <input type="hidden" class="row_id" id="row_id" name="RowID_Sala" value="@Model.RowID" />
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Nombre:*</label>
+                        <input class="form-control" value="@Model.Nombre" name="nombre" required />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Tipo Audio:*</label>
+                        <select name="tipo_audio" class="chosen form-control" required>
+                            <option value="" disabled selected>Seleccione una opción</option>
+                            @foreach (CinemaPOS.Models.Opcion audio in ViewBag.Audios)
+                            {
+                                if (Model.RowID != 0 && audio.RowID == Model.TipoAudioID)
+                                {
+                                    <option value="@audio.RowID" selected>@audio.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@audio.RowID">@audio.Nombre</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Teatro:*</label>
+                        <select name="teatro" class="chosen form-control" required>
+                            <option value="" disabled selected>Seleccione una opción</option>
+                            @foreach (CinemaPOS.Models.Teatro teatro in ViewBag.Teatros)
+                            {
+                                if (Model.RowID != 0 && teatro.RowID == Model.TeatroID)
+                                {
+                                    <option value="@teatro.RowID" selected>@teatro.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@teatro.RowID">@teatro.Nombre</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Estado:</label>
+                        <select name="estado" class="form-control" required>
+                            @foreach (CinemaPOS.Models.Estado estado in ViewBag.Estados)
+                            {
+                                if (Model.RowID != 0 && estado.RowID == Model.EstadoID)
+                                {
+                                    <option value="@estado.RowID" selected>@estado.Descripcion</option>
+                                }
+                                else
+                                {
+                                    <option value="@estado.RowID">@estado.Descripcion</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Formato:*</label>
+                        <select multiple name="formato" class="listaformato chosen form-control" data-placeholder="Seleccione opciones" required>
+                            @*<option value="" disabled selected style="display: none;">Seleccione una opción</option>*@
+                            @foreach (CinemaPOS.Models.Opcion formatos in ViewBag.Formatos)
+                            {
+                                if (Model.RowID != 0)
+                                {
+                                    var formato_sala = Model.FormatoSala.Where(fs => fs.SalaID == Model.RowID && fs.TipoFormatoID == formatos.RowID).ToList();
+                                    if (formato_sala.Count != 0)
+                                    {
+                                        foreach (var item in formato_sala)
+                                        {
+                                            if (formatos.RowID == item.TipoFormatoID)
+                                            {
+                                                <option value="@formatos.RowID" selected>@formatos.Nombre</option>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option value="@formatos.RowID">@formatos.Nombre</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@formatos.RowID">@formatos.Nombre</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Servicio:*</label>
+                        <select  class="chosen-servicio" name="servicio" required>
+                            <option value="" disabled selected>Seleccione una opción</option>
+                            @foreach (CinemaPOS.Models.Opcion servicios in ViewBag.Servicios)
+                            {
+                                if (Model.RowID != 0)
+                                {
+                                    var servicios_sala = Model.ServicioSala.Where(ss => ss.SalaID == Model.RowID && ss.TipoServicioID == servicios.RowID).ToList();
+                                    if (servicios_sala.Count != 0)
+                                    {
+                                        foreach (var item in servicios_sala)
+                                        {
+                                            if (servicios.RowID == item.TipoServicioID)
+                                            {
+                                                <option value="@servicios.RowID" selected>@servicios.Nombre</option>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option value="@servicios.RowID">@servicios.Nombre</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@servicios.RowID">@servicios.Nombre</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Capacidad:</label>
+                        <input class="form-control solo-numero" value="@Model.Capacidad" name="capacidad" required />
+                    </div>
+                </div>
+            </div>
+            @*<a href="javascript:guardar_sala()" class="btn btn-success"><i class="icon-plus">&nbsp;&nbsp;Guardar</i></a>*@
+            <a href="@Url.Action("MapaSala", "Maestro", new { @RowID_Sala =Model.RowID})" style="display:none;" class="btn btn-success editar_mapa"><i class="icon-plus">&nbsp;&nbsp;Editar Mapa</i></a>
+
+        </div>
+        <div class="panel-footer text-right">
+            @if (Model.RowID == 0)
+            {
+                <input class="btn btn-success" type="submit" value="Crear Sala" onclick="guardar_sala()">
+            }
+            else
+            {
+                <input class="btn btn-success" type="submit" value="Actualizar Sala" onclick="guardar_sala()">
+            }
+        </div>
+
+    </form>
+</div>

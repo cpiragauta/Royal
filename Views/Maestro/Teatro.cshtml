@@ -1,0 +1,158 @@
+﻿@model CinemaPOS.Models.Teatro
+
+@{
+    ViewBag.Title = "Crear Teatro";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<script>
+    function guardar_teatro() {
+
+        var validator = $("#formulario_teatro").validate();
+
+        if (validator.form()) {
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/GuardarTeatro",
+                data: {
+                    RowID_Teatro: $("#row_id").val(),
+                    formulario: $("#formulario_teatro").serialize(),
+                },
+                success: function (data) {
+                    swal("OK", data, "success")
+                    window.location = "/Maestro/VistaTeatro/"
+                },
+                error: function (data) {
+                    swal("ERROR", data, "error");
+                }
+            });
+        }
+    }
+
+
+    $(document).ready(function () {
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+    })
+
+
+</script>
+
+
+<style>
+
+    .Mayus {
+        text-transform: uppercase;
+    }
+
+</style>
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaTeatro", "Maestro")'>Vista Teatros</a>
+    </p>
+</div>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Teatro</h3>
+    </div>
+    <form name="formulario_teatro" id="formulario_teatro" onsubmit="return false">
+        <input type="hidden" class="row_id" id="row_id" name="RowID_Teatro" value="@Model.RowID" />
+        <div class="panel-body">
+                @*<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Empresa:*</label>
+                        <select name="empresa" class="chosen form-control" required>
+                            <option disabled selected>Seleccione una opcion</option>
+                            @foreach (CinemaPOS.Models.Tercero tercero in ViewBag.Companias)
+                            {
+                                if (Model.RowID != 0 && tercero.RowID == Model.Tercero.RowID)
+                                {
+                                    <option value="@tercero.RowID" selected>@tercero.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@tercero.RowID">@tercero.Nombre</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>*@
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Nombre*:</label>
+                        <input type="text"  class="form-control Mayus" value="@Model.Nombre" name="nombre" required maxlength="50">
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Ciudad*:</label>
+                        <select name="ciudad" class="chosen form-control" required>
+                            <option disabled selected>Seleccione una opcion</option>
+                            @foreach (CinemaPOS.Models.Ciudad ciudades in ViewBag.Ciudades)
+                            {
+                                if (Model.RowID != 0 && ciudades.RowID == Model.CiudadID)
+                                {
+                                    <option value="@ciudades.RowID" selected>@ciudades.Departamento.Nombre - @ciudades.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@ciudades.RowID">@ciudades.Departamento.Nombre - @ciudades.Nombre</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label class="control-label">Centro de costo:</label>
+                        <input type="text" class="form-control" value="@Model.CentroOperacion" name="centro_costo" maxlength="50">
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label class="control-label">IP:</label>
+                        <input type="text" id="demo-msk-ip" class="form-control" name="ip" value="@Model.IP" placeholder="255.255.255.255" maxlength="30" required>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label class="control-label">Estado*:</label>
+                        <select name="Estado" class="chosen form-control" required>
+                            <option disabled selected>Seleccione una opcion</option>
+                            @foreach (CinemaPOS.Models.Estado item in ViewBag.ListaEstados)
+                            {
+                                if (Model.RowID != 0 && item.RowID == Model.EstadoID)
+                                {
+                                    <option value="@item.RowID" selected>@item.Descripcion</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.RowID">@item.Descripcion</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+            </div>
+
+
+
+        </div>
+        <div class="panel-footer text-right">
+            @if (Model.RowID == 0)
+            {
+                <input class="btn btn-success" type="submit" value="Crear Teatro" onclick="guardar_teatro()">
+            }
+            else
+            {
+                <input class=" btn btn-success" type="submit" value="Actualizar Teatro" onclick="guardar_teatro()">
+            }
+        </div>
+    </form>
+</div>

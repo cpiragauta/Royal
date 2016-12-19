@@ -1,0 +1,146 @@
+﻿@model CinemaPOS.Models.Rol
+
+@{
+
+    ViewBag.Title = "Crear roles del sistema";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<script>
+    function guardar_RolesSistema() {
+        $.ajax({
+            type: "POST",
+            url: "/UsuarioRol/GuardarRolesSistema",
+            data: {
+                RowID_RolesSistema: $("#row_id").val(),
+                formulario: $("#formulario_RolSistema").serialize(),
+            },
+            success: function (data) {
+                guardar_Permisos();
+            },
+            error: function (data) {
+                swal("ERROR", data, "error");
+            }
+        });
+    }
+
+    function guardar_Permisos() {
+        var validator = $("#formularioPermisosRol").validate();
+        if (validator.form()) {
+            var pantallasAsignadas = "";
+            var pantallasNOAsignadas = "";
+            $("#pantallas option:selected").each(function () {
+                pantallasAsignadas += $(this).val() + ",";
+            });
+            $("#pantallas option").each(function () {
+                pantallasNOAsignadas += $(this).val() + ",";
+            });
+            $.blockUI({ message: '<img style="width:30%; height:30%;" src="@("/Repositorio_Imagenes/Imagenes_Generales/Cargando.gif")" />' });
+            $.ajax({
+                type: "POST",
+                url: "/UsuarioRol/GuardarPermisosRol",
+                data: {
+                    RolID: $("#row_id").val(),
+                    pantallasAsignadas: pantallasAsignadas,
+                    pantallasNOAsignadas: pantallasNOAsignadas,
+                },
+                success: function (data) {
+                    $.unblockUI();
+                    swal("OK", data, "success")
+                    window.location = "/UsuarioRol/VistaRolesSistema/"
+                },
+                error: function (data) {
+                    swal("ERROR", data, "error");
+                    $.unblockUI();
+                }
+            });
+        }
+    }
+
+    function CargarPantallasAsignadas(IdRol) {
+
+        $("#pantallas").empty();
+        $.ajax({
+            type: "POST",
+            url: "/UsuarioRol/CargarPantallasAsignadas",
+            data: {
+                IdRol: IdRol,
+            },
+            success: function (data) {
+                $("#pantallas").empty()
+                $("#pantallas").append(data).trigger("chosen:updated");
+                $("#pantallas").trigger("chosen:updated");
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+        CargarPantallasAsignadas($("#row_id").val());
+    })
+
+</script>
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaRolesSistema", "UsuarioRol")'>Vista Roles</a>
+    </p>
+</div>
+
+@* formulario para agregar los datos a BD *@
+<div class="panel">
+    <div class="panel-heading">
+        @if (Model.RowID == 0)
+        {
+            <h3 class="panel-title">Crear Rol</h3>
+        }
+        else
+        {
+            <h3 class="panel-title">Actualizar Rol</h3>
+        }
+    </div>
+    <form name="formulario_RolSistema" id="formulario_RolSistema" onsubmit="return false">
+        <input type="hidden" class="row_id" id="row_id" name="RowID_Rol" value="@Model.RowID" />
+        <div class="panel-body">
+            <div class="row">
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">*Nombre:</label>
+                        <input type="text" class="form-control" value="@Model.Nombre" name="RolNombre" required>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+    <form name="formularioPermisosRol" id="formularioPermisosRol" onsubmit="return false">
+        <div class="panel-body">
+
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label class="control-label">Pantallas Asignadas:</label>
+                        <select multiple name="pantallas" id="pantallas" class="chosen form-control" required></select>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+    <div class="panel-footer text-right">
+        @if (Model.RowID == 0)
+        {
+            <input class="btn btn-success" type="submit" value="Crear Rol" onclick="guardar_RolesSistema()">
+        }
+        else
+        {
+            <input class="btn btn-success" type="submit" value="Actualizar Rol" onclick="guardar_RolesSistema()">
+        }
+    </div>
+
+
+
+</div>

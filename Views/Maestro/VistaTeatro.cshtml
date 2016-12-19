@@ -1,0 +1,67 @@
+﻿@model CinemaPOS.Models.Teatro
+
+@{
+    ViewBag.Title = "Lista Teatro";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<head>
+    <!--jQuery [ REQUIRED ]-->
+    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
+    <!--DataTables [ OPTIONAL ]-->
+    <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+    <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <!--DataTables Sample [ SAMPLE ]-->
+    <script src="~/Content/js/demo/tables-datatables.js"></script>
+</head>
+
+<p>
+    <a class="btn btn-success" href='@Url.Action("Teatro", "Maestro")'>Crear Teatro</a>
+</p>
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Lista Teatro</h3>
+    </div>
+    <div class="panel-body">
+        <table id="demo-dt-basic" class="table table-striped table-bordered table-funcion" cellspacing="0" >
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Centro de Costo</th>
+                    <th class="min-tablet">IP</th>
+                    <th class="min-tablet">Ciudad</th>
+                    <th class="min-desktop">Estado</th>
+                    <th class="min-desktop">Creado Por</th>
+                    <th class="min-desktop">Fecha Creación</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (CinemaPOS.Models.Teatro teatro in ViewBag.Teatros)
+                {
+                    <tr>
+                        <td>@teatro.Nombre</td>
+                        <td>@teatro.CentroOperacion</td>
+                        <td>@teatro.IP</td>
+                        @if (teatro.Ciudad != null)
+                        {
+                            <td> @teatro.Ciudad.Departamento.Nombre - @teatro.Ciudad.Nombre</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        <td>@teatro.Estado.Descripcion</td>
+                        <td>@teatro.CreadoPor</td>
+                        <td>@teatro.FechaCreacion.ToString("dd/MM/yyyy")</td>
+                        <td><a href="@Url.Action("Teatro","Maestro",new {RowID_Teatro=teatro.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

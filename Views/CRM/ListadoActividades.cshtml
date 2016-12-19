@@ -1,0 +1,48 @@
+﻿@model CinemaPOS.ModelosPropios.Util.Actividades
+@{
+    ViewBag.Title = "ListadoActividades";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+<p>
+    <a class="btn btn-success" href='@Url.Action("Actividades", "CRM")'>Crear Actividad</a>
+</p>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Lista Terceros</h3>
+    </div>
+    <div class="panel-body">
+        <table id="demo-dt-basic" class="table table-striped table-bordered table-hover" cellspacing="0" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Asunto</th>
+                    <th>Prioridad</th>
+                    <th>Referenciado a</th>
+                    <th>Descripci&oacute;n</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in (List<CinemaPOS.ModelosPropios.Util.Actividades>)ViewBag.Listado)
+                {
+                    <tr>
+                        <td>@item.tipoAct</td>
+                        <td>@item.asunto</td>
+                        <td>@item.prioridad</td>
+                        <td>@item.referenciado_a</td>
+                        <td>@item.descripcion</td>
+                        <td>@item.fechaInicio</td>
+                        <td>@item.FechaFin</td>
+                        <td>@item.estado</td>
+                        <td><a href="@Url.Action("Actividades", "CRM", new { @rowid = item.rowid })"><i class="glyphicon glyphicon-pencil"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

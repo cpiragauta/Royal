@@ -1,0 +1,74 @@
+﻿@model CinemaPOS.Models.TeatroPelicula
+@{
+    ViewBag.Title = "ModalTeatroPelicula";
+    Layout = null;
+}
+<script>
+    ModalProcesandoHiden();
+    $("#myModal1").modal('show')
+</script>
+<div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="false" style="overflow: auto; border-radius:2px;">
+    <div class="modal-dialog" style="width:600px ;margin-top:-25px">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 5px;">
+                <button type="button" class="close salir" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" style="padding:1px;color:#455A64"><b>@ViewBag.Pelicula</b></h4>
+            </div>
+            <div class="modal-body" style="overflow-x: hidden; overflow-y: hidden; height: 350px">
+                <form method="post" id="FormTeatro" name="FormTeatro">
+                    <input type="hidden" name="rowidPelicula" value="@ViewBag.PeliculaV2" id="rowidPelicula"/>
+                    <label for="TEATRO">Teatros</label>
+                    <select class="form-control" id="rowidTeatro" name="rowidTeatro">
+                        @foreach (var item in (List<CinemaPOS.Models.Teatro>)ViewBag.TeatrosDisp)
+                        {
+                            <option value="@item.RowID">@item.Nombre - @item.Ciudad.Nombre</option>
+                        }
+                    </select>
+                </form>
+                <br />
+                <a onclick="javascript:GuardarTeatro()" class="btn btn-success">Guardar</a>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <script>
+        $(document).ready(function () {
+            $("#rowidTeatro").chosen({ width: '100%' });
+        });
+
+
+        //GUARDAR TEATRO
+        function GuardarTeatro() {
+            ModalProcesandoShow();
+            $.ajax({
+                type: "POST",
+                url: "/Pelicula/GuardarTeatro",
+                data: {
+                    rowidPelicula: $("#rowidPelicula").val(),
+                    rowidTeatro: $("#rowidTeatro").val(),
+
+                },
+                success: function (data) {
+                    if (data == "ok") {
+                        ModalProcesandoHiden();
+                        swal(
+                            'Teatro agregado!',
+                            '',
+                            'success'
+                            )
+                    } else {
+                        ModalProcesandoHiden();
+                        'Error al agregar Teatro',
+                        '',
+                        'error'
+                    }
+                },
+                error: function (request) {
+                    ModalProcesandoHiden();
+                    hasChangue = true;
+                }
+            });
+        }
+    </script>

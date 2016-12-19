@@ -1,0 +1,1162 @@
+﻿@model CinemaPOS.Models.EncabezadoProgramacion
+@{
+    ViewBag.Title = "Crear Programacion";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+
+}
+
+<link href="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.css" rel="stylesheet">
+
+<!--Bootstrap Validator [ OPTIONAL ]-->
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.js"></script>
+<script src="~/Content/js/demo/form-wizard.js"></script>
+<script src="~/Content/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+<script src="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+<link href="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
+<!--DataTables [ OPTIONAL ]-->
+<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+<script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<!--DataTables Sample [ SAMPLE ]-->
+<script src="~/Content/js/demo/tables-datatables.js"></script>
+
+@*LIBRERIAS CALENDARIO*@
+<link href="~/Content/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet">
+<link href="~/Content/plugins/fullcalendar/nifty-skin/fullcalendar-nifty.min.css" rel="stylesheet">
+<script src="~/Content/plugins/fullcalendar/lib/moment.min.js"></script>
+<script src="~/Content/plugins/fullcalendar/lib/jquery-ui.custom.min.js"></script>
+<script src="~/Content/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="~/Content/js/demo/misc-fullcalendar.js"></script>
+
+
+<!--FORMS STYLES-->
+@*<link href="~/Content/css/Forms.css" rel="stylesheet" />*@
+
+<style>
+
+    #Table_length{
+        display:none;
+    }
+
+    .Mayus {
+        text-transform: uppercase;
+    }
+
+    /*.Abierta{
+        background-color: #b14c4c;
+    }*/
+
+    .Disppnible {
+        background-color: aqua;
+    }
+
+
+
+    /******************Estilo para tabla **************************/
+
+    .day {
+        height: 34px;
+        width: 218px;
+        padding: 0 7px 7px;
+        text-align: center;
+        line-height: 40px;
+        vertical-align: middle;
+        font-size: 16px;
+        color: #0065a8;
+    }
+
+    .weekview .screen {
+        overflow: hidden;
+        position: relative;
+        padding-left: 30px;
+    }
+
+    .Sala {
+        height: 34px;
+        width: 218px;
+        padding: 0 7px 7px;
+        text-align: center;
+        line-height: 40px;
+        vertical-align: middle;
+        font-size: 16px;
+        color: black;
+    }
+
+    .Funcion {
+        padding: 3px;
+        text-align: center;
+        line-height: 13px;
+        vertical-align: middle;
+        font-size: .8em;
+        color: rgba(51, 51, 51, 0.66);
+        font-weight: bold;
+        /*background: #E0E0E0;*/
+        /*background: repeating-linear-gradient(
+      120deg,
+      rgba(224, 224, 224, 224) 20px,
+      rgba(224, 224, 224, 224) 40px,
+      rgba(51, 51, 51, 0.14) 40px,
+      rgba(51, 51, 51, 0.14) 60px
+    );*/
+        background-color: #d8d3d3;
+        background-image: url(images/radial_bg.png);
+        background-position: center center;
+        background-repeat: no-repeat;
+        /* background: -webkit-gradient(radial, center center, 0, center center, 460, from(#1b1a1a), to(#1b1a1a));
+    background: -webkit-radial-gradient(circle, rgba(224, 224, 224, 0.49), rgba(30, 29, 29, 0.19));
+    background: -moz-radial-gradient(circle, rgba(224, 224, 224, 0.49), rgba(30, 29, 29, 0.20));
+    background: -ms-radial-gradient(circle, rgba(224, 224, 224, 0.49), rgba(30, 29, 29, 0.18));*/
+        font-family: 'Open Sans', Geneva, Tahoma, Verdana;
+    }
+
+        .Funcion h4 {
+            color: #01579B;
+            font-size: .7em;
+        }
+
+    #table-header-days {
+        font-size: 1em;
+        font-family: 'Open Sans', Geneva, Tahoma, Verdana;
+        color: #333;
+        font-weight: bold;
+    }
+
+    #SalaTitle {
+        vertical-align: middle;
+    }
+
+    /*.Bordes {
+    border-color: black;
+    border: solid 1px;
+}*/
+</style>
+<script>
+
+    function guardar_EncabezadoProgramacion() {
+        var validator = $("#formulario_Programacion_Encabezado").validate();
+        if (validator.form()) {
+            $.ajax({
+                type: "POST",
+                url: "/Programacion/GuardarProgramacionEncabezado",
+                data: {
+                    RowID_EncabezadoProgramacion: $("#row_id").val(),
+                    formulario: $("#formulario_Programacion_Encabezado").serialize(),
+                },
+                success: function (data) {
+                    if (data.respuesta.includes("Error")) {
+                        swal("ERROR", data.respuesta, "error");
+                        return;
+                    } else {
+                        jQuery(".Detalle_Programacion").slideDown();
+                        swal("OK", data.respuesta, "success");
+                        $("#row_id").val(data.RowID_EncabezadoProgramacion);
+                    }
+                },
+                error: function (data) {
+                    swal("ERROR", data.respuesta, "error");
+                }
+            });
+        }
+    }
+
+
+
+
+    function CargarSalas(IdTeatro) {
+
+        $("#Sala").empty();
+        $.ajax({
+            type: "POST",
+            url: "/Programacion/CargarSalas",
+            data: {
+                IdTeatro: IdTeatro,
+            },
+            success: function (data) {
+                $("#Sala").empty()
+                $("#Sala").append("<option disabled selected value='' >Seleccione una Opcion</opción>").trigger("chosen:updated");
+                data.forEach(function (salas) {
+                    $("#Sala").append("<option value='" + salas.rowid + "' >" + salas.Nombre + "</option>").trigger("chosen:updated");
+                    $("#Sala").trigger("chosen:updated");
+                });
+            }
+        });
+    }
+
+    function CargarPeliculas(IdSala) {
+
+        $("#DetallePelicula").empty();
+        $.ajax({
+            type: "POST",
+            url: "/Programacion/CargarPeliculas",
+            data: {
+                IdSala: IdSala,
+            },
+            success: function (data) {
+                $("#DetallePelicula").empty()
+                $("#DetallePelicula").append("<option disabled selected value='' >Seleccione una Opción</option>").trigger("chosen:updated");
+                data.forEach(function (detallePelicula) {
+                    $("#DetallePelicula").append("<option value='" + detallePelicula.RowId + "' >" + detallePelicula.Nombre
+                        + " " + detallePelicula.Formato + " " + detallePelicula.Version + " " +"</option>").trigger("chosen:updated");
+                    $("#DetallePelicula").trigger("chosen:updated");
+                });
+            },
+            error: function (data) {
+                swal("ERROR", data, "error");
+            }
+        });
+    }
+
+    //function CargarFunciones(IdEncabezado) {
+    //    $(".listaFunciones").empty();
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/Programacion/CargarFunciones",
+    //        data: {
+    //            IdEncabezado: IdEncabezado,
+    //        },
+    //        success: function (data) {
+    //            $(".listaFunciones").empty()
+    //            data.forEach(function (Funcion) {
+    //                $(".listaFunciones").append("<option value='" + Funcion.RowId + "' >" + salas.Nombre + "</option>").trigger("chosen:updated");
+    //            });
+    //        }
+    //    });
+    //}
+    function CargarDuracion(IdPeliculaDetalle) {
+        $("#Duracion").empty();
+        $.ajax({
+            type: "POST",
+            url: "/Programacion/CargarDuracion",
+            data: {
+                IdPeliculaDetalle: IdPeliculaDetalle,
+            },
+            success: function (data) {
+                $("#Duracion").empty();
+                $("#Duracion").val(data.duracion);
+                $("#TTotal").empty();
+                $("#TTotal").val(data.duracion);
+                SumarTiempo();
+            }
+        });
+    }
+
+
+    function SumarTiempo() {
+        var jad = $("#Tadicional").val();
+        var TiempoAseo = 0;
+        var TiempoCorto = 0;
+
+        if ( $("#TadicionalAseo").val() >= 0 &&  $("#TadicionalAseo").val() != "" ) {
+            TiempoAseo = $("#TadicionalAseo").val() ;
+        }
+
+
+        if ( $("#Tadicional").val() >= 0 &&  $("#Tadicional").val() != "" ) {
+            TiempoCorto = $("#Tadicional").val() ;
+        }
+
+        $("#TTotal").empty();
+        var suma = parseInt($("#Duracion").val(), 10)+ parseInt(TiempoAseo, 10) +   parseInt(TiempoCorto, 10);
+        $("#TTotal").val(
+            suma
+        );
+
+        CalcularCantidadFunciones();
+
+    }
+
+    function CalcularCantidadFunciones(){
+        if ( $("#TTotal").val() >= 0 &&  $("#TTotal").val() != "" ) {
+            var tiempoFuncion = parseInt($("#TTotal").val(), 10)
+            var tiempoDisponible = 900; // Minutos entre las 8 am y las 11 pm
+            $("#CantFunciones").val(Math.floor(tiempoDisponible / tiempoFuncion));
+        }
+
+    }
+
+
+
+    function Guardar_DetalleProgramacion() {
+        debugger
+        var validator = $("#formulario_Programacion_Detalle").validate();
+        if (validator.form()) {
+            if($("#HorasFunciones").val() == null  || $("#HorasFunciones").val() == ""){
+                return;
+            }
+            ModalProcesandoShow();
+            $.ajax({
+                type: "POST",
+                url: "/Programacion/Guardar_Funciones",
+                data: {
+                    formulario: $("#formulario_Programacion_Detalle").serialize(),
+                    RowID_EncabezadoProgramacion: $("#row_id").val(),
+                },
+                success: function (data) {
+                    debugger
+                    ModalProcesandoHiden();
+                    if (data.includes("Error")) {
+                        swal("ERROR", data, "error");
+                        return;
+                    } else if(data == ""){
+                        cargarFunciones();
+                        CargarFuncionesGraficas();
+                    }
+                    else{
+                        swal(data);
+                        cargarFunciones();
+                        CargarFuncionesGraficas();
+                    }
+                },
+                error: function (data) {
+                    debugger
+                    ModalProcesandoHiden();
+                    swal("ERROR", data, "error");
+                }
+            });
+        }
+    }
+
+    function ValidarFechasFunciones(){
+        debugger;
+        var correcto = true;
+        var fechaInicialFunciones = new Date($("#FechaInicialFunciones").val()).toLocaleDateString();
+        var fechaFinalFunciones =new Date($("#FechaFinalFunciones").val()).toDateString();
+        var fechaInicialVigencia =new Date($("#FechaInicial").val());
+        var fechaFinalVigencia =new Date($("#FechaFinal").val());
+
+        if (fechaInicialFunciones < fechaInicialVigencia || fechaInicialFunciones > fechaFinalVigencia || fechaInicialFunciones.toString()  == "Invalid Date")
+        {
+            correcto = false;
+        }
+        else if (fechaFinalFunciones < fechaInicialVigencia || fechaFinalFunciones > fechaFinalVigencia || fechaFinalFunciones.toString()  == "Invalid Date")
+        {
+            correcto = false;
+        }
+        else if (fechaInicialFunciones < fechaInicialVigencia && fechaFinalFunciones > fechaFinalVigencia)
+        {
+            correcto = false;
+        }
+        //.toLocaleDateString()
+        return correcto;
+    }
+
+    function cargarFunciones() {
+        $.ajax({
+            type: "POST",
+            url: "/Programacion/CargarFunciones",
+            data: {
+                RowID_Encabezado: $("#row_id").val(),
+            },
+            success: function (data) {
+                ModalProcesandoHiden();
+                jQuery(".listaFunciones > tbody").empty().append(data);
+            },
+            error: function (data) {
+                ModalProcesandoHiden();
+                swal("ERROR", data, "error");
+            }
+        });
+    }
+
+
+    function CargarFuncionesGraficas() {
+        $.ajax({
+            type: "POST",
+            url: "/Programacion/CargarFuncionesGraficas",
+            data: {
+                RowID_Encabezado: $("#row_id").val(),
+                DiasACorrer: 0
+            },
+            success: function (data) {
+                ModalProcesandoHiden();
+                $("#Cant_Dias").val("0");
+                jQuery("#Table").empty().append(data);
+            },
+            error: function (data) {
+                ModalProcesandoHiden();
+                swal("ERROR", data, "error");
+            }
+        });
+    }
+
+    function MoverFuncionesGraficas(cantidad) {
+        debugger
+        var dias = $("#Cant_Dias").val();
+        var suma = (parseInt($("#Cant_Dias").val(), 10) + cantidad);
+        $("#Cant_Dias").val(suma);
+        ModalProcesandoShow();
+        $.ajax({
+            type: "POST",
+            url: "/Programacion/CargarFuncionesGraficas",
+            data: {
+                RowID_Encabezado: $("#row_id").val(),
+                DiasACorrer:  $("#Cant_Dias").val()
+            },
+            success: function (data) {
+                ModalProcesandoHiden();
+                jQuery("#Table").empty().append(data);
+            },
+            error: function (data) {
+                ModalProcesandoHiden();
+                swal("ERROR", data, "error");
+            }
+        });
+    }
+
+    function EliminarFuncion(RowID_Funcion) {
+        $.ajax({
+            type: "POST",
+            url: "/Programacion/EliminarFuncion",
+            data: {
+                RowID_Funcion: RowID_Funcion,
+            },
+            success: function (data) {
+                cargarFunciones();
+                CargarFuncionesGraficas();
+            },
+            error: function (data) {
+                swal("ERROR", data, "error");
+            }
+        });
+    }
+
+    function AsignarListaPrecios() {
+        ModalProcesandoShow();
+        var asd = $("#ListaPrecios option:selected").val();
+        $.ajax({
+            type: "POST",
+            url: "/Programacion/AsignarListaPrecios",
+            data: {
+                RowID_ListaPrecios: $("#ListaPrecios option:selected").val(),
+                RowID_EncabezadoProgramacion: $("#row_id").val(),
+            },
+            success: function (data) {
+                ModalProcesandoHiden();
+                if (data.includes("Error")) {
+                    swal("ERROR", data, "error");
+                } else {
+                    swal("OK", data.respuesta, "success");
+                }
+            },
+            error: function (data) {
+                ModalProcesandoHiden();
+                swal("ERROR", data, "error");
+            }
+        });
+    }
+
+
+    function ValidarRangoFunciones(arreglo){
+
+        if ( $("#TTotal").val() >= 0 &&  $("#TTotal").val() != "" ) {
+
+
+            //recorreremos todos los elementos hasta n-1
+            for(i=0;i<(arreglo.length-1);i++)
+                //recorreremos todos los elementos hasta n-i, tomar en cuenta los ultimos no tiene caso ya que ya estan acomodados.
+                for(j=0;j<(arreglo.length-i);j++){
+
+                    //comparamos
+                    if(arreglo[j]>arreglo[j+1]){
+                        //guardamos el numero mayor en el auxiliar
+                        aux=arreglo[j];
+                        //guardamos el numero menor en el lugar correspondiente
+                        arreglo[j]=arreglo[j+1];
+                        //asignamos el auxiliar en el lugar correspondiente
+                        arreglo[j+1]=aux;
+                    }
+                }
+
+            var tiempoFuncion = parseInt($("#TTotal").val(), 10)
+            for(i=0;i<arreglo.length;i++){
+
+
+
+            }
+        }else{
+            arreglo = null;
+        }
+
+
+        return arreglo
+    }
+
+
+    function EliminarFunciones(arreglo){
+        for(i=0;i<arreglo.length;i++){
+            $('#HorasFunciones').tagsinput('remove', arreglo[i]);
+        }
+    }
+
+    function AgregarFunciones(arreglo){
+        for(i=0;i<arreglo.length;i++){
+            $('#HorasFunciones').tagsinput('add', arreglo[i]);
+        }
+    }
+
+
+    $(document).ready(function () {
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+
+
+        jQuery(".chosen").chosen({ width: " 100%;" });
+        jQuery(".TeatroChosen").chosen({ width: " 100%;" });
+        jQuery(".SalaChosen").chosen({ width: " 100%;" });
+        jQuery(".PeliculaChosen").chosen({ width: " 100%;" });
+        jQuery(".ListaPreciosChosen").chosen({ width: " 100%;" });
+
+
+
+        $("#Tadicional").val(15);
+        $("#TadicionalAseo").val(10);
+
+
+
+        $('#demo-dp-range .input-daterange').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+
+        $('.solo-numero').keyup(function () {
+            this.value = (this.value + '').replace(/[^0-9]/g, '');
+        });
+
+        if (@Model.RowID!=0) {
+            $(".Detalle_Programacion").slideDown();
+        }else{
+            $(".Detalle_Programacion").slideUp();
+        }
+
+        $('#HorasFunciones').tagsinput({
+            allowDuplicates: false
+        });
+
+
+        $('#HorasFunciones').on('itemAdded', function(event) {
+            var tag = event.item;
+            if(!/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(tag)){
+                $('#HorasFunciones').tagsinput('remove', tag, {preventPost: true});
+            }
+            var arregloAOrdenar=$('#HorasFunciones').tagsinput('items');
+            var arregloOrdenado =ValidarRangoFunciones(arregloAOrdenar);
+        });
+
+
+
+
+
+
+        @*debugger
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            editable: true,
+            droppable: true, // this allows things to be dropped onto the calendar
+            drop: function () {
+                // is the "remove after drop" checkbox checked?
+                if ($('#drop-remove').is(':checked')) {
+                    // if so, remove the element from the "Draggable Events" list
+                    $(this).remove();
+                }
+            },
+            defaultDate: Date.now(),
+            eventLimit: true, // allow "more" link when too many events
+
+            events: [
+
+                    @if (ViewBag.listaFunciones != null)
+                            {
+                                System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
+                                foreach (CinemaPOS.Models.Funcion funcion in ViewBag.listaFunciones)
+                                {
+                                    @:{title: '@funcion.DetallePelicula.EncabezadoPelicula.TituloLocal',
+                                                @:start: '@funcion.Fecha T @funcion.HoraInicial:00',
+                                                @:end: '@funcion.Fecha T  @funcion.HoraFinal:00',
+                                                @:className: 'purple'
+                                                @:},
+                                        }
+                    }
+
+
+                    ]
+                    });*@
+
+
+
+        //$('#calendar').fullCalendar({
+        //    header: {
+        //        left: 'prev,next today',
+        //        center: 'title',
+        //        right: 'month,agendaWeek'
+        //    },
+        //    editable: true,
+        //    droppable: true, // this allows things to be dropped onto the calendar
+        //    drop: function () {
+        //        // is the "remove after drop" checkbox checked?
+        //        if ($('#drop-remove').is(':checked')) {
+        //            // if so, remove the element from the "Draggable Events" list
+        //            $(this).remove();
+        //        }
+        //    },
+        //    defaultDate: Date.now(),
+        //    eventLimit: true, // allow "more" link when too many events
+
+
+        //    events: function (start, end, timezone, callback) {
+        //        $.ajax({
+        //            type: "POST",
+        //            url: '/Programacion/TraerFunciones',
+        //            data: {
+        //                RowID_Encabezado: $("#row_id").val(),
+        //            },
+        //            success: function (doc) {
+        //                debugger;
+        //                var events = [];
+        //                doc.forEach(function (funcion) {
+        //                    if (funcion.FechaInicialMes < 10) {
+        //                        funcion.FechaInicialMes = "0" + funcion.FechaInicialMes;
+        //                    }
+        //                    if (funcion.FechaInicialDia < 10) {
+        //                        funcion.FechaInicialDia = "0" + funcion.FechaInicialDia;
+        //                    }
+        //                    if (funcion.FechaInicialHora < 10) {
+        //                        funcion.FechaInicialHora = "0" + funcion.FechaInicialHora;
+        //                    }
+        //                    if (funcion.FechaInicialMinuto < 10) {
+        //                        funcion.FechaInicialMinuto = "0" + funcion.FechaInicialMinuto;
+        //                    }
+        //                    if (funcion.FechaFinalHora < 10) {
+        //                        funcion.FechaFinalHora = "0" + funcion.FechaFinalHora;
+        //                    }
+        //                    if (funcion.FechaFinalMinuto < 10) {
+        //                        funcion.FechaFinalMinuto = "0" + funcion.FechaFinalMinuto;
+        //                    }
+        //                    var inicial = funcion.FechaInicialAno + "-" + funcion.FechaInicialMes + "-" + funcion.FechaInicialDia + "T" + funcion.FechaInicialHora + ":" + funcion.FechaInicialMinuto + ":00";
+        //                    var final = funcion.FechaInicialAno + "-" + funcion.FechaInicialMes + "-" + funcion.FechaInicialDia + "T" + funcion.FechaFinalHora + ":" + funcion.FechaFinalMinuto + ":00";
+
+        //                    events.push({
+        //                        title: funcion.titulo + funcion.version,
+        //                        start: inicial,
+        //                        end: final,
+        //                    });
+        //                });
+        //                callback(events);
+        //            }
+        //        });
+        //    }
+        //});
+
+
+
+    });
+
+
+
+
+    function Duplicar_Funcion(RowID_Funcion){
+        $.ajax({
+            type:"POST",
+            url:"/Programacion/Buscar_Funcion",
+            data:{
+                RowID_Funcion: RowID_Funcion
+            },
+            success:function(data){
+                debugger
+                data.forEach(function(objecto){
+                    debugger
+                    $(".SalaChosen").val(objecto.SalaID).trigger("chosen:updated");
+                    $(".PeliculaChosen").val(objecto.PeliculaID).trigger("chosen:updated");
+                    CargarDuracion(objecto.PeliculaID);
+                    $("#Tadicional").val(objecto.TiempoCorto);
+                    $("#TadicionalAseo").val(objecto.TiempoAseo);
+                    $("FechaInicialFunciones").val(objecto.FechaFuncion);
+                    $("FechaFinalFunciones").val(objecto.FechaFuncion);
+
+                });
+            },
+            error:function(){
+                swal("Error al obtener la informacion de la funcion " +RowID_Funcion+" ", "");
+            }
+        });
+    }
+
+
+
+
+    $(document).ready(function () {
+        $('#Table').DataTable();
+    });
+
+</script>
+
+<div id="Dialog"></div>
+
+    <div>
+        <p>
+            <a class="btn btn-success" href='@Url.Action("VistaProgramacion", "Programacion")'>Vista Programación</a>
+        </p>
+    </div>
+
+
+
+
+
+
+    <!--Panel with Tabs-->
+    <!--===================================================-->
+    <div class="panel panel-dark">
+
+        <!--Panel heading-->
+        <div class="panel-heading">
+            <div class="panel-control">
+
+                <!--Nav tabs-->
+                <ul class="nav nav-tabs">
+                    <li class="active" id="tabEncabezado"><a data-toggle="tab" href="#Encabezado">Encabezado</a></li>
+                    <li><a data-toggle="tab" href="#Funciones" id="tabFunciones" class="Detalle_Programacion">Funciones</a></li>
+                    <li><a data-toggle="tab" href="#Tabla" class="Detalle_Programacion">Tabla</a></li>
+                    <li><a data-toggle="tab" href="#ListaPrecio" class="Detalle_Programacion">Asignar Lista Precios</a></li>
+                </ul>
+
+            </div>
+            <h3 class="panel-title">Programación</h3>
+        </div>
+
+        <!--Panel body-->
+        <div class="panel-body">
+
+            <!--Tabs content-->
+            <div class="tab-content">
+                <div id="Encabezado" class="tab-pane fade in active">
+
+                    <form name="formulario_Programacion_Encabezado" id="formulario_Programacion_Encabezado" onsubmit="return false">
+                        <input type="hidden" class="row_id" id="row_id" name="RowID_EncabezadoProgramacion" value="@Model.RowID" />
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label ">Nombre:*</label>
+                                <input type="text" name="Titulo" class="form-control Mayus" value="@Model.Titulo" required maxlength="30">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">Teatro:*</label>
+                                <select name="Teatro" id="Teatro" class="form-control TeatroChosen" onchange="CargarSalas(this.value)" required>
+                                    <option value="" disabled selected>Seleccione una opción:</option>
+                                    @foreach (CinemaPOS.Models.Teatro item in ViewBag.ListaTeatro)
+                                    {
+                                        if (Model.RowID != 0 && item.RowID == Model.TeatroID)
+                                        {
+                                            <option value="@item.RowID" selected>@item.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.RowID">@item.Nombre</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group" id="demo-dp-range">
+                                <label class="control-label">Fecha vigencia:*</label>
+                                <div class="input-daterange input-group" id="datepicker">
+                                    @if (Model.RowID != 0)
+                                    {
+                                        <input type="text" class="form-control" name="FechaInicial" id="FechaInicial" value="@Model.FechaInicial.Value.ToString("dd/MM/yyyy")" required>
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control" name="FechaInicial" id="FechaInicial" value="@Model.FechaInicial" required>
+                                    }
+                                    <span class="input-group-addon">a:</span>
+                                    @if (Model.RowID != 0)
+                                    {
+                                        <input type="text" class="form-control" name="FechaFinal" id="FechaFinal" value="@Model.FechaFinal.Value.ToString("dd/MM/yyyy")" required>
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control" name="FechaFinal" id="FechaFinal" value="@Model.FechaFinal" required>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">Estado:*</label>
+                                <select name="Estado" id="Estado" class="form-control chosen" required>
+                                    <option value="" disabled selected> Seleccione una opción:</option>
+                                    @foreach (CinemaPOS.Models.Estado item in ViewBag.ListaEstados)
+                                    {
+                                        if (Model.RowID != 0 && item.RowID == Model.EstadoID)
+                                        {
+                                            <option value="@item.RowID" selected>@item.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.RowID">@item.Nombre</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            @if (Model.RowID == 0)
+                            {
+                                <input class="btn btn-success" type="submit" value="Crear Programación" onclick="guardar_EncabezadoProgramacion()">
+                            }
+                            else
+                            {
+                                <input class="btn btn-success" type="submit" value="Actualizar Programación" onclick="guardar_EncabezadoProgramacion()">
+                            }
+                        </div>
+                    </form>
+
+                </div>
+
+                <div id="Funciones" class="tab-pane fade">
+                    <form name="formulario_Programacion_Detalle" id="formulario_Programacion_Detalle" onsubmit="return false">
+                        <div class="row">
+
+
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label class="control-label">Sala:*</label>
+                                    <select name="Sala" id="Sala" class="form-control SalaChosen" onchange="CargarPeliculas(this.value)" required>
+                                        <option value="" disabled selected>Seleccione una opción</option>
+                                        @if (ViewBag.listaSalas != null)
+                                        {
+                                            foreach (CinemaPOS.Models.Sala item in ViewBag.listaSalas)
+                                            {
+                                                <option value="@item.RowID">
+                                                    @item.Nombre
+                                                @foreach (CinemaPOS.Models.FormatoSala itemSala in item.FormatoSala)
+                                                {
+                                                    @itemSala.Opcion.Codigo;@:
+                                         }
+                                            </option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">Pelicula:*</label>
+                                    <select name="DetallePelicula" id="DetallePelicula" class="form-control PeliculaChosen" onchange="CargarDuracion(this.value)" required>
+                                        <option value=" " disabled selected>Seleccione una opción</option>
+                                        @if (ViewBag.ListaPeliculas != null)
+                                        {
+                                            foreach (CinemaPOS.Models.TeatroPelicula pelicula in ViewBag.ListaPeliculas)
+                                            {
+                                                foreach (CinemaPOS.Models.DetallePelicula DetallePelicula in pelicula.EncabezadoPelicula.DetallePelicula)
+                                                {
+                                                    <option value="@DetallePelicula.RowID">@DetallePelicula.EncabezadoPelicula.TituloLocal @DetallePelicula.Opcion.Codigo @DetallePelicula.Opcion1.Codigo2</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-1">
+                                <div class="form-group">
+                                    <label class="control-label">Duración:</label>
+                                    <input type="text" name="Duracion" id="Duracion" class="form-control" readonly>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-1">
+                                <div class="form-group">
+                                    <label class="control-label">T. Corto:</label>
+                                    <input class="form-control solo-numero" id="Tadicional" name="Tadicional" required onchange="SumarTiempo()">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-1">
+                                <div class="form-group">
+                                    <label class="control-label">T. Aseo:</label>
+                                    <input class="form-control solo-numero" id="TadicionalAseo" name="TadicionalAseo" required onchange="SumarTiempo()">
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-1">
+                                <div class="form-group">
+                                    <label class="control-label">T. Total:</label>
+                                    <input type="text" name="TTotal" id="TTotal" class="form-control" readonly>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label class="control-label">Cant Funciones:</label>
+                                    <input class="form-control solo-numero  add-tooltip" id="CantFunciones" name="CantFunciones" data-toggle="tooltip" data-placement="bottom" data-original-title="Cantidad de funciones que se pueden programar de 8AM a 11PM" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group" id="demo-dp-range">
+                                    <label class="control-label">Rango Funciones:*</label>
+                                    <div class="input-daterange input-group" id="datepicker">
+                                        @if (Model.RowID != 0)
+                                        {
+                                            <input type="text" class="form-control" name="FechaInicialFunciones" id="FechaInicialFunciones" value="@Model.FechaInicial.Value.ToString("dd/MM/yyyy")" required>
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" name="FechaInicialFunciones" id="FechaInicialFunciones" value="@Model.FechaInicial" required>
+                                        }
+                                        <span class="input-group-addon">a:</span>
+                                        @if (Model.RowID != 0)
+                                        {
+                                            <input type="text" class="form-control" name="FechaFinalFunciones" id="FechaFinalFunciones" value="@Model.FechaFinal.Value.ToString("dd/MM/yyyy")" required>
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" name="FechaFinalFunciones" id="FechaFinalFunciones" value="@Model.FechaFinal" required>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label">Horas funciones:*</label>
+                                    <input type="text" class="form-control" placeholder="HH:mm" name="HorasFunciones" id="HorasFunciones" data-role="tagsinput">
+                                </div>
+                            </div>
+                        </div>
+                        <input class="btn btn-success" type="submit" value="Adicionar" onclick="Guardar_DetalleProgramacion()">
+                    </form>
+                    <hr />
+                    <table id="demo-dt-basic" class="table table-striped table-bordered listaFunciones" cellspacing="0" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>ID</th>
+                                <th>Teatro - Sala</th>
+                                <th>Película</th>
+                                <th>Formato</th>
+                                <th>Fecha</th>
+                                <th>Hora Inicial - Final</th>
+                                <th>T. Total</th>
+                                <th>Precio</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.listaFunciones != null)
+                            {
+                                System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
+                                foreach (CinemaPOS.Models.Funcion funcion in ViewBag.listaFunciones)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="dropdown">
+                                                <a class="dropdown-toggle rowlink" data-toggle="dropdown" href="#" title="Opciones función #@funcion.RowID">
+                                                    <i class="glyphicon glyphicon-th-list"></i>
+                                                </a>
+                                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                                    <li>
+                                                        <a href="javascript:EliminarFuncion(@funcion.RowID)" style="color:black;" data-toggle="tooltip" data-placement="bottom" title="Eliminar función No. @funcion.RowID">
+                                                            <i class="ion-trash-a"></i> Eliminar
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:Duplicar_Funcion(@funcion.RowID)" style="color:black;" data-toggle="tooltip" data-placement="bottom" title="Duplicar función No. @funcion.RowID">
+                                                            <i class="ion-edit"></i> Duplicar
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>@funcion.RowID </td>
+                                        <td>@funcion.Sala.Teatro.Nombre - @funcion.Sala.Nombre @funcion.Sala.ServicioSala.First().Opcion.Codigo</td>
+                                        <td>@funcion.DetallePelicula.EncabezadoPelicula.TituloLocal </td>
+                                        <td>@funcion.DetallePelicula.Opcion.Codigo @funcion.DetallePelicula.Opcion1.Codigo2</td>
+                                        @if (funcion.Fecha != null)
+                                        {
+                                            <td>@ci.DateTimeFormat.GetDayName(funcion.Fecha.Value.DayOfWeek) - @funcion.Fecha.Value.ToString("dd/MM/yyyy")</td>}
+                                        else
+                                        {
+                                            <td> @funcion.Fecha</td>
+                                        }
+                                        <td>
+                                            @if (funcion.HoraInicial != null)
+                                            {
+                                                @funcion.HoraInicial.Value;
+                                            }
+                                            else
+                                            {
+                                                @funcion.HoraInicial
+                                            }
+                                            -
+                                            @if (funcion.HoraFinal != null)
+                                            {
+                                                @funcion.HoraFinal.Value;
+                                            }
+                                            else
+                                            {
+                                                @funcion.HoraFinal
+                                            }
+                                        </td>
+
+                                        <td>@(Convert.ToInt32(funcion.TiempoCorto) + funcion.DetallePelicula.EncabezadoPelicula.Duracion + Convert.ToInt32(funcion.TiempoAseo))</td>
+                                        <td>
+                                            <table>
+                                                @foreach (CinemaPOS.Models.ListaPrecioFuncion precio in funcion.ListaPrecioFuncion)
+                                                {
+                                                    if (precio.ListaDetalle.TipoListaDetalle != null)
+                                                    {
+                                                        <tr>
+                                                            <td>@precio.ListaDetalle.Precio.Value.ToString("N0") - @precio.ListaDetalle.Opcion2.Nombre </td>
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr>
+                                                            <td>@precio.ListaDetalle.Precio</td>
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </table>
+                                        </td>
+                                        @if (funcion.Estado != null)
+                                        {
+                                            <td>@funcion.Estado.Descripcion </td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+
+
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="Tabla" class="tab-pane fade">
+                    <input type="hidden" id="Cant_Dias" name="Cant_Dias" value="0" />
+                    <div class="">
+                        <a class="btn btn-success btn-icon add-tooltip" href="javascript:MoverFuncionesGraficas(-5)" data-toggle="tooltip" data-placement="bottom" data-original-title="5 días atras"><i class="ion-arrow-left-a icon-lg"></i> </a>
+                        <a class="btn btn-success btn-icon add-tooltip" href="javascript:CargarFuncionesGraficas()" data-toggle="tooltip" data-placement="bottom" data-original-title="Refrescar Funciones"><i class="glyphicon glyphicon-refresh icon-lg"></i></a>
+                        <a class="btn btn-success btn-icon add-tooltip" href="javascript:MoverFuncionesGraficas(5)" data-toggle="tooltip" data-placement="bottom" data-original-title="5 días adelante"><i class="ion-arrow-right-a icon-lg"></i> </a>    
+                    </div>
+                    
+                    <div id="FuncionesGraficas">
+                        @if (ViewBag.listaFunciones != null)
+                        {
+                            <table class="table table-responsive table-condensed table-hover table table-striped table-bordered" id="Table">
+                                <thead>
+                                    <tr>
+                                        <td class="day Bordes" id="table-header-days">
+                                            <p>Sala/Día</p>
+                                        </td>
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
+
+                                            <td class="day Bordes" id="table-header-days">
+                                                <p>@ci.DateTimeFormat.GetDayName(@Model.FechaInicial.Value.AddDays(i).DayOfWeek).ToUpper()  @Model.FechaInicial.Value.AddDays(i).ToString("dd/MM/yyyy")</p>
+                                            </td>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.listaSalas != null)
+                                    {
+                                        foreach (CinemaPOS.Models.Sala itemSala in ViewBag.listaSalas)
+                                        {
+                                            <tr>
+                                                <td class="Sala Bordes" id="SalaTitle">
+                                                    <p>@itemSala.Nombre </p>
+                                                </td>
+                                                @for (int i = 0; i < 5; i++)
+                                                {
+                                                    <td class="Bordes">
+                                                        @foreach (CinemaPOS.Models.Funcion funcion in ViewBag.listaFunciones)
+                                                        {
+                                                            if (funcion.SalaID == itemSala.RowID)
+                                                            {
+                                                                if (Model.FechaInicial.Value.AddDays(i) == funcion.Fecha.Value)//Mismo dia
+                                                                {
+                                                                    <p class="Funcion @funcion.Estado.Nombre" onclick="javascript:ModalEditarFun(@funcion.RowID)" style="cursor:pointer">
+                                                                        @funcion.DetallePelicula.EncabezadoPelicula.TituloLocal
+                                                                        @funcion.DetallePelicula.Opcion.Codigo
+                                                                        @funcion.DetallePelicula.Opcion1.Codigo2
+                                                                        <br />
+                                                                        @funcion.HoraInicial.Value  @funcion.HoraFinal.Value @*@funcion.Fecha.Value.ToString("dd/MM/yyyy")*@
+                                                                    </p>
+
+                                                                }
+                                                            }
+                                                        }
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                        }
+                    </div>
+
+
+
+
+                </div>
+
+                <div id="ListaPrecio" class="tab-pane fade">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">Listas de precios:</label>
+                                    <select name="ListaPrecios" id="ListaPrecios" class="form-control ListaPreciosChosen" required>
+                                        <option value="" disabled selected> Seleccione una Lista de precios:</option>
+                                        @foreach (CinemaPOS.Models.ListaEncabezado Lista in ViewBag.ListasPrecios)
+                                        {
+                                            <option value="@Lista.RowID">@Lista.Nombre </option>
+                                        }
+                                    </select>
+
+                                </div>
+                                <input class="btn btn-success" type="submit" value="Asignar" onclick="AsignarListaPrecios()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        function ModalEditarFun(rowID){
+            var urlWithCont = '../Programacion/ModalEditarFuncion?rowid=' + rowID;
+            $("#Dialog")
+            .load(urlWithCont.trim())
+            //.dialog('open');
+        }
+    </script>

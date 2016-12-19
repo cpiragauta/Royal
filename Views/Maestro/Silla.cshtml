@@ -1,0 +1,146 @@
+﻿@model CinemaPOS.Models.SalaObjeto
+
+@{
+    ViewBag.Title = "Formulario";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<script>
+
+    $(function () {
+        $("#tipo_silla").on("submit", function (e) {
+            e.preventDefault();
+            var f = $(this);
+            var formData = new FormData(document.getElementById("tipo_silla"));
+            var RowID_TipoSilla = $(".RowID_TipoSilla").val();
+            var documento = $(".imagen_actualiza").val();
+            if ($(".documento").val()==null) {
+                documento = $(".imagen_actualiza").val();
+            }
+
+            debugger;
+            //formData.append(f.attr("name"), $(this)[0].files[0]);
+            $.ajax({
+                url: "/Maestro/GuardarSilla",
+                type: "post",
+                dataType: "html",
+                data: formData,
+                success: function (data) {
+                    swal("La informacion fue almacena", data, "success");
+                    window.location = "/Maestro/VistaSilla/"
+
+                },
+                error: function () {
+                    console.log("Error");
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            })
+        });
+    });
+    $(document).ready(function () {
+        if (@Model.RowID!=0) {
+            $(".btn-success").empty().append('Actualizar Objeto @Model.Nombre');
+        }
+        new Switchery(document.getElementById('demo-sw-checked'));
+    })
+</script>
+<h2>Crear objeto sala</h2>
+<a class="btn btn-primary btn-icon" href="@Url.Action("VistaSilla", "Maestro")"><i class="ion-reply-all">  Vista objeto sala</i></a>
+<div id="page-content">
+    <div class="panel">
+        <!--Block Styled Form -->
+        <!--===================================================-->
+        <form name="tipo_silla" id="tipo_silla" enctype="multipart/form-data">
+            <input type="hidden" name="RowID_TipoSilla" value="@Model.RowID" class="RowID_TipoSilla" />
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Nombre</label>
+                            <input type="text" name="nombre" value="@Model.Nombre" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Tipo Objeto</label>
+                            <select class="form-control" name="tipo_objeto" required>
+
+                                @foreach (CinemaPOS.Models.Opcion tipos_objetos in ViewBag.TipoObjeto)
+                                {
+                                    if (Model.TipoObjetoID == tipos_objetos.RowID)
+                                    {
+                                        <option value="@tipos_objetos.RowID" selected>@tipos_objetos.Nombre</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@tipos_objetos.RowID">@tipos_objetos.Nombre</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Numeración</label>
+                            <div class="">
+                                @if (Model.Numeracion == true)
+                                {
+                                    <input id="demo-sw-checked" type="checkbox" name="numeracion" checked>
+                                }
+                                else
+                                {
+                                    <input id="demo-sw-checked" type="checkbox" name="numeracion">
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+
+
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Imagen</label>
+                            <div class="fileupload fileupload-new" data-provides="fileupload">
+                                <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
+                                    @if (Model.RowID != 0)
+                                    {
+                                        <img src="/@Model.Imagen" alt="">
+                                    }
+                                    else
+                                    {
+                                        <img src="/Repositorio_Imagenes/Imagenes_Generales/thumbnail-default.png" />
+                                    }
+                                </div>
+                                <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
+                                </div>
+                                <div>
+                                    <span class="btn btn-file">
+                                        <span class="fileupload-new">Seleccione imagen</span>
+                                        <span class="fileupload-exists">Cambiar</span>
+                                        <input type="hidden" value="@Model.Imagen" name="imagen_actualiza" class="imagen_actualiza" />
+                                        <input type="file" accept="image/jpeg,image/png,image/gif" name="documento" class="documento form-control">
+                                    </span>
+                                    <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remover</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-footer text-right">
+                <button class="btn btn-success">Crear Objeto</button>
+            </div>
+        </form>
+        <!--===================================================-->
+        <!--End Block Styled Form -->
+
+    </div>
+</div>
