@@ -1273,7 +1273,7 @@ namespace CinemaPOS.Controllers.Master
                 {
                     formulario = DeSerialize(formulario);
                     objTaq.Nombre = formulario["nombre"];
-                    objTaq.Resoluciones = formulario["resoluciones"];
+                    //objTaq.Resoluciones = formulario["resoluciones"];
                     objTaq.TeatroID = Convert.ToInt32(formulario["teatro"]);
                     objTaq.EstadoID = Convert.ToInt32(formulario["estado"]);
                     objTaq.CreadoPor = Session["usuario_creacion"].ToString();
@@ -1298,7 +1298,7 @@ namespace CinemaPOS.Controllers.Master
                     objTaq = db.Taquilla.Where(le => le.RowID == RowID_Encabezado).FirstOrDefault();
                     formulario = DeSerialize(formulario);
                     objTaq.Nombre = formulario["nombre"];
-                    objTaq.Resoluciones = formulario["resoluciones"];
+                    //objTaq.Resoluciones = formulario["resoluciones"];
                     objTaq.TeatroID = Convert.ToInt32(formulario["teatro"]);
                     objTaq.EstadoID = Convert.ToInt32(formulario["estado"]);
                     objTaq.ModificadoPor = Session["usuario_creacion"].ToString();

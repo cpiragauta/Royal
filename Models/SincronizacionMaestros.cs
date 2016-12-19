@@ -21,5 +21,6 @@ namespace CinemaPOS.Models
         public string EntidadLocal { get; set; }
         public string SincronizadoPor { get; set; }
         public System.DateTime FechaSincronizacion { get; set; }
+        public string Descripcion { get; set; }
     }
 }

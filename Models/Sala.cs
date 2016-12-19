@@ -35,6 +35,7 @@ namespace CinemaPOS.Models
         public Nullable<int> Cantidad_Filas { get; set; }
         public Nullable<int> Cantidad_Columnas { get; set; }
         public Nullable<int> Capacidad { get; set; }
+        public Nullable<int> RowIDCentral { get; set; }
     
         public virtual Estado Estado { get; set; }
         public virtual Opcion Opcion { get; set; }

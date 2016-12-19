@@ -23,14 +23,22 @@ namespace CinemaPOS.Models
         public int TeatroID { get; set; }
         public Nullable<int> EstadoID { get; set; }
         public string Nombre { get; set; }
-        public string Resoluciones { get; set; }
         public string CreadoPor { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public string ModificadoPor { get; set; }
         public Nullable<System.DateTime> FechaModificacion { get; set; }
         public Nullable<bool> Sincronizado { get; set; }
+        public string IP { get; set; }
+        public string Prefijo { get; set; }
+        public string RowIDCentral { get; set; }
+        public string ConsecutivoInicial { get; set; }
+        public string ConsecutivoFinal { get; set; }
+        public Nullable<System.DateTime> FechaInicial { get; set; }
+        public Nullable<System.DateTime> FechaFinal { get; set; }
+        public Nullable<int> TipoTaquillaID { get; set; }
     
         public virtual Estado Estado { get; set; }
+        public virtual Opcion Opcion { get; set; }
         public virtual Teatro Teatro { get; set; }
         public virtual ICollection<BoletaVendida> BoletaVendida { get; set; }
     }
