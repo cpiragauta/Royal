@@ -9,6 +9,9 @@ namespace CinemaPOS.Controllers
 {
     public class POSController : Controller
     {
+
+
+        //James controller
         //
         // GET: /POS/
 
