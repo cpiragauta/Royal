@@ -362,6 +362,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Content\Actividades.min.css" />
     <Content Include="Content\css\bootstrap-fileupload.css" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
@@ -1808,6 +1809,7 @@
     <Content Include="Content\premium\icon-sets\thumbs\solid-icons\halloween.png" />
     <Content Include="Content\premium\icon-sets\thumbs\solid-icons\hardware.png" />
     <Content Include="Content\premium\icon-sets\thumbs\solid-icons\hipster.png" />
+    <Content Include="Content\Tables.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Models\DAO_CinemaPOS.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
