@@ -22,6 +22,7 @@ namespace CinemaPOS
         CinemaPOSEntities db = new CinemaPOSEntities();
         CinemaPOSEntities dbCentral = new CinemaPOSEntities();
         CinemaPOSEntities dbLocal = new CinemaPOSEntities();
+        int cont = 0;
 
         public void InicializarConexiones(String ConnCentral, String ConnLocal)
         {
@@ -29,6 +30,8 @@ namespace CinemaPOS
             Parametros asjd = db.Parametros.FirstOrDefault(f => f.cod_parametro == ConnLocal);
             dbLocal.Database.Connection.ConnectionString = asjd.valor_parametros;
         }
+
+        #region Usuarios
 
         [WebMethod]
         public void SincronizarUsuariosSistema()
@@ -86,6 +89,80 @@ namespace CinemaPOS
 
             return usuarioReferencia;
         }
+
+        #endregion
+
+        #region Sala 
+
+        public void SincronizarSalasSistema()
+        {
+            InicializarConexiones("CONNCENTRAL", "CONNLOCAL");
+            List<Sala> SalaCentral = dbCentral.Sala.Where(f => f.Sincronizado == false).ToList();
+            if (SalaCentral.Count > 0)
+            {
+
+                Int32 rowid = SalaCentral[cont].RowID;
+                Sala Salacentral = dbCentral.Sala.FirstOrDefault(f => f.RowID == rowid);
+
+                Sala SalaReferencia = dbLocal.Sala.FirstOrDefault(f => f.RowIDCentral == rowid);
+                cont = cont + 1;
+                //Si ya existe lo Actualizo
+                if (SalaReferencia != null)
+                {
+
+                    SalaReferencia.Cantidad_Columnas = Salacentral.Cantidad_Columnas;
+                    SalaReferencia.Cantidad_Filas = Salacentral.Cantidad_Filas;
+                    SalaReferencia.Capacidad = Salacentral.Capacidad;
+                    SalaReferencia.CreadoPor = Salacentral.CreadoPor;
+                    SalaReferencia.FechaCreacion = Salacentral.FechaCreacion;
+                    SalaReferencia.Nombre = Salacentral.Nombre;
+                    SalaReferencia.Sincronizado = true;
+                    SalaReferencia.ModificadoPor = Session["usuario_creacion"].ToString();
+                    SalaReferencia.FechaModificacion = DateTime.Now;
+                    try
+                    {
+                        dbLocal.SaveChanges();
+                    }
+                    catch { SincronizarSalasSistema(); }
+                    GuardarHistorico(Salacentral.RowID, "Sala", SalaReferencia.RowID, "Sala", "Actualizacion");
+                    //Actualizo el central
+                    Salacentral.Sincronizado = true;
+                    dbCentral.SaveChanges();
+                }
+                else//Si no existe lo creo
+                {
+                    SalaReferencia = new Sala();
+                    SalaReferencia.Cantidad_Columnas = Salacentral.Cantidad_Columnas;
+                    SalaReferencia.Cantidad_Filas = Salacentral.Cantidad_Filas;
+                    SalaReferencia.Capacidad = Salacentral.Capacidad;
+                    SalaReferencia.CreadoPor = Salacentral.CreadoPor;
+                    SalaReferencia.EstadoID = Salacentral.EstadoID;
+                    SalaReferencia.FechaCreacion = Salacentral.FechaCreacion;
+                    SalaReferencia.Nombre = Salacentral.Nombre;
+                    SalaReferencia.RowIDCentral = Salacentral.RowID;
+                    SalaReferencia.Sincronizado = true;
+                    SalaReferencia.TeatroID = Salacentral.TeatroID;
+                    SalaReferencia.TipoAudioID = Salacentral.TipoAudioID;
+                    dbLocal.Sala.Add(SalaReferencia);
+                    dbLocal.SaveChanges();
+                    GuardarHistorico(Salacentral.RowID, "Sala", SalaReferencia.RowID, "Sala", "Creacion");
+                    Salacentral.Sincronizado = true;
+                    dbCentral.SaveChanges();
+                }
+                if (cont == SalaCentral.Count)
+                {
+                    return;
+                }
+                else
+                {
+                    cont = cont - 1;
+                    SincronizarSalasSistema();
+                }
+            }
+        }
+
+        #endregion
+
         public void GuardarHistorico(int RowIDCentral, String EntidadCentral, int RowIDLocal, String EntidadLocal, String Descripcion)
         {
             SincronizacionMaestros Historico = new SincronizacionMaestros();

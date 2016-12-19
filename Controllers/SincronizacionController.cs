@@ -29,5 +29,13 @@ namespace CinemaPOS.Controllers
             return "SINCRONIZADO OK";
         }
 
+        public String SincronizarSalasDesdeCentral()
+        {
+            String respuesta = "";
+            RoyalSync WS = new RoyalSync();
+            WS.SincronizarSalasSistema();
+            return "SINCRONIZADO OK";
+        }
+
     }
 }
