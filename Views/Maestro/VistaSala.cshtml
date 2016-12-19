@@ -15,6 +15,15 @@
     <!--DataTables Sample [ SAMPLE ]-->
     <script src="~/Content/js/demo/tables-datatables.js"></script>
 </head>
+<style>
+    .Verde {
+        background-color: rgb(139, 195, 74);
+    }
+
+    .Rojo {
+        background-color: rgba(236, 64, 64, 0.71);
+    }
+</style>
 <p>
     <a class="btn btn-success" href='@Url.Action("Sala", "Maestro")'>Crear Sala</a>
 </p>
@@ -31,19 +40,23 @@
                     <th>Capacidad</th>
                     <th>Audio</th>
                     <th>Estado</th>
+                    <th class="ion-ios-loop-strong"></th>
+
                     <th></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (CinemaPOS.Models.Sala salas in ViewBag.Salas)
+            @foreach (CinemaPOS.Models.Sala salas in ViewBag.Salas)
                 {
+                    String Color = salas.Sincronizado == true ? "Verde" : "Rojo";
                     <tr>
                         <td>@salas.Teatro.Nombre</td>
                         <td>@salas.Nombre</td>
                         <td>@salas.Capacidad</td>
                         <td>@salas.Opcion.Nombre</td>
                         <td>@salas.Estado.Descripcion</td>
+                        <td class="@Color"></td>
                         <td><a href="@Url.Action("Sala", "Maestro", new { @RowID_Sala =salas.RowID})"><i class="ion-edit"></i></a></td>
                         <td><a title="Editar Mapa Sala" href="@Url.Action("MapaSala", "Maestro", new { @RowID_Sala =salas.RowID})" class="ion-grid editar_mapa"></a></td>
                     </tr>
