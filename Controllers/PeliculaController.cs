@@ -15,7 +15,7 @@ namespace CinemaPOS.Controllers.Pelicula
         [CheckSessionOutAttribute]
         public ActionResult Pelicula(int? RowID_Pelicula)
         {
-            ViewBag.Distribuidor = db.Tercero.Where(t=>t.Opcion2.Codigo=="DISTRIBUIDOR").ToList();
+            ViewBag.Distribuidor = db.Tercero.Where(t => t.Opcion2.Codigo == "DISTRIBUIDOR").ToList();
             ViewBag.Pais = db.Pais.ToList();
             ViewBag.Clasificacion = db.Opcion.Where(c => c.Tipo.Codigo == "TIPOCLASIFICACIONPELICULA").ToList();
             ViewBag.Version = db.Opcion.Where(c => c.Tipo.Codigo == "TIPOVERSION").ToList();
@@ -36,23 +36,23 @@ namespace CinemaPOS.Controllers.Pelicula
             }
 
             ViewBag.TeatrosDisp = TeatrosV2;
-            if (RowID_Pelicula==null)
+            if (RowID_Pelicula == null)
             {
-              
+
                 return View(new EncabezadoPelicula());
             }
             else
             {
                 return View(db.EncabezadoPelicula.Where(ep => ep.RowID == RowID_Pelicula).FirstOrDefault());
             }
-            
+
         }
 
         [CheckSessionOutAttribute]
         public JsonResult GuardarPelicula(FormCollection formulario, HttpPostedFileBase afiche, HttpPostedFileBase thumbnail, int? RowID_Pelicula)
         {
 
-            #region Encabezado 
+            #region Encabezado
             DetallePelicula ObjDetalle = new DetallePelicula();
             Boolean derecho_corto;
             EncabezadoPelicula ObjPelicula = new EncabezadoPelicula();
@@ -65,7 +65,7 @@ namespace CinemaPOS.Controllers.Pelicula
             {
                 derecho_corto = false;
             }
-            if (RowID_Pelicula==0)
+            if (RowID_Pelicula == 0)
             {
                 ObjPelicula.DerechoCorto = derecho_corto;
                 ObjPelicula.Duracion = ConvertirHoraMinutos(formulario["duracion"]);
@@ -80,7 +80,7 @@ namespace CinemaPOS.Controllers.Pelicula
                 ObjPelicula.WebOficial = formulario["web_oficial"];
                 ObjPelicula.FechaEstreno = ModelosPropios.Util.HoraInsertar(formulario["fecha_estreno"]);
                 ObjPelicula.EstadoID = int.Parse(db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOPELICULA" && e.Nombre == "Confirmada").Select(e => e.RowID).First().ToString());
-                ObjPelicula.CreadoPor =  Session["usuario_creacion"].ToString(); 
+                ObjPelicula.CreadoPor = Session["usuario_creacion"].ToString();
                 ObjPelicula.FechaCreacion = DateTime.Now;
                 db.EncabezadoPelicula.Add(ObjPelicula);
                 db.SaveChanges();
@@ -109,7 +109,7 @@ namespace CinemaPOS.Controllers.Pelicula
             int codigo_pelicula = ObjPelicula.RowID;
             #region Genero Pelicula
             var generos = formulario["genero_pelicula"].Split(',');
-            if (generos.Count()!=0)
+            if (generos.Count() != 0)
             {
                 if (RowID_Pelicula != 0 && ObjPelicula.GeneroPelicula.Count() != 0)
                 {
@@ -124,28 +124,28 @@ namespace CinemaPOS.Controllers.Pelicula
                 {
                     obj_genero.EncabezadoPeliculaID = codigo_pelicula;
                     obj_genero.TipoGeneroID = int.Parse(generos[i].ToString());
-                    obj_genero.CreadoPor= Session["usuario_creacion"].ToString();
+                    obj_genero.CreadoPor = Session["usuario_creacion"].ToString();
                     obj_genero.FechaCreacion = DateTime.Now;
                     db.GeneroPelicula.Add(obj_genero);
                     db.SaveChanges();
                 }
             }
             #endregion
-            #region Detalle 
-            if (formulario["formato[]"]!=null)
+            #region Detalle
+            if (formulario["formato[]"] != null)
             {
                 var formatos = formulario["formato[]"].Split(',');
                 var version = formulario["version[]"].Split(',');
                 if (formatos.Length != ObjPelicula.DetallePelicula.Count())
                 {
                     int cantidad_detalles = ObjPelicula.DetallePelicula.Count();
-                                        int estadoId = db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOPELICULA" && e.Nombre == "EnCreacion").FirstOrDefault().RowID;
+                    int estadoId = db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOPELICULA" && e.Nombre == "EnCreacion").FirstOrDefault().RowID;
                     for (int i = cantidad_detalles; i < formatos.Length; i++)
                     {
                         int FormatoID = int.Parse(formatos[i].ToString());
                         int VersionID = int.Parse(version[i].ToString());
-                           // = db.DetallePelicula.Where(dt => dt.TipoFormatoID ==lol1  && dt.TipoIdiomaID ==  && dt.EncabezadoPeliculaID == ObjPelicula.RowID).Count();
-                        if (db.DetallePelicula.Where(dt=>dt.TipoFormatoID== FormatoID && dt.TipoIdiomaID == VersionID && dt.EncabezadoPeliculaID==ObjPelicula.RowID).Count()==0)
+                        // = db.DetallePelicula.Where(dt => dt.TipoFormatoID ==lol1  && dt.TipoIdiomaID ==  && dt.EncabezadoPeliculaID == ObjPelicula.RowID).Count();
+                        if (db.DetallePelicula.Where(dt => dt.TipoFormatoID == FormatoID && dt.TipoIdiomaID == VersionID && dt.EncabezadoPeliculaID == ObjPelicula.RowID).Count() == 0)
                         {
                             ObjDetalle.EncabezadoPeliculaID = codigo_pelicula;
                             ObjDetalle.TipoFormatoID = FormatoID;
@@ -163,14 +163,14 @@ namespace CinemaPOS.Controllers.Pelicula
 
             #endregion
 
-            #region Elenco 
+            #region Elenco
             var actores = formulario["actores"].Split(',');
             Elenco ObjElenco = new Elenco();
             if (actores.Count() != 0)
             {
-                if (RowID_Pelicula!=0 && ObjPelicula.Elenco.Count()!=0)
+                if (RowID_Pelicula != 0 && ObjPelicula.Elenco.Count() != 0)
                 {
-                    foreach (Elenco item in ObjPelicula.Elenco.Where(e=>e.EncabezadoPelicula.RowID==ObjPelicula.RowID && e.Opcion.Codigo== "ACTOR").ToList())
+                    foreach (Elenco item in ObjPelicula.Elenco.Where(e => e.EncabezadoPelicula.RowID == ObjPelicula.RowID && e.Opcion.Codigo == "ACTOR").ToList())
                     {
                         db.Elenco.Remove(item);
                         db.SaveChanges();
@@ -213,7 +213,7 @@ namespace CinemaPOS.Controllers.Pelicula
             MedioPelicula ObjMedio = new MedioPelicula();
             string ruta_fiche = "";
             string ruta_thumbnail = "";
-            if (RowID_Pelicula == 0 ||ObjPelicula.MedioPelicula.Count()==0)
+            if (RowID_Pelicula == 0 || ObjPelicula.MedioPelicula.Count() == 0)
             {
                 //inserta solamente el afiche
                 if (afiche != null)
@@ -257,7 +257,7 @@ namespace CinemaPOS.Controllers.Pelicula
                     }
                     afiche.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Poster_Peliculas/" + ruta_fiche));
                     ruta_fiche = "Repositorio_Imagenes/Poster_Peliculas/" + ruta_fiche;
-                    
+
                 }
                 // Actualiza solamente el afiche en miniatura
                 if (thumbnail != null)
@@ -268,7 +268,7 @@ namespace CinemaPOS.Controllers.Pelicula
                     {
                         System.IO.File.Delete(path);
                     }
-                    
+
                     thumbnail.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Poster_Peliculas/" + ruta_thumbnail));
                     ruta_thumbnail = "Repositorio_Imagenes/Poster_Peliculas/" + ruta_thumbnail;
                 }
@@ -281,7 +281,7 @@ namespace CinemaPOS.Controllers.Pelicula
                 ObjMedio.EstadoID = int.Parse(db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOPELICULA" && e.Nombre == "Confirmada").Select(e => e.RowID).First().ToString());
                 ObjMedio.CreadoPor = Session["usuario_creacion"].ToString();
                 ObjMedio.FechaCreacion = DateTime.Now;
-                
+
                 db.MedioPelicula.Add(ObjMedio);
                 db.SaveChanges();
             }
@@ -390,9 +390,9 @@ namespace CinemaPOS.Controllers.Pelicula
                         db.SaveChanges();
                         i = i + 1;
                     }
-                    if (i+1!=ObjPelicula.PorcentajeParticipacion.Count())
+                    if (i + 1 != ObjPelicula.PorcentajeParticipacion.Count())
                     {
-                        for (int j=i; j < porcentajes.Length; j++)
+                        for (int j = i; j < porcentajes.Length; j++)
                         {
                             ObjParticipacion.EncabezadoPeliculaID = codigo_pelicula;
                             ObjParticipacion.Porcentaje = int.Parse(porcentajes[i]);
@@ -487,7 +487,7 @@ namespace CinemaPOS.Controllers.Pelicula
                     proccess = "ok";
                 }
                 else
-                {proccess = "error";}
+                { proccess = "error"; }
             }
             return Json(proccess, JsonRequestBehavior.AllowGet);
         }
@@ -499,7 +499,7 @@ namespace CinemaPOS.Controllers.Pelicula
             List<Teatro> TeatrosV2 = db.Teatro.ToList();
             foreach (TeatroPelicula item in TeatroNoDisp)
             {
-                foreach (var item2 in db.Teatro.Where(f=>f.RowID==item.TeatroID))
+                foreach (var item2 in db.Teatro.Where(f => f.RowID == item.TeatroID))
                 {
                     TeatrosV2.Remove(item2);
                 }
@@ -513,7 +513,7 @@ namespace CinemaPOS.Controllers.Pelicula
             return View();
         }
 
-        public JsonResult GuardarTeatro(int rowidPelicula,int rowidTeatro)
+        public JsonResult GuardarTeatro(int rowidPelicula, int rowidTeatro)
         {
             TeatroPelicula teatro_pelicula = new TeatroPelicula();
             string validate = "";
@@ -530,9 +530,9 @@ namespace CinemaPOS.Controllers.Pelicula
                     validate = "ok";
                 }
                 catch (Exception)
-                {validate = "error";}
+                { validate = "error"; }
             }
-            return Json(validate,JsonRequestBehavior.AllowGet);
+            return Json(validate, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -542,36 +542,37 @@ namespace CinemaPOS.Controllers.Pelicula
         {
             TeatroPelicula teatro_pelicula = new TeatroPelicula();
             string validate = "";
-           try{
-               var TeatroNoDisp = db.TeatroPelicula.Where(f => f.EncabezadoPeliculaID == rowidPelicula).ToList();
-               List<Teatro> Teatros = new List<Teatro>();
-               List<Teatro> TeatrosV2 = db.Teatro.ToList();
-               foreach (TeatroPelicula item in TeatroNoDisp)
-               {
-                   foreach (var item2 in db.Teatro.Where(f => f.RowID == item.TeatroID))
-                   {
-                       TeatrosV2.Remove(item2);
-                   }
+            try
+            {
+                var TeatroNoDisp = db.TeatroPelicula.Where(f => f.EncabezadoPeliculaID == rowidPelicula).ToList();
+                List<Teatro> Teatros = new List<Teatro>();
+                List<Teatro> TeatrosV2 = db.Teatro.ToList();
+                foreach (TeatroPelicula item in TeatroNoDisp)
+                {
+                    foreach (var item2 in db.Teatro.Where(f => f.RowID == item.TeatroID))
+                    {
+                        TeatrosV2.Remove(item2);
+                    }
 
-               }
-
-
-               foreach (var item3 in TeatrosV2)
-               {
-                   teatro_pelicula.TeatroID = item3.RowID;
-                   teatro_pelicula.EncabezadoPeliculaID = rowidPelicula;
-                   teatro_pelicula.CreadoPor = Session["usuario_creacion"].ToString();
-                   teatro_pelicula.FechaCreacion = DateTime.Now;
-                   db.TeatroPelicula.Add(teatro_pelicula);
-                   db.SaveChanges();
-                   validate = "ok";
-
-               }
-                  
                 }
-                catch (Exception)
-                { validate = "error"; }
-            
+
+
+                foreach (var item3 in TeatrosV2)
+                {
+                    teatro_pelicula.TeatroID = item3.RowID;
+                    teatro_pelicula.EncabezadoPeliculaID = rowidPelicula;
+                    teatro_pelicula.CreadoPor = Session["usuario_creacion"].ToString();
+                    teatro_pelicula.FechaCreacion = DateTime.Now;
+                    db.TeatroPelicula.Add(teatro_pelicula);
+                    db.SaveChanges();
+                    validate = "ok";
+
+                }
+
+            }
+            catch (Exception)
+            { validate = "error"; }
+
             return Json(validate, JsonRequestBehavior.AllowGet);
         }
 
@@ -579,8 +580,8 @@ namespace CinemaPOS.Controllers.Pelicula
 
         [CheckSessionOutAttribute]
         public JsonResult CargarTeatro(Int32 rowidPelicula)
-        {            
-          ////llenar 
+        {
+            ////llenar 
             var TeatroNoDisp = db.TeatroPelicula.Where(f => f.EncabezadoPeliculaID == rowidPelicula).ToList();
             List<Teatro> Teatros = new List<Teatro>();
             List<Teatro> TeatrosV2 = db.Teatro.ToList();
@@ -588,14 +589,14 @@ namespace CinemaPOS.Controllers.Pelicula
             {
                 foreach (var item2 in db.Teatro.Where(f => f.RowID == item.TeatroID))
                 {
-                     TeatrosV2.Remove(item2);
+                    TeatrosV2.Remove(item2);
                 }
 
             }
 
 
             ///Para formar el Json
-            var query = (from Teatro  in TeatrosV2
+            var query = (from Teatro in TeatrosV2
                          select new
                          {
                              RowId = Teatro.RowID,
@@ -621,7 +622,7 @@ namespace CinemaPOS.Controllers.Pelicula
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
-      
+
 
     }
 

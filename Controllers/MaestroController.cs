@@ -155,6 +155,7 @@ namespace CinemaPOS.Controllers.Master
         [CheckSessionOutAttribute]
         public JsonResult Guardar_Precio(FormCollection formulario, int RowID_Encabezado, int? RowID_Detalle)
         {
+
             string respuesta = "";
             string tipoAlert = "2";
             ListaDetalle ObjDetalle = new ListaDetalle();
@@ -162,6 +163,7 @@ namespace CinemaPOS.Controllers.Master
             int estado = int.Parse(db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOLISTAPRECIO" && e.Nombre == "EnElaboracion").Select(s => s.RowID).First().ToString());
             // int.Parse(db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOSALA" && e.Nombre == "EnFuncionamiento").Select(e => e.RowID).First().ToString());
             formulario = DeSerialize(formulario);
+            int tipo_tarifa = int.Parse(formulario["tipo_tarifa"]);
             if (RowID_Detalle != null)
             {
                 ObjDetalle = db.ListaDetalle.Where(ld => ld.RowID == RowID_Detalle).FirstOrDefault();
@@ -179,7 +181,7 @@ namespace CinemaPOS.Controllers.Master
                 int RowID_Formato = int.Parse(formulario["formato"]);
                 TimeSpan horainicial = Convertir_A_Hora_Militar(formulario["hora_inicial"]);
                 TimeSpan horafinal = Convertir_A_Hora_Militar(formulario["hora_final"]);
-                List<ListaDetalle> obj_detalle_valida = objencabezado.ListaDetalle.Where(ld => ld.TipoFormatoID == RowID_Formato && ld.TipoServicioID == RowID_Servicio && ld.ListaEncabezadoID == RowID_Encabezado).ToList();
+                List<ListaDetalle> obj_detalle_valida = objencabezado.ListaDetalle.Where(ld => ld.TipoFormatoID == RowID_Formato && ld.TipoServicioID == RowID_Servicio && ld.ListaEncabezadoID == RowID_Encabezado && ld.TipoListaDetalle == tipo_tarifa).ToList();
                 if (horainicial >= horafinal)
                 {
                     respuesta = "La hora inicial no puede ser mayor a la final ";
@@ -260,8 +262,8 @@ namespace CinemaPOS.Controllers.Master
                                 ObjDetalle.TipoListaDetalle = int.Parse(formulario["tipo_tarifa"]);
                             }
                             ObjDetalle.DiasAsignados = formulario["dias"];
-                            ObjDetalle.Precio = int.Parse(formulario["precio"]);
-                            ObjDetalle.PrecioDistribuidor = int.Parse(formulario["precio_distribuidor"]);
+                            ObjDetalle.Precio = int.Parse(formulario["precio"].Replace(".", ""));
+                            ObjDetalle.PrecioDistribuidor = int.Parse(formulario["precio_distribuidor"].Replace(".", ""));
                             ObjDetalle.FechaInicial = ModelosPropios.Util.HoraInsertar(formulario["fecha_inicial"]);
                             ObjDetalle.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["fecha_final"]);
                             ObjDetalle.CreadoPor = Session["usuario_creacion"].ToString();
@@ -285,8 +287,8 @@ namespace CinemaPOS.Controllers.Master
                         {
                             ObjDetalle.TipoListaDetalle = int.Parse(formulario["tipo_tarifa"]);
                         }
-                        ObjDetalle.Precio = int.Parse(formulario["precio"]);
-                        ObjDetalle.PrecioDistribuidor = int.Parse(formulario["precio_distribuidor"]);
+                        ObjDetalle.Precio = int.Parse(formulario["precio"].Replace(".", ""));
+                        ObjDetalle.PrecioDistribuidor = int.Parse(formulario["precio_distribuidor"].Replace(".", ""));
                         ObjDetalle.FechaInicial = ModelosPropios.Util.HoraInsertar(formulario["fecha_inicial"]);
                         ObjDetalle.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["fecha_final"]);
                         ObjDetalle.CreadoPor = Session["usuario_creacion"].ToString();
@@ -381,7 +383,7 @@ namespace CinemaPOS.Controllers.Master
 
         public TimeSpan Convertir_A_Hora_Militar(string hora)
         {
-            DateTime localTime = ModelosPropios.Util.HoraInsertar(hora);
+            DateTime localTime = DateTime.Parse(hora);
             return TimeSpan.Parse(localTime.ToString("HH:mm"));
         }
         public JsonResult Buscar_Tarifa(int? RowID_Tarifa)
@@ -421,7 +423,7 @@ namespace CinemaPOS.Controllers.Master
                 obj_sala.Cantidad_Columnas = columnas;
                 db.SaveChanges();
             }
-            ViewBag.TipoSillas = db.SalaObjeto.Where(so=>so.Estado==true).ToList();
+            ViewBag.TipoSillas = db.SalaObjeto.Where(so => so.Estado == true).ToList();
             //*Modificado por James Bernal/
             return View(obj_sala);
         }
@@ -433,7 +435,7 @@ namespace CinemaPOS.Controllers.Master
                            {
                                RowID = st.RowID,
                                ruta = st.Imagen,
-                               TipoObjeto = st.Opcion.Nombre,
+                               TipoObjeto = st.Opcion1.Nombre,
                                Numeracion = st.Numeracion
                            }).ToList();
             String ruta = db.SalaObjeto.Where(st => st.RowID == RowID_TipoSilla).Select(f => f.Imagen).FirstOrDefault();
@@ -450,15 +452,15 @@ namespace CinemaPOS.Controllers.Master
             Sala obj_sala = db.Sala.Where(s => s.RowID == RowID_Sala).FirstOrDefault();
             if (RowID_Sala != 0)
             {
-                //db.Eliminar_sillas_sala(RowID_Sala);
+                db.Eliminar_sillas_sala(RowID_Sala);
                 //db.Database.ExecuteSqlCommand("exec Eliminar_sillas_sala"+RowID_Sala+"");
                 //var posicionx = formulario["posicionx[]"].Split(',');
                 //var posiciony = formulario["posiciony[]"].Split(',');
                 int? filas = obj_sala.Cantidad_Filas;
                 int? columnas = obj_sala.Cantidad_Columnas;
-                for (int i = 0; i < columnas; i++)
+                for (int i = 0; i < filas; i++)
                 {
-                    for (int j = 0; j < filas; j++)
+                    for (int j = 0; j < columnas; j++)
                     {
                         contador = contador + 1;
 
@@ -487,10 +489,10 @@ namespace CinemaPOS.Controllers.Master
             string Data_Table = "";
             if (RowID_Sala != 0)
             {
-                for (int i = 0; i < ObjSala.Cantidad_Columnas; i++)
+                for (int i = 0; i < ObjSala.Cantidad_Filas; i++)
                 {
                     Data_Table = Data_Table + "<tr class='fila_" + i + "' style='padding:0px,0px,0px,0px;'>";
-                    for (int j = 0; j < ObjSala.Cantidad_Filas; j++)
+                    for (int j = 0; j < ObjSala.Cantidad_Columnas; j++)
                     {
 
                         string clase = "posicion_objeto" + i + "_" + j + "";
@@ -502,7 +504,7 @@ namespace CinemaPOS.Controllers.Master
 
                         if (ObjSala.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault() != null)
                         {
-                            var tipoobjeto = "objeto  " + ObjSala.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault().SalaObjeto.Opcion.Nombre;
+                            var tipoobjeto = "objeto  " + ObjSala.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault().SalaObjeto.Opcion1.Nombre;
                             if (ObjSala.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault().SalaObjeto.Numeracion == true)
                             {
                                 tipoobjeto = tipoobjeto + " tipo_silla";
@@ -592,7 +594,7 @@ namespace CinemaPOS.Controllers.Master
                 ObjSala = db.Sala.Where(s => s.RowID == RowID_Sala).FirstOrDefault();
                 ObjSala.Nombre = formulario["nombre"];
                 ObjSala.TipoAudioID = int.Parse(formulario["tipo_audio"]);
-                ObjSala.EstadoID = int.Parse(db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOSALA" && e.Nombre == "EnFuncionamiento").Select(e => e.RowID).First().ToString());
+                ObjSala.EstadoID = int.Parse(formulario["estado"]);
                 ObjSala.TeatroID = int.Parse(formulario["teatro"].ToString());
                 ObjSala.Capacidad = int.Parse(formulario["capacidad"]);
                 ObjSala.ModificadoPor = Session["usuario_creacion"].ToString();
@@ -696,6 +698,7 @@ namespace CinemaPOS.Controllers.Master
         [CheckSessionOutAttribute]
         public ActionResult Silla(int? RowID_Silla)
         {
+            ViewBag.servicios = db.Opcion.Where(f => f.TipoID == 3);
             ViewBag.TipoObjeto = db.Opcion.Where(o => o.Tipo.Codigo == "TIPOOBJETO").ToList();
             if (RowID_Silla != null)
             {
@@ -705,12 +708,14 @@ namespace CinemaPOS.Controllers.Master
             {
                 return View(new SalaObjeto());
             }
+
+
         }
 
         [CheckSessionOutAttribute]
         public ActionResult VistaSilla()
         {
-            ViewBag.TipoSillas = db.SalaObjeto.Where(so=>so.Estado==true).ToList();
+            ViewBag.TipoSillas = db.SalaObjeto.ToList();
             return View();
         }
 
@@ -718,7 +723,6 @@ namespace CinemaPOS.Controllers.Master
         public JsonResult GuardarSilla(FormCollection formulario, HttpPostedFileBase documento, int? RowID_TipoSilla)
         {
 
-            //formulario = DeSerialize(formulario);
             Boolean numeracion;
             if (RowID_TipoSilla == 0)
             {
@@ -737,12 +741,12 @@ namespace CinemaPOS.Controllers.Master
                     string adjunto = formulario["nombre"] + Path.GetExtension(documento.FileName);
                     documento.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales/" + adjunto));
                     ObjSillaTipo.Nombre = formulario["nombre"];
-                    ObjSillaTipo.TipoObjetoID = int.Parse(formulario["tipo_objeto"]);
-                    ObjSillaTipo.Imagen = "Repositorio_Imagenes/Imagenes_Generales/" + adjunto;
+                    ObjSillaTipo.Imagen = Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales/" + adjunto);
                     ObjSillaTipo.CreadoPor = Session["usuario_creacion"].ToString();
                     ObjSillaTipo.FechaCreacion = DateTime.Now;
-                    ObjSillaTipo.Estado = true;
                     ObjSillaTipo.Numeracion = numeracion;
+                    ObjSillaTipo.ServicioID = int.Parse(formulario["servicio"]);
+                    ObjSillaTipo.TipoObjetoID = int.Parse(formulario["tipo_objeto"]);
                     db.SalaObjeto.Add(ObjSillaTipo);
                     db.SaveChanges();
                 }
@@ -789,23 +793,16 @@ namespace CinemaPOS.Controllers.Master
                 }
                 Silla_actualiza.Nombre = formulario["nombre"];
                 Silla_actualiza.Imagen = adjunto;
+                Silla_actualiza.ModificadoPor = Session["usuario_creacion"].ToString();
+                Silla_actualiza.FechaModificacion = DateTime.Now;
+                Silla_actualiza.ServicioID = int.Parse(formulario["servicio"]);
                 Silla_actualiza.TipoObjetoID = int.Parse(formulario["tipo_objeto"]);
-                Silla_actualiza.CreadoPor = Session["usuario_creacion"].ToString();
-                Silla_actualiza.FechaCreacion = DateTime.Now;
                 Silla_actualiza.Numeracion = numeracion;
                 db.SaveChanges();
             }
 
 
             return Json("Registro Exitoso");
-        }
-
-        public string EliminarObjeto(int RowID_Objeto)
-        {
-            SalaObjeto ObjetoElimina = db.SalaObjeto.Where(so => so.RowID == RowID_Objeto).FirstOrDefault();
-            ObjetoElimina.Estado = false;
-            db.SaveChanges();
-            return "Eliminado";
         }
         #endregion
 
@@ -890,8 +887,11 @@ namespace CinemaPOS.Controllers.Master
             }
             return ObjTeatro;
         }
-
-
+        public string Getip_Teatro(int? RowIDTeatro)
+        {
+            Teatro objteatro = db.Teatro.Where(t => t.RowID == RowIDTeatro).FirstOrDefault();
+            return objteatro.IP.ToString();
+        }
         #endregion
 
         #region Tercero
@@ -912,6 +912,7 @@ namespace CinemaPOS.Controllers.Master
             ViewBag.SexoID = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOSEXO").ToList();
             ViewBag.CiudadID = db.Ciudad.ToList().OrderBy(f => f.Nombre);
             ViewBag.TipoIdentificacion = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOIDENTIFICACION").ToList();
+            ViewBag.listaContactos = db.Contacto.Where(f => f.EmpresaID == RowID_Tercero).OrderBy(f => f.RowID).ToList();
             if (RowID_Tercero != null && RowID_Tercero != 0)
             {
                 RowID_Tercero = int.Parse(Request.Params["RowID_Tercero"].ToString());
@@ -1024,6 +1025,90 @@ namespace CinemaPOS.Controllers.Master
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [CheckSessionOutAttribute]
+        public JsonResult GuardarContacto(FormCollection formulario, int RowID_Tercero)
+        {
+            String respuesta = "";
+            formulario = DeSerialize(formulario);
+            Contacto contacto = new Contacto();
+            if (RowID_Tercero != 0)
+            {
+                try
+                {
+                    contacto.Identificacion = formulario["Identificacion"];
+                    contacto.Nombre = formulario["Nombre"];
+                    contacto.Apellido = formulario["Apellido"];
+                    contacto.CorreoElectronico = formulario["correoContacto"];
+                    contacto.Telefono = formulario["telefonoContacto"];
+                    contacto.EmpresaID = RowID_Tercero;
+                    db.Contacto.Add(contacto);
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                { return Json(new { respuesta = "Error " + ex.Message }); }
+                respuesta = "Guardado Correctamente";
+            }
+            return Json(respuesta);
+        }
+
+        [CheckSessionOutAttribute]
+        public JsonResult ActualizarContacto(FormCollection formulario, int RowID_Contacto)
+        {
+            String respuesta = "";
+            formulario = DeSerialize(formulario);
+            Contacto contacto = new Contacto();
+            if (RowID_Contacto != 0)
+            {
+                try
+                {
+                    contacto = db.Contacto.Where(f => f.RowID == RowID_Contacto).FirstOrDefault();
+                    contacto.Identificacion = formulario["Identificacion"];
+                    contacto.Nombre = formulario["Nombre"];
+                    contacto.Apellido = formulario["Apellido"];
+                    contacto.CorreoElectronico = formulario["correoContacto"];
+                    contacto.Telefono = formulario["telefonoContacto"];
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                { return Json(new { respuesta = "Error " + ex.Message }); }
+                respuesta = "Guardado Correctamente";
+            }
+            return Json(respuesta);
+        }
+
+
+        [CheckSessionOutAttribute]
+        public JsonResult ConsultarContacto(int RowID_contacto)
+        {
+            String respuesta = "";
+            Contacto contacto = new Contacto();
+
+            try
+            {
+                contacto = db.Contacto.Where(f => f.RowID == RowID_contacto).FirstOrDefault();
+                respuesta = "ok";
+            }
+            catch (Exception ex)
+            { return Json(new { contacto = contacto.Nombre }); }
+            return Json(new { row_id_c = contacto.RowID, identi = contacto.Identificacion, nom = contacto.Nombre, ape = contacto.Apellido, corr = contacto.CorreoElectronico, tele = contacto.Telefono });
+        }
+
+        public JsonResult RefrescarContactos(int? rowID)
+        {
+            var data = (from contactoTercero in db.Contacto.Where(f => f.EmpresaID == rowID)
+                        select new
+                        {
+                            rowid = contactoTercero.RowID,
+                            Identificacion = contactoTercero.Identificacion,
+                            Nombre = contactoTercero.Nombre,
+                            Apellido = contactoTercero.Apellido,
+                            Correo = contactoTercero.CorreoElectronico,
+                            Telefono = contactoTercero.Telefono
+                        }).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
 
         #region Opcion
@@ -1273,6 +1358,11 @@ namespace CinemaPOS.Controllers.Master
                 {
                     formulario = DeSerialize(formulario);
                     objTaq.Nombre = formulario["nombre"];
+                    objTaq.ConsecutivoInicial = formulario["consecutivoinicial"];
+                    objTaq.ConsecutivoFinal = formulario["consecutivofinal"];
+                    objTaq.FechaInicial = DateTime.Parse(formulario["fechainicial"]);
+                    objTaq.FechaFinal = DateTime.Parse(formulario["fechafinal"]);
+                    objTaq.IP = formulario["ip"];
                     //objTaq.Resoluciones = formulario["resoluciones"];
                     objTaq.TeatroID = Convert.ToInt32(formulario["teatro"]);
                     objTaq.EstadoID = Convert.ToInt32(formulario["estado"]);
@@ -1298,6 +1388,11 @@ namespace CinemaPOS.Controllers.Master
                     objTaq = db.Taquilla.Where(le => le.RowID == RowID_Encabezado).FirstOrDefault();
                     formulario = DeSerialize(formulario);
                     objTaq.Nombre = formulario["nombre"];
+                    objTaq.ConsecutivoInicial = formulario["consecutivoinicial"];
+                    objTaq.ConsecutivoFinal = formulario["consecutivofinal"];
+                    objTaq.FechaInicial = DateTime.Parse(formulario["fechainicial"]);
+                    objTaq.FechaFinal = DateTime.Parse(formulario["fechafinal"]);
+                    objTaq.IP = formulario["ip"];
                     //objTaq.Resoluciones = formulario["resoluciones"];
                     objTaq.TeatroID = Convert.ToInt32(formulario["teatro"]);
                     objTaq.EstadoID = Convert.ToInt32(formulario["estado"]);

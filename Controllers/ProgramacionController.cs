@@ -13,7 +13,7 @@ namespace CinemaPOS.Controllers
     {
 
         CinemaPOSEntities db = new CinemaPOSEntities();
-        
+
         [CheckSessionOutAttribute]
         public ActionResult VistaProgramacion(int? RowId)
         {
@@ -25,7 +25,7 @@ namespace CinemaPOS.Controllers
         {
             ViewBag.ListaTeatro = db.Teatro;
             ViewBag.ListasPrecios = db.ListaEncabezado.ToList();
-            ViewBag.ListaEstados = db.Estado.Where(f => f.TipoEstado.Codigo== "TIPOPROGRAMACIONENCABEZADO");
+            ViewBag.ListaEstados = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOPROGRAMACIONENCABEZADO");
             if (RowID_EncabezadoProgramacion != null && RowID_EncabezadoProgramacion != 0)
             {
                 RowID_EncabezadoProgramacion = int.Parse(Request.Params["RowID_EncabezadoProgramacion"].ToString());
@@ -34,7 +34,7 @@ namespace CinemaPOS.Controllers
                 if (programacion != null)
                 {
                     ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID);
-                    ViewBag.ListaPeliculas = db.TeatroPelicula.Where(f=> f.TeatroID == programacion.TeatroID);
+                    ViewBag.ListaPeliculas = db.TeatroPelicula.Where(f => f.TeatroID == programacion.TeatroID);
                     ViewBag.ListasPrecios = db.ListaEncabezado.Where(f => f.TeatroID == programacion.TeatroID);
                 }
                 return View(programacion);
@@ -48,7 +48,7 @@ namespace CinemaPOS.Controllers
         [CheckSessionOutAttribute]
         public JsonResult TraerFunciones(int? RowID_Encabezado)
         {
-            var query = (from funcion in db.Funcion.Where(f=>f.EncabezadoProgramacionID==RowID_Encabezado)
+            var query = (from funcion in db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_Encabezado)
                          select new
                          {
                              titulo = funcion.DetallePelicula.EncabezadoPelicula.TituloLocal,
@@ -60,14 +60,14 @@ namespace CinemaPOS.Controllers
                              FechaInicialMinuto = funcion.HoraInicial.Value.Minutes,
 
                              FechaFinalHora = funcion.HoraFinal.Value.Hours,
-                             FechaFinalMinuto = funcion.HoraFinal.Value.Minutes, 
+                             FechaFinalMinuto = funcion.HoraFinal.Value.Minutes,
 
                          }
            ).ToList();
             return Json(query);
-           
+
         }
-       // '2016-11-05T16:45:00',
+        // '2016-11-05T16:45:00',
         public JsonResult Buscar_Funcion(int? RowID_Funcion)
         {
             var objecto = (from o in db.Funcion.Where(ld => ld.RowID == RowID_Funcion).ToList()
@@ -91,7 +91,7 @@ namespace CinemaPOS.Controllers
             EncabezadoProgramacion ObjEncabezado = new EncabezadoProgramacion();
             formulario = DeSerialize(formulario);
 
-            IFormatProvider culture = new CultureInfo("es-ES",true);
+            IFormatProvider culture = new CultureInfo("es-ES", true);
             DateTime NuevaFechaInicial = ModelosPropios.Util.HoraInsertar(formulario["FechaInicial"]);
 
             respuesta = formulario["FechaInicial"] + "   " + NuevaFechaInicial.ToString();
@@ -121,7 +121,7 @@ namespace CinemaPOS.Controllers
                 {
                     db.EncabezadoProgramacion.Add(ObjEncabezado);
                     db.SaveChanges();
-                    respuesta = respuesta+ "Guardado Correctamente";
+                    respuesta = respuesta + "Guardado Correctamente";
                     RowID = ObjEncabezado.RowID;
                 }
                 catch (Exception ex)
@@ -205,13 +205,13 @@ namespace CinemaPOS.Controllers
             if (RowID_EncabezadoProgramacion != 0)
             {
                 DateTime FechaProgramacion = ModelosPropios.Util.HoraInsertar(formulario["FechaInicialFunciones"].ToString());
-                List<Funcion> FuncionesExistentes = db.Funcion.Where(f=> f.EncabezadoProgramacionID == RowID_EncabezadoProgramacion).ToList();
+                List<Funcion> FuncionesExistentes = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_EncabezadoProgramacion).ToList();
                 //Recorro Uno a uno los dias del rango que selecciono
                 TimeSpan diferencia = ModelosPropios.Util.HoraInsertar(formulario["FechaFinalFunciones"].ToString()) - ModelosPropios.Util.HoraInsertar(formulario["FechaInicialFunciones"].ToString());
                 DateTime FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["FechaFinalFunciones"].ToString());
                 TimeSpan HoraInicial = TimeSpan.MinValue;
                 TimeSpan HoraFinal;
-                for (int i =0; i <= diferencia.Days; i++)
+                for (int i = 0; i <= diferencia.Days; i++)
                 {
                     //Recorro una a una las funciones que ingresaron
                     foreach (String horaFuncion in HorasFunciones)
@@ -222,7 +222,8 @@ namespace CinemaPOS.Controllers
                             HoraFinal = HoraInicial.Add(TimeSpan.FromMinutes(Convert.ToDouble(formulario["TTotal"]))); //Inicial mas Total
                             ObjFuncion = CargarDatosFuncion(ObjFuncion, formulario, RowID_EncabezadoProgramacion, HoraInicial, HoraFinal, FechaProgramacion);
                             String validacion = ValidarFuncion(ObjFuncion, FuncionesExistentes);
-                            if(String.IsNullOrEmpty(validacion)){
+                            if (String.IsNullOrEmpty(validacion))
+                            {
                                 db.Funcion.Add(ObjFuncion);
                                 db.SaveChanges();
                                 if (i <= FechaFinal.Day)//Para adicionar la nueva que se creo
@@ -231,7 +232,8 @@ namespace CinemaPOS.Controllers
                                     ObjFuncion = new Funcion();//Limpio el Objeto
                                 }
                             }
-                            else{
+                            else
+                            {
                                 respuesta += validacion;
                                 ObjFuncion = new Funcion();//Limpio el Objeto
                             }
@@ -293,7 +295,7 @@ namespace CinemaPOS.Controllers
             int iDFormato3D = Formato2D.RowID;
             Sala Sala = db.Sala.FirstOrDefault(f => f.RowID == IdSala);
             foreach (FormatoSala item in Sala.FormatoSala) // Para Saber si tiene formato 2D y 3D
-	        {
+            {
                 if (item.Opcion == null)
                 {
                     Opcion Formato = db.Opcion.FirstOrDefault(f => f.RowID == item.TipoFormatoID);
@@ -302,24 +304,26 @@ namespace CinemaPOS.Controllers
                         iDFormato3D = Formato.RowID;
                     }
                 }
-		        else if (item.Opcion.Codigo == "3D"){
+                else if (item.Opcion.Codigo == "3D")
+                {
                     iDFormato3D = item.Opcion.RowID;
                 }
-	        }
-            List<TeatroPelicula> peliculas = db.TeatroPelicula.Where( f => f.TeatroID == Sala.TeatroID).ToList();
-            List<DetallePelicula>  detallePelicula2 = new List<DetallePelicula>();
+            }
+            List<TeatroPelicula> peliculas = db.TeatroPelicula.Where(f => f.TeatroID == Sala.TeatroID).ToList();
+            List<DetallePelicula> detallePelicula2 = new List<DetallePelicula>();
             foreach (TeatroPelicula item in peliculas)
-	        {
+            {
 
                 foreach (DetallePelicula item2 in item.EncabezadoPelicula.DetallePelicula)
                 {
-                    if (item2.TipoFormatoID == iDFormato2D || item2.TipoFormatoID == iDFormato3D) { //Si no tiene 3D, busco por 2D y 2D
+                    if (item2.TipoFormatoID == iDFormato2D || item2.TipoFormatoID == iDFormato3D)
+                    { //Si no tiene 3D, busco por 2D y 2D
                         detallePelicula2.Add(item2);
                     }
                 }
-	        }
+            }
             ///Para formar el Json
-            var query = (from detallePelicula in detallePelicula2                          
+            var query = (from detallePelicula in detallePelicula2
                          select new
                          {
                              RowId = detallePelicula.RowID,
@@ -328,8 +332,8 @@ namespace CinemaPOS.Controllers
                              Version = detallePelicula.Opcion1.Codigo
                          }
             ).ToList();
-            
-            return Json(query,JsonRequestBehavior.AllowGet);
+
+            return Json(query, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -342,32 +346,33 @@ namespace CinemaPOS.Controllers
             foreach (Funcion funcion in ListaFunciones)
             {
                 tabla = tabla + "<tr>";
-                tabla= tabla + "<td>"+
-                        "<div class=\"dropdown\">"+
-                               "<a class=\"dropdown-toggle rowlink\" data-toggle=\"dropdown\" href=\"#\" title=\"Opciones función #"+ funcion.RowID+"\">"+
-                                    "<i class=\"glyphicon glyphicon-th-list\"></i>"+
-                                "</a>"+
-                                "<ul class=\"dropdown-menu\" role=\"menu\" aria-labelledby=\"dLabel\">"+
-                                    "<li>"+
-                                        "<a href=\"javascript:EliminarFuncion("+funcion.RowID+")\" style=\"color:black;\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Eliminar función No."+ funcion.RowID+"\">"+
-                                            "<i class=\"ion-trash-a\"></i> Eliminar"+
-                                        "</a>"+
-                                    "</li>"+
-                                    "<li>"+
+                tabla = tabla + "<td>" +
+                        "<div class=\"dropdown\">" +
+                               "<a class=\"dropdown-toggle rowlink\" data-toggle=\"dropdown\" href=\"#\" title=\"Opciones función #" + funcion.RowID + "\">" +
+                                    "<i class=\"glyphicon glyphicon-th-list\"></i>" +
+                                "</a>" +
+                                "<ul class=\"dropdown-menu\" role=\"menu\" aria-labelledby=\"dLabel\">" +
+                                    "<li>" +
+                                        "<a href=\"javascript:EliminarFuncion(" + funcion.RowID + ")\" style=\"color:black;\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Eliminar función No." + funcion.RowID + "\">" +
+                                            "<i class=\"ion-trash-a\"></i> Eliminar" +
+                                        "</a>" +
+                                    "</li>" +
+                                    "<li>" +
                                         "<a href=\"javascript:Duplicar_Funcion(" + funcion.RowID + ")\" style=\"color:black;\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Duplicar función No." + funcion.RowID + "\">" +
-                                            "<i class=\"ion-edit\"></i> Duplicar"+
-                                        "</a>"+
-                                    "</li>"+
-                                "</ul>"+
-                            "</div>"+
+                                            "<i class=\"ion-edit\"></i> Duplicar" +
+                                        "</a>" +
+                                    "</li>" +
+                                "</ul>" +
+                            "</div>" +
                         "</td>";
 
                 tabla += "<td>" + funcion.RowID + "</td>";
-                tabla += "<td>"+ funcion.Sala.Teatro.Nombre+" - "+funcion.Sala.Nombre+" "+ funcion.Sala.ServicioSala.First().Opcion.Codigo+"</td>";
+                tabla += "<td>" + funcion.Sala.Teatro.Nombre + " - " + funcion.Sala.Nombre + " " + funcion.Sala.ServicioSala.First().Opcion.Codigo + "</td>";
                 tabla += "<td>" + funcion.DetallePelicula.EncabezadoPelicula.TituloLocal + "</td>";
                 tabla += "<td>" + funcion.DetallePelicula.Opcion.Codigo + " " + funcion.DetallePelicula.Opcion1.Codigo2 + "</td>";
-                if(funcion.Fecha != null ){
-                    tabla += "<td>" + ci.DateTimeFormat.GetDayName(funcion.Fecha.Value.DayOfWeek)+" - "+funcion.Fecha.Value.ToString("dd/MM/yyyy") + "</td>";
+                if (funcion.Fecha != null)
+                {
+                    tabla += "<td>" + ci.DateTimeFormat.GetDayName(funcion.Fecha.Value.DayOfWeek) + " - " + funcion.Fecha.Value.ToString("dd/MM/yyyy") + "</td>";
                 }
                 else
                 {
@@ -377,8 +382,10 @@ namespace CinemaPOS.Controllers
                 if (funcion.HoraInicial != null)
                 {
                     tabla += funcion.HoraInicial.Value;
-                }else{
-                    tabla +=  funcion.HoraInicial;
+                }
+                else
+                {
+                    tabla += funcion.HoraInicial;
                 }
                 tabla += " - ";
                 if (funcion.HoraFinal != null)
@@ -387,46 +394,46 @@ namespace CinemaPOS.Controllers
                 }
                 else
                 {
-                    tabla +=  @funcion.HoraFinal ;
+                    tabla += @funcion.HoraFinal;
                 }
-                tabla +=  "</td>";
+                tabla += "</td>";
                 tabla += "<td>" + (Convert.ToInt32(funcion.TiempoCorto) + funcion.DetallePelicula.EncabezadoPelicula.Duracion + Convert.ToInt32(funcion.TiempoAseo)) + "</td>";
 
-                tabla +=   "<td>";
-                tabla +=                         "<table>";
-                                        foreach (CinemaPOS.Models.ListaPrecioFuncion precio in funcion.ListaPrecioFuncion)
-                                        {
-                                            if (precio.ListaDetalle.TipoListaDetalle != null)
-                                            {
-                tabla +=                                 "<tr>";
-                tabla +=                                     "<td>"+precio.ListaDetalle.Precio+" - "+funcion.Sala.ServicioSala.First().Opcion.Codigo+"  "+@precio.ListaDetalle.TipoListaDetalle.Value+"</td>";
-                tabla +=                                "</tr>";
-                                            }
-                                            else
-                                            {
-                tabla +=                                "<tr>";
-                tabla +=                                    "<td>" + precio.ListaDetalle.Precio+" - "+funcion.Sala.ServicioSala.First().Opcion.Codigo+"</td>";
-                tabla +=                                "</tr>";
-                                            }
+                tabla += "<td>";
+                tabla += "<table>";
+                foreach (CinemaPOS.Models.ListaPrecioFuncion precio in funcion.ListaPrecioFuncion)
+                {
+                    if (precio.ListaDetalle.TipoListaDetalle != null)
+                    {
+                        tabla += "<tr>";
+                        tabla += "<td>" + precio.ListaDetalle.Precio + " - " + funcion.Sala.ServicioSala.First().Opcion.Codigo + "  " + @precio.ListaDetalle.TipoListaDetalle.Value + "</td>";
+                        tabla += "</tr>";
+                    }
+                    else
+                    {
+                        tabla += "<tr>";
+                        tabla += "<td>" + precio.ListaDetalle.Precio + " - " + funcion.Sala.ServicioSala.First().Opcion.Codigo + "</td>";
+                        tabla += "</tr>";
+                    }
 
-                                        }
-                tabla +=                   "</table>";
-                tabla +=               "</td>";
-                                    if (funcion.Estado != null)
-                                    {
-                tabla +=                    "<td>"+funcion.Estado.Descripcion+" </td>";
-                                    }
-                                    else
-                                    {
-                tabla +=                  "<td></td>";
-                                    }
+                }
+                tabla += "</table>";
+                tabla += "</td>";
+                if (funcion.Estado != null)
+                {
+                    tabla += "<td>" + funcion.Estado.Descripcion + " </td>";
+                }
+                else
+                {
+                    tabla += "<td></td>";
+                }
                 tabla = tabla + "</tr>";
             }
             return tabla;
         }
 
 
-         [CheckSessionOutAttribute]
+        [CheckSessionOutAttribute]
         public string CargarFuncionesGraficas(int RowID_Encabezado, int DiasACorrer)
         {
             string tabla = "";
@@ -462,40 +469,40 @@ namespace CinemaPOS.Controllers
             tabla += "      </tr>";
             tabla += "   </thead>";
             tabla += "<tbody>";
-         
-                 foreach (CinemaPOS.Models.Sala itemSala in listaSalas)
-                {
-                     tabla +=    "<tr>";
-                      tabla +=       "<td class=\"Sala Bordes\" id=\"SalaTitle\">";
-                       tabla +=          "<p>"+itemSala.Nombre+"</p>";
-                       tabla +=      "</td>";
-                       for (int i = DiasACorrer; i < cantDias; i++)
-                       {
-                        tabla +=         "<td class=\"Bordes\">";
-                                foreach (CinemaPOS.Models.Funcion funcion in ListaFunciones)
-                                {
-                                    if (funcion.SalaID == itemSala.RowID)
-                                    {
-                                        if (programacion.FechaInicial.Value.AddDays(i) <= programacion.FechaFinal.Value)//Para que no se pase
-                                        {
-                                            if (programacion.FechaInicial.Value.AddDays(i) == funcion.Fecha.Value)
-                                            {
-                                                tabla += "<p class=\"Funcion\" onclick=\"javascript:ModalEditarFun(" + funcion.RowID + ")\" style=\"cursor:pointer \">";
-                                                tabla += funcion.DetallePelicula.EncabezadoPelicula.TituloLocal + " ";
-                                                tabla += funcion.DetallePelicula.Opcion.Codigo + " ";
-                                                tabla += funcion.DetallePelicula.Opcion1.Codigo2;
-                                                tabla += "<br /> ";
-                                                tabla += funcion.HoraInicial.Value + "  " + funcion.HoraFinal.Value;// @*@funcion.Fecha.Value.ToString("dd/MM/yyyy")*@
-                                                tabla += "</p>";
 
-                                            }
-                                        }
-                                    }
+            foreach (CinemaPOS.Models.Sala itemSala in listaSalas)
+            {
+                tabla += "<tr>";
+                tabla += "<td class=\"Sala Bordes\" id=\"SalaTitle\">";
+                tabla += "<p>" + itemSala.Nombre + "</p>";
+                tabla += "</td>";
+                for (int i = DiasACorrer; i < cantDias; i++)
+                {
+                    tabla += "<td class=\"Bordes\">";
+                    foreach (CinemaPOS.Models.Funcion funcion in ListaFunciones)
+                    {
+                        if (funcion.SalaID == itemSala.RowID)
+                        {
+                            if (programacion.FechaInicial.Value.AddDays(i) <= programacion.FechaFinal.Value)//Para que no se pase
+                            {
+                                if (programacion.FechaInicial.Value.AddDays(i) == funcion.Fecha.Value)
+                                {
+                                    tabla += "<p class=\"Funcion\" onclick=\"javascript:ModalEditarFun(" + funcion.RowID + ")\" style=\"cursor:pointer \">";
+                                    tabla += funcion.DetallePelicula.EncabezadoPelicula.TituloLocal + " ";
+                                    tabla += funcion.DetallePelicula.Opcion.Codigo + " ";
+                                    tabla += funcion.DetallePelicula.Opcion1.Codigo2;
+                                    tabla += "<br /> ";
+                                    tabla += funcion.HoraInicial.Value + "  " + funcion.HoraFinal.Value;// @*@funcion.Fecha.Value.ToString("dd/MM/yyyy")*@
+                                    tabla += "</p>";
+
                                 }
-                       tabla +=          "</td>";
+                            }
                         }
-                    tabla +=     "</tr>";
+                    }
+                    tabla += "</td>";
                 }
+                tabla += "</tr>";
+            }
             tabla += "</tbody>";
             return tabla;
         }
@@ -505,7 +512,7 @@ namespace CinemaPOS.Controllers
         public JsonResult CargarDuracion(Int32 IdPeliculaDetalle)
         {
             DetallePelicula detalle = db.DetallePelicula.Where(f => f.RowID == IdPeliculaDetalle).FirstOrDefault();
-            var duracion="";
+            var duracion = "";
             try
             {
                 duracion = detalle.EncabezadoPelicula.Duracion.ToString();
@@ -579,7 +586,7 @@ namespace CinemaPOS.Controllers
             string respuesta = "", tipoRespuesta = "success";
             Funcion Funcion = db.Funcion.FirstOrDefault(f => f.RowID == RowID_Funcion);
             ListaDetalle Tarifa = db.ListaDetalle.FirstOrDefault(f => f.RowID == RowID_ListaPrecios);
-            
+
             ListaPrecioFuncion PrecioExiste = db.ListaPrecioFuncion.FirstOrDefault(f => f.FuncionID == Funcion.RowID && f.ListaDetalleID == Tarifa.RowID);
             if (PrecioExiste == null) //Validacion para que no se le asigne el mismo precio 2 veces
             {
@@ -602,13 +609,14 @@ namespace CinemaPOS.Controllers
 
         public bool ValidarMismoDia(Funcion funcion, ListaDetalle tarifa)
         {
-            bool respuesta= false;
+            bool respuesta = false;
             List<String> dias = tarifa.DiasAsignados.Split(',').ToList();
 
 
             CultureInfo ci = new CultureInfo("Es-Es");
             var diaFuncion = ci.DateTimeFormat.GetDayName(funcion.Fecha.Value.DayOfWeek);
-            foreach(String diaTarifa in dias){
+            foreach (String diaTarifa in dias)
+            {
                 if (diaTarifa.ToUpper() == diaFuncion.ToUpper().Replace("É", "E").Replace("Á", "A"))
                 {
                     respuesta = true;
@@ -618,11 +626,11 @@ namespace CinemaPOS.Controllers
             return respuesta;
         }
 
-        public JsonResult EliminarFuncion ( int RowID_Funcion)
+        public JsonResult EliminarFuncion(int RowID_Funcion)
         {
             if (db.Funcion.FirstOrDefault(f => f.RowID == RowID_Funcion) != null)
             {
-                List<ListaPrecioFuncion> PreciosFuncion = db.ListaPrecioFuncion.Where(f=> f.FuncionID == RowID_Funcion).ToList();
+                List<ListaPrecioFuncion> PreciosFuncion = db.ListaPrecioFuncion.Where(f => f.FuncionID == RowID_Funcion).ToList();
 
                 foreach (ListaPrecioFuncion item in PreciosFuncion)
                 {
@@ -636,9 +644,9 @@ namespace CinemaPOS.Controllers
             return Json("");
         }
 
-        public String ValidarFuncion(Funcion funcion , List<Funcion> FuncionesExistentes)
+        public String ValidarFuncion(Funcion funcion, List<Funcion> FuncionesExistentes)
         {
-            String respuesta = "";          
+            String respuesta = "";
             foreach (Funcion item in FuncionesExistentes)
             {
                 if (item.SalaID == funcion.SalaID)//Misma Sala
@@ -653,7 +661,7 @@ namespace CinemaPOS.Controllers
                         {
                             funcion.DetallePelicula = db.DetallePelicula.FirstOrDefault(f => f.RowID == funcion.DetallePeliculaID);
                         }
-                            
+
                         if (item.RowID != funcion.RowID) //Que no sea la misma funcion
                         {
                             //Menor a 0 La hora esta antes
@@ -666,7 +674,7 @@ namespace CinemaPOS.Controllers
                             }
                             else if (funcion.HoraFinal.Value >= item.HoraInicial.Value && funcion.HoraFinal.Value <= item.HoraFinal.Value)
                             {
-                                respuesta += " * " + funcion.DetallePelicula.EncabezadoPelicula.TituloLocal +" " + funcion.DetallePelicula.Opcion.Nombre + " el día " + funcion.Fecha.Value.ToString("dd/MM/yyyy") + " " + funcion.HoraInicial + "\n\n";
+                                respuesta += " * " + funcion.DetallePelicula.EncabezadoPelicula.TituloLocal + " " + funcion.DetallePelicula.Opcion.Nombre + " el día " + funcion.Fecha.Value.ToString("dd/MM/yyyy") + " " + funcion.HoraInicial + "\n\n";
                                 return respuesta;
                             }
                             else if (funcion.HoraInicial.Value >= item.HoraInicial.Value && funcion.HoraFinal.Value <= item.HoraFinal.Value)
@@ -678,7 +686,7 @@ namespace CinemaPOS.Controllers
                         }
                     }
                 }
-   
+
             }
 
 
@@ -719,54 +727,54 @@ namespace CinemaPOS.Controllers
         {
             Funcion funcion = db.Funcion.FirstOrDefault(f => f.RowID == rowid);
             ViewBag.ListaEstados = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOFUNCION");
-           //Y el tipo de formato(2D 3D) es el mismo
-           ViewBag.ListasPreciosAsignados = db.ListaPrecioFuncion.Where(f => f.FuncionID == rowid);
+            //Y el tipo de formato(2D 3D) es el mismo
+            ViewBag.ListasPreciosAsignados = db.ListaPrecioFuncion.Where(f => f.FuncionID == rowid);
 
 
-           //Listas de precio donde la fecha de la funcion esta en el rango de fechas Y la hora de la funcion esta en el rango de horas, y donde el servicio de la sala es el mismo
-           List<ListaDetalle> tarifasDisponibles = db.ListaDetalle.Where(f => (f.ListaEncabezado.TeatroID == funcion.Sala.TeatroID) && ((f.FechaInicial.Value <= funcion.Fecha.Value) &&
-            (f.FechaFinal.Value >= funcion.Fecha.Value)) && (f.HoraInicial.Value <= funcion.HoraInicial.Value) && (f.HoraFinal.Value >= funcion.HoraInicial.Value)).ToList();
+            //Listas de precio donde la fecha de la funcion esta en el rango de fechas Y la hora de la funcion esta en el rango de horas, y donde el servicio de la sala es el mismo
+            List<ListaDetalle> tarifasDisponibles = db.ListaDetalle.Where(f => (f.ListaEncabezado.TeatroID == funcion.Sala.TeatroID) && ((f.FechaInicial.Value <= funcion.Fecha.Value) &&
+             (f.FechaFinal.Value >= funcion.Fecha.Value)) && (f.HoraInicial.Value <= funcion.HoraInicial.Value) && (f.HoraFinal.Value >= funcion.HoraInicial.Value)).ToList();
 
-           List<ListaDetalle> tarifasDisponiblesParaEnviar = new List<ListaDetalle>();
+            List<ListaDetalle> tarifasDisponiblesParaEnviar = new List<ListaDetalle>();
 
-           foreach (ListaDetalle item in tarifasDisponibles)
-           {
-               if (funcion.DetallePelicula == null)
-               {
-                   funcion.DetallePelicula = db.DetallePelicula.FirstOrDefault(f => f.RowID == funcion.DetallePeliculaID);
-               }
-               if ((funcion.DetallePelicula.TipoFormatoID == item.TipoFormatoID)) // Mismo formato (2D, 3D)
-               {
-                   foreach (ServicioSala item2 in funcion.Sala.ServicioSala) 
-                   {
-                       if (item2.TipoServicioID == item.TipoServicioID)//Si tiene el mismo servicio
-                       {
-                           String[] Dias = item.DiasAsignados.Split(',');
-                           CultureInfo ci = new CultureInfo("Es-Es");
-                           var diaFuncion = ci.DateTimeFormat.GetDayName(funcion.Fecha.Value.DayOfWeek);
-                           var algo = diaFuncion.ToUpper().Replace("É", "E").Replace("Á", "A");
-                           foreach (var diaTarifa in Dias)
-                           {
-                               if (diaTarifa.ToUpper() == diaFuncion.ToUpper().Replace("É", "E").Replace("Á", "A"))
-                               {
-                                   tarifasDisponiblesParaEnviar.Add(item);
-                                   break;
-                               }
-                           }
-                       }
-                   }
-                  
-               }
-           }
-           ViewBag.ListasPreciosDisponibles = tarifasDisponiblesParaEnviar;
+            foreach (ListaDetalle item in tarifasDisponibles)
+            {
+                if (funcion.DetallePelicula == null)
+                {
+                    funcion.DetallePelicula = db.DetallePelicula.FirstOrDefault(f => f.RowID == funcion.DetallePeliculaID);
+                }
+                if ((funcion.DetallePelicula.TipoFormatoID == item.TipoFormatoID)) // Mismo formato (2D, 3D)
+                {
+                    foreach (ServicioSala item2 in funcion.Sala.ServicioSala)
+                    {
+                        if (item2.TipoServicioID == item.TipoServicioID)//Si tiene el mismo servicio
+                        {
+                            String[] Dias = item.DiasAsignados.Split(',');
+                            CultureInfo ci = new CultureInfo("Es-Es");
+                            var diaFuncion = ci.DateTimeFormat.GetDayName(funcion.Fecha.Value.DayOfWeek);
+                            var algo = diaFuncion.ToUpper().Replace("É", "E").Replace("Á", "A");
+                            foreach (var diaTarifa in Dias)
+                            {
+                                if (diaTarifa.ToUpper() == diaFuncion.ToUpper().Replace("É", "E").Replace("Á", "A"))
+                                {
+                                    tarifasDisponiblesParaEnviar.Add(item);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+            ViewBag.ListasPreciosDisponibles = tarifasDisponiblesParaEnviar;
 
 
-           Funcion programacion = db.Funcion.FirstOrDefault(t => t.RowID == rowid);
-           if (programacion != null)
-           {
-               ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.Sala.TeatroID);
-               ViewBag.ListaPeliculas = db.TeatroPelicula.Where(f => f.TeatroID == programacion.Sala.TeatroID);
-           }
+            Funcion programacion = db.Funcion.FirstOrDefault(t => t.RowID == rowid);
+            if (programacion != null)
+            {
+                ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.Sala.TeatroID);
+                ViewBag.ListaPeliculas = db.TeatroPelicula.Where(f => f.TeatroID == programacion.Sala.TeatroID);
+            }
 
             return View(funcion);
         }

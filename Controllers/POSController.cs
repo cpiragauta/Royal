@@ -142,19 +142,20 @@ namespace CinemaPOS.Controllers
 
         public string GetFechaFiltro(int? accion, string fechavista)
         {
-           
+
             //DateTime fecha = ModelosPropios.Util.HoraInsertar("11-15-2016");
-            DateTime fecha = ModelosPropios.Util.HoraInsertar(fechavista);
+            DateTime fecha = DateTime.Parse(fechavista);
             if (fecha != DateTime.Now.Date || accion == 1)
             {
                 if (accion == 1)
                 {
                     return fecha.AddDays(1).ToLongDateString();
                 }
-                else
+                else if (accion == 2)
                 {
                     return fecha.AddDays(-1).ToLongDateString();
                 }
+                return DateTime.Now.ToLongDateString();
             }
             else { return DateTime.Now.ToLongDateString(); }
 
@@ -165,17 +166,17 @@ namespace CinemaPOS.Controllers
 
         public string htmlvista(string fecha_programacion, int? multicineID)
         {
-            string hoy = "12/12/2016"/* DateTime.Now.ToString("dd/MM/yyyy")*/;
+            string hoy = "12/01/2016"/* DateTime.Now.ToString("dd/MM/yyyy")*/;
             //cuadno la programacion sea creada quitar comentarios y enviar en el where conversionfecha
-            DateTime hoy1 = ModelosPropios.Util.HoraInsertar(fecha_programacion);
-            string conversionfecha = hoy1.ToString("dd/mm/yyyy");
+            DateTime hoy1 = DateTime.Parse(fecha_programacion);
+            string conversionfecha = hoy1.ToString("MM/dd/yyyy");
             var hora_actual = (DateTime.Now.ToString("HH:mm")).Split(':');
             int minutosactuales = int.Parse(hora_actual[0] + hora_actual[1]);
             var datavista = from dt in db.DetallePelicula.ToList()
                             select new ModelosPropios.Model.Funcion_Vista
                             {
                                 Detalle_Pelicula = dt,
-                                Funciones = db.Funciones.Where(f => f.DetallePeliculaID == dt.RowID && f.FechaFuncion == hoy && f.RowIDTeatro == 23/*multicineID*/).ToList()
+                                Funciones = db.Funciones.Where(f => f.DetallePeliculaID == dt.RowID && f.FechaFuncion == conversionfecha && f.RowIDTeatro == 24 && f.EstadoFuncion == "Abierta"/*multicineID*/).ToList()
                             };
             string html = "";
             foreach (var peliculas_vista in datavista)
@@ -220,7 +221,7 @@ namespace CinemaPOS.Controllers
                             }
                         }
                         else { carrusel = false; }
-                        //html += "<div class='col-sm-3 funcion mar-hor' onclick='javascrip:get_tarifas(" + funciones.RowID + ")'>";
+                        html += "<div class='col-sm-3 funcion mar-hor' onclick='javascrip:get_tarifas(" + funciones.DetallePeliculaID + ")'>";
                         html += "<h5 class='text-main'>" + funciones.HoraInicial.Value + "</h5>";
                         html += "<p>" + funciones.NombreSala + "<br />Disponible: 120</p>";
                         html += "</div>";
@@ -337,27 +338,27 @@ namespace CinemaPOS.Controllers
             return html_item_venta;
         }
 
-        public ActionResult Mapa_Sala_funcion(int RowID_Sala, short? cantidad_sillas_venta,int RowIDFuncion,string RowIDTarifas)
+        public ActionResult Mapa_Sala_funcion(int RowID_Sala, short? cantidad_sillas_venta, int RowIDFuncion, string RowIDTarifas)
         {
             Sala obj_sala = new Sala();
             obj_sala = db.Sala.Where(s => s.RowID == RowID_Sala).FirstOrDefault();
             ViewBag.TipoSillas = db.SalaObjeto.ToList();
             int idtarifa = int.Parse(RowIDTarifas.Split(',')[0]);
-            ViewBag.Tarifa = db.ListaDetalle.Where(t=>t.RowID== idtarifa).FirstOrDefault();
+            ViewBag.Tarifa = db.ListaDetalle.Where(t => t.RowID == idtarifa).FirstOrDefault();
             ViewBag.CantidadSillasVenta = cantidad_sillas_venta;
-            ViewBag.Funcion =db.Funcion.Where(f=>f.RowID== RowIDFuncion).FirstOrDefault();
+            ViewBag.Funcion = db.Funcion.Where(f => f.RowID == RowIDFuncion).FirstOrDefault();
             return View(obj_sala);
         }
-        public string Get_Mapa_Sala(int RowID_Sala,int?RowID_Funcion)
+        public string Get_Mapa_Sala(int RowID_Sala, int? RowID_Funcion)
         {
             Sala ObjSala = db.Sala.Where(s => s.RowID == RowID_Sala).FirstOrDefault();
             string Data_Table = "";
             if (RowID_Sala != 0)
             {
-                for (int i = 0; i < ObjSala.Cantidad_Columnas; i++)
+                for (int i = 0; i < ObjSala.Cantidad_Filas; i++)
                 {
                     Data_Table = Data_Table + "<tr class='fila_" + i + "' style='padding:0px,0px,0px,0px;'>";
-                    for (int j = 0; j < ObjSala.Cantidad_Filas; j++)
+                    for (int j = 0; j < ObjSala.Cantidad_Columnas; j++)
                     {
 
                         string clase = "posicion_objeto" + i + "_" + j + "";
@@ -367,26 +368,26 @@ namespace CinemaPOS.Controllers
 
 
                         MapaSala objmapa_sala = ObjSala.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j && s.SalaID == ObjSala.RowID).FirstOrDefault();
-                        ///BoletaVendida objBoleta = db.BoletaVendida.Where(bv=>bv.SillaID==objmapa_sala.RowID &&bv.FuncionID==RowID_Funcion).FirstOrDefault();
+                        BoletaVendida objBoleta = db.BoletaVendida.Where(bv => bv.SillaID == objmapa_sala.RowID && bv.FuncionID == RowID_Funcion).FirstOrDefault();
                         if (objmapa_sala != null)
                         {
-                            if (objmapa_sala.SalaObjeto.Opcion.Codigo == "SILLA")
+                            if (objmapa_sala.SalaObjeto.Opcion1.Codigo == "SILLA")
                             {
-                                //if (objBoleta!=null)
-                                //{
-                                   Data_Table = Data_Table + " <td id='" + objmapa_sala.RowID + "'  class=" + clase + " style='background: #B0BEC5;' ><input type='hidden' name='" + clase_posicionX + "' value=" + i + " /><input type = 'hidden' name='" + clase_posicionY + "' value=" + j + "  />";
-                                //}
-                                //else
-                                //{
-                                   //Data_Table = Data_Table + " <td id='" + objmapa_sala.RowID + "'  class=" + clase + " onclick = vender_silla(this) ><input type='hidden' name='" + clase_posicionX + "' value=" + i + " /><input type = 'hidden' name='" + clase_posicionY + "' value=" + j + "  />";
-                                //}
-                                
+                                if (objBoleta != null)
+                                {
+                                    Data_Table = Data_Table + " <td id='" + objmapa_sala.RowID + "'  class=" + clase + " style='background: #B0BEC5;' ><input type='hidden' name='" + clase_posicionX + "' value=" + i + " /><input type = 'hidden' name='" + clase_posicionY + "' value=" + j + "  />";
+                                }
+                                else
+                                {
+                                    Data_Table = Data_Table + " <td id='" + objmapa_sala.RowID + "'  class=" + clase + " onclick = vender_silla(this) ><input type='hidden' name='" + clase_posicionX + "' value=" + i + " /><input type = 'hidden' name='" + clase_posicionY + "' value=" + j + "  />";
+                                }
+
                             }
                             else
                             {
                                 Data_Table = Data_Table + " <td id='" + objmapa_sala.RowID + "'  class=" + clase + "><input type='hidden' name='" + clase_posicionX + "' value=" + i + " /><input type = 'hidden' name='" + clase_posicionY + "' value=" + j + "  />";
                             }
-                            var tipoobjeto = "objeto  " + objmapa_sala.SalaObjeto.Opcion.Nombre;
+                            var tipoobjeto = "objeto  " + objmapa_sala.SalaObjeto.Opcion1.Nombre;
                             if (objmapa_sala.SalaObjeto.Numeracion == true)
                             {
                                 tipoobjeto = tipoobjeto + " tipo_silla";
@@ -406,31 +407,33 @@ namespace CinemaPOS.Controllers
                 }
 
             }
+
             return Data_Table;
         }
         public ActionResult pruebabuscador()
         {
             return View();
         }
-        public JsonResult TerminarVenta(string IDSillas, string IDTarifas,int RowIDFuncion)
+        public JsonResult TerminarVenta(string IDSillas, string IDTarifas, int RowIDFuncion)
         {
+            string Boletas = "";
             BoletaVendida objBoleta = new BoletaVendida();
             var RowIDSillas = IDSillas.TrimEnd(',').Split(',');
             int RowIDTarifa = int.Parse(IDTarifas.Split(',')[0].ToString());
             int RowIDSilla = 0;
             int CantidadBoletasValidadas = 0;
             string Respuesta = "";
-            List<BoletaVendida> ListaBoletas = new List<Models.BoletaVendida>(); 
+            List<BoletaVendida> ListaBoletas = new List<Models.BoletaVendida>();
             for (int i = 0; i < RowIDSillas.Length; i++)
             {
                 RowIDSilla = int.Parse(RowIDSillas[i].ToString());
-                objBoleta = db.BoletaVendida.Where(BV=>BV.SillaID== RowIDSilla &&BV.FuncionID== RowIDFuncion).FirstOrDefault();
-                if (objBoleta!=null)
+                objBoleta = db.BoletaVendida.Where(BV => BV.SillaID == RowIDSilla && BV.FuncionID == RowIDFuncion).FirstOrDefault();
+                if (objBoleta != null)
                 {
                     ListaBoletas.Add(objBoleta);
                 }
             }
-            if (ListaBoletas.Count()==0)
+            if (ListaBoletas.Count() == 0)
             {
                 BoletaVendida objBoletaVenta = new BoletaVendida();
                 for (int i = 0; i < RowIDSillas.Length; i++)
@@ -445,14 +448,15 @@ namespace CinemaPOS.Controllers
                     objBoletaVenta.TaquillaID = null;
                     db.BoletaVendida.Add(objBoletaVenta);
                     db.SaveChanges();
+                    Boletas += "";
                 }
                 Respuesta = "Transacción exitosa";
             }
-            else if (ListaBoletas.Count()!=0)
+            else if (ListaBoletas.Count() != 0)
             {
                 Respuesta = "Las siguientes boletas ya se encuentran vendidas";
             }
-            return Json(new {Respuesta=Respuesta,data=ListaBoletas });
+            return Json(new { Respuesta = Respuesta, data = ListaBoletas });
         }
     }
 }
