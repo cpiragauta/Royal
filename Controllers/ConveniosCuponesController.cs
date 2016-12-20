@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using CinemaPOS.Models;
 using System.Security.Cryptography;
-using Microsoft.Reporting.WebForms;
 using System.Text;
 using iTextSharp.text.pdf;
 using System.Web.UI.WebControls;
@@ -14,6 +13,7 @@ using System.IO;
 using iTextSharp.text;
 using System.Diagnostics;
 using System.Drawing.Printing;
+using Microsoft.Reporting.WebForms;
 
 namespace CinemaPOS.Controllers
 {
@@ -46,7 +46,7 @@ namespace CinemaPOS.Controllers
             detalle = db.DetalleConvenio.Where(f => f.EncabezadoConvenioID == RowId_Covenio).ToList();
             ReportViewer reportViewer = new ReportViewer();
             reportViewer.ProcessingMode = ProcessingMode.Local;
-            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Content/Reportes/Report1.rdlc";
+            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Content/Reportes/Convenio.rdlc";
 
             ////Parametros del reporte
             ReportParameter p1 = new ReportParameter("NombreConvenio", detalle.FirstOrDefault().EncabezadoConvenio.Nombre);
@@ -54,7 +54,6 @@ namespace CinemaPOS.Controllers
             ReportParameter p3 = new ReportParameter("FechaFinal", detalle.FirstOrDefault().EncabezadoConvenio.FechaFinal.Value.ToShortDateString());
             ReportParameter p4 = new ReportParameter("Formato", detalle.FirstOrDefault().EncabezadoConvenio.Opcion1.Nombre);
             ReportParameter p5 = new ReportParameter("condiciones", detalle.FirstOrDefault().EncabezadoConvenio.Descripcion);
-
 
             reportViewer.LocalReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p5 });
             reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
@@ -85,7 +84,7 @@ namespace CinemaPOS.Controllers
                 foreach (var det in detalle)
                 {
                     LocalReport localReport = new LocalReport();
-                    localReport.ReportPath = @"Content/Reportes/Report1.rdlc";
+                    localReport.ReportPath = @"Content/Reportes/Convenio.rdlc";
 
                     ////Parametros del reporte
                     ReportParameter p1 = new ReportParameter("NombreConvenio", det.EncabezadoConvenio.Nombre);
@@ -94,7 +93,7 @@ namespace CinemaPOS.Controllers
                     ReportParameter p4 = new ReportParameter("Formato", det.EncabezadoConvenio.Opcion1.Nombre);
                     ReportParameter p5 = new ReportParameter("condiciones", det.EncabezadoConvenio.Descripcion);
                     localReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p5 });
-                    localReport.DataSources.Add(new ReportDataSource("DataSet1", det));
+                    localReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
                     string deviceInfo =
                      @"<DeviceInfo>
                 <OutputFormat>PDF</OutputFormat>
@@ -136,7 +135,7 @@ namespace CinemaPOS.Controllers
         {
             ProcessStartInfo info = new ProcessStartInfo();
             info.Verb = "print";
-            info.FileName = @"I:/Pangea/Desktop/Proyecto con Reportes Funcionando/CinemaPOS/CinemaPOS/Content/Reportes/Convenios.pdf";
+            info.FileName = @"C:\Users\Pangea\Source\Repos\Royal4\Content\Reportes\Convenios.pdf";
             info.CreateNoWindow = false;
             info.WindowStyle = ProcessWindowStyle.Hidden;
             Process p = new Process();

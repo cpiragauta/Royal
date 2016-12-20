@@ -78,8 +78,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox35</rd:DefaultName>
-        <Top>3.92562cm</Top>
-        <Left>0.19233cm</Left>
+        <Top>3.75791cm</Top>
+        <Left>0.21245cm</Left>
         <Height>0.99687cm</Height>
         <Width>9.286cm</Width>
         <ZIndex>2</ZIndex>
@@ -101,17 +101,19 @@
             <TextRuns>
               <TextRun>
                 <Value>=Parameters!condiciones.Value</Value>
-                <Style />
+                <Style>
+                  <FontSize>12pt</FontSize>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox49</rd:DefaultName>
-        <Top>12.53368cm</Top>
-        <Left>0.07781cm</Left>
+        <Top>9.51316cm</Top>
+        <Left>0.19233cm</Left>
         <Height>0.75875cm</Height>
-        <Width>11.98654cm</Width>
+        <Width>11.08638cm</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -133,7 +135,7 @@
                 <Value>FECHA VENCIMIENTO: </Value>
                 <Style>
                   <FontFamily>Ebrima</FontFamily>
-                  <FontSize>14pt</FontSize>
+                  <FontSize>12pt</FontSize>
                   <FontWeight>Bold</FontWeight>
                 </Style>
               </TextRun>
@@ -142,10 +144,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox41</rd:DefaultName>
-        <Top>4.79006cm</Top>
-        <Left>4.8396cm</Left>
-        <Height>1.01451cm</Height>
-        <Width>7.03448cm</Width>
+        <Top>4.61367cm</Top>
+        <Left>4.91884cm</Left>
+        <Height>0.67056cm</Height>
+        <Width>5.9588cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
@@ -167,7 +169,7 @@
                 <Value>FECHA INICIO: </Value>
                 <Style>
                   <FontFamily>Ebrima</FontFamily>
-                  <FontSize>14pt</FontSize>
+                  <FontSize>12pt</FontSize>
                   <FontWeight>Bold</FontWeight>
                 </Style>
               </TextRun>
@@ -176,9 +178,9 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox41</rd:DefaultName>
-        <Top>4.79006cm</Top>
-        <Left>0.07781cm</Left>
-        <Height>1.04979cm</Height>
+        <Top>4.61367cm</Top>
+        <Left>0.15705cm</Left>
+        <Height>0.63528cm</Height>
         <Width>4.5854cm</Width>
         <ZIndex>5</ZIndex>
         <Style>
@@ -200,7 +202,7 @@
               <TextRun>
                 <Value>=Parameters!FechaInicio.Value</Value>
                 <Style>
-                  <FontSize>14pt</FontSize>
+                  <FontSize>12pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -208,8 +210,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox54</rd:DefaultName>
-        <Top>5.4959cm</Top>
-        <Left>0.14837cm</Left>
+        <Top>5.28423cm</Top>
+        <Left>0.19233cm</Left>
         <Height>0.79404cm</Height>
         <Width>4.5854cm</Width>
         <ZIndex>6</ZIndex>
@@ -232,7 +234,7 @@
               <TextRun>
                 <Value>=Parameters!FechaFinal.Value</Value>
                 <Style>
-                  <FontSize>14pt</FontSize>
+                  <FontSize>12pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -240,10 +242,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox55</rd:DefaultName>
-        <Top>5.46062cm</Top>
-        <Left>4.91016cm</Left>
+        <Top>5.28423cm</Top>
+        <Left>4.95412cm</Left>
         <Height>0.79404cm</Height>
-        <Width>6.44186cm</Width>
+        <Width>5.92352cm</Width>
         <ZIndex>7</ZIndex>
         <Style>
           <Border>
@@ -265,7 +267,7 @@
                 <Value>FORMATO: </Value>
                 <Style>
                   <FontFamily>Ebrima</FontFamily>
-                  <FontSize>20pt</FontSize>
+                  <FontSize>12pt</FontSize>
                   <FontWeight>Bold</FontWeight>
                 </Style>
               </TextRun>
@@ -274,10 +276,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox41</rd:DefaultName>
-        <Top>9.63239cm</Top>
-        <Left>0.10208cm</Left>
-        <Height>0.97069cm</Height>
-        <Width>5.51955cm</Width>
+        <Top>7.58201cm</Top>
+        <Left>0.19233cm</Left>
+        <Height>0.67057cm</Height>
+        <Width>3.52173cm</Width>
         <ZIndex>8</ZIndex>
         <Style>
           <Border>
@@ -298,7 +300,7 @@
               <TextRun>
                 <Value>=Parameters!Formato.Value</Value>
                 <Style>
-                  <FontSize>16pt</FontSize>
+                  <FontSize>12pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -306,9 +308,9 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox55</rd:DefaultName>
-        <Top>10.72629cm</Top>
-        <Left>0.07781cm</Left>
-        <Height>0.81537cm</Height>
+        <Top>8.32313cm</Top>
+        <Left>0.13321cm</Left>
+        <Height>0.736cm</Height>
         <Width>3.546cm</Width>
         <ZIndex>9</ZIndex>
         <Style>
@@ -331,7 +333,7 @@
                 <Value>MULTICINE-SALA:</Value>
                 <Style>
                   <FontFamily>Ebrima</FontFamily>
-                  <FontSize>20pt</FontSize>
+                  <FontSize>12pt</FontSize>
                   <FontWeight>Bold</FontWeight>
                 </Style>
               </TextRun>
@@ -340,10 +342,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox41</rd:DefaultName>
-        <Top>7.93584cm</Top>
-        <Left>0.10208cm</Left>
+        <Top>6.11355cm</Top>
+        <Left>0.21245cm</Left>
         <Height>1.04979cm</Height>
-        <Width>6.89529cm</Width>
+        <Width>3.9289cm</Width>
         <ZIndex>10</ZIndex>
         <Style>
           <Border>
@@ -365,7 +367,7 @@
                 <Value>CIUDAD:</Value>
                 <Style>
                   <FontFamily>Ebrima</FontFamily>
-                  <FontSize>20pt</FontSize>
+                  <FontSize>12pt</FontSize>
                   <FontWeight>Bold</FontWeight>
                 </Style>
               </TextRun>
@@ -374,10 +376,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox41</rd:DefaultName>
-        <Top>7.97112cm</Top>
-        <Left>6.99737cm</Left>
+        <Top>6.11355cm</Top>
+        <Left>4.90368cm</Left>
         <Height>0.97564cm</Height>
-        <Width>4.42837cm</Width>
+        <Width>2.86733cm</Width>
         <ZIndex>11</ZIndex>
         <Style>
           <Border>
@@ -398,7 +400,7 @@
               <TextRun>
                 <Value>Todos</Value>
                 <Style>
-                  <FontSize>18pt</FontSize>
+                  <FontSize>12pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -406,8 +408,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox60</rd:DefaultName>
-        <Top>8.79683cm</Top>
-        <Left>0.10208cm</Left>
+        <Top>6.78798cm</Top>
+        <Left>0.21245cm</Left>
         <Height>0.75875cm</Height>
         <Width>2.72268cm</Width>
         <ZIndex>12</ZIndex>
@@ -430,7 +432,7 @@
               <TextRun>
                 <Value>BOGOTÁ</Value>
                 <Style>
-                  <FontSize>18pt</FontSize>
+                  <FontSize>12pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -438,9 +440,9 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox61</rd:DefaultName>
-        <Top>8.83211cm</Top>
-        <Left>6.99737cm</Left>
-        <Height>0.93514cm</Height>
+        <Top>6.85854cm</Top>
+        <Left>4.90368cm</Left>
+        <Height>0.68819cm</Height>
         <Width>3.55524cm</Width>
         <ZIndex>13</ZIndex>
         <Style>
@@ -463,7 +465,7 @@
                 <Value>CONDICIONES:</Value>
                 <Style>
                   <FontFamily>Ebrima</FontFamily>
-                  <FontSize>20pt</FontSize>
+                  <FontSize>12pt</FontSize>
                   <FontWeight>Bold</FontWeight>
                 </Style>
               </TextRun>
@@ -472,9 +474,9 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox41</rd:DefaultName>
-        <Top>11.54166cm</Top>
-        <Left>0.07781cm</Left>
-        <Height>1.04979cm</Height>
+        <Top>8.91316cm</Top>
+        <Left>0.13321cm</Left>
+        <Height>0.6cm</Height>
         <Width>5.39241cm</Width>
         <ZIndex>14</ZIndex>
         <Style>
@@ -488,9 +490,9 @@
         </Style>
       </Textbox>
       <Line Name="Line2">
-        <Top>13.39827cm</Top>
+        <Top>10.62496cm</Top>
         <Height>0cm</Height>
-        <Width>12.47881cm</Width>
+        <Width>11.19518cm</Width>
         <ZIndex>15</ZIndex>
         <Style>
           <Border>
@@ -525,8 +527,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox34</rd:DefaultName>
-        <Top>13.53938cm</Top>
-        <Left>0.16277cm</Left>
+        <Top>10.81872cm</Top>
+        <Left>0.13893cm</Left>
         <Height>0.67938cm</Height>
         <Width>3.95561cm</Width>
         <ZIndex>16</ZIndex>
@@ -558,8 +560,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox35</rd:DefaultName>
-        <Top>14.25403cm</Top>
-        <Left>0.17755cm</Left>
+        <Top>11.53337cm</Top>
+        <Left>0.15371cm</Left>
         <Height>0.6cm</Height>
         <Width>3.9638cm</Width>
         <ZIndex>17</ZIndex>
@@ -588,10 +590,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox49</rd:DefaultName>
-        <Top>18.28618cm</Top>
-        <Left>0.19233cm</Left>
+        <Top>15.56552cm</Top>
+        <Left>0.16849cm</Left>
         <Height>0.57354cm</Height>
-        <Width>12.025cm</Width>
+        <Width>11.08638cm</Width>
         <ZIndex>18</ZIndex>
         <Style>
           <Border>
@@ -621,8 +623,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox41</rd:DefaultName>
-        <Top>14.96868cm</Top>
-        <Left>4.0171cm</Left>
+        <Top>12.2833cm</Top>
+        <Left>3.00612cm</Left>
         <Height>0.6cm</Height>
         <Width>4.21075cm</Width>
         <ZIndex>19</ZIndex>
@@ -654,8 +656,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox41</rd:DefaultName>
-        <Top>14.95986cm</Top>
-        <Left>0.19233cm</Left>
+        <Top>12.2833cm</Top>
+        <Left>0.16849cm</Left>
         <Height>0.6cm</Height>
         <Width>3.2642cm</Width>
         <ZIndex>20</ZIndex>
@@ -684,8 +686,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox54</rd:DefaultName>
-        <Top>15.6657cm</Top>
-        <Left>0.19233cm</Left>
+        <Top>12.94504cm</Top>
+        <Left>0.16849cm</Left>
         <Height>0.6cm</Height>
         <Width>2.5cm</Width>
         <ZIndex>21</ZIndex>
@@ -714,8 +716,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox55</rd:DefaultName>
-        <Top>15.63924cm</Top>
-        <Left>4.0171cm</Left>
+        <Top>12.95386cm</Top>
+        <Left>3.00612cm</Left>
         <Height>0.6cm</Height>
         <Width>2.5cm</Width>
         <ZIndex>22</ZIndex>
@@ -747,10 +749,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox41</rd:DefaultName>
-        <Top>14.96868cm</Top>
-        <Left>8.2984cm</Left>
+        <Top>12.2833cm</Top>
+        <Left>7.12336cm</Left>
         <Height>0.6cm</Height>
-        <Width>4.21075cm</Width>
+        <Width>2.41037cm</Width>
         <ZIndex>23</ZIndex>
         <Style>
           <Border>
@@ -777,10 +779,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox55</rd:DefaultName>
-        <Top>15.67452cm</Top>
-        <Left>8.2984cm</Left>
+        <Top>12.95386cm</Top>
+        <Left>7.12336cm</Left>
         <Height>0.6cm</Height>
-        <Width>2.5cm</Width>
+        <Width>2.16473cm</Width>
         <ZIndex>24</ZIndex>
         <Style>
           <Border>
@@ -810,8 +812,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox41</rd:DefaultName>
-        <Top>16.41563cm</Top>
-        <Left>0.16277cm</Left>
+        <Top>13.55386cm</Top>
+        <Left>0.13321cm</Left>
         <Height>0.6cm</Height>
         <Width>3.2642cm</Width>
         <ZIndex>25</ZIndex>
@@ -843,8 +845,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox41</rd:DefaultName>
-        <Top>16.41563cm</Top>
-        <Left>3.98753cm</Left>
+        <Top>13.55386cm</Top>
+        <Left>3.5943cm</Left>
         <Height>0.6cm</Height>
         <Width>3.2642cm</Width>
         <ZIndex>26</ZIndex>
@@ -873,8 +875,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox60</rd:DefaultName>
-        <Top>17.01563cm</Top>
-        <Left>0.13321cm</Left>
+        <Top>14.11858cm</Top>
+        <Left>0.18861cm</Left>
         <Height>0.6cm</Height>
         <Width>2.5cm</Width>
         <ZIndex>27</ZIndex>
@@ -895,7 +897,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value />
+                <Value>BOGOTÁ</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -903,8 +905,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox61</rd:DefaultName>
-        <Top>17.08618cm</Top>
-        <Left>3.98753cm</Left>
+        <Top>14.15386cm</Top>
+        <Left>3.5943cm</Left>
         <Height>0.6cm</Height>
         <Width>2.5cm</Width>
         <ZIndex>28</ZIndex>
@@ -936,8 +938,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox41</rd:DefaultName>
-        <Top>17.61563cm</Top>
-        <Left>0.17755cm</Left>
+        <Top>14.89497cm</Top>
+        <Left>0.15371cm</Left>
         <Height>0.6cm</Height>
         <Width>3.2642cm</Width>
         <ZIndex>29</ZIndex>
@@ -999,15 +1001,147 @@
           </Border>
         </Style>
       </Line>
+      <Textbox Name="Textbox73">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>DESCUENTO:</Value>
+                <Style>
+                  <FontFamily>Ebrima</FontFamily>
+                  <FontSize>12pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox41</rd:DefaultName>
+        <Top>7.54673cm</Top>
+        <Left>4.90368cm</Left>
+        <Height>0.62646cm</Height>
+        <Width>3.12228cm</Width>
+        <ZIndex>32</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox3">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!porcentaje.Value</Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                  <Format>0%</Format>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox3</rd:DefaultName>
+        <Top>8.27902cm</Top>
+        <Left>4.90368cm</Left>
+        <Height>0.67938cm</Height>
+        <Width>3.06056cm</Width>
+        <ZIndex>33</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox74">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>DESCUENTO:</Value>
+                <Style>
+                  <FontFamily>Ebrima</FontFamily>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox41</rd:DefaultName>
+        <Top>13.55386cm</Top>
+        <Left>7.12336cm</Left>
+        <Height>0.6cm</Height>
+        <Width>3.12228cm</Width>
+        <ZIndex>34</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox4">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!porcentaje.Value</Value>
+                <Style>
+                  <Format>0%</Format>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox3</rd:DefaultName>
+        <Top>14.11858cm</Top>
+        <Left>7.12336cm</Left>
+        <Height>0.67938cm</Height>
+        <Width>3.06056cm</Width>
+        <ZIndex>35</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
     </ReportItems>
-    <Height>7.52735in</Height>
+    <Height>6.56902in</Height>
     <Style>
       <Border>
         <Style>None</Style>
       </Border>
     </Style>
   </Body>
-  <Width>4.98864in</Width>
+  <Width>4.57039in</Width>
   <Page>
     <PageHeight>25cm</PageHeight>
     <PageWidth>12cm</PageWidth>
@@ -1020,12 +1154,19 @@
   </Page>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
+    <DataSource Name="DataSet2">
+      <ConnectionProperties>
+        <DataProvider>System.Data.DataSet</DataProvider>
+        <ConnectString>/* Local Connection */</ConnectString>
+      </ConnectionProperties>
+      <rd:DataSourceID>8c9e4647-c8ea-4503-b19d-dc53b374e18e</rd:DataSourceID>
+    </DataSource>
     <DataSource Name="DB_9CAC35_cinemaposDataSet">
       <ConnectionProperties>
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>9dadc099-f3c7-4c53-bdef-9dc4977f90c5</rd:DataSourceID>
+      <rd:DataSourceID>fb30e847-07f1-404c-9ce2-60aa788fcf88</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
@@ -1082,7 +1223,7 @@
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DB_9CAC35_cinemaposDataSet</rd:DataSetName>
-        <rd:SchemaPath>C:\Users\Pangea\Source\Repos\Royal4\DB_9CAC35_cinemaposDataSet.xsd</rd:SchemaPath>
+        <rd:SchemaPath>I:\Pangea\Desktop\Proyecto con Reportes Funcionando\CinemaPOS\CinemaPOS\DB_9CAC35_cinemaposDataSet.xsd</rd:SchemaPath>
         <rd:TableName>DetalleConvenio</rd:TableName>
         <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
         <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>
@@ -1114,6 +1255,11 @@
     </ReportParameter>
     <ReportParameter Name="condiciones">
       <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="porcentaje">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
   </ReportParameters>

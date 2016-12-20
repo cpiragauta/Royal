@@ -472,7 +472,7 @@
             <div id="page-content" class="Ocultar">
                 <div class="panel">
                     <div class="panel-body">
-                        <div>dfvdfdf
+                        <div>
                             <input type="button" id="Print" class="btn btn-success" value="Imprimir" style="background: #74a838; color:white" />
                         </div>
                         <form name="formulario_Convenio_Ticket" id="formulario_Convenio_Ticket" onsubmit="return false">
@@ -484,7 +484,7 @@
                                         new { @style = "Width:1000px" } //Htmltributtes
                                 )*@
 
-                            @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Re.Reporting.WebForms.ReportViewer)
+                            @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)
 
 
                         </form>
