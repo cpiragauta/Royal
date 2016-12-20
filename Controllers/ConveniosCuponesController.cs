@@ -14,6 +14,10 @@ using iTextSharp.text;
 using System.Diagnostics;
 using System.Drawing.Printing;
 using Microsoft.Reporting.WebForms;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Modes;
+using Org.BouncyCastle.Crypto.Engines;
 
 namespace CinemaPOS.Controllers
 {
@@ -22,6 +26,8 @@ namespace CinemaPOS.Controllers
         // GET: /ConveniosCupones/
         //fdbfdb
         CinemaPOSEntities db = new CinemaPOSEntities();
+        private readonly Encoding encoding = System.Text.Encoding.UTF8;
+        private SicBlockCipher mode = new SicBlockCipher(new AesFastEngine());
 
         [CheckSessionOutAttribute]
         public ActionResult VistaConveniosCupones()
@@ -40,27 +46,41 @@ namespace CinemaPOS.Controllers
             ViewBag.Clientes = db.Tercero.Where(f => f.Activo == true && f.Opcion2.Codigo == "EMPRESA").ToList();
             ViewBag.TipoEstado = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOCONVENIO").ToList();
 
-
-            ///***********Reporte de convenio *************//
+                 ///***********Reporte de convenio *************//
             List<DetalleConvenio> detalle = new List<DetalleConvenio>();
             detalle = db.DetalleConvenio.Where(f => f.EncabezadoConvenioID == RowId_Covenio).ToList();
-            ReportViewer reportViewer = new ReportViewer();
-            reportViewer.ProcessingMode = ProcessingMode.Local;
-            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Content/Reportes/Convenio.rdlc";
 
-            ////Parametros del reporte
-            ReportParameter p1 = new ReportParameter("NombreConvenio", detalle.FirstOrDefault().EncabezadoConvenio.Nombre);
-            ReportParameter p2 = new ReportParameter("FechaInicio", detalle.FirstOrDefault().EncabezadoConvenio.FechaInicio.Value.ToShortDateString());
-            ReportParameter p3 = new ReportParameter("FechaFinal", detalle.FirstOrDefault().EncabezadoConvenio.FechaFinal.Value.ToShortDateString());
-            ReportParameter p4 = new ReportParameter("Formato", detalle.FirstOrDefault().EncabezadoConvenio.Opcion1.Nombre);
-            ReportParameter p5 = new ReportParameter("condiciones", detalle.FirstOrDefault().EncabezadoConvenio.Descripcion);
+            if (detalle.Count != 0)
+            {
+                ReportViewer reportViewer = new ReportViewer();
+                reportViewer.ProcessingMode = ProcessingMode.Local;
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Content/Reportes/Convenio.rdlc";
 
-            reportViewer.LocalReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p5 });
-            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
-            reportViewer.SizeToReportContent = true;
-            reportViewer.Width = Unit.Percentage(100);
-            reportViewer.Height = Unit.Percentage(100);
-            ViewBag.ReportViewer = reportViewer;
+                ////Parametros del reporte
+
+                ReportParameter p1 = new ReportParameter("NombreConvenio", detalle.FirstOrDefault().EncabezadoConvenio.Nombre);
+                ReportParameter p2 = new ReportParameter("FechaInicio", detalle.FirstOrDefault().EncabezadoConvenio.FechaInicio.Value.ToShortDateString());
+                ReportParameter p3 = new ReportParameter("FechaFinal", detalle.FirstOrDefault().EncabezadoConvenio.FechaFinal.Value.ToShortDateString());
+                ReportParameter p4 = new ReportParameter("Formato", detalle.FirstOrDefault().EncabezadoConvenio.Opcion1.Nombre);
+                ReportParameter p5 = new ReportParameter("condiciones", detalle.FirstOrDefault().EncabezadoConvenio.Descripcion);
+                ReportParameter p6 = new ReportParameter("porcentaje", detalle.FirstOrDefault().Porcentaje + "%");
+                ReportParameter p7 = new ReportParameter("codigo", detalle.FirstOrDefault().Codigo);
+
+
+                reportViewer.LocalReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p5, p6, p7 });
+                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
+                reportViewer.SizeToReportContent = true;
+                reportViewer.Width = Unit.Percentage(100);
+                reportViewer.Height = Unit.Percentage(100);
+                ViewBag.ReportViewer = reportViewer;
+            }
+            else {
+                ReportViewer reportViewer = new ReportViewer();
+                reportViewer.ProcessingMode = ProcessingMode.Local;
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Content/Reportes/Convenio.rdlc";
+                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
+                ViewBag.ReportViewer = reportViewer;
+            }
             ///***********FIN reporte de convenio *************//
 
             if (RowId_Covenio != null && RowId_Covenio != 0)
@@ -92,7 +112,10 @@ namespace CinemaPOS.Controllers
                     ReportParameter p3 = new ReportParameter("FechaFinal", det.EncabezadoConvenio.FechaFinal.Value.ToShortDateString());
                     ReportParameter p4 = new ReportParameter("Formato", det.EncabezadoConvenio.Opcion1.Nombre);
                     ReportParameter p5 = new ReportParameter("condiciones", det.EncabezadoConvenio.Descripcion);
-                    localReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p5 });
+                    ReportParameter p6 = new ReportParameter("porcentaje", det.Porcentaje + "%");
+                    ReportParameter p7 = new ReportParameter("codigo", det.Codigo);
+
+                    localReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p5, p6,p7 });
                     localReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
                     string deviceInfo =
                      @"<DeviceInfo>
@@ -135,7 +158,7 @@ namespace CinemaPOS.Controllers
         {
             ProcessStartInfo info = new ProcessStartInfo();
             info.Verb = "print";
-            info.FileName = @"C:\Users\Pangea\Source\Repos\Royal4\Content\Reportes\Convenios.pdf";
+            info.FileName = Server.MapPath("~/Content/Reportes/Convenios.pdf");
             info.CreateNoWindow = false;
             info.WindowStyle = ProcessWindowStyle.Hidden;
             Process p = new Process();
@@ -315,22 +338,95 @@ namespace CinemaPOS.Controllers
         }
 
 
-        static string Hash(string input)
+        //static string Hash(string input)
+        //{
+        //    using (SHA1Managed sha1 = new SHA1Managed())
+        //    {
+        //        var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
+        //        var sb = new StringBuilder(hash.Length * 2);
+
+        //        foreach (byte b in hash)
+        //        {
+        //            // can be "x2" if you want lowercase
+        //            sb.Append(b.ToString("X2"));
+        //        }
+
+        //        return sb.ToString();
+        //    }
+ 
+
+    //public AES(Encoding encoding)
+    //{
+    //    this.encoding = encoding;
+    //    this.mode = new SicBlockCipher(new AesFastEngine());
+    //}
+
+        ///****************Encryptar AES**************************
+        ///
+    public static string ByteArrayToString(byte[] bytes)
+    {
+        return BitConverter.ToString(bytes).Replace("-", string.Empty);
+    }
+
+    public static byte[] StringToByteArray(string hex)
+    {
+        int numberChars = hex.Length;
+        byte[] bytes = new byte[numberChars / 2];
+
+        for (int i = 0; i < numberChars; i += 2)
         {
-            using (SHA1Managed sha1 = new SHA1Managed())
-            {
-                var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
-                var sb = new StringBuilder(hash.Length * 2);
-
-                foreach (byte b in hash)
-                {
-                    // can be "x2" if you want lowercase
-                    sb.Append(b.ToString("X2"));
-                }
-
-                return sb.ToString();
-            }
+            bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
         }
+
+        return bytes;
+    }
+
+
+    public string Encrypt(string plain, byte[] key, byte[] iv)
+    {
+
+        byte[] input = this.encoding.GetBytes(plain);
+
+        byte[] bytes = this.BouncyCastleCrypto(true, input, key, iv);
+
+        string result = ByteArrayToString(bytes);
+
+        return result;
+    }
+
+
+    public string Decrypt(string cipher, byte[] key, byte[] iv)
+    {
+        byte[] bytes = this.BouncyCastleCrypto(false, StringToByteArray(cipher), key, iv);
+
+        string result = this.encoding.GetString(bytes);
+
+        return result;
+    }
+
+
+    private byte[] BouncyCastleCrypto(bool forEncrypt, byte[] input, byte[] key, byte[] iv)
+    {
+        try
+        {
+            this.mode.Init(forEncrypt, new ParametersWithIV(new KeyParameter(key), iv));
+
+            BufferedBlockCipher cipher = new BufferedBlockCipher(this.mode);
+
+            return cipher.DoFinal(input);
+        }
+        catch (CryptoException)
+        {
+            throw;
+        }
+    }
+
+
+
+
+
+
+        //////////////////////
 
         [CheckSessionOutAttribute]
         public JsonResult GuardarDetalleConvenio(FormCollection formulario, int RowID_EncabezadoConvenio, int Cantidad)
@@ -357,8 +453,24 @@ namespace CinemaPOS.Controllers
                         objDetalle.FechaCreacion = DateTime.Now;
                         convenio = db.DetalleConvenio.Add(objDetalle);
                         db.SaveChanges();
-                        convenio.Codigo = Hash(RowID_EncabezadoConvenio + "-" + convenio.RowID + "-" + convenio.FechaCreacion.Value.ToString("dd/MM/yyyy"));
-                        con++;
+
+                        //string test = "1";
+                        //encoding = System.Text.Encoding.UTF8;
+                        //this.mode = new SicBlockCipher(new AesFastEngine());
+                        //AES aes = new AES();
+
+                        RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
+                        byte[] key = new byte[32];
+                        byte[] iv = new byte[32];
+
+                        // Generate random key and IV
+                        rngCsp.GetBytes(key);
+                        rngCsp.GetBytes(iv);
+
+                         //convenio.Codigo = Hash(RowID_EncabezadoConvenio + "-" + convenio.RowID + "-" + convenio.FechaCreacion.Value.ToString("dd/MM/yyyy"));
+                        convenio.Codigo = Encrypt("C"+ convenio.RowID , key, iv);
+                           con++;
+                        db.SaveChanges();
 
 
                     }
@@ -368,7 +480,7 @@ namespace CinemaPOS.Controllers
                 }
                 EncabezadoConvenio enca;
                 enca = db.EncabezadoConvenio.Where(f => f.RowID == RowID_EncabezadoConvenio).FirstOrDefault();
-                enca.Cantidad = con;
+                enca.Cantidad = enca.Cantidad+con;
                 db.SaveChanges();
 
             }
