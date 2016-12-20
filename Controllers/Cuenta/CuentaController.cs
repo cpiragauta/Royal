@@ -28,21 +28,20 @@ namespace CinemaPOS.Controllers.Cuenta
             return View();
         }
 
-        public string get_ip_local()
+        public string get_ip_local(string ip)
         {
             string ip_return = "";
             string strHostName = string.Empty;
             // Getting Ip address of local machine…
             // First get the host name of local machine.
-            strHostName = Dns.GetHostName();
             // Then using host name, get the IP address list..
-            IPAddress[] hostIPs = Dns.GetHostAddresses(strHostName);
-            string[] segmentos = hostIPs[2].ToString().Split('.');
+            string[] segmentos = ip.ToString().Split('.');
             for (int i = 0; i < segmentos.Length; i++)
             {
                 ip_return += segmentos[i].PadLeft(3, '0') + ".";
             }
             ip_return = ip_return.TrimEnd('.');
+            //Session["IP"] = ip_return;
             //ip_return += "Nombre de la computadora: " +strHostName;
             return ip_return;
         }
@@ -53,10 +52,9 @@ namespace CinemaPOS.Controllers.Cuenta
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {
-            string IP = get_ip_local();
-
-
-
+            
+            string IP =get_ip_local(model.ip);
+            
             if (ModelState.IsValid)
             {
                 if (ValidateLogin(model.NombreUsuario, model.Contraseña))
@@ -70,6 +68,7 @@ namespace CinemaPOS.Controllers.Cuenta
                         }
                         else
                         {
+                            Session["RowID_Taquilla"] = objtaquilla.RowID.ToString();
                             return RedirectToAction("VistaPrincipal", "POS");
                         }
                     }
@@ -104,7 +103,7 @@ namespace CinemaPOS.Controllers.Cuenta
                 Session["usuario_creacion"] = usuario.NombreUsuario;
                 if (usuario.Rol.Nombre.ToUpper() != "ADMINISTRADOR")
                 {
-                    List<RolMenu> menuxRol = db.RolMenu.Where(f => f.Rol.RowID == usuario.Rol.RowID && f.Menu.Activo).ToList();//agregar condicion "activo" para rolmenu
+                    List<RolMenu> menuxRol = db.RolMenu.Where(f => f.Rol.RowID == usuario.Rol.RowID && f.Menu.Activo == true && f.Estado == true).ToList();//agregar condicion "activo" para rolmenu
 
                     tipoMenu = new List<TipoMenu>();
                     menu = new List<Menu>();
