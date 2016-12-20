@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CinemaPOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CinemaPOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DetalleConvenio">
           <Key>
             <PropertyRef Name="RowID" />
@@ -330,6 +330,7 @@
           <Property Name="TipoIdentificacionID" Type="int" />
           <Property Name="FechaNacimiento" Type="datetime" />
           <Property Name="SexoID" Type="int" />
+          <Property Name="RowIDCentral" Type="int" />
         </EntityType>
         <EntityType Name="Tipo">
           <Key>
@@ -4088,6 +4089,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <Property Name="TipoIdentificacionID" Type="Int32" />
           <Property Name="FechaNacimiento" Type="DateTime" Precision="3" />
           <Property Name="SexoID" Type="Int32" />
+          <Property Name="RowIDCentral" Type="Int32" />
           <NavigationProperty Name="EncabezadoConvenio" Relationship="CinemaPOSModel.FK__Encabezad__Terce__3AA1AEB8" FromRole="Tercero" ToRole="EncabezadoConvenio" />
           <NavigationProperty Name="OportunidadVenta" Relationship="CinemaPOSModel.FK__Oportunid__Prosp__4A6E022D" FromRole="Tercero" ToRole="OportunidadVenta" />
           <NavigationProperty Name="Ciudad" Relationship="CinemaPOSModel.FK__Tercero__CiudadI__7E8CC4B1" FromRole="Tercero" ToRole="Ciudad" />
@@ -6652,6 +6654,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <EntitySetMapping Name="Tercero">
             <EntityTypeMapping TypeName="CinemaPOSModel.Tercero">
               <MappingFragment StoreEntitySet="Tercero">
+                <ScalarProperty Name="RowIDCentral" ColumnName="RowIDCentral" />
                 <ScalarProperty Name="SexoID" ColumnName="SexoID" />
                 <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
                 <ScalarProperty Name="TipoIdentificacionID" ColumnName="TipoIdentificacionID" />

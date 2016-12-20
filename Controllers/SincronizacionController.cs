@@ -33,9 +33,23 @@ namespace CinemaPOS.Controllers
         {
             String respuesta = "";
             RoyalSync WS = new RoyalSync();
-            WS.SincronizarSalasSistema();
+            //WS.SincronizarSalasSistema();
             return "SINCRONIZADO OK";
         }
 
+        public String Sincronizarteatroscentral()
+        {
+            RoyalSync WS = new RoyalSync();
+            WS.SincronizarTeatros();
+            return "SINCRONIZADO OK";
+        }
+
+        public String SincronizarTerceros()
+        {
+            String respuesta = "";
+            RoyalSync WS = new RoyalSync();
+            WS.SincronizarTerceros();
+            return "SINCRONIZADO OK";
+        }
     }
 }

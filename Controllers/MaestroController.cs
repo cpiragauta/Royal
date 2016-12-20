@@ -878,6 +878,7 @@ namespace CinemaPOS.Controllers.Master
             ObjTeatro.Nombre = formulario["nombre"].ToUpper();
             ObjTeatro.CiudadID = int.Parse(formulario["ciudad"]);
             ObjTeatro.EstadoID = int.Parse(formulario["Estado"]);
+            ObjTeatro.Sincronizado = false;
             if (ObjTeatro.RowID == 0)
             {
                 ObjTeatro.CreadoPor = Session["usuario_creacion"].ToString();
