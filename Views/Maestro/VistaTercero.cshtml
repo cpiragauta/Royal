@@ -16,6 +16,18 @@
     <script src="~/Content/js/demo/tables-datatables.js"></script>
 </head>
 
+<style>
+    .Verde {
+        background-color: rgb(139, 195, 74);
+    }
+
+    .Rojo {
+        background-color: rgba(236, 64, 64, 0.71);
+    }
+</style>
+
+
+
 <p>
     <a class="btn btn-success" href='@Url.Action("Tercero", "Maestro")'>Crear Tercero</a>
 </p>
@@ -34,12 +46,14 @@
                     <th>Telefono</th>
                     <th>Correo</th>
                     <th>Ciudad</th>
+                    <th>Sincronizado</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (CinemaPOS.Models.Tercero Terceros in ViewBag.Tercero)
                 {
+                    String Color = Terceros.Sincronizado == true ? "Verde" : "Rojo";
                     <tr>
                         <td>@Terceros.RowID</td>
                         <td>@Terceros.Nombre @Terceros.Apellidos</td>
@@ -55,6 +69,7 @@
                         <td>@Terceros.Telefono</td>
                         <td>@Terceros.Correo</td>
                         <td>@Terceros.Ciudad.Nombre</td>
+                        <td class="@Color"></td>
                         <td>
                             <a href="@Url.Action("Tercero", "Maestro", new { @RowID_Tercero = Terceros.RowID })"><i class="glyphicon glyphicon-pencil"> </i></a>
                         </td>

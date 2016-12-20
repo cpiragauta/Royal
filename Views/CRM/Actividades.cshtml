@@ -3,156 +3,190 @@
     ViewBag.Title = "Actividades";
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
-<script src="~/Content/DateTimePicker/jquery.datetimepicker.full.min.js"></script>
-<link href="~/Content/DateTimePicker/jquery.datetimepicker.css" rel="stylesheet" />
+@*<script src="~/Content/DateTimePicker/jquery.datetimepicker.full.min.js"></script>*@
+@*<link href="~/Content/DateTimePicker/jquery.datetimepicker.css" rel="stylesheet" />*@
 <link href="~/Content/Actividades.min.css" rel="stylesheet" />
+<link href="~/Content/js/Calendar/fullcalendar.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
+<script src="~/Content/js/Calendar/fullcalendar.min.js"></script>
+<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+<script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
 <div id="Dialog"></div>
-<div class="panel">
+<div class="panel panel-dark">
+    <!--Panel heading-->
     <div class="panel-heading">
-        <h3 class="panel-title">Película</h3>
-    </div>
-        <div class="panel-heading">
-            <div class="panel-control pull-left">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#info" aria-expanded="true"><i class="ion-ios-information-outline"></i> Informaci&oacute;n General</a></li>
-                    <li><a data-toggle="tab" href="#calendar" aria-expanded="false"><i class="ion-ios-calendar"></i> Calendario</a></li>
-                </ul>
-            </div>
-            <h3 class="panel-title">&nbsp;</h3>
+        <div class="panel-control">
+            <!--Nav tabs-->
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#info" >Informaci&oacute;n General</a></li>
+                <li class=""><a data-toggle="tab" href="#calendar" onclick="javascript:consultarCalendar()">Calendario</a></li>
+            </ul>
+
         </div>
+        <h3 class="panel-title">Actividades</h3>
+    </div>
+
+    <!--Panel body-->
     <div class="panel-body">
 
-        <div id="info" class="tab-pane fade active in">
-            <h4>Informaci&oacute;n General</h4>
-            <hr/>
-            <div class="row">
-                <input type="hidden" name="rowID" value="@Model.rowID" />
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="ASUNTO">*Asunto:</label>
-                        <input type="text" name="asunto" value="@Model.asunto" required class="form-control" id="asunto" required/>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="TIPOACT">*Tipo Actividad:</label>
-                        <select name="tipoActividadID" required id="tipoActividadID">
-                            <option value="">Seleccione una Opci&oacute;n</option>
-                            @foreach (var item in (List<CinemaPOS.Models.Opcion>)ViewBag.TipoAct)
-                            {
-                                if (Model.tipoActividadID == item.RowID)
-                                {
-                                    <option value="@item.RowID" selected>@item.Nombre</option>
-                                }
-                                else
-                                {
-                                    <option value="@item.RowID">@item.Nombre</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="FECHAINICIO">*Fecha Inicio:</label>
-                        <input type="text" name="fechaInicio" value="@Model.fechaInicio" id="fechaInicio" class="form-control" required/>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="FECHAINICIO">*Fecha Fin:</label>
-                        <input type="text" name="fechaFin" value="@Model.fechaFin" id="fechaFin" class="form-control" required/>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="TIPOACT">*Tipo Referencia:</label>
-                        <select name="tipoReferenciaID" required id="tipoReferenciaID" class="form-control" >
-                            <option value="">Seleccione una Opci&oacute;n</option>
-                            @foreach (var item in (List<CinemaPOS.Models.Opcion>)ViewBag.tipoRef)
-                            {
-                                if (Model.tipoReferenciaID == item.RowID)
-                                {
-                                    <option value="@item.RowID" selected>@item.Nombre</option>
-                                }
-                                else
-                                {
-                                    <option value="@item.RowID">@item.Nombre</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="REFERENCIADO_A">*Referenciado a:</label>
-                        <input type="hidden" name="referencia" value="@Model.referenciado_a" id="ReferenciaHidden"/>
-                        <div class="input-group">
-                            <input type="text" name="referenciado_a" value="@Model.referenciado_a" id="referenciado_a" class="form-control" required/>
-                            <span class="ion-search input-group-addon" id="modal_ref" onclick="javascript:Modal_Referenciado_A()" style="cursor:pointer"></span>
-                            <span class="ion-close-round input-group-addon" id="clear" onclick="$('#referenciado_a').val('')" style="cursor:pointer"></span>
+        <!--Tabs content-->
+        <div class="tab-content">
+            <div id="info" class="tab-pane fade in active">
+                <h4>Informaci&oacute;n General</h4>
+                <hr />
+                <form id="formActividad" name="formActividad" onkeypress="if(event.keyCode==8)return false;">
+                    <div class="row">
+                        <input type="hidden" name="rowID" value="@Model.rowID" />
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="ASUNTO">*Asunto:</label>
+                                <input type="text" name="asunto" value="@Model.asunto" required class="form-control" id="asunto" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="TIPOACT">*Tipo Actividad:</label>
+                                <select name="tipoActividadID" required id="tipoActividadID">
+                                    <option value="">Seleccione una Opci&oacute;n</option>
+                                    @foreach (var item in (List<CinemaPOS.Models.Opcion>)ViewBag.TipoAct)
+                                    {
+                                        if (Model.tipoActividadID == item.RowID)
+                                        {
+                                            <option value="@item.RowID" selected>@item.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.RowID">@item.Nombre</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="PRIORIDAD">*Prioridad:</label>
-                        <select name="prioridadID" id="prioridadID" required>
-                            <option value="">Seleccione una Opci&oacute;n</option>
-                            @foreach (var item in (List<CinemaPOS.Models.Opcion>)ViewBag.Prioridad)
-                            {
-                                if (Model.prioridadID == item.RowID)
-                                {<option value="@item.RowID" selected>@item.Nombre</option>}
-                                else
-                                {<option value="@item.RowID">@item.Nombre</option>}
-                            }
-                        </select>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="FECHAINICIO">*Fecha Inicio:</label>
+                                <input type="text" name="fechaInicio" value="@Model.fechaInicio" id="fechaInicio" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="FECHAINICIO">Fecha Fin:</label>
+                                <input type="text" name="fechaFin" value="@Model.fechaFin" id="fechaFin" class="form-control" />
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="ESTADOS">*Estados:</label>
-                        <select name="estadoID" id="estadoID" required>
-                            <option value="">Seleccione una Opci&oacute;n</option>
-                            @foreach(var item in (List<CinemaPOS.Models.Estado>)ViewBag.Estados)
-                            {
-                                if (Model.estadoID == item.RowID)
-                                {<option value="@item.RowID" selected>@item.Nombre</option>}
-                                else
-                                {<option value="@item.RowID">@item.Nombre</option>}
-                            }
-                        </select>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="TIPOACT">*Tipo Referencia:</label>
+                                <select name="tipoReferenciaID" required id="tipoReferenciaID" class="form-control">
+                                    <option value="">Seleccione una Opci&oacute;n</option>
+                                    @foreach (var item in (List<CinemaPOS.Models.Opcion>)ViewBag.tipoRef)
+                                    {
+                                        if (Model.tipoReferenciaID == item.RowID)
+                                        {
+                                            <option value="@item.RowID" selected>@item.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.RowID">@item.Nombre</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="REFERENCIADO_A">*Referenciado a:</label>
+                                <input type="hidden" name="referencia" value="@Model.referenciado_a" id="ReferenciaHidden" />
+                                <div class="input-group">
+                                    <input type="text" name="referenciado_a" value="@Model.referenciado_a" id="referenciado_a" class="form-control" required />
+                                    <span class="ion-search input-group-addon" id="modal_ref" onclick="javascript:Modal_Referenciado_A()" style="cursor:pointer"></span>
+                                    <span class="ion-close-round input-group-addon" id="clear" onclick="$('#referenciado_a').val('')" style="cursor:pointer"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="PRIORIDAD">*Prioridad:</label>
+                                <select name="prioridadID" id="prioridadID" required>
+                                    <option value="">Seleccione una Opci&oacute;n</option>
+                                    @foreach (var item in (List<CinemaPOS.Models.Opcion>)ViewBag.Prioridad)
+                                    {
+                                        if (Model.prioridadID == item.RowID)
+                                        {
+                                            <option value="@item.RowID" selected>@item.Nombre</option>}
+                                        else
+                                        {
+                                            <option value="@item.RowID">@item.Nombre</option>}
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="ESTADOS">*Estados:</label>
+                                <select name="estadoID" id="estadoID" required>
+                                    <option value="">Seleccione una Opci&oacute;n</option>
+                                    @foreach (var item in (List<CinemaPOS.Models.Estado>)ViewBag.Estados)
+                                    {
+                                        if (Model.estadoID == item.RowID)
+                                        {
+                                            <option value="@item.RowID" selected>@item.Nombre</option>}
+                                        else
+                                        {
+                                            <option value="@item.RowID">@item.Nombre</option>}
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="DESCRIPCION">*Descripci&oacute;n:</label>
+                            <textarea name="descripcion" id="descripcion" placeholder="---" class="form-control">@Model.descripcion</textarea>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <a onclick="jascript:GuardarActividad()" class="btn btn-success" id="guardar">Guardar</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <label for="DESCRIPCION">*Descripci&oacute;n:</label>
-                    <textarea name="descripcion" id="descripcion" placeholder="---" class="form-control">@Model.descripcion</textarea>
-                </div>
+            <div class="tab-pane fade" id="calendar">
+                <div id="calendario"></div>
             </div>
-        </div>
-        <div id="calendar" class="tab-pane fade">
-            <h4>Calendario</h4>
-            <hr />
         </div>
     </div>
 </div>
 <script>
+    function consultarCalendar() {
+        debugger
+        CargarCalendar();
+    }
     $(document).ready(function () {
+        debugger
+        if ($("#fechaInicio").val() == "01/01/0001 0:00:00") {
+            $("#fechaInicio").val('');
+        }
+        $("input[class=fc-month-button]").click(function () { });
+        CargarCalendar();
         jQuery("#tipoActividadID").chosen({ width: "100%;" });
         jQuery("#tipoReferenciaID").chosen({ width: "100%;" });
         jQuery("#prioridadID").chosen({ width: "100%;" });
         jQuery("#estadoID").chosen({ width: "100%;" });
 
         $('#fechaInicio').datepicker({
-            format: "dd/MM/yyyy",
+            format: "dd-mm-yyyy",
             todayBtn: "linked",
             autoclose: true,
             todayHighlight: false
@@ -166,7 +200,7 @@
         //         startDate:0
         //     });
         $('#fechaFin').datepicker({
-            format: "dd/MM/yyyy",
+            format: "dd-mm-yyyy",
             todayBtn: "linked",
             autoclose: true,
             todayHighlight: false
@@ -179,11 +213,68 @@
             Alerts("Seleccione el tipo de referencia.", "warning");
         }
         else {
-            ModalProcesandoShow();
-            var urlWithCont = '../CRM/ModalReferenciado?t_referencia=' + $("#tipoReferenciaID").val();
-            $("#Dialog")//Division con id Dialog_Solicitud
-            .load(urlWithCont.trim())
-            .dialog('open');
+            //ModalProcesandoShow();
+            var ur = $("#tipoReferenciaID").val();
+            var urlWithCont = '../CRM/ModalReferenciado?t_referencia=' + $("#tipoReferenciaID").val() + '';
+            $("#Dialog").load(urlWithCont.trim()).dialog('open');
+        }
+    }
+
+    function CargarCalendar() {
+        $('#calendario').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            buttonText: {
+                today: 'Hoy',
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Dia'
+            },
+            //Random default events
+            events: '/CRM/GetEvents',
+            editable: true,
+            droppable: true, // this allows things to be dropped onto the calendar !!!
+            dayClick: function (start, end, allDay) {
+            },
+            eventClick: function (calEvent, jsEvent, view) {
+                var id = calEvent.id;
+            },
+            eventDrop: function (event, allDay) { // this function is called when something is dropped
+                var id = event._id;
+                var data = allDay._data;
+                EditEvento(id, data)
+            }
+        });
+    }
+
+    function GuardarActividad() {
+        var validator = $("#formActividad").validate();
+        if (validator.form()) {
+            $.ajax({
+                type: "POST",
+                url: "/CRM/GuardarActividad",
+                data: {
+                    rowid: $("#rowID").val(),
+                    formulario: $("#formActividad").serialize(),
+                },
+                success: function (data) {
+                    debugger;
+                    if (data.respuesta.includes("error")) {
+                        swal("ERROR", data.respuesta, "error");
+                        return;
+                    } else {
+                        swal("OK", data.respuesta, "success")
+                        location.href = '/CRM/Actividades?rowID=' + data.Act+'';
+                    }
+
+                },
+                error: function (data) {
+                    swal("ERROR", data.respuesta, "error");
+                }
+            });
         }
     }
 </script>
