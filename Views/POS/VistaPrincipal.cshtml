@@ -810,7 +810,7 @@
                 $("#fecha_filtro").text(data)
                 buscar_funciones();
             },
-            error: function(data){
+            error: function (data) {
                 console.log(data)
             }
         })
@@ -824,7 +824,7 @@
                 $("#tabla-funciones tbody").empty().append(data);
 
             },
-            error:console.log("error")
+            error: console.log("error")
         })
     }
     function get_tarifas(rowid_funcion) {
@@ -833,10 +833,10 @@
             data: {
                 RowID_Funcion: rowid_funcion
             },
-            success:function(data){
+            success: function (data) {
                 $("#panel-tarifas-funcion").empty().append(data);
                 $("#boletas-comprar").empty();
-                
+
                 $("#ver_sala").attr('onclick', 'javascrip:ver_mapa_sala(' + $("#SalaID").val() + ',0,' + rowid_funcion + ')');
                 ContarBoletasVender();
             },
@@ -857,7 +857,7 @@
             success: function (data) {
                 console.log($("#boletas-comprar").find())
                 $('.item-elimina' + rowid_funcion + '').remove();
-                 $(".cantidad-boleta").remove()
+                $(".cantidad-boleta").remove()
                 $("#boletas-comprar").append(data);
                 ContarBoletasVender();
             },
@@ -876,31 +876,31 @@
         //    console.log(text.text);
         //})
         $(".suma-costo-pedido").each(function (index, element) {
-            precios+=parseInt( $(this).text().replace('$',''));
+            precios += parseInt($(this).text().replace('$', ''));
         });
         $("#precio-items").text("$" + precios);
         $("#precio-items").empty().append("<h4>Total $:" + precios + "</h4>");
         $("#cantidad_boletas").val(boletas);
-        $("#cantidad-items").empty().append("<h4>Total #:"+ boletas+"</h4>");
+        $("#cantidad-items").empty().append("<h4>Total #:" + boletas + "</h4>");
         $("#cantidad_sillas").val(boletas);
     }
     function eliminar_item(clase) {
-        if (parseInt($(".cantidad-boleta-" + clase + "").val()-1) <= 0) {
+        if (parseInt($(".cantidad-boleta-" + clase + "").val() - 1) <= 0) {
             console.log(".item-elimina" + clase + "");
             $(".item-elimina" + clase + "").remove();
         }
-        var boletas=1;
+        var boletas = 1;
         $("." + clase + "").each(function () {
 
-            if (boletas==1) {
-               $(this).remove();
+            if (boletas == 1) {
+                $(this).remove();
             }
 
             boletas++;
         })
 
         $(".cantidad-boleta-" + clase + "").val(($(".cantidad-boleta-" + clase + "").val() - 1));
-        $("#total-costo" + clase + "").text("$"+parseFloat($(".precio-items-" + clase + "").val()) * parseFloat($(".cantidad-boleta-" + clase + "").val()));
+        $("#total-costo" + clase + "").text("$" + parseFloat($(".precio-items-" + clase + "").val()) * parseFloat($(".cantidad-boleta-" + clase + "").val()));
         $("#cantidad-total-" + clase + "").text($(".cantidad-boleta-" + clase + "").val());
 
         ContarBoletasVender();
@@ -933,12 +933,12 @@
         //ModalProcesandoShow();
         var RowID_Tarifas = "";
         $(".tarifas_id").each(function (index, element) {
-            RowID_Tarifas += $(this).val()+',';
+            RowID_Tarifas += $(this).val() + ',';
         })
 
-        
 
-        
+
+
         var urlWithCont = '../POS/Mapa_Sala_funcion?RowID_Sala=' + SalaID + '&cantidad_sillas_venta=' + cantidad + '&RowIDFuncion=' + RowID_Funcion + '&RowIDTarifas=' + RowID_Tarifas + '';
         console.log(urlWithCont);
         $("#Dialog").load(urlWithCont.trim()).dialog('open');
@@ -966,8 +966,8 @@
                     ocultos++;
                 }
             }
-            if (tr.length==ocultos) {
-                mensaje="si"
+            if (tr.length == ocultos) {
+                mensaje = "si"
             }
 
         }
@@ -986,4 +986,36 @@
 
         ContarBoletasVender();
     }
+    function getLocalIPs(callback) {
+        var ips = [];
+
+        var RTCPeerConnection = window.RTCPeerConnection ||
+        window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
+
+        var pc = new RTCPeerConnection({
+            iceServers: []
+        });
+        pc.createDataChannel('');
+        pc.onicecandidate = function (e) {
+            if (!e.candidate) {
+                callback(ips);
+                return;
+            }
+            var ip = /^candidate:.+ (\S+) \d+ typ/.exec(e.candidate.candidate)[1];
+            if (ips.indexOf(ip) == -1) // avoid duplicate entries (tcp/udp)
+                ips.push(ip);
+        };
+        pc.createOffer(function (sdp) {
+            pc.setLocalDescription(sdp)
+        }, function onerror() { });
+    }
+
+    $(document).ready(function () {
+        getLocalIPs(function (ips) {
+            if (ips.length > 0) {
+                ip = ips[0];
+                alert(ips[0])
+            }
+        })
+    })
 </script>

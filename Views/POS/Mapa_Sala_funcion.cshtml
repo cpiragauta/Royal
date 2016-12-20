@@ -231,8 +231,9 @@
         margin-right: auto;
         margin-left: auto;
     }
-    tr{
-        height:50px;
+
+    tr {
+        height: 50px;
     }
 </style>
 
@@ -243,7 +244,7 @@
                 <button type="button" class="close salir" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <p>Cantidad sillas a vender <h3 id="cantidad_selecionadas"> @ViewBag.CantidadSillasVenta</h3></p>
                 <p>Tarifa de venta <h3 id="tarifa_venta"> @ViewBag.Tarifa.Nombre</h3></p>
-                <input type="hidden" value="@ViewBag.Tarifa.RowID" id="tarifaID"/>
+                <input type="hidden" value="@ViewBag.Tarifa.RowID" id="tarifaID" />
                 <input type="hidden" id="cantidad-ventas" value="@ViewBag.CantidadSillasVenta" />
                 <input type="hidden" id="RowIDFuncion" value="@ViewBag.Funcion.RowID" />
                 <h4 class="modal-title"><b>@Model.Nombre</b></h4>
@@ -255,17 +256,17 @@
                             <div id="Dialog"></div><!--Abre el modal  -->
                             <div class="row">
                                 <input type="hidden" class="RowID_Sala" value="@Request.Params["RowID_Sala"].ToString()" />
-                                
 
-                                    <table id="esquema_mapa" align="center" style="width:@(Model.Cantidad_Filas *50)px;margin:0 auto;" ></table>
-                                    <h1 class="text-center">Pantalla</h1>
+
+                                <table id="esquema_mapa" align="center" style="width:@(Model.Cantidad_Filas *50)px;margin:0 auto;"></table>
+                                <h1 class="text-center">Pantalla</h1>
 
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="TerminarVenta()">Terminar Venta</button>
+                    <button type="button" class="btn btn-success" onclick="TerminarVenta()" data-dismiss="modal" aria-hidden="true">Terminar Venta</button>
                 </div>
             </div>
         </div><!-- /.modal-content -->
