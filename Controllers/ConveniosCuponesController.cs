@@ -20,7 +20,7 @@ namespace CinemaPOS.Controllers
     public class ConveniosCuponesController : Controller
     {
         // GET: /ConveniosCupones/
-
+        //fdbfdb
         CinemaPOSEntities db = new CinemaPOSEntities();
 
         [CheckSessionOutAttribute]

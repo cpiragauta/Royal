@@ -163,6 +163,139 @@ namespace CinemaPOS
 
         #endregion
 
+        #region Teatro
+        public void SincronizarTeatros()
+        {
+            InicializarConexiones("CONNCENTRAL", "CONNLOCAL");
+
+            List<Teatro> teatroscentral = dbCentral.Teatro.Where(f => f.Sincronizado == false).ToList();
+            foreach (Teatro item in teatroscentral)
+            {
+                Teatro sincronizacion = new Teatro();
+                sincronizacion = dbLocal.Teatro.FirstOrDefault(f => f.RowIDCentral == item.RowID);
+
+                cont = cont + 1;
+
+                if (sincronizacion != null)
+                {
+                    sincronizacion = Cargardatosteatro(sincronizacion, item);
+                    try
+                    {
+                        dbLocal.SaveChanges();
+                    }
+                    catch
+                    {
+                        return;
+                    }
+
+                    GuardarHistorico(item.RowID, "teatros", sincronizacion.RowID, "teatros", "Actualizacion");
+                    item.Sincronizado = true;
+                    dbCentral.SaveChanges();
+                    sincronizacion = null;
+
+                    sincronizacion = new Teatro();
+                }
+                else
+                {
+                    sincronizacion = new Teatro();
+                    sincronizacion = Cargardatosteatro(sincronizacion, item);
+                    sincronizacion.RowIDCentral = item.RowID;
+                    dbLocal.Teatro.Add(sincronizacion);
+                    dbLocal.SaveChanges();
+                    GuardarHistorico(item.RowID, "teatros", sincronizacion.RowID, "teatros", "Creación");
+                    item.Sincronizado = true;
+                    dbCentral.SaveChanges();
+                }
+
+            }
+        }
+        public Teatro Cargardatosteatro(Teatro teatrosReferencia, Teatro teatroscentral)
+        {
+
+            teatrosReferencia.CompaniaID = teatroscentral.CompaniaID;
+            teatrosReferencia.CentroOperacion = teatroscentral.CentroOperacion;
+            teatrosReferencia.IP = teatroscentral.IP;
+            teatrosReferencia.Nombre = teatroscentral.Nombre;
+            teatrosReferencia.CiudadID = teatroscentral.CiudadID;
+            teatrosReferencia.CreadoPor = teatroscentral.CreadoPor;
+            teatrosReferencia.FechaCreacion = teatroscentral.FechaCreacion;
+            teatrosReferencia.FechaModificacion = teatroscentral.FechaModificacion;
+            teatrosReferencia.ModificadoPor = teatroscentral.ModificadoPor;
+            teatrosReferencia.EstadoID = teatroscentral.EstadoID;
+            teatrosReferencia.Sincronizado = true;
+            return teatrosReferencia;
+        }
+        #endregion
+
+        #region Terceros
+
+        public void SincronizarTerceros()
+        {
+            InicializarConexiones("CONNCENTRAL", "CONNLOCAL");
+            List<Tercero> sincronizacionterceros = dbCentral.Tercero.Where(f => f.Sincronizado == false).ToList();
+
+            foreach (Tercero item in sincronizacionterceros)
+            {
+                Tercero Terceros = new Tercero();
+                //Valido si existe el usuario
+                Terceros = dbLocal.Tercero.FirstOrDefault(f => f.RowIDCentral == item.RowID);
+                //Si ya existe lo Actualizo
+                if (Terceros != null)
+                {
+                    Terceros = CargarDatosTerceros(Terceros, item);
+                    dbLocal.SaveChanges();
+                    GuardarHistorico(item.RowID, "Terceros", Terceros.RowID, "Terceros", "Actualizacion");
+                    //Actualizo el central
+                    item.Sincronizado = true;
+                    dbCentral.SaveChanges();
+                    Terceros = null;
+                    Terceros = new Tercero();
+                }
+                else//Si no existe lo creo
+                {
+                    Terceros = new Tercero();
+                    Terceros = CargarDatosTerceros(Terceros, item);
+                    Terceros.RowIDCentral = item.RowID;
+                    dbLocal.Tercero.Add(Terceros);
+                    try
+                    {
+                        dbLocal.SaveChanges();
+                    }
+                    catch { return; }
+                    
+                    GuardarHistorico(item.RowID, "Terceros", Terceros.RowID, "Terceros", "Creación");
+                    //Actualizo el central
+                    item.Sincronizado = true;
+                    dbCentral.SaveChanges();
+                }
+            }
+        }
+
+        public Tercero CargarDatosTerceros(Tercero TerceroReferencia, Tercero TerceroCentral)
+        {
+            TerceroReferencia.RowID = TerceroReferencia.RowID;
+            TerceroReferencia.TipoTerceroID = TerceroCentral.TipoTerceroID;
+            TerceroReferencia.Identificacion = TerceroCentral.Identificacion;
+            TerceroReferencia.Nombre = TerceroCentral.Nombre;
+            TerceroReferencia.Apellidos = TerceroCentral.Apellidos;
+            TerceroReferencia.Telefono = TerceroCentral.Telefono;
+            TerceroReferencia.CiudadID = TerceroCentral.CiudadID;
+            TerceroReferencia.Descripcion = TerceroCentral.Descripcion;
+            TerceroReferencia.Direccion = TerceroCentral.Direccion;
+            TerceroReferencia.Correo = TerceroCentral.Correo;
+            TerceroReferencia.Activo = TerceroCentral.Activo;
+            TerceroReferencia.CreadoPor = TerceroCentral.CreadoPor;
+            TerceroReferencia.FechaCreacion = TerceroCentral.FechaCreacion;
+            TerceroReferencia.ModificadoPor = TerceroCentral.ModificadoPor;
+            TerceroReferencia.FechaModificacion = TerceroCentral.FechaModificacion;
+            TerceroReferencia.Sincronizado = true;
+            TerceroReferencia.TipoIdentificacionID = TerceroCentral.TipoIdentificacionID;
+            TerceroReferencia.FechaNacimiento = TerceroCentral.FechaNacimiento;
+            TerceroReferencia.SexoID = TerceroCentral.SexoID;
+
+            return TerceroReferencia;
+        }
+
         public void GuardarHistorico(int RowIDCentral, String EntidadCentral, int RowIDLocal, String EntidadLocal, String Descripcion)
         {
             SincronizacionMaestros Historico = new SincronizacionMaestros();
@@ -178,6 +311,10 @@ namespace CinemaPOS
             dbCentral.SincronizacionMaestros.Add(Historico);
             dbCentral.SaveChanges();
         }
-
     }
+        #endregion
+
+       
+
 }
+
