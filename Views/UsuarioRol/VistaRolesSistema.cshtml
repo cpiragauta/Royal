@@ -14,7 +14,15 @@
     <!--DataTables Sample [ SAMPLE ]-->
     <script src="~/Content/js/demo/tables-datatables.js"></script>
 </head>
+<style>
+    .Verde {
+        background-color: rgb(139, 195, 74);
+    }
 
+    .Rojo {
+        background-color: rgba(236, 64, 64, 0.71);
+    }
+</style>
 <p>
     <a class="btn btn-success" href='@Url.Action("RolesSistema", "UsuarioRol")'>Crear Rol</a>
 
@@ -32,16 +40,19 @@
                     <th>ID</th>
                     <th>Rol</th>
                     <th>Creado Por</th>
+                    <th class="ion-ios-loop-strong center"></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (CinemaPOS.Models.Rol item in ViewBag.Roles)
                 {
+                    String Color = item.Sincronizado == true ? "Verde" : "Rojo";
                     <tr>
                         <td>@item.RowID</td>
                         <td>@item.Nombre</td>
                         <td>@item.CreadoPor</td>
+                        <td class="@Color"></td>
                         <td>
                             <a href="@Url.Action("RolesSistema", "UsuarioRol", new { @RowID_Roles = item.RowID })"><i class="glyphicon glyphicon-pencil"> </i></a>
                         </td>
