@@ -54,9 +54,6 @@ namespace CinemaPOS.Controllers.Cuenta
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             string IP = get_ip_local();
-
-
-
             if (ModelState.IsValid)
             {
                 if (ValidateLogin(model.NombreUsuario, model.Contraseña))
@@ -70,6 +67,7 @@ namespace CinemaPOS.Controllers.Cuenta
                         }
                         else
                         {
+                            Session["RowID_Taquilla"] = objtaquilla.RowID.ToString();
                             return RedirectToAction("VistaPrincipal", "POS");
                         }
                     }
@@ -104,7 +102,7 @@ namespace CinemaPOS.Controllers.Cuenta
                 Session["usuario_creacion"] = usuario.NombreUsuario;
                 if (usuario.Rol.Nombre.ToUpper() != "ADMINISTRADOR")
                 {
-                    List<RolMenu> menuxRol = db.RolMenu.Where(f => f.Rol.RowID == usuario.Rol.RowID && f.Menu.Activo).ToList();//agregar condicion "activo" para rolmenu
+                    List<RolMenu> menuxRol = db.RolMenu.Where(f => f.Rol.RowID == usuario.Rol.RowID && f.Menu.Activo == true && f.Estado == true).ToList();//agregar condicion "activo" para rolmenu
 
                     tipoMenu = new List<TipoMenu>();
                     menu = new List<Menu>();

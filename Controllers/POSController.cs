@@ -9,15 +9,15 @@ namespace CinemaPOS.Controllers
 {
     public class POSController : Controller
     {
-
-
-        //James controller
         //
         // GET: /POS/
 
         CinemaPOSEntities db = new CinemaPOSEntities();
         public ActionResult VistaPrincipal()
         {
+
+            int RowID_Taquilla = int.Parse(Session["RowID_Taquilla"].ToString());
+            ViewBag.InfoTaquilla = db.Taquilla.Where(taq => taq.RowID == RowID_Taquilla).FirstOrDefault();
             #region Comentarios
 
             //string hoy ="7/11/2016"/* DateTime.Now.ToString("dd/MM/yyyy")*/;
