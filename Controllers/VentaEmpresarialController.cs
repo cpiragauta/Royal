@@ -75,7 +75,7 @@ namespace CinemaPOS.Controllers
 
             ViewBag.TeatrosDisp = TeatrosV2;
             var id = db.EncabezadoVentaEmpresarial.Where(f => f.RowID == rowid).FirstOrDefault();
-            ViewBag.Empresarial = "Venta Empresarial: "+id.Nombre;
+            ViewBag.Empresarial = "Venta Empresarial: " + id.Nombre;
             ViewBag.RowEmpresa = id.RowID;
             return View();
         }
@@ -99,13 +99,15 @@ namespace CinemaPOS.Controllers
                         db.SaveChanges();
                         validate = "ok";
                         ModalTeatroVentaEmpresarial(rowidEmpresarial);
-                    }else{
-                      validate = "El teatro ya se encuentra asociado a la venta empresarial";
+                    }
+                    else
+                    {
+                        validate = "El teatro ya se encuentra asociado a la venta empresarial";
 
                     }
                 }
                 catch (Exception e)
-                { validate = "error"+e.Message; }
+                { validate = "error" + e.Message; }
             }
             return Json(new { rowidEmpresarial = rowidEmpresarial, mensaje = validate }, JsonRequestBehavior.AllowGet);
         }
@@ -137,7 +139,7 @@ namespace CinemaPOS.Controllers
             //{
             //    lista+="<option value="+item.RowID+">"+item.Nombre+"-"+item.Ciudad.Nombre+"</option>";
             //}
-              
+
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
@@ -176,7 +178,7 @@ namespace CinemaPOS.Controllers
                     {
                         objD.EstadoID = ObjEncabezado.EstadoID;
                         db.SaveChanges();
-                   }
+                    }
                 }
                 catch (Exception ex)
                 { return Json(new { respuesta = "Error " + ex.Message }); }
@@ -185,7 +187,7 @@ namespace CinemaPOS.Controllers
 
         }
 
-         [HttpPost]
+        [HttpPost]
         public JsonResult EliminarTeatroEmpresarial(int? RowID)
         {
             string proccess = "";
@@ -199,7 +201,7 @@ namespace CinemaPOS.Controllers
                     proccess = "ok";
                 }
                 else
-                {proccess = "error";}
+                { proccess = "error"; }
             }
             return Json(proccess, JsonRequestBehavior.AllowGet);
         }
@@ -242,7 +244,6 @@ namespace CinemaPOS.Controllers
             ObjEncabezado.FechaInicio = ModelosPropios.Util.HoraInsertar(formulario["FechaInicial"]);
             ObjEncabezado.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["FechaFinal"]);
             ObjEncabezado.EstadoID = db.Estado.FirstOrDefault().RowID; //Cambiar por el que es
-
             ObjEncabezado.TerceroID = Convert.ToInt32(formulario["Cliente"]);
             ObjEncabezado.FormatoID = Convert.ToInt32(formulario["Formato"]);
             ObjEncabezado.ClasificacionID = Convert.ToInt32(formulario["Clasificacion"]);
@@ -305,14 +306,13 @@ namespace CinemaPOS.Controllers
         }
 
         [CheckSessionOutAttribute]
-        public JsonResult GuardarDetalleEmpresarial(FormCollection formulario, int RowID_EncabezadoEmpresarial, int Cantidad)
-        
-{
+        public JsonResult GuardarDetalleEmpresarial(FormCollection formulario, int RowId_Empresarial, int Cantidad)
+        {
             int con = 0;
             String respuesta = "";
             formulario = DeSerialize(formulario);
             DetalleVentaEmpresarial objDetalle;
-            if (RowID_EncabezadoEmpresarial != 0 && Cantidad != 0)
+            if (RowId_Empresarial != 0 && Cantidad != 0)
             {
                 //DateTime FechaProgramacion = ModelosPropios.Util.HoraInsertar(formulario["FechaInicialFunciones"].ToString());
                 for (int i = 0; i < Cantidad; i++)
@@ -321,15 +321,15 @@ namespace CinemaPOS.Controllers
                     {
                         DetalleVentaEmpresarial empresarial;
                         objDetalle = new DetalleVentaEmpresarial();
-                        objDetalle.VentaEncabezadoID = RowID_EncabezadoEmpresarial;
-                        objDetalle.EstadoID = db.EncabezadoVentaEmpresarial.Where(f => f.RowID == RowID_EncabezadoEmpresarial).FirstOrDefault().EstadoID;
+                        objDetalle.VentaEncabezadoID = RowId_Empresarial;
+                        objDetalle.EstadoID = db.EncabezadoVentaEmpresarial.Where(f => f.RowID == RowId_Empresarial).FirstOrDefault().EstadoID;
                         objDetalle.Nombre = formulario["NombreItem"];
                         objDetalle.ListaID = Convert.ToInt32(83);
                         objDetalle.CreadoPor = Session["usuario_creacion"].ToString();
                         objDetalle.FechaCreacion = DateTime.Now;
                         empresarial = db.DetalleVentaEmpresarial.Add(objDetalle);
                         db.SaveChanges();
-                        empresarial.Codigo = Hash(RowID_EncabezadoEmpresarial + "-" + empresarial.RowID + "-" + empresarial.FechaCreacion.Value.ToString("dd/MM/yyyy"));
+                        empresarial.Codigo = Hash(RowId_Empresarial + "-" + empresarial.RowID + "-" + empresarial.FechaCreacion.Value.ToString("dd/MM/yyyy"));
                         con++;
                     }
                     catch (Exception ex)
@@ -337,7 +337,7 @@ namespace CinemaPOS.Controllers
                     respuesta = "Guardado Correctamente";
                 }
                 EncabezadoVentaEmpresarial enca;
-                enca = db.EncabezadoVentaEmpresarial .Where(f => f.RowID == RowID_EncabezadoEmpresarial).FirstOrDefault();
+                enca = db.EncabezadoVentaEmpresarial.Where(f => f.RowID == RowId_Empresarial).FirstOrDefault();
                 enca.Cantidad = con;
                 db.SaveChanges();
 
