@@ -16,7 +16,22 @@
 <script>
     $(document).ready(function () {
         new Switchery(document.getElementById("demo-sw-checked"));
+        $("#fechainicial").datepicker();
+        $("#fechafinal").datepicker();
+        $("#iptaquilla").mask("999.999.999.999");
     });
+    function getipteatro() {
+        $.ajax({
+            url: "/Maestro/Getip_Teatro",
+            data: { RowIDTeatro: $("#select-teatro").val() },
+            success: function (data) {
+                $("#iptaquilla").val(data);
+            },
+            error: function (data) {
+                swal("", "El teatro no cuenta con una ip asignada", "warning");
+            }
+        })
+    }
 </script>
 <script>
         function guardar_taquilla(encabezado) {
@@ -74,7 +89,7 @@
                 });
             }
         }
-    </script>
+</script>
 
 
 
@@ -112,15 +127,32 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="control-label">Resoluciones:</label>
-                        <input name="resoluciones" id="resoluciones" class="form-control" value="@Model.Resoluciones">
+                        <label class="control-label">Rango de consecutivos:</label>
+                        <div class="input-daterange input-group">
+
+                            <input type="number" class="form-control" name="consecutivoinicial" value="@Model.ConsecutivoInicial">
+                            <span class="input-group-addon">a</span>
+                            <input type="number" class="form-control" name="consecutivofinal" value="@Model.ConsecutivoFinal">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Vigencia:</label>
+                        <div id="demo-dp-range">
+                            <div class="input-daterange input-group" id="datepicker">
+                                <input type="text" class="form-control" name="fechainicial" id="fechainicial" value="@Model.FechaInicial">
+                                <span class="input-group-addon">a</span>
+                                <input type="text" class="form-control" name="fechafinal" id="fechafinal" value="@Model.FechaFinal">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label">*Teatro:</label>
-                        <select name="teatro" class="chosen  form-control" required>
-                            <option value="" disabled selected>Seleccione una opcion</option>
+                        <select name="teatro" class="chosen  form-control" id="select-teatro" onchange="getipteatro()" required>
+                            <option value="" disabled selected>Elija una opcion</option>
                             @foreach (CinemaPOS.Models.Teatro teatros in ViewBag.Teatros)
                             {
                                 if (@Model.TeatroID.Equals(@teatros.RowID))
@@ -133,6 +165,15 @@
                                 }
                             }
                         </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">IP:</label>
+                        <input name="ip" id="iptaquilla" value="@Model.IP" class="form-control" placeholder="999.999.999.999" required />
                     </div>
                 </div>
                 <div class="col-sm-3">
@@ -155,8 +196,6 @@
                         </select>
                     </div>
                 </div>
-            </div>
-            <div class="row">               
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label">Sincronizado:</label> &nbsp; &nbsp;
