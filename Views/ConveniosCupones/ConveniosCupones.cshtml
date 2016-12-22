@@ -33,7 +33,7 @@
             inicio = new Date(inicio);
             finalq = new Date(finalq);
             if (inicio > finalq) {
-                swal("", "La fecha inicial no puede ser mayor a la final", "error");
+                Alerts("La fecha inicial no puede ser mayor a la final", "error");
             } else {
                 $.ajax({
                     type: "POST",
@@ -44,19 +44,20 @@
                     },
                     success: function (data) {
                         if (data.respuesta.includes("Error")) {
-                            swal("ERROR", data.respuesta, "error");
+                            Alerts("No se guardo el convenio", "error");
                             return;
                         } else {
-                            swal("OK", data.respuesta, "success");
+                            Alerts("Convenio Guardado con exito!!!!",  "success");
                             $("#row_id").val(data.RowID_EncabezadoConvenio);
                             window.location = "/ConveniosCupones/ConveniosCupones/?RowId_Covenio=" + data.RowID_EncabezadoConvenio;
                             jQuery(".Ocultar").slideDown();
-
-
+                            ModalProcesandoHiden();
                         }
                     },
                     error: function (data) {
-                        swal("ERROR", data.respuesta, "error");
+                        Alerts("ERROR, No se guardo el convenio", "error");
+                        ModalProcesandoHiden();
+
                     }
 
                 });
@@ -80,25 +81,26 @@
                     },
                     success: function (data) {
                         if (data.includes("Error")) {
-                            swal("ERROR", data, "error");
+                            Alerts("Error, no se guardo el item", "error");
                             window.location = "/ConveniosCupones/ConveniosCupones/?RowId_Covenio=" + $("#row_id").val();
 
                             return;
                         } else {
-                            swal("OK", data, "success");
+                            Alerts("Item guardado con exito!!!",  "success");
                             window.location = "/ConveniosCupones/ConveniosCupones/?RowId_Covenio=" + $("#row_id").val();
 
                         }
                     },
                     error: function (data) {
-                        swal("ERROR", data, "error");
+                        Alerts("Error, no se guardo el item", "error");
                         window.location = "/ConveniosCupones/ConveniosCupones/?RowId_Covenio=" + $("#row_id").val();
 
                     }
                 });
 
             } else {
-                swal("ERROR", "Ingrese un porcentaje entre 0 y 100 %", "error");
+                Alerts("Ingrese un porcentaje entre 0 y 100 %", "error");
+
 
             }
         }
@@ -116,7 +118,7 @@
                 cargarItems();
             },
             error: function (data) {
-                swal("ERROR", data, "error");
+                Alerts("No es posible eliminar el item", "error");
             }
         });
     }
@@ -141,7 +143,7 @@
             },
             error: function (data) {
                 debugger;
-                swal("ERROR", data, "error");
+                Alerts("ERROR", "error");
             }
         });
     }
@@ -466,6 +468,7 @@
                 </div>
             </div>
         </div>
+        @*****************TAB TICKET******************@
         <div id="Ticket" class="tab-pane fade">
             <div id="page-content" class="Ocultar">
                 <div class="panel">

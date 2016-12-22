@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CinemaPOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CinemaPOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DetalleConvenio">
           <Key>
             <PropertyRef Name="RowID" />
@@ -836,6 +836,7 @@
           <Property Name="FechaCreacion" Type="datetime" />
           <Property Name="CreadoPor" Type="nvarchar" MaxLength="50" />
           <Property Name="ListaID" Type="int" />
+          <Property Name="Valor" Type="int" />
         </EntityType>
         <EntityType Name="EncabezadoVentaEmpresarial">
           <Key>
@@ -4725,6 +4726,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <NavigationProperty Name="Estado" Relationship="CinemaPOSModel.FK__DetalleVe__Estad__48BAC3E5" FromRole="DetalleVentaEmpresarial" ToRole="Estado" />
           <NavigationProperty Name="ListaDetalle" Relationship="CinemaPOSModel.FK__DetalleVe__Lista__505BE5AD" FromRole="DetalleVentaEmpresarial" ToRole="ListaDetalle" />
           <NavigationProperty Name="EncabezadoVentaEmpresarial" Relationship="CinemaPOSModel.FK__DetalleVe__Venta__47C69FAC" FromRole="DetalleVentaEmpresarial" ToRole="EncabezadoVentaEmpresarial" />
+          <Property Name="Valor" Type="Int32" />
         </EntityType>
         <EntityType Name="EncabezadoVentaEmpresarial">
           <Key>
@@ -7215,6 +7217,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <EntitySetMapping Name="DetalleVentaEmpresarial">
             <EntityTypeMapping TypeName="CinemaPOSModel.DetalleVentaEmpresarial">
               <MappingFragment StoreEntitySet="DetalleVentaEmpresarial">
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
                 <ScalarProperty Name="ListaID" ColumnName="ListaID" />
                 <ScalarProperty Name="CreadoPor" ColumnName="CreadoPor" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />

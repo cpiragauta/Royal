@@ -928,7 +928,7 @@ namespace CinemaPOS.Controllers.Master
         }
 
         [CheckSessionOutAttribute]
-        public JsonResult GuardarTercero(FormCollection formulario, int RowID_Tercero)
+        public JsonResult GuardarTercero(FormCollection formulario, int? RowID_Tercero)
         {
             String respuesta = "";
             Tercero ObjTercero = new Tercero();
@@ -945,6 +945,7 @@ namespace CinemaPOS.Controllers.Master
                 catch (Exception ex)
                 { return Json("Error " + ex.Message); }
                 respuesta = "Guardado Correctamente";
+
 
             }
             if (RowID_Tercero != 0)//Para Actualiar
@@ -1112,7 +1113,6 @@ namespace CinemaPOS.Controllers.Master
         }
 
         #endregion
-
         #region Opcion
         [CheckSessionOutAttribute]
         public ActionResult Opcion(int? RowID_Lista)
@@ -1489,6 +1489,22 @@ namespace CinemaPOS.Controllers.Master
 
         }
 
+
+        [CheckSessionOutAttribute]
+        public JsonResult CargarDepartamento(Int32 rowid)
+        {
+            List<Departamento> departamentos = db.Departamento.Where(f => f.PaisID == rowid).ToList();
+            ///Para formar el Json
+            var query = (from Departamento in departamentos
+                         select new
+                         {
+                             RowId = Departamento.RowID,
+                             Nombre = Departamento.Nombre
+                         }
+            ).ToList();
+
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region zona

@@ -4,6 +4,7 @@
     Layout = "~/Views/Inicio/Diseño.cshtml";
 
 }
+@using ReportViewerForMvc
 
 
 <link href="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.css" rel="stylesheet">
@@ -32,7 +33,7 @@
                 inicio = new Date(inicio);
                 finalq = new Date(finalq);
                 if (inicio > finalq) {
-                    swal("", "La fecha inicial no puede ser mayor a la final", "error");
+                    Alerts("", "La fecha inicial no puede ser mayor a la final", "error");
                 } else {
                     debugger;
                     $.ajax({
@@ -47,7 +48,7 @@
                                 swal("ERROR", data.respuesta, "error");
                                 return;
                             } else {
-                                swal("OK", "Se actualizo el estado de los items", "success");
+                                Alerts("Se actualizo el estado de los items", "success");
                                 $("#row_id").val(data.RowID_EncabezadoConvenio);
                                 window.location = "/VentaEmpresarial/VentaEmpresarial?RowId_Empresarial=" + data.RowID_EncabezadoConvenio;
                                 //jQuery(".Ocultar").slideDown();
@@ -62,7 +63,7 @@
             }
         }
 
-    function lol() {
+    function guardar_Detalle() {
             debugger;
             $.ajax({
                 type: "POST",
@@ -74,21 +75,18 @@
                 },
                 success: function (data) {
 
-                    swal("OK", "Se actualizo el estado de los items", "success");
-                    //$("#row_id").val(data.RowID_EncabezadoConvenio);
-                    //window.location = "/VentaEmpresarial/VentaEmpresarial?RowId_Empresarial=" + data.RowID_EncabezadoConvenio;
-                    //jQuery(".Ocultar").slideDown();
-                    //}
+                    Alerts( "Items creados con exito!!!", "success");
+                   //$("#row_id").val(data.RowID_EncabezadoConvenio);
+                   window.location = "/VentaEmpresarial/VentaEmpresarial?RowId_Empresarial=" + $("#row_id").val();
+                   jQuery(".Ocultar").slideDown();
+                   
                 },
                 error: function (data) {
-                    swal("ERROR", data.respuesta, "error");
+                    Alerts("ERROR", data.respuesta, "error");
                 }
 
-            });
-        
+            });        
     }
-
-
 
     function EliminarItems(RowID_Detalle) {
         $.ajax({
@@ -102,7 +100,7 @@
                 cargarItems();
             },
             error: function (data) {
-                swal("ERROR", data, "error");
+                Alerts("ERROR", data, "error");
             }
         });
     }
@@ -132,7 +130,7 @@
                 debugger;
 
                 //$.unblockUI();
-                swal("ERROR", data, "error");
+                Alerts("ERROR", data, "error");
             }
         });
     }
@@ -160,6 +158,7 @@
         $('#demo-dp-range .input-daterange').datepicker({
             format: "dd/mm/yyyy",
             todayBtn: "linked",
+            startDate: "1d",
             autoclose: true,
             todayHighlight: false
         });
@@ -178,6 +177,7 @@
         .load(urlWithCont.trim())
         .dialog('open');
     }
+   
     function eliminarTeatro(teatro) {
         if ($(teatro).is(':checked')) {
         } else {
@@ -206,20 +206,16 @@
                         success: function (data) {
                             debugger
                             if (data == "ok") {
-                                swal(
-                                    'Teatro Eliminado!',
-                                    '',
-                                    'success'
-                                    );
+                                Alerts("Teatro Eliminado!","success");
+                                CargarTeatro();
+                                RefrescarTabla();
                                 $(teatro).css("display", "none");
                                 $(teatro).parents("tr").find("td").each(function () {
                                     $(this).css("background", "#F44336");
                                     $(this).css("color", "#fff");
                                 });
                             } else {
-                                'Error al eliminar el teatro',
-                                '',
-                                'error'
+                                Alerts("Error al eliminar el teatro","error");
                             }
 
                         },
@@ -233,7 +229,6 @@
         }
 
     }
-
 
 
     function RefrescarTabla() {
@@ -264,6 +259,93 @@
         });
         ModalProcesandoHiden();
 
+    }
+
+    
+    //GUARDAR TEATRO
+    function GuardarTeatro() {
+        debugger;
+        ModalProcesandoShow();
+        $.ajax({
+            type: "POST",
+            url: "/VentaEmpresarial/GuardarTeatro",
+            data: {
+                rowidEmpresarial: @Model.RowID,
+                rowidTeatro: $("#rowidTeatro").val(),
+
+            },
+            success: function (data) {
+                debugger;
+                if(data=="ok"){
+                    Alerts("Teatro agregado!", "success");
+                    CargarTeatro();
+                }else{
+                    Alerts("El teatro ya se encuentra asociado a la venta empresarial","error");
+                }
+                RefrescarTabla();
+
+            },
+            error: function (request) {
+                hasChangue = true;
+            }
+        });
+    }
+
+    
+    
+    //GUARDAR TEATRO
+    function GuardarTodos() {
+        debugger;
+        ModalProcesandoShow();
+        $.ajax({
+            type: "POST",
+            url: "/VentaEmpresarial/GuardarTodos",
+            data: {
+                rowidVenta: @Model.RowID,
+
+            },
+            success: function (data) {
+                debugger;
+                if(data=="ok"){
+                    Alerts("Teatros agregados con exito!", "success");
+                   
+                    CargarTeatro();
+
+                }else{
+                    Alerts("El teatro ya se encuentra asociado a la venta empresarial","error");
+                }
+                RefrescarTabla();
+
+            },
+            error: function (request) {
+                hasChangue = true;
+            }
+        });
+    }
+
+
+    function CargarTeatro() {
+        debugger;
+        $("#rowidTeatro").empty();
+        $.ajax({
+            type: "POST",
+            url: "/VentaEmpresarial/CargarTeatro",
+            data: {
+                rowidVenta: @Model.RowID,
+            },
+            success: function (data) {
+                $("#rowidTeatro").empty()
+                $("#rowidTeatro").append("<option disabled selected value='' >Seleccione una Opción</option>").trigger("chosen:updated");
+                data.forEach(function (Teatro) {
+                    $("#rowidTeatro").append("<option value='" + Teatro.RowId + "' >" + Teatro.Nombre
+                        + " " + Teatro.Ciudad + " " +"</option>").trigger("chosen:updated");
+                    $("#rowidTeatro").trigger("chosen:updated");
+                });
+            },
+            error: function (data) {
+                swal("ERROR", data, "error");
+            }
+        });
     }
 </script>
 
@@ -309,11 +391,6 @@
     }
 </script>
 
-
-
-
-
-
 <div>
     <p>
         <a class="btn btn-success" href='@Url.Action("VistaVentaEmpresarial", "VentaEmpresarial")'>Vista Venta Empresarial</a>
@@ -331,10 +408,13 @@
                 <li class="active" id="tabEncabezado"><a data-toggle="tab" href="#VentaEmpresarial">Venta Empresarial</a></li>
                 <li><a data-toggle="tab" href="#RelacionEmpresa" onclick="RefrescarTabla(@Model.RowID)">Teatros</a></li>
                 <li><a data-toggle="tab" href="#Items">Items</a></li>
+                <li><a data-toggle="tab" href="#Ticket">Tickets</a></li>
+
+
             </ul>
 
         </div>
-        <h3 class="panel-title">Venta empresarial</h3>
+        <h3 class="panel-title">Venta empresarial: @Model.Nombre</h3>
     </div>
     <div class="tab-content">
         @*****************TAB CREAR VENTA EMPRESARIAL******************@
@@ -484,54 +564,53 @@
             </form>
         </div>
 
-        @*****************TAB ASIGNAR EMPRESA******************@
+        @*****************TAB ASIGNAR TEATRO******************@
         <div id="RelacionEmpresa" class="tab-pane fade">
-            <div id="page-content">
-                <div class="panel Ocultar">
-                    <form name="formulario_Teatro" id="formulario_Teatro" onsubmit="return false">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <input type="hidden" name="rowidEmpresarial" value="@ViewBag.RowEmpresa" id="rowidEmpresarial" />
-                                <label for="TEATRO">Teatros</label>
-                                <select class="form-control" id="rowidTeatro" name="rowidTeatro">
-                                    @foreach (var item in (List<CinemaPOS.Models.Teatro>)ViewBag.TeatrosDisp)
-                                    {
-                                        <option value="@item.RowID">@item.Nombre - @item.Ciudad.Nombre</option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <p>
-                                    <br />
-                                    <a onclick="javascript:GuardarTeatro()" class="btn btn-success">Asociar Teatro</a>
-                                    @*<a class="btn btn-success" href='javascript:ModalTeatroVentaEmpresarial(@Model.RowID)'><i class="glyphicon glyphicon-plus"></i> Asociar Teatro</a>
-                                        <a class="btn btn-success" href='javascript:RefrescarTabla(@Model.RowID)' id="pelicula"><i class="glyphicon glyphicon-refresh"></i> Refrescar</a>*@
-                                </p>
-                            </div>
-                        </div>
-                        <table class="table table-hover table-responsive table-bordered table-condensed table-striped" id="TeatroPelicula">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Teatro</th>
-                                    <th>Ubicaci&oacute;n</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in (List<CinemaPOS.Models.TeatroVentaEmpresarial>)ViewBag.Teatros)
-                                {
-                                    <tr>
-                                        <td><input type="checkbox" name="check[]" value="@item.RowID" id="@item.RowID" checked onclick="javascript:eliminarTeatro(this)" /></td>
-                                        <td>@item.Teatro.Nombre</td>
-                                        <td>@item.Teatro.Ciudad.Nombre</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </form>
-                </div>
-            </div>
 
+            <div class="row">
+                <div class="col-sm-3">
+                    <input type="hidden" name="rowidEmpresarial" value="@ViewBag.RowEmpresa" id="rowidEmpresarial" />
+                    <label for="TEATRO">Teatros</label>
+                    <select class="form-control" id="rowidTeatro" name="rowidTeatro">
+                        @foreach (var item in (List<CinemaPOS.Models.Teatro>)ViewBag.TeatrosDisp)
+                        {
+                            <option value="@item.RowID">@item.Nombre - @item.Ciudad.Nombre</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-1">
+                    <p>
+                        <br />
+                        <a onclick="javascript:GuardarTeatro()" class="btn btn-success">Asociar Teatro</a>
+                    </p>
+                </div>
+                <div class="col-sm-3">
+                    <p>
+                        <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        <a onclick="javascript:GuardarTodos()" class="btn btn-success">Asociar todos los teatros</a>
+                </div>
+
+                </div>
+            <table class="table table-hover table-responsive table-bordered table-condensed table-striped" id="TeatroPelicula">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Teatro</th>
+                        <th>Ubicaci&oacute;n</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in (List<CinemaPOS.Models.TeatroVentaEmpresarial>)ViewBag.Teatros)
+                    {
+                        <tr>
+                            <td><input type="checkbox" name="check[]" value="@item.RowID" id="@item.RowID" checked onclick="javascript:eliminarTeatro(this)" /></td>
+                            <td>@item.Teatro.Nombre</td>
+                            <td>@item.Teatro.Ciudad.Nombre</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
         @*****************TAB ITEMS ******************@
         <div id="Items" class="tab-pane fade">
@@ -561,14 +640,20 @@
                                     </div>
                                     <div class="col-sm-2">
                                         <div class="form-group">
+                                            <label class="control-label">Valor:*</label>
+                                            <input type="text" id="ValorItem" name="ValorItem" class="ValorItem solo-numero" maxlength="8" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
                                             <label class="control-label">Cantidad:*</label>
-                                            <input type="text" id="CantidadItem" class="CantidadItem" maxlength=" 8" required>
+                                            <input type="text" id="CantidadItem" class="CantidadItem solo-numero" maxlength=" 8" required>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <input class="btn btn-success" type="submit" value="Adicionar" onclick="lol()">
+                                        <input class="btn btn-success" type="submit" value="Adicionar" onclick="guardar_Detalle()">
                                     </div>
                                 </div></br>
                             </form>
@@ -577,6 +662,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
+                                        <th>Valor</th>
                                         <th>Código</th>
                                         <th>Estado</th>
                                         <th></th>
@@ -590,6 +676,7 @@
                                             <tr>
                                                 <td>@item.RowID </td>
                                                 <td>@item.Nombre </td>
+                                                <td>@item.Valor </td>
                                                 <td>@item.Codigo </td>
                                                 <td>@item.Estado.Nombre </td>
                                                 <td><a href='javascript:EliminarItems(@item.RowID);' class="ion-trash-a"></a></td>
@@ -604,6 +691,19 @@
                     </div>
                 </div>
             </div>
+        </div>
+        @*****************TAB TICKET******************@
+        <div id="Ticket" class="tab-pane fade">
+            <div id="page-content" class="Ocultar">
+                <div class="panel">
+                    <div class="panel-body">                      
+                        <form name="formulario_Convenio_Ticket" id="formulario_Convenio_Ticket" onsubmit="return false">
+                           @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>
