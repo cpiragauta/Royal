@@ -100,8 +100,8 @@ namespace CinemaPOS.Controllers.Master
                 ObjEncabezado.Nombre = formulario["nombre"];
                 ObjEncabezado.TeatroID = int.Parse(formulario["teatro"]);
                 ObjEncabezado.Descripcion = formulario["descripcion"];
-                ObjEncabezado.FechaInicial = ModelosPropios.Util.HoraInsertar(formulario["fechainicialvigencia"]);
-                ObjEncabezado.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["fechafinalvigencia"]);
+                ObjEncabezado.FechaInicial = ModelosPropios.Util.FechaInsertar(formulario["fechainicialvigencia"]);
+                ObjEncabezado.FechaFinal = ModelosPropios.Util.FechaInsertar(formulario["fechafinalvigencia"]);
                 ObjEncabezado.CreadoPor = Session["usuario_creacion"].ToString();
                 ObjEncabezado.EstadoID = int.Parse(formulario["Estado"]);
                 ObjEncabezado.FechaCreacion = DateTime.Now;
@@ -115,8 +115,8 @@ namespace CinemaPOS.Controllers.Master
                 ObjEncabezado.Nombre = formulario["nombre"];
                 ObjEncabezado.TeatroID = int.Parse(formulario["teatro"]);
                 ObjEncabezado.Descripcion = formulario["descripcion"];
-                ObjEncabezado.FechaInicial = ModelosPropios.Util.HoraInsertar(formulario["fechainicialvigencia"]);
-                ObjEncabezado.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["fechafinalvigencia"]);
+                ObjEncabezado.FechaInicial = ModelosPropios.Util.FechaInsertar(formulario["fechainicialvigencia"]);
+                ObjEncabezado.FechaFinal = ModelosPropios.Util.FechaInsertar(formulario["fechafinalvigencia"]);
                 ObjEncabezado.ModificadoPor = Session["usuario_creacion"].ToString();
                 ObjEncabezado.EstadoID = int.Parse(formulario["Estado"]);
                 ObjEncabezado.FechaModificacion = DateTime.Now;
@@ -265,8 +265,8 @@ namespace CinemaPOS.Controllers.Master
                             ObjDetalle.DiasAsignados = formulario["dias"];
                             ObjDetalle.Precio = int.Parse(formulario["precio"].Replace(".", ""));
                             ObjDetalle.PrecioDistribuidor = int.Parse(formulario["precio_distribuidor"].Replace(".", ""));
-                            ObjDetalle.FechaInicial = ModelosPropios.Util.HoraInsertar(formulario["fecha_inicial"]);
-                            ObjDetalle.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["fecha_final"]);
+                            ObjDetalle.FechaInicial = ModelosPropios.Util.FechaInsertar(formulario["fecha_inicial"]);
+                            ObjDetalle.FechaFinal = ModelosPropios.Util.FechaInsertar(formulario["fecha_final"]);
                             ObjDetalle.CreadoPor = Session["usuario_creacion"].ToString();
                             ObjDetalle.EstadoID = estado;
                             ObjDetalle.FechaCreacion = DateTime.Now;
@@ -290,8 +290,8 @@ namespace CinemaPOS.Controllers.Master
                         }
                         ObjDetalle.Precio = int.Parse(formulario["precio"].Replace(".", ""));
                         ObjDetalle.PrecioDistribuidor = int.Parse(formulario["precio_distribuidor"].Replace(".", ""));
-                        ObjDetalle.FechaInicial = ModelosPropios.Util.HoraInsertar(formulario["fecha_inicial"]);
-                        ObjDetalle.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["fecha_final"]);
+                        ObjDetalle.FechaInicial = ModelosPropios.Util.FechaInsertar(formulario["fecha_inicial"]);
+                        ObjDetalle.FechaFinal = ModelosPropios.Util.FechaInsertar(formulario["fecha_final"]);
                         ObjDetalle.CreadoPor = Session["usuario_creacion"].ToString();
                         ObjDetalle.EstadoID = estado;
                         ObjDetalle.FechaCreacion = DateTime.Now;
@@ -966,7 +966,7 @@ namespace CinemaPOS.Controllers.Master
         public Tercero CargarDatosTercero(Tercero ObjTercero, FormCollection formulario)
         {
             ObjTercero.TipoTerceroID = int.Parse(formulario["tipo_tercero"].ToString());
-            ObjTercero.FechaNacimiento = ModelosPropios.Util.HoraInsertar(formulario["FechaNacimiento"].ToString());
+            ObjTercero.FechaNacimiento = ModelosPropios.Util.FechaInsertar(formulario["FechaNacimiento"].ToString());
             ObjTercero.Identificacion = formulario["identificacion"].ToString();
             int RowIdIdentificacion = Int32.Parse(formulario["tipo_tercero"].ToString());
             ObjTercero.Apellidos = "";

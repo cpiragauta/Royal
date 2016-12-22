@@ -68,7 +68,7 @@ namespace CinemaPOS.Controllers.Pelicula
             if (RowID_Pelicula == 0)
             {
                 ObjPelicula.DerechoCorto = derecho_corto;
-                ObjPelicula.Duracion = ConvertirHoraMinutos(formulario["duracion"]);
+                ObjPelicula.Duracion = int.Parse(formulario["duracion"].ToString());
                 ObjPelicula.DistribuidorID = int.Parse(formulario["distribuidor"]);
                 ObjPelicula.PaisID = int.Parse(formulario["pais"]);
                 ObjPelicula.TipoClasificacionID = int.Parse(formulario["clasificacion"]);
@@ -78,7 +78,7 @@ namespace CinemaPOS.Controllers.Pelicula
                 ObjPelicula.NumeroActa = formulario["numero_acta"];
                 ObjPelicula.Sinopsis = formulario["sinopsis"];
                 ObjPelicula.WebOficial = formulario["web_oficial"];
-                ObjPelicula.FechaEstreno = ModelosPropios.Util.HoraInsertar(formulario["fecha_estreno"]);
+                ObjPelicula.FechaEstreno = ModelosPropios.Util.FechaInsertar(formulario["fecha_estreno"]);
                 ObjPelicula.EstadoID = int.Parse(db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOPELICULA" && e.Nombre == "Confirmada").Select(e => e.RowID).First().ToString());
                 ObjPelicula.CreadoPor = Session["usuario_creacion"].ToString();
                 ObjPelicula.FechaCreacion = DateTime.Now;
@@ -99,7 +99,7 @@ namespace CinemaPOS.Controllers.Pelicula
                 ObjPelicula.NumeroActa = formulario["numero_acta"];
                 ObjPelicula.Sinopsis = formulario["sinopsis"];
                 ObjPelicula.WebOficial = formulario["web_oficial"];
-                ObjPelicula.FechaEstreno = ModelosPropios.Util.HoraInsertar(formulario["fecha_estreno"]);
+                ObjPelicula.FechaEstreno = ModelosPropios.Util.FechaInsertar(formulario["fecha_estreno"]);
                 ObjPelicula.EstadoID = int.Parse(db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOPELICULA" && e.Nombre == "Confirmada").Select(e => e.RowID).First().ToString());
                 ObjPelicula.CreadoPor = Session["usuario_creacion"].ToString();
                 ObjPelicula.FechaCreacion = DateTime.Now;
@@ -360,8 +360,8 @@ namespace CinemaPOS.Controllers.Pelicula
                             {
                                 ObjParticipacion.EncabezadoPeliculaID = codigo_pelicula;
                                 ObjParticipacion.Porcentaje = int.Parse(porcentajes[i]);
-                                ObjParticipacion.FechaInicial = ModelosPropios.Util.HoraInsertar(fecha_inicio[i]);
-                                ObjParticipacion.FechaFinal = ModelosPropios.Util.HoraInsertar(fecha_final[i]);
+                                ObjParticipacion.FechaInicial = ModelosPropios.Util.FechaInsertar(fecha_inicio[i]);
+                                ObjParticipacion.FechaFinal = ModelosPropios.Util.FechaInsertar(fecha_final[i]);
                                 ObjParticipacion.Nombre = nombre[i];
                                 ObjParticipacion.CreadoPor = Session["usuario_creacion"].ToString();
                                 ObjParticipacion.FechaCreacion = DateTime.Now;
@@ -382,8 +382,8 @@ namespace CinemaPOS.Controllers.Pelicula
                     {
                         item.EncabezadoPeliculaID = codigo_pelicula;
                         item.Porcentaje = int.Parse(porcentajes[i]);
-                        item.FechaInicial = ModelosPropios.Util.HoraInsertar(fecha_inicio[i]);
-                        item.FechaFinal = ModelosPropios.Util.HoraInsertar(fecha_final[i]);
+                        item.FechaInicial = ModelosPropios.Util.FechaInsertar(fecha_inicio[i]);
+                        item.FechaFinal = ModelosPropios.Util.FechaInsertar(fecha_final[i]);
                         item.Nombre = nombre[i];
                         item.CreadoPor = Session["usuario_creacion"].ToString();
                         item.FechaCreacion = DateTime.Now;
@@ -396,8 +396,8 @@ namespace CinemaPOS.Controllers.Pelicula
                         {
                             ObjParticipacion.EncabezadoPeliculaID = codigo_pelicula;
                             ObjParticipacion.Porcentaje = int.Parse(porcentajes[i]);
-                            ObjParticipacion.FechaInicial = ModelosPropios.Util.HoraInsertar(fecha_inicio[i]);
-                            ObjParticipacion.FechaFinal = ModelosPropios.Util.HoraInsertar(fecha_final[i]);
+                            ObjParticipacion.FechaInicial = ModelosPropios.Util.FechaInsertar(fecha_inicio[i]);
+                            ObjParticipacion.FechaFinal = ModelosPropios.Util.FechaInsertar(fecha_final[i]);
                             ObjParticipacion.Nombre = nombre[i];
                             ObjParticipacion.CreadoPor = Session["usuario_creacion"].ToString();
                             ObjParticipacion.FechaCreacion = DateTime.Now;
@@ -422,8 +422,8 @@ namespace CinemaPOS.Controllers.Pelicula
                         {
                             ObjParticipacion.EncabezadoPeliculaID = codigo_pelicula;
                             ObjParticipacion.Porcentaje = int.Parse(porcentajes[i]);
-                            ObjParticipacion.FechaInicial = ModelosPropios.Util.HoraInsertar(fecha_inicio[i]);
-                            ObjParticipacion.FechaFinal = ModelosPropios.Util.HoraInsertar(fecha_final[i]);
+                            ObjParticipacion.FechaInicial = ModelosPropios.Util.FechaInsertar(fecha_inicio[i]);
+                            ObjParticipacion.FechaFinal = ModelosPropios.Util.FechaInsertar(fecha_final[i]);
                             ObjParticipacion.Nombre = nombre[i];
                             ObjParticipacion.CreadoPor = Session["usuario_creacion"].ToString();
                             ObjParticipacion.FechaCreacion = DateTime.Now;

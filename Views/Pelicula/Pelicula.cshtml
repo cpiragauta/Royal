@@ -53,10 +53,11 @@
     $(document).ready(function () {
         $("#genero_pelicula").chosen();
         $('.fecha_estreno').datepicker({
-            format: "dd/MM/yyyy",
+            format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
-            todayHighlight: false
+            todayHighlight: false,
+            startDate: '1d'
         });
         function clonar_config_film() {
 
@@ -83,8 +84,21 @@
         var quantitybox = 0;
         function clone_panel_porcentaje() {
             new_porcentaje = jQuery(".control-clone").clone().removeClass("control-clone").hide().appendTo(".contenido").slideDown().addClass("control-porcentaje controls" + quantitybox);
-            new_porcentaje.find(".fecha_inicial_porcentaje").attr("name", "fecha_inicial_porcentaje[]").datepicker({ format: "dd/MM/yyyy", todayBtn: "linked", autoclose: true, todayHighlight: false });
-            new_porcentaje.find(".fecha_final_porcentaje").attr("name", "fecha_final_porcentaje[]").datepicker({ format: "dd/MM/yyyy", todayBtn: "linked", autoclose: true, todayHighlight: false });
+            new_porcentaje.find(".fecha_inicial_porcentaje").attr("name", "fecha_inicial_porcentaje[]")
+                .datepicker({
+                    format: "dd/mm/yyyy",
+                    todayBtn: "linked",
+                    autoclose: true,
+                    todayHighlight: false,
+                    startDate: '1d'
+                });
+            new_porcentaje.find(".fecha_final_porcentaje").attr("name", "fecha_final_porcentaje[]").datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                autoclose: true,
+                todayHighlight: false,
+                startDate: '1d'
+            });
             new_porcentaje.find(".porcentaje").attr("name", "porcentaje[]");
             new_porcentaje.find(".nombre_porcentaje").attr("name", "nombre_porcentaje[]");
             close_box_price();
@@ -108,17 +122,19 @@
         }
 
         $('.fecha_inicial_porcentaje ').datepicker({
-            format: "dd/MM/yyyy",
+            format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
-            todayHighlight: false
+            todayHighlight: false,
+            startDate: '1d'
         });
 
         $('.fecha_final_porcentaje ').datepicker({
-            format: "dd/MM/yyyy",
+            format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
-            todayHighlight: false
+            todayHighlight: false,
+            startDate: '1d'
         });
 
         $(".duracion").timepicker({
@@ -442,11 +458,11 @@
                                             int? Hora = Model.Duracion / 60;
                                             int? Minutos = (Model.Duracion - (Hora * 60));
                                             string val = Hora + ":" + Minutos;
-                                            <input type="text" name="duracion" class="form-control" value="@Model.Duracion">
+                                            <input type="text" name="duracion" class="form-control solo-numero" value="@Model.Duracion">
                                         }
                                         else
                                         {
-                                            <input type="text" name="duracion" class="duracion form-control">
+                                            <input type="text" name="duracion" class="solo-numero form-control">
                                         }
 
                                     </div>
@@ -1028,4 +1044,7 @@
         .load(urlWithCont.trim())
         .dialog('open');
     }
+    $('.solo-numero').keyup(function () {
+        this.value = (this.value + '').replace(/[^0-9]/g, '');
+    });
 </script>

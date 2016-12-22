@@ -289,8 +289,8 @@ namespace CinemaPOS.Controllers
         public EncabezadoConvenio CargarDatosEncabezadoConvenio(EncabezadoConvenio ObjEncabezado, FormCollection formulario)
         {
             ObjEncabezado.Nombre = formulario["Nombre"];
-            ObjEncabezado.FechaInicio = ModelosPropios.Util.HoraInsertar(formulario["FechaInicial"]);
-            ObjEncabezado.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["FechaFinal"]);
+            ObjEncabezado.FechaInicio = ModelosPropios.Util.FechaInsertar(formulario["FechaInicial"]);
+            ObjEncabezado.FechaFinal = ModelosPropios.Util.FechaInsertar(formulario["FechaFinal"]);
             ObjEncabezado.EstadoID = db.Estado.FirstOrDefault().RowID; //Cambiar por el que es
             ObjEncabezado.Descripcion = formulario["descripcion"]; //Validar si toca meterla
             ObjEncabezado.TerceroID = Convert.ToInt32(formulario["Cliente"]);

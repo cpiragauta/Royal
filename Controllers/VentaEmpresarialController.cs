@@ -241,8 +241,8 @@ namespace CinemaPOS.Controllers
         public EncabezadoVentaEmpresarial CargarDatosEncabezadoEmpresarial(EncabezadoVentaEmpresarial ObjEncabezado, FormCollection formulario)
         {
             ObjEncabezado.Nombre = formulario["Nombre"];
-            ObjEncabezado.FechaInicio = ModelosPropios.Util.HoraInsertar(formulario["FechaInicial"]);
-            ObjEncabezado.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["FechaFinal"]);
+            ObjEncabezado.FechaInicio = ModelosPropios.Util.FechaInsertar(formulario["FechaInicial"]);
+            ObjEncabezado.FechaFinal = ModelosPropios.Util.FechaInsertar(formulario["FechaFinal"]);
             ObjEncabezado.EstadoID = db.Estado.FirstOrDefault().RowID; //Cambiar por el que es
             ObjEncabezado.TerceroID = Convert.ToInt32(formulario["Cliente"]);
             ObjEncabezado.FormatoID = Convert.ToInt32(formulario["Formato"]);

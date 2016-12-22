@@ -127,13 +127,15 @@
             format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
-            todayHighlight: false
+            todayHighlight: false,
+            startDate: '1d'
         });
         jQuery(".fecha_final ").datepicker({
             format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
-            todayHighlight: false
+            todayHighlight: false,
+            startDate: '1d'
         });
         jQuery(".select-dia").chosen({ width: " 100%;" });
         if (@Model.RowID!=0) {
@@ -272,7 +274,24 @@
             format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
-            todayHighlight: false
+            todayHighlight: false,
+            startDate: '1d'
+        });
+        $('#fecha_inicial_detalle').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false,
+            startDate: $("#fechainicialvigencia").val(),
+            endDate:$("#fechafinalvigencia").val()
+        });
+        $('#fecha_final_detalle').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false,
+            startDate: $("#fechainicialvigencia").val(),
+            endDate:$("#fechafinalvigencia").val()
         });
 
     })
@@ -561,12 +580,12 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-2">
-                                <div class="form-group" id="demo-dp-range">
+                                <div class="form-group" id="demo-dp-range-detalle">
                                     <label class="control-label">Fecha de vigencia: </label>
                                     <div class="input-daterange input-group" id="datepicker">
-                                        <input type="text" name="fecha_inicial" class="form-control" onblur="crear_nombre()">
+                                        <input type="text" name="fecha_inicial" class="form-control" id="fecha_inicial_detalle" onblur="crear_nombre()">
                                         <span class="input-group-addon">a:</span>
-                                        <input type="text" name="fecha_final" class="form-control" onblur="crear_nombre()">
+                                        <input type="text" name="fecha_final" id="fecha_final_detalle" class="form-control" onblur="crear_nombre()">
                                     </div>
                                 </div>
                             </div>
