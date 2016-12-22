@@ -5,65 +5,65 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="ae8727279e94475199cbe851b869d483" Name="Diagram1" ZoomLevel="10">
-        <EntityTypeShape EntityType="CinemaPOSModel.DetalleConvenio" Width="1.5" PointX="15.5" PointY="80.625" />
-        <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoConvenio" Width="1.5" PointX="5.25" PointY="72.75" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Actividades" Width="1.5" PointX="8.25" PointY="78.125" />
-        <EntityTypeShape EntityType="CinemaPOSModel.ClienteRoyal" Width="1.5" PointX="13.25" PointY="79.875" />
-        <EntityTypeShape EntityType="CinemaPOSModel.OportunidadVenta" Width="1.5" PointX="24.75" PointY="67" />
-        <EntityTypeShape EntityType="CinemaPOSModel.TarjetaMembresia" Width="1.5" PointX="14.25" PointY="93.125" />
-        <EntityTypeShape EntityType="CinemaPOSModel.TarjetaMembresiaClienteRoyal" Width="1.5" PointX="16.5" PointY="86" />
+        <EntityTypeShape EntityType="CinemaPOSModel.DetalleConvenio" Width="1.5" PointX="10.5" PointY="83.125" />
+        <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoConvenio" Width="1.5" PointX="5.25" PointY="71.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Actividades" Width="1.5" PointX="8.25" PointY="77.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ClienteRoyal" Width="1.5" PointX="14.25" PointY="64.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.OportunidadVenta" Width="1.5" PointX="18.75" PointY="77.125" />
+        <EntityTypeShape EntityType="CinemaPOSModel.TarjetaMembresia" Width="1.5" PointX="14.25" PointY="57.625" />
+        <EntityTypeShape EntityType="CinemaPOSModel.TarjetaMembresiaClienteRoyal" Width="1.5" PointX="16.5" PointY="65.5" />
         <EntityTypeShape EntityType="CinemaPOSModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="CinemaPOSModel.CentroOperacion" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Ciudad" Width="1.5" PointX="16.25" PointY="60.125" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Contacto" Width="1.5" PointX="13.5" PointY="63.625" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Departamento" Width="1.5" PointX="14" PointY="60.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Ciudad" Width="1.5" PointX="20.25" PointY="92.625" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Contacto" Width="1.5" PointX="16.5" PointY="81.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Departamento" Width="1.5" PointX="18" PointY="92.875" />
         <EntityTypeShape EntityType="CinemaPOSModel.EnvioMail" Width="1.5" PointX="4.75" PointY="0.75" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Estado" Width="1.5" PointX="6" PointY="53.625" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Impuesto" Width="1.5" PointX="8.25" PointY="68.5" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Opcion" Width="1.5" PointX="3" PointY="70.625" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Pais" Width="1.5" PointX="11.75" PointY="60.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Estado" Width="1.5" PointX="6" PointY="52.125" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Impuesto" Width="1.5" PointX="8.25" PointY="67" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Opcion" Width="1.5" PointX="3" PointY="69.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Pais" Width="1.5" PointX="15.75" PointY="93" />
         <EntityTypeShape EntityType="CinemaPOSModel.Parametros" Width="1.5" PointX="0.75" PointY="4.75" />
         <EntityTypeShape EntityType="CinemaPOSModel.Plantillas" Width="1.5" PointX="2.75" PointY="4.75" />
-        <EntityTypeShape EntityType="CinemaPOSModel.SalaObjeto" Width="1.5" PointX="5.25" PointY="126.875" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Sello_Distribuidor" Width="1.5" PointX="13.5" PointY="86.125" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Teatro" Width="1.5" PointX="18.5" PointY="64.375" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Tercero" Width="1.5" PointX="11.25" PointY="71.75" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Tipo" Width="1.5" PointX="0.75" PointY="69.25" />
-        <EntityTypeShape EntityType="CinemaPOSModel.TipoEstado" Width="1.5" PointX="3.75" PointY="55.875" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Zona" Width="1.5" PointX="5.25" PointY="97.5" />
-        <EntityTypeShape EntityType="CinemaPOSModel.DetallePelicula" Width="1.5" PointX="5.25" PointY="84.25" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Elenco" Width="1.5" PointX="13.25" PointY="68.125" />
-        <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoPelicula" Width="1.5" PointX="16.5" PointY="71.875" />
-        <EntityTypeShape EntityType="CinemaPOSModel.GeneroPelicula" Width="1.5" PointX="21.75" PointY="69.625" />
-        <EntityTypeShape EntityType="CinemaPOSModel.ImpuestoPelicula" Width="1.5" PointX="18.75" PointY="71.875" />
-        <EntityTypeShape EntityType="CinemaPOSModel.MedioPelicula" Width="1.5" PointX="21.75" PointY="77.5" />
-        <EntityTypeShape EntityType="CinemaPOSModel.PorcentajeParticipacion" Width="1.5" PointX="24.75" PointY="73.5" />
-        <EntityTypeShape EntityType="CinemaPOSModel.TeatroPelicula" Width="1.5" PointX="21.75" PointY="74.125" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Menu" Width="1.5" PointX="3" PointY="65.25" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Rol" Width="1.5" PointX="3" PointY="60.875" />
-        <EntityTypeShape EntityType="CinemaPOSModel.RolMenu" Width="1.5" PointX="5.25" PointY="62.75" />
-        <EntityTypeShape EntityType="CinemaPOSModel.TipoMenu" Width="1.5" PointX="0.75" PointY="64.875" />
-        <EntityTypeShape EntityType="CinemaPOSModel.UsuarioSistema" Width="1.5" PointX="23.75" PointY="61.125" />
-        <EntityTypeShape EntityType="CinemaPOSModel.EvidenciaPqrs" Width="1.5" PointX="23" PointY="112.375" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Pqrs" Width="1.5" PointX="20.75" PointY="111.25" />
-        <EntityTypeShape EntityType="CinemaPOSModel.SeguientoEvidencia" Width="1.5" PointX="10.5" PointY="64.5" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Seguimiento" Width="1.5" PointX="8.25" PointY="73.625" />
-        <EntityTypeShape EntityType="CinemaPOSModel.TipoSolicitud" Width="1.5" PointX="5.25" PointY="159.5" />
-        <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoProgramacion" Width="1.5" PointX="20.75" PointY="64.625" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Funcion" Width="1.5" PointX="7.5" PointY="84.25" />
-        <EntityTypeShape EntityType="CinemaPOSModel.ListaPrecioFuncion" Width="1.5" PointX="12.75" PointY="89.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.SalaObjeto" Width="1.5" PointX="5.25" PointY="95.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Sello_Distribuidor" Width="1.5" PointX="16.5" PointY="89.5" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Teatro" Width="1.5" PointX="22.5" PointY="82" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Tercero" Width="1.5" PointX="14.25" PointY="78.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Tipo" Width="1.5" PointX="0.75" PointY="68" />
+        <EntityTypeShape EntityType="CinemaPOSModel.TipoEstado" Width="1.5" PointX="3.75" PointY="54.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Zona" Width="1.5" PointX="5.25" PointY="83.875" />
+        <EntityTypeShape EntityType="CinemaPOSModel.DetallePelicula" Width="1.5" PointX="16.5" PointY="73.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Elenco" Width="1.5" PointX="16.5" PointY="78.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoPelicula" Width="1.5" PointX="11.25" PointY="74.5" />
+        <EntityTypeShape EntityType="CinemaPOSModel.GeneroPelicula" Width="1.5" PointX="21.5" PointY="77.625" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ImpuestoPelicula" Width="1.5" PointX="19.5" PointY="72.5" />
+        <EntityTypeShape EntityType="CinemaPOSModel.MedioPelicula" Width="1.5" PointX="19.5" PointY="84.125" />
+        <EntityTypeShape EntityType="CinemaPOSModel.PorcentajeParticipacion" Width="1.5" PointX="22.5" PointY="73.125" />
+        <EntityTypeShape EntityType="CinemaPOSModel.TeatroPelicula" Width="1.5" PointX="16.5" PointY="69.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Menu" Width="1.5" PointX="3" PointY="64.125" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Rol" Width="1.5" PointX="3" PointY="59.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.RolMenu" Width="1.5" PointX="5.25" PointY="61.5" />
+        <EntityTypeShape EntityType="CinemaPOSModel.TipoMenu" Width="1.5" PointX="0.75" PointY="63.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.UsuarioSistema" Width="1.5" PointX="27.75" PointY="82.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.EvidenciaPqrs" Width="1.5" PointX="27" PointY="118.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Pqrs" Width="1.5" PointX="24.75" PointY="117.125" />
+        <EntityTypeShape EntityType="CinemaPOSModel.SeguientoEvidencia" Width="1.5" PointX="13.5" PointY="61.125" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Seguimiento" Width="1.5" PointX="11.25" PointY="66.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.TipoSolicitud" Width="1.5" PointX="5.25" PointY="157.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoProgramacion" Width="1.5" PointX="24.75" PointY="83.125" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Funcion" Width="1.5" PointX="18.75" PointY="65.875" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ListaPrecioFuncion" Width="1.5" PointX="25" PointY="72.375" />
         <EntityTypeShape EntityType="CinemaPOSModel.SincronizacionMaestros" Width="1.5" PointX="4.75" PointY="4.75" />
-        <EntityTypeShape EntityType="CinemaPOSModel.ListaDetalle" Width="1.5" PointX="10.5" PointY="79.875" />
-        <EntityTypeShape EntityType="CinemaPOSModel.ListaEncabezado" Width="1.5" PointX="5.25" PointY="79.375" />
-        <EntityTypeShape EntityType="CinemaPOSModel.BoletaVendida" Width="1.5" PointX="26" PointY="79.375" />
-        <EntityTypeShape EntityType="CinemaPOSModel.FormatoSala" Width="1.5" PointX="10.5" PointY="68" />
-        <EntityTypeShape EntityType="CinemaPOSModel.MapaSala" Width="1.5" PointX="7.5" PointY="96.375" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Sala" Width="1.5" PointX="5.25" PointY="66.875" />
-        <EntityTypeShape EntityType="CinemaPOSModel.ServicioSala" Width="1.5" PointX="15.5" PointY="68" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Taquilla" Width="1.5" PointX="8.25" PointY="61.875" />
-        <EntityTypeShape EntityType="CinemaPOSModel.DetalleVentaEmpresarial" Width="1.5" PointX="17.75" PointY="80.875" />
-        <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoVentaEmpresarial" Width="1.5" PointX="13.5" PointY="73.125" />
-        <EntityTypeShape EntityType="CinemaPOSModel.TeatroVentaEmpresarial" Width="1.5" PointX="18.75" PointY="77.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ListaDetalle" Width="1.5" PointX="13.5" PointY="70.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ListaEncabezado" Width="1.5" PointX="8.25" PointY="71.875" />
+        <EntityTypeShape EntityType="CinemaPOSModel.BoletaVendida" Width="1.5" PointX="24" PointY="68.5" />
+        <EntityTypeShape EntityType="CinemaPOSModel.FormatoSala" Width="1.5" PointX="10.5" PointY="70.625" />
+        <EntityTypeShape EntityType="CinemaPOSModel.MapaSala" Width="1.5" PointX="7.5" PointY="83" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Sala" Width="1.5" PointX="5.25" PointY="65.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ServicioSala" Width="1.5" PointX="10.5" PointY="61.625" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Taquilla" Width="1.5" PointX="8.25" PointY="60.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.DetalleVentaEmpresarial" Width="1.5" PointX="21.75" PointY="68.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoVentaEmpresarial" Width="1.5" PointX="5.25" PointY="77.625" />
+        <EntityTypeShape EntityType="CinemaPOSModel.TeatroVentaEmpresarial" Width="1.5" PointX="13.5" PointY="86.75" />
         <EntityTypeShape EntityType="CinemaPOSModel.Funciones" Width="1.5" PointX="6.75" PointY="0.75" />
         <AssociationConnector Association="CinemaPOSModel.FK__DetalleCo__Encab__51851410" />
         <AssociationConnector Association="CinemaPOSModel.FK__DetalleCo__Estad__5090EFD7" />
@@ -171,7 +171,6 @@
         <AssociationConnector Association="CinemaPOSModel.FK__RolMenu__MenuID__18B6AB08" />
         <AssociationConnector Association="CinemaPOSModel.FK__RolMenu__RolID__19AACF41" />
         <AssociationConnector Association="CinemaPOSModel.FK__UsuarioSi__RolID__7BE56230" />
-        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Usuar__5B638405" />
         <AssociationConnector Association="CinemaPOSModel.FK__Evidencia__PqrsI__53A266AC" />
         <AssociationConnector Association="CinemaPOSModel.FK__Pqrs__TipoSolici__2A6B46EF" />
         <AssociationConnector Association="CinemaPOSModel.FK__Seguimien__PQRS___297722B6" />

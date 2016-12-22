@@ -1383,12 +1383,12 @@ namespace CinemaPOS.Controllers.Master
 
                     db.Taquilla.Add(objTaq);
                     db.SaveChanges();
+
                 }
                 else
                 {
                     objTaq = db.Taquilla.Where(le => le.RowID == RowID_Encabezado).FirstOrDefault();
                     formulario = DeSerialize(formulario);
-                    objTaq.Sincronizado = false;
                     objTaq.Nombre = formulario["nombre"];
                     objTaq.ConsecutivoInicial = formulario["consecutivoinicial"];
                     objTaq.ConsecutivoFinal = formulario["consecutivofinal"];
@@ -1400,17 +1400,16 @@ namespace CinemaPOS.Controllers.Master
                     objTaq.EstadoID = Convert.ToInt32(formulario["estado"]);
                     objTaq.ModificadoPor = Session["usuario_creacion"].ToString();
                     objTaq.FechaModificacion = DateTime.Now;
-                    
-                    //if (formulario["sincronizado"] == null)
-                    //{
-                    //    objTaq.Sincronizado = false;
+                    if (formulario["sincronizado"] == null)
+                    {
+                        objTaq.Sincronizado = false;
 
-                    //}
-                    //else
-                    //{
-                    //    objTaq.Sincronizado = false;
+                    }
+                    else
+                    {
+                        objTaq.Sincronizado = true;
 
-                    //}
+                    }
                     db.SaveChanges();
                 }
                 int codigo_encabezado = objTaq.RowID;

@@ -24,7 +24,6 @@
             data: {
             },
             success: function (data) {
-                debugger
                 Alerts(data, "success");
             },
             error: function (data) {
@@ -56,8 +55,6 @@
             },
             success: function (data) {
                 Alerts(data, "success");
-                window.location = "/Sincronizacion/VistaPrincipal"
-                
             },
             error: function (data) {
                 Alerts(data, "error");
@@ -68,28 +65,11 @@
     function SincronizarTerceros() {
         $.ajax({
             type: "POST",
-            url: "/Sincronizacion/SincronizacionTerceros",
+            url: "/Sincronizacion/SincronizarTerceros",
             data: {
             },
             success: function (data) {
                 Alerts(data, "success");
-          
-            },
-            error: function (data) {
-                Alerts(data, "error");
-            }
-        });
-    }
-
-    function SincronizarTaquillas() {
-        $.ajax({
-            type: "POST",
-            url: "/Sincronizacion/SincronizacionTaquillas",
-            data: {
-            },
-            success: function (data) {
-                Alerts(data, "success");
-
             },
             error: function (data) {
                 Alerts(data, "error");
@@ -108,8 +88,9 @@
             <input class="btn btn-success" type="submit" value="Sincronizar Salas" onclick="SincronizarSalas()">
             <input class="btn btn-success" type="submit" value="Sincronizar Teatros" onclick="SincronizarTeatros()">
             <input class="btn btn-success" type="submit" value="Sincronizar Terceros" onclick="SincronizarTerceros()">
-            <input class="btn btn-success" type="submit" value="Sincronizar Taquillas" onclick="SincronizarTaquillas()">
         </div>
+       
+            
         <table id="demo-dt-basic" class="table table-striped table-bordered table-funcion" cellspacing="0" style="width:100%">
             <thead>
                 <tr>
@@ -138,5 +119,7 @@
                 }
             </tbody>
         </table>
+
+
     </div>
 </div>
