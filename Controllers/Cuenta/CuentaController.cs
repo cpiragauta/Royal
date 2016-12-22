@@ -80,7 +80,16 @@ namespace CinemaPOS.Controllers.Cuenta
                 }
                 else
                 {
+
+                    if (!String.IsNullOrEmpty(Session["estadousuario"].ToString()))
+                    {
+                        ModelState.AddModelError("", Session["estadousuario"].ToString());
+
+                    }
+                    else{
+
                     ModelState.AddModelError("", "El usuario o la contraseña ingresados son incorrectos.");
+                    }
                 }
 
 
@@ -93,12 +102,16 @@ namespace CinemaPOS.Controllers.Cuenta
         private bool ValidateLogin(string username, string passwd)
         {
             Session["POS"] = "INACTIVO";
-            UsuarioSistema usuario = db.UsuarioSistema.FirstOrDefault(f => f.NombreUsuario == username && f.Contrasena == passwd);
-            UsuarioSistema user = db.UsuarioSistema.FirstOrDefault();
+            UsuarioSistema usuario = db.UsuarioSistema.FirstOrDefault(f => f.NombreUsuario == username && f.Contrasena == passwd );
             List<TipoMenu> tipoMenu;
             List<Menu> menu;
             if (usuario != null)
             {
+                if (usuario.Activo==false)
+                {
+                    Session["estadousuario"] = "El usuario está inactivo.";
+                    return false;
+                }
                 Session["usuario"] = usuario;
                 Session["usuario_creacion"] = usuario.NombreUsuario;
                 if (usuario.Rol.Nombre.ToUpper() != "ADMINISTRADOR")
@@ -135,6 +148,7 @@ namespace CinemaPOS.Controllers.Cuenta
             {
                 return false;
             }
+
 
             return true;
         }
