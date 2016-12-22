@@ -227,7 +227,7 @@ namespace CinemaPOS.Controllers
                             }
                         }
                         else { carrusel = false; }
-                        html += "<div class='col-sm-3 funcion mar-hor' onclick='javascrip:get_tarifas(" + funciones.DetallePeliculaID + ")'>";
+                        html += "<div class='col-sm-3 funcion mar-hor' onclick='javascrip:get_tarifas(" + funciones.RowID_Funcion + ")'>";
                         html += "<h5 class='text-main'>" + funciones.HoraInicial.Value + "</h5>";
                         html += "<p>" + funciones.NombreSala + "<br />Disponible: 120</p>";
                         html += "</div>";

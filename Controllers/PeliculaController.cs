@@ -15,15 +15,15 @@ namespace CinemaPOS.Controllers.Pelicula
         [CheckSessionOutAttribute]
         public ActionResult Pelicula(int? RowID_Pelicula)
         {
-            ViewBag.Distribuidor = db.Tercero.Where(t => t.Opcion2.Codigo == "DISTRIBUIDOR").ToList();
+            ViewBag.Distribuidor = db.Tercero.Where(t => t.Opcion2.Codigo == "DISTRIBUIDOR" && t.Activo==true).ToList();
             ViewBag.Pais = db.Pais.ToList();
-            ViewBag.Clasificacion = db.Opcion.Where(c => c.Tipo.Codigo == "TIPOCLASIFICACIONPELICULA").ToList();
-            ViewBag.Version = db.Opcion.Where(c => c.Tipo.Codigo == "TIPOVERSION").ToList();
-            ViewBag.Formato = db.Opcion.Where(c => c.Tipo.Codigo == "TIPOFORMATO").ToList();
-            ViewBag.Idioma = db.Opcion.Where(i => i.Tipo.Codigo == "TIPOIDIOMA").ToList();
-            ViewBag.GeneroPelicula = db.Opcion.Where(i => i.Tipo.Codigo == "TIPOGENEROPELICULA").ToList();
+            ViewBag.Clasificacion = db.Opcion.Where(c => c.Tipo.Codigo == "TIPOCLASIFICACIONPELICULA" && c.Activo==true).ToList();
+            ViewBag.Version = db.Opcion.Where(c => c.Tipo.Codigo == "TIPOVERSION" && c.Activo == true).ToList();
+            ViewBag.Formato = db.Opcion.Where(c => c.Tipo.Codigo == "TIPOFORMATO" && c.Activo == true).ToList();
+            ViewBag.Idioma = db.Opcion.Where(i => i.Tipo.Codigo == "TIPOIDIOMA" && i.Activo == true).ToList();
+            ViewBag.GeneroPelicula = db.Opcion.Where(i => i.Tipo.Codigo == "TIPOGENEROPELICULA" && i.Activo == true).ToList();
             ViewBag.Teatros = db.TeatroPelicula.Where(f => f.EncabezadoPeliculaID == RowID_Pelicula).ToList();
-            var TeatroNoDisp = db.TeatroPelicula.Where(f => f.EncabezadoPeliculaID == RowID_Pelicula).ToList();
+            var TeatroNoDisp = db.TeatroPelicula.Where(f => f.EncabezadoPeliculaID == RowID_Pelicula ).ToList();
             List<Teatro> Teatros = new List<Teatro>();
             List<Teatro> TeatrosV2 = db.Teatro.ToList();
             foreach (TeatroPelicula item in TeatroNoDisp)
@@ -534,8 +534,6 @@ namespace CinemaPOS.Controllers.Pelicula
             }
             return Json(validate, JsonRequestBehavior.AllowGet);
         }
-
-
 
 
         public JsonResult GuardarTodos(int rowidPelicula)
