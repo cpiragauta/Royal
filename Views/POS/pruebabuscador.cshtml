@@ -1,19 +1,277 @@
-﻿
+﻿<!--jQuery [ REQUIRED ]-->
+<script src="~/Content/js/jquery-2.2.4.min.js"></script>
 <html>
-<head>
+@*<head>
     <script language="javascript">
-        function imprimir() {
+        function imprimir(id_element) {
+            
             if ((navigator.appName == "Netscape")) {
                 window.print();
             }
             else {
                 var WebBrowser = '<OBJECT ID="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></OBJECT>';
-                document.body.insertAdjacentHTML('beforeEnd', WebBrowser); WebBrowser1.ExecWB(6, -1); WebBrowser1.outerHTML = "";
+                document.documentElement.getElementsByClassName(id_element).insertAdjacentHTML('beforeEnd', WebBrowser); WebBrowser1.ExecWB(6, -1); WebBrowser1.outerHTML = "";
             }
+        }
+
+        function enviarboletas() {
+            
+            debugger
+            $(".Imprimir").each(function (index, element) {
+                console.log($(this).attr('id'));
+                imprimir($(this).attr('id'));
+                //idsillas += $(this).attr('id') + ',';
+                //boletas++;
+            })
+            
+        }
+    </script>
+</head>*@
+@*<head>
+    <script>
+        function PrintElem(elem) {
+            Popup($(elem).html());
+        }
+
+        function Popup(data) {
+            var mywindow = window.open('', 'new div', 'height=400,width=600');
+            mywindow.document.write('<html><head><title></title>');
+            mywindow.document.write('<link rel="stylesheet" href="css/midday_receipt.css" type="text/css" />');
+            mywindow.document.write('</head><body >');
+            mywindow.document.write(data);
+            mywindow.document.write('</body></html>');
+
+            mywindow.print();
+            mywindow.close();
+
+            return true;
         }
     </script>
 </head>
-<body onload="imprimir();">
-    Esta es la pagina impresa de prueba!
+<body >
+    <div class="Imprimir" id="boleta1" style="width:100px;height:100px">
+        Esta es la pagina impresa de prueba!
+    </div>
+    <div class="Imprimir" id="boleta2" style="width:100px;height:100px">
+        Esta es la pagina impresa de prueba!
+    </div>
+    <a href="javascript:enviarboletas()">IMprimir</a>
 </body>
-</html>
+</html>*@
+@*<HTML>
+    <HEAD>
+        <SCRIPT language="javascript">
+    function imprimir()
+    { if ((navigator.appName == "Netscape")) { window.print() ;
+    }
+    else
+    { var WebBrowser = '<OBJECT ID="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></OBJECT>';
+    document.body.insertAdjacentHTML('beforeEnd', WebBrowser); WebBrowser1.ExecWB(6, -1); WebBrowser1.outerHTML = "";
+    }
+    }
+        </SCRIPT>
+    </HEAD>
+    <BODY onload="imprimir();">
+        Esta es la pagina impresa de prueba!
+    </BODY>
+    </HTML>*@
+@*<html>
+    <head>
+        <script language="jscript">
+            function goFullscreen() {
+                // Must be called as a result of user interaction to work
+                mf = document.getElementById("main_frame");
+                mf.webkitRequestFullscreen();
+                mf.style.display="";
+            }
+            function fullscreenChanged() {
+                goFullscreen();
+                if (document.webkitFullscreenElement == null) {
+                    mf = document.getElementById("main_frame");
+                    mf.style.display="none";
+                }
+            }
+            document.onwebkitfullscreenchange = fullscreenChanged;
+            document.documentElement.onclick = goFullscreen;
+            document.onkeydown = goFullscreen;
+        </script>
+    </head>
+    <body style="margin:0" onload="fullscreenChanged()">
+        <H1>Click anywhere or press any key to browse <u>w3schools</u> in fullscreen.</H1>
+        <iframe id="main_frame" src="http://www.w3schools.com" style="width:100%;height:100%;border:none;display:none"></iframe>
+    </body>
+    </html>*@
+
+
+
+@{
+    ViewBag.Title = "pruebabuscador";
+}
+@*<body>
+
+    @*<h2>My Customers</h2>
+
+            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+
+            <table id="myTable">
+                <tr class="header">
+                    <th style="width:60%;">Name</th>
+                    <th style="width:40%;">Country</th>
+                </tr>
+                <tr>
+                    <td>Alfreds Futterkiste</td>
+                    <td>Germany</td>
+                </tr>
+                <tr>
+                    <td>Berglunds snabbkop</td>
+                    <td>Sweden</td>
+                </tr>
+                <tr>
+                    <td>Island Trading</td>
+                    <td>UK</td>
+                </tr>
+                <tr>
+                    <td>Koniglich Essen</td>
+                    <td>Germany</td>
+                </tr>
+                <tr>
+                    <td>Laughing Bacchus Winecellars</td>
+                    <td>Canada</td>
+                </tr>
+                <tr>
+                    <td>Magazzini Alimentari Riuniti</td>
+                    <td>Italy</td>
+                </tr>
+                <tr>
+                    <td>North/South</td>
+                    <td>UK</td>
+                </tr>
+                <tr>
+                    <td>Paris specialites</td>
+                    <td>France</td>
+                </tr>
+            </table>
+
+            <script>
+        function myFunction() {
+          var input, filter, table, tr, td, i;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("myTable");
+          tr = table.getElementsByTagName("tr");
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+              if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+        }
+            </script>*@
+    @*<div class="span5 col-md-5" id="sandbox-container"><input type="text" class="form-control"></div>
+
+</body>*@
+<!--STYLESHEET-->
+<!--=================================================-->
+<!--Open Sans Font [ OPTIONAL ]-->
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+
+    <!--jQuery [ REQUIRED ]-->
+    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
+
+
+    <link href="~/Content/css/EstiloBoleta.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery.PrintArea.js"></script>
+    @*<script type="text/javascript">
+        //$(function () {
+        //    $("#btnPrint").click(function () {
+        //        var contents = $("#dvContents").html();
+        //        var frame1 = $('<iframe />');
+        //        frame1[0].name = "frame1";
+        //        frame1.css({ "position": "absolute", "top": "-1000000px", "widht": "100px", "height":"10px" });
+        //        $("body").append(frame1);
+        //        var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+        //        frameDoc.document.open('','','width=200,height=100');
+        //        //Create a new HTML document.
+        //        frameDoc.document.write('</head><body>');
+        //        //Append the external CSS file.
+        //        frameDoc.document.write('<link href="/Content/css/EstiloBoleta.css" rel="stylesheet" />');
+        //        //Append the DIV contents.
+        //        frameDoc.document.write(contents);
+        //        frameDoc.document.write('</body></html>');
+        //        frameDoc.document.close();
+        //        setTimeout(function () {
+        //            window.frames["frame1"].focus();
+        //            window.frames["frame1"].print();
+        //            frame1.remove();
+        //        }, 500);
+        //    });
+            //});
+           <script>*@
+    <script>
+        $(document).ready(function () {
+            $("#printButton").click(function () {
+                var mode = 'iframe'; //popup
+                var close = mode == "popup";
+                var options = { mode: mode, popClose: close };
+                $(".printableArea").printArea(options);
+            });
+        });
+    </script>
+    <style>
+        ul li {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <a href="javascript:void(0);" id="printButton">Print</a>
+    <div class="printableArea" style="width:400px;height:300px;">
+
+
+        <div class="boleta" style="float:left;width:50%;height:100%;">
+            <p class="text-center">Royal Films SAS<br />NIT: 890.105.652-3</p>
+            <p class="text-center pad-no mar-no"><strong>Resolución:</strong><br /><strong>20000199088 de @DateTime.Now.ToShortDateString()</strong></p>
+            <p class="text-center pad-no mar-no"><strong>Regimen simplificado:</strong></p>
+            <h4 class="">FACTURA DE VENTA N. 45789</h4>
+            <p><strong>Funcion:</strong><br />@DateTime.Now.ToShortDateString()</p>
+            <p><strong>Sala 1</strong></p>
+            <p><strong>Hora:4:30 PM</strong></p>
+            <p><strong>2D DB Doctor Strange</strong></p>
+
+            <p><strong>Tarifa:</strong><br />Lunes A Miércoles antes de 3</p>
+            <p><strong>Precio: $5.000</strong></p>
+            <p><strong>Iva: $0</strong></p>
+            <strong>Silla<br /> A-10</strong><br />
+            <p><strong>Cajero: </strong><br />James Alexander Bernal Gonzalez</p>
+            <p><strong>Terminal </strong>01</p>
+            <p><strong>Prefijo: </strong>AL</p>
+            <p><strong>Fecha y hora de venta</strong><br />@DateTime.Now</p>
+        </div>
+
+        <div class="tirilla" style="float:right;width:50%;height:100%;">
+            <p class="text-center">Royal Films SAS<br />NIT: 890.105.652-3</p>
+            <p class="text-center pad-no mar-no"><strong>Resolución:</strong><br /><strong>20000199088 de @DateTime.Now.ToShortDateString()</strong></p>
+            <p class="text-center pad-no mar-no"><strong>Regimen simplificado:</strong></p>
+            <h4 class="">FACTURA DE VENTA N. 45789</h4>
+            <p><strong>Funcion:</strong><br />@DateTime.Now.ToShortDateString()</p>
+            <p><strong>Sala 1</strong></p>
+            <p><strong>Hora:4:30 PM</strong></p>
+            <p><strong>2D DB Doctor Strange</strong></p>
+
+            <p><strong>Tarifa:</strong><br />Lunes A Miércoles antes de 3</p>
+            <p><strong>Precio: $5.000</strong></p>
+            <p><strong>Iva: $0</strong></p>
+            <strong>Silla<br /> A-10</strong><br />
+            <p><strong>Cajero: </strong><br />James Alexander Bernal Gonzalez</p>
+            <p><strong>Terminal </strong>01</p>
+            <p><strong>Prefijo: </strong>AL</p>
+            <p><strong>Fecha y hora de venta</strong><br />@DateTime.Now</p>
+        </div>
+    </div>
+</body>

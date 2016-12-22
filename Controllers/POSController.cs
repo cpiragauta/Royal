@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CinemaPOS.Models;
+using System.Drawing.Printing;
+using System.Drawing;
 
 namespace CinemaPOS.Controllers
 {
@@ -171,6 +173,7 @@ namespace CinemaPOS.Controllers
         {
             string hoy = "12/01/2016"/* DateTime.Now.ToString("dd/MM/yyyy")*/;
             //cuadno la programacion sea creada quitar comentarios y enviar en el where conversionfecha
+            int RowID_Teatro = int.Parse(Session["RowID_Teatro"].ToString());
             DateTime hoy1 = DateTime.Parse(fecha_programacion);
             string conversionfecha = hoy1.ToString("MM/dd/yyyy");
             var hora_actual = (DateTime.Now.ToString("HH:mm")).Split(':');
@@ -179,7 +182,7 @@ namespace CinemaPOS.Controllers
                             select new ModelosPropios.Model.Funcion_Vista
                             {
                                 Detalle_Pelicula = dt,
-                                Funciones = db.Funciones.Where(f => f.DetallePeliculaID == dt.RowID && f.FechaFuncion == conversionfecha && f.RowIDTeatro == 24 && f.EstadoFuncion == "Abierta"/*multicineID*/).ToList()
+                                Funciones = db.Funciones.Where(f => f.DetallePeliculaID == dt.RowID && f.FechaFuncion == conversionfecha && f.RowIDTeatro == RowID_Teatro && f.EstadoFuncion == "Abierta"/*multicineID*/).ToList()
                             };
             string html = "";
             foreach (var peliculas_vista in datavista)
@@ -415,6 +418,22 @@ namespace CinemaPOS.Controllers
         }
         public ActionResult pruebabuscador()
         {
+            //string s = "string to print";
+
+            //PrintDocument p = new PrintDocument();
+            //p.PrintPage += delegate (object sender1, PrintPageEventArgs e1)
+            //{
+            //    e1.Graphics.DrawString(s, new Font("Times New Roman", 12), new SolidBrush(Color.Black), new RectangleF(0, 0, p.DefaultPageSettings.PrintableArea.Width, p.DefaultPageSettings.PrintableArea.Height));
+
+            //};
+            //try
+            //{
+            //    p.Print();
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new Exception("Exception Occured While Printing", ex);
+            //}
             return View();
         }
         public JsonResult TerminarVenta(string IDSillas, string IDTarifas, int RowIDFuncion)
@@ -448,7 +467,8 @@ namespace CinemaPOS.Controllers
                     objBoletaVenta.SillaID = RowIDSilla;
                     objBoletaVenta.FechaVenta = DateTime.Now;
                     objBoletaVenta.MedioPago = "Efectivo";
-                    objBoletaVenta.TaquillaID = null;
+                    objBoletaVenta.TaquillaID = int.Parse(Session["RowID_Taquilla"].ToString());
+                    objBoletaVenta.TaquillaID = ((UsuarioSistema)(Session["usuario"])).RowID;
                     db.BoletaVendida.Add(objBoletaVenta);
                     db.SaveChanges();
                     Boletas += "";
