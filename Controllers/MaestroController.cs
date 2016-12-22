@@ -1326,7 +1326,7 @@ namespace CinemaPOS.Controllers.Master
         {
             ViewBag.Taquilla = db.Taquilla.ToList();
             ViewBag.Teatros = db.Teatro.ToList();
-            ViewBag.Estado = db.Estado.ToList();
+            ViewBag.Estado = db.Estado.Where(e=>e.TipoEstado.Codigo== "TIPOSILLA").ToList();
 
             if (RowID_Lista != null)
             {

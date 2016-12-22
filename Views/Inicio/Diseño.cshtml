@@ -464,7 +464,8 @@
                                         <!--<img class="img-circle img-user media-object" src="~/Content/img/profile-photos/1.png" alt="Profile Picture">-->
                                         <i class="demo-pli-male ic-user"></i>
                                     </span>
-                                    <div class="username hidden-xs">@(((UsuarioSistema)(Session["usuario"])).Nombre + " " + ((UsuarioSistema)(Session["usuario"])).Apellido)</div>
+                                    <div class="username hidden-xs">@(((UsuarioSistema)(Session["usuario"])).Nombre + " " + ((UsuarioSistema)(Session["usuario"])).Apellido + " " + ((string)( Session["lol"])) )</div>
+
                                 </a>
 
 
@@ -856,8 +857,8 @@
                                                 <span class="pull-right dropdown-toggle">
                                                     <i class="dropdown-caret"></i>
                                                 </span>
-                                                <p class="mnp-name">@(((UsuarioSistema)(Session["usuario"])).Nombre + " " + ((UsuarioSistema)(Session["usuario"])).Apellido)</p>
-                                                <span class="mnp-desc">@(((UsuarioSistema)(Session["usuario"])).Rol.Nombre)</span>
+                                                <p class="mnp-name">@(((UsuarioSistema)(Session["usuario"])).Nombre + " " + ((UsuarioSistema)(Session["usuario"])).Apellido+" "+ Session["IP"])</p>
+                                                <span class="mnp-desc">@(((UsuarioSistema)(Session["usuario"])).Rol.Nombre+" "+ Session["IP"])</span>
                                             </a>
                                         </div>
                                         <div id="profile-nav" class="collapse list-group bg-trans">
@@ -1427,6 +1428,9 @@
 </html>
 }
 <script>
+    
+
+    
     function ModalProcesandoShow() {
         $("#ModalProcessing").modal();// initialized with defaults
         $("#ModalProcessing").modal({ backdrop: 'static', keyboard: false });// initialized with no keyboard
@@ -1450,4 +1454,12 @@
             timer: 5000
         });
     }
+    $(document).ready(function () {
+        getLocalIPs(function (ips) {
+            if (ips.length > 0) {
+                ip = ips[0];
+                alert(ips[0])
+            }
+        })
+    })
 </script>

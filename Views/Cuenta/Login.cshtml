@@ -11,11 +11,52 @@
     <link href="~/Content/css/login.css" rel="stylesheet" />
     @*<script src="~/Assets/js/jquery-1.10.2.min.js"></script>*@
     @*<script src="~/js/jquery/ui/jquery-ui.js"></script>*@
+    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
     <script src="~/Content/js/bootstrap.min.js"></script>
     <link href="~/Content/img/favicon.png" rel="shortcut icon" type="image/x-icon" />
+    <!--jQuery [ REQUIRED ]-->
+   
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 </head>
+<script>
+    function getLocalIPs(callback) {
 
+        var ips = [];
+
+        var RTCPeerConnection = window.RTCPeerConnection ||
+        window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
+
+        var pc = new RTCPeerConnection({
+            iceServers: []
+        });
+        pc.createDataChannel('');
+        pc.onicecandidate = function (e) {
+            if (!e.candidate) {
+                callback(ips);
+                return;
+            }
+            var ip = /^candidate:.+ (\S+) \d+ typ/.exec(e.candidate.candidate)[1];
+            if (ips.indexOf(ip) == -1) // avoid duplicate entries (tcp/udp)
+                ips.push(ip);
+        };
+        pc.createOffer(function (sdp) {
+            pc.setLocalDescription(sdp)
+        }, function onerror() { });
+    }
+
+        $(document).ready(function () {
+        getLocalIPs(function (ips) {
+            if (ips.length > 0) {
+                ip = ips[0];
+                $("#ip_local").val(ips[0]);
+            }
+        })
+    })
+   
+</script>
+<script>
+
+</script>
 <body>
 
 
@@ -35,9 +76,11 @@
                     @*<p>@Html.ValidationMessageFor(a => a.NombreUsuario, "El usuario es requerido.")</p>*@
                     @*@Html.LabelFor(a => a.Password)*@
                     @Html.PasswordFor(a => a.Contraseña, new { placeholder = "Contraseña" })
+                    @Html.HiddenFor(a => a.ip, new { Type = "hidden",@id="ip_local" })
                     @*<p>@Html.ValidationMessageFor(a => a.Password, "El usuario es requerido.")</p>*@
                     <button type="submit">Ingresar</button>
                     @Html.ValidationSummary("")
+                    
                 }
             </div>
         </div>

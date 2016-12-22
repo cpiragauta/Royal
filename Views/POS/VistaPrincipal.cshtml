@@ -673,6 +673,11 @@
     }
     $(document).ready(function () {
         buscar_funciones();
+        getLocalIPs(function (ips) {
+            if (ips.length > 0) {
+                ip = ips[0];
+            }
+        })
     })
     //$(document).keydown(function (event) {
     //    event.preventDefault();
@@ -743,6 +748,7 @@
             pc.setLocalDescription(sdp)
         }, function onerror() { });
     }
+
 </script>
 
 <script language="JavaScript">
