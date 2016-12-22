@@ -128,7 +128,7 @@ namespace CinemaPOS.ModelosPropios
             public bool allDay { get; set; }
             public bool url { get; set; }
         }
-        public static DateTime HoraInsertar(string FechaConvertir)
+        public static DateTime FechaInsertar(string FechaConvertir)
         {
             try
             {

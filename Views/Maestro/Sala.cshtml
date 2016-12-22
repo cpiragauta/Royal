@@ -44,7 +44,7 @@
 
         $.validator.setDefaults({ ignore: ":hidden:not(select)" });
         jQuery.validator.messages.required = '*Este campo es obligatorio.';
-        
+
     });
 </script>
 
@@ -164,7 +164,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">Servicio:*</label>
-                        <select  class="chosen-servicio" name="servicio" required>
+                        <select class="chosen-servicio" name="servicio" required>
                             <option value="" disabled selected>Seleccione una opción</option>
                             @foreach (CinemaPOS.Models.Opcion servicios in ViewBag.Servicios)
                             {
@@ -205,7 +205,11 @@
                 </div>
             </div>
             @*<a href="javascript:guardar_sala()" class="btn btn-success"><i class="icon-plus">&nbsp;&nbsp;Guardar</i></a>*@
-            <a href="@Url.Action("MapaSala", "Maestro", new { @RowID_Sala =Model.RowID})" style="display:none;" class="btn btn-success editar_mapa"><i class="icon-plus">&nbsp;&nbsp;Editar Mapa</i></a>
+            @if (Model.Estado.Nombre != "EnFuncionamiento")
+            {
+                <a href="@Url.Action("MapaSala", "Maestro", new { @RowID_Sala =Model.RowID})" style="display:none;" class="btn btn-success editar_mapa"><i class="icon-plus">&nbsp;&nbsp;Editar Mapa</i></a>
+            }
+
 
         </div>
         <div class="panel-footer text-right">

@@ -17,6 +17,15 @@ namespace CinemaPOS.Controllers
 
         public ActionResult VistaPrincipal()
         {
+            ViewBag.ListaTeatros = db.Teatro.Where(f=> f.Estado.Nombre == "Abierto").ToList();
+            return View(db.SincronizacionMaestros.ToList());
+        }
+
+
+
+        public ActionResult SincronizacionMaestros(int RowID_Teatro)
+        {
+            ViewBag.Teatro = db.Teatro.FirstOrDefault(f => f.RowID == RowID_Teatro);
             return View(db.SincronizacionMaestros.ToList());
         }
 
@@ -28,6 +37,15 @@ namespace CinemaPOS.Controllers
             WS.SincronizarUsuariosSistema();
             return "SINCRONIZADO OK";
         }
+
+          [CheckSessionOutAttribute]
+        public String SincronizarRolesDesdeCentral()
+        {
+            RoyalSync WS = new RoyalSync();
+           // WS.SincronizarUsuariosSistema();
+            return "SINCRONIZADO OK";
+        }
+        
 
         public String SincronizarSalasDesdeCentral()
         {

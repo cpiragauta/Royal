@@ -13,5 +13,7 @@ namespace CinemaPOS.Models
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]
         public string Contraseña { get; set; }
+        [System.Web.Mvc.HiddenInput(DisplayValue = false)]
+        public string ip { get; set; }
     }
 }

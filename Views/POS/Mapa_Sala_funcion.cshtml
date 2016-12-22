@@ -133,9 +133,6 @@
     function asignar_silla(clase) {
         crear_sillas(clase);
     }
-</script>
-<script>
-
     $(document).ready(function () {
         console.clear();
         var fila = '';
@@ -154,7 +151,6 @@
         }
         asignar_nombres();
         CargarMapaSala();
-
     })
     function vender_silla(element){
         debugger
@@ -199,6 +195,28 @@
             })
         }
     }
+
+    function imprimir() {
+        if ((navigator.appName == "Netscape")) {
+            window.print();
+        }
+        else {
+            var WebBrowser = '<OBJECT ID="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></OBJECT>';
+            document.body.insertAdjacentHTML('beforeEnd', WebBrowser); WebBrowser1.ExecWB(6, -1); WebBrowser1.outerHTML = "";
+        }
+    }
+
+    $(document).ready(function () {
+        $("#printButton").click(function () {
+            var mode = 'iframe'; //popup
+            var close = mode == "popup";
+            var options = { mode: mode, popClose: close };
+            $(".printableArea").printArea(options);
+        });
+    });
+    function imprimir_boletas(){
+
+    }
 </script>
 <style>
     td {
@@ -238,7 +256,7 @@
 </style>
 
 <div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="true">
-    <div class="modal-dialog" style="width:100%;margin-top: 20px;">
+    <div class="modal-dialog" style="width:(@Model.Cantidad_Columnas*50)px;margin-top: 20px;">
         <div class="modal-content">
             <div class="modal-header" style="padding: 10px; ">
                 <button type="button" class="close salir" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -266,9 +284,53 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="TerminarVenta()" data-dismiss="modal" aria-hidden="true">Terminar Venta</button>
+                    <button type="button" class="btn btn-success" onclick="TerminarVenta()" id="printButton" data-dismiss="modal" aria-hidden="true">Terminar Venta</button>
                 </div>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
+    @*<a href="javascript:void(0);" id="printButton">Print</a>*@
+    <div class="printableArea" id="panel-boletas-imprimir" style="width:400px;height:300px;">
+
+
+        @*<div class="boleta" style="float:left;width:50%;height:100%;">
+            <p class="text-center">Royal Films SAS<br />NIT: 890.105.652-3</p>
+            <p class="text-center pad-no mar-no"><strong>Resolución:</strong><br /><strong>20000199088 de @DateTime.Now.ToShortDateString()</strong></p>
+            <p class="text-center pad-no mar-no"><strong>Regimen simplificado:</strong></p>
+            <h4 class="">FACTURA DE VENTA N. 45789</h4>
+            <p><strong>Funcion:</strong><br />@DateTime.Now.ToShortDateString()</p>
+            <p><strong>Sala 1</strong></p>
+            <p><strong>Hora:4:30 PM</strong></p>
+            <p><strong>2D DB Doctor Strange</strong></p>
+
+            <p><strong>Tarifa:</strong><br />Lunes A Miércoles antes de 3</p>
+            <p><strong>Precio: $5.000</strong></p>
+            <p><strong>Iva: $0</strong></p>
+            <strong>Silla<br /> A-10</strong><br />
+            <p><strong>Cajero: </strong><br />James Alexander Bernal Gonzalez</p>
+            <p><strong>Terminal </strong>01</p>
+            <p><strong>Prefijo: </strong>AL</p>
+            <p><strong>Fecha y hora de venta</strong><br />@DateTime.Now</p>
+        </div>
+
+        <div class="tirilla" style="float:right;width:50%;height:100%;">
+            <p class="text-center">Royal Films SAS<br />NIT: 890.105.652-3</p>
+            <p class="text-center pad-no mar-no"><strong>Resolución:</strong><br /><strong>20000199088 de @DateTime.Now.ToShortDateString()</strong></p>
+            <p class="text-center pad-no mar-no"><strong>Regimen simplificado:</strong></p>
+            <h4 class="">FACTURA DE VENTA N. 45789</h4>
+            <p><strong>Funcion:</strong><br />@DateTime.Now.ToShortDateString()</p>
+            <p><strong>Sala 1</strong></p>
+            <p><strong>Hora:4:30 PM</strong></p>
+            <p><strong>2D DB Doctor Strange</strong></p>
+
+            <p><strong>Tarifa:</strong><br />Lunes A Miércoles antes de 3</p>
+            <p><strong>Precio: $5.000</strong></p>
+            <p><strong>Iva: $0</strong></p>
+            <strong>Silla<br /> A-10</strong><br />
+            <p><strong>Cajero: </strong><br />James Alexander Bernal Gonzalez</p>
+            <p><strong>Terminal </strong>01</p>
+            <p><strong>Prefijo: </strong>AL</p>
+            <p><strong>Fecha y hora de venta</strong><br />@DateTime.Now</p>
+        </div>*@
+    </div>
 </div><!-- /.modal -->

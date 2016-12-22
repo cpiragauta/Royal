@@ -53,10 +53,11 @@
     $(document).ready(function () {
         $("#genero_pelicula").chosen();
         $('.fecha_estreno').datepicker({
-            format: "dd/MM/yyyy",
+            format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
-            todayHighlight: false
+            todayHighlight: false,
+            startDate: '1d'
         });
         function clonar_config_film() {
 
@@ -83,8 +84,21 @@
         var quantitybox = 0;
         function clone_panel_porcentaje() {
             new_porcentaje = jQuery(".control-clone").clone().removeClass("control-clone").hide().appendTo(".contenido").slideDown().addClass("control-porcentaje controls" + quantitybox);
-            new_porcentaje.find(".fecha_inicial_porcentaje").attr("name", "fecha_inicial_porcentaje[]").datepicker({ format: "dd/MM/yyyy", todayBtn: "linked", autoclose: true, todayHighlight: false });
-            new_porcentaje.find(".fecha_final_porcentaje").attr("name", "fecha_final_porcentaje[]").datepicker({ format: "dd/MM/yyyy", todayBtn: "linked", autoclose: true, todayHighlight: false });
+            new_porcentaje.find(".fecha_inicial_porcentaje").attr("name", "fecha_inicial_porcentaje[]")
+                .datepicker({
+                    format: "dd/mm/yyyy",
+                    todayBtn: "linked",
+                    autoclose: true,
+                    todayHighlight: false,
+                    startDate: '1d'
+                });
+            new_porcentaje.find(".fecha_final_porcentaje").attr("name", "fecha_final_porcentaje[]").datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                autoclose: true,
+                todayHighlight: false,
+                startDate: '1d'
+            });
             new_porcentaje.find(".porcentaje").attr("name", "porcentaje[]");
             new_porcentaje.find(".nombre_porcentaje").attr("name", "nombre_porcentaje[]");
             close_box_price();
@@ -108,17 +122,19 @@
         }
 
         $('.fecha_inicial_porcentaje ').datepicker({
-            format: "dd/MM/yyyy",
+            format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
-            todayHighlight: false
+            todayHighlight: false,
+            startDate: '1d'
         });
 
         $('.fecha_final_porcentaje ').datepicker({
-            format: "dd/MM/yyyy",
+            format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
-            todayHighlight: false
+            todayHighlight: false,
+            startDate: '1d'
         });
 
         $(".duracion").timepicker({
@@ -442,11 +458,11 @@
                                             int? Hora = Model.Duracion / 60;
                                             int? Minutos = (Model.Duracion - (Hora * 60));
                                             string val = Hora + ":" + Minutos;
-                                            <input type="text" name="duracion" class="form-control" value="@Model.Duracion">
+                                            <input type="text" name="duracion" class="form-control solo-numero" value="@Model.Duracion">
                                         }
                                         else
                                         {
-                                            <input type="text" name="duracion" class="duracion form-control">
+                                            <input type="text" name="duracion" class="solo-numero form-control">
                                         }
 
                                     </div>
@@ -454,7 +470,7 @@
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label class="control-label">Fecha Estreno:</label>
-                                        <input type="text" name="fecha_estreno" class="fecha_estreno form-control" value="@Model.FechaEstreno.Value.ToString("dd/MM/yyyy")">
+                                        <input type="text" name="fecha_estreno" class="fecha_estreno form-control" value="@Model.FechaEstreno">
                                     </div>
                                 </div>
                             </div>
@@ -874,15 +890,17 @@
                                         }
                                     </select>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-1">
                                     <p>
                                         <br />
                                         <a onclick="javascript:GuardarTeatro()" class="btn btn-success">Asociar Teatro</a>
-                                        <a onclick="javascript:GuardarTodos()" class="btn btn-success">Asociar todos los teatros</a>
-
-                                        @*<a class="btn btn-success" href='javascript:ModalTeatroVentaEmpresarial(@Model.RowID)'><i class="glyphicon glyphicon-plus"></i> Asociar Teatro</a>
-                                        <a class="btn btn-success" href='javascript:RefrescarTabla(@Model.RowID)' id="pelicula"><i class="glyphicon glyphicon-refresh"></i> Refrescar</a>*@
                                     </p>
+                                </div>
+                                <div class="col-sm-3">
+                                    <p>
+                                        <br />
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+                                        <a onclick="javascript:GuardarTodos()" class="btn btn-success">Asociar todos los teatros</a>
                                 </div>
                             </div>
                             <table class="table table-hover table-responsive table-bordered table-condensed table-striped" id="TeatroPelicula">
@@ -1028,4 +1046,7 @@
         .load(urlWithCont.trim())
         .dialog('open');
     }
+    $('.solo-numero').keyup(function () {
+        this.value = (this.value + '').replace(/[^0-9]/g, '');
+    });
 </script>

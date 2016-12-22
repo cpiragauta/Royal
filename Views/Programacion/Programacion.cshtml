@@ -513,13 +513,36 @@
 
 
 
-        $('#demo-dp-range .input-daterange').datepicker({
+        $('#FechaInicial').datepicker({
             format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
-            todayHighlight: false
+            todayHighlight: false,
+            startDate: '1d'
         });
-
+        $('#FechaFinal').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false,
+            startDate: '1d'
+        });
+        $('#FechaInicialFunciones').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false,
+            startDate: $("#FechaInicial").val(),
+            endDate:$('#FechaFinal').val()
+        });
+        $('#FechaFinalFunciones').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false,
+            startDate: $("#FechaInicial").val(),
+            endDate:$('#FechaFinal').val()
+        });
         $('.solo-numero').keyup(function () {
             this.value = (this.value + '').replace(/[^0-9]/g, '');
         });
