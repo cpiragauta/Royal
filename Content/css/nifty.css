@@ -73,7 +73,7 @@ h6,
 /* CONTAINER */
 /*======================================*/
 #container {
-  min-height: 100vh;
+  /*min-height: 100vh;*/
   height: auto;
   position: relative;
   min-width: 290px;
@@ -1445,7 +1445,7 @@ h6,
 /*======================================*/
 @media (min-width: 768px) {
   #container.reveal #content-container {
-    min-height: 100vh;
+    /*min-height: 100vh;*/
   }
   #container.mainnav-out.reveal #content-container,
   #container.mainnav-in.reveal #content-container {
@@ -1668,7 +1668,7 @@ h6,
   right: -255px;
   top: 0;
   bottom: 0;
-  min-height: 100vh;
+  /*min-height: 100vh;*/
   overflow: hidden;
   z-index: 3;
 }

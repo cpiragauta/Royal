@@ -5,6 +5,7 @@
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
 
+
 <script>
 
 
@@ -23,11 +24,11 @@
     function guardar_tercero() {
         var validator = $("#formulario_tercero").validate();
         debugger
-        if(!validarFechaMenorActual($("#FechaNacimiento").val())){
+        if (!validarFechaMenorActual($("#FechaNacimiento").val())) {
             swal("ERROR", "La fecha debe ser menor al dia de hoy", "error");
             return;
         }
-       
+
         if (validator.form()) {
             $.ajax({
                 type: "POST",
@@ -54,13 +55,64 @@
         }
     }
 
+    function limpiarContacto() {
+        debugger;
+        $(".Identificacion").val("").trigger("chosen:updated");
+        $(".Nombre").val("").trigger("chosen:updated");
+        $(".Apellido").val("").trigger("chosen:updated");
+        $(".correoContacto").val("").trigger("chosen:updated");
+        $(".telefonoContacto").val("").trigger("chosen:updated");
+        //$("#crearC").show();
+        //$("#actualizarC").hide();
+        //$("#cancelarC").hide();
 
-   
+    }
+    function cancelarContacto() {
+        debugger;
+        limpiarContacto();
+        $("#crearC").show();
+        $("#actualizarC").hide();
+        $("#cancelarC").hide();
+    }
+
+
+    function EditarContacto(RowID) {
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/ConsultarContacto",
+                data: {
+                    RowID_contacto: RowID,
+                },
+                success: function (data) {
+                    debugger;
+
+                    $(".Identificacion").val(data.identi).trigger("chosen:updated");
+                    $(".Nombre").val(data.nom).trigger("chosen:updated");
+                    $(".Apellido").val(data.ape).trigger("chosen:updated");
+                    $(".correoContacto").val(data.corr).trigger("chosen:updated");
+                    $(".telefonoContacto").val(data.tele).trigger("chosen:updated");
+                    $(".row_id_contacto").val(data.row_id_c).trigger("chosen:updated");
+                    $("#crearC").hide();
+                    $("#actualizarC").show();
+                    $("#cancelarC").show();
+
+
+                },
+                error: function (data) {
+
+                    swal("ERROR", data, "error");
+                }
+            });
+
+    }
+
+
+
 
 
     function OcultarCampos() {
         if ($("#tipo_tercero option:selected").val() == "")
-        { return;  }
+        { return; }
         if ($("#tipo_tercero option:selected").html() != "Natural") {
             $("#PanelApellido").hide();
             $("#tipoID").hide();
@@ -92,13 +144,18 @@
         }
     }
 
-   
+
 
     $(document).ready(function () {
         $.validator.setDefaults({ ignore: ":hidden:not(select)" });
         jQuery.validator.messages.required = '*Este campo es obligatorio.';
         jQuery.validator.messages.number = '*Esta campo debe ser num&eacute;rico.';
         jQuery.validator.messages.email = '*La direcci&oacute;n de correo es incorrecta.';
+        if ($("#row_id").val() != null && $("#row_id").val() != 0) {
+            $(".Ocultar").slideDown();
+        } else {
+            $(".Ocultar").slideUp();
+        }
 
         $('#demo-dp-range .input-daterange').datepicker({
             format: "dd/mm/yyyy",
@@ -109,15 +166,114 @@
             maxDate: 'today',
         });
 
-
-      
-
         OcultarCampos();
 
         $('.solo-numero').keyup(function () {
             this.value = (this.value + '').replace(/[^0-9]/g, '');
         });
     })
+
+    function guardar_Contacto() {
+        debugger;
+        var validator = $("#formulario_Contactos").validate();
+        if (validator.form()) {
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/GuardarContacto",
+                data: {
+                    formulario: $("#formulario_Contactos").serialize(),
+                    RowID_Tercero: $("#row_id").val(),
+                },
+                success: function (data) {
+                    if (data.includes("Error")) {
+                        swal("ERROR", data, "error");
+                        return;
+                    } else {
+                        Alerts("Contacto creado con exito!!!", "success")
+                        RefrescarTabla();
+                        limpiarContacto();
+                        ModalProcesandoHiden();
+                    }
+                    ModalProcesandoHiden();
+                },
+                error: function (data) {
+
+                    swal("ERROR", data, "error");
+                }
+            });
+
+
+        }
+    }
+
+
+    function ActualizarContacto() {
+        debugger;
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/ActualizarContacto",
+                data: {
+                    formulario: $("#formulario_Contactos").serialize(),
+                    RowID_Contacto: $("#row_id_contacto").val(),
+                },
+                success: function (data) {
+                    if (data.includes("Error")) {
+                        swal("ERROR", data, "error");
+                        return;
+                    } else {
+                        Alerts("Contacto actualizado con exito!!!", "success")
+                        RefrescarTabla();
+                        cancelarContacto();
+                        ModalProcesandoHiden();
+
+                    }
+                    ModalProcesandoHiden();
+                },
+                error: function (data) {
+
+                    swal("ERROR", data, "error");
+                }
+            });
+
+
+
+    }
+
+
+    function RefrescarTabla() {
+        debugger;
+        ModalProcesandoShow();
+        $.ajax({
+            type: "POST",
+            url: "/Maestro/RefrescarContactos",
+            data: {
+                rowID: @Model.RowID,
+            },
+            success: function (data) {
+                debugger;
+
+                $("#tablaContactos tbody").empty();
+                data.forEach(function (item) {
+                    $("#tablaContactos tbody").append(
+                                "<tr>"+
+                                    "<td>"+item.rowid+"</td>"+
+                                    "<td>"+item.Identificacion+"</td>"+
+                                    "<td>"+item.Nombre+" "+item.Apellido+"</td>"+
+                                    "<td>"+item.Correo+"</td>"+
+                                    "<td>"+item.Telefono+"</td>"+
+                                    "<td><a href='javascript:EditarContacto("+item.rowid+");' class=\"ion-edit\"></a>"+"</td>"+
+
+                                 "</tr>"
+                        );
+                })
+                ModalProcesandoHiden();
+            },
+            error: function (request) {
+                hasChangue = true;
+            }
+        });
+    }
+
 </script>
 
 <style>
@@ -125,6 +281,7 @@
         margin-left: -102%;
         margin-right: 104%;
     }
+
     .Descripcion {
         margin: 7% 0% 0% -67%;
     }
@@ -135,180 +292,284 @@
     </p>
 </div>
 
-<div class="panel">
-
+<div class="panel panel-dark">
     <div class="panel-heading">
-        <h3 class="panel-title">Tercero</h3>
+        <div class="panel-control">
+            <!--Nav tabs-->
+            <ul class="nav nav-tabs">
+                <li class="active" id="tabEncabezado"><a data-toggle="tab" href="#TabTercero">Tercero</a></li>
+                <li><a data-toggle="tab" href="#Contactos" @*onclick="RefrescarTabla(@Model.RowID)"*@>Contactos</a></li>
+            </ul>
+
+        </div>
     </div>
+    <div class="tab-content">
+        @*****************TAB TERCERO******************@
+        <div id="TabTercero" class="tab-pane fade in active">
+            <form name="formulario_tercero" id="formulario_tercero" onsubmit="return false">
+                <input type="hidden" class="row_id" id="row_id" name="RowID_Tercero" value="@Model.RowID" />
+                <input type="hidden" class="row_id_contacto" id="row_id_contacto" name="row_id_contacto" />
 
-    <form name="formulario_tercero" id="formulario_tercero" onsubmit="return false">
-        <input type="hidden" class="row_id" id="row_id" name="RowID_Tercero" value="@Model.RowID" />
-        <div class="panel-body">
-            <div class="row" >
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label">Tipo Tercero:*</label>
-                        <select name="tipo_tercero" id="tipo_tercero" onchange="javascript:OcultarCampos()" class="form-control" required>
-                            <option value="" disabled selected>Seleccione una opción</option>
-                            @foreach (CinemaPOS.Models.Opcion tipo_tercero in ViewBag.TipoTerceroID)
-                            {
-                                if (Model.RowID != 0 && tipo_tercero.RowID == Model.TipoTerceroID)
-                                {
-                                    <option value="@tipo_tercero.RowID" selected>@tipo_tercero.Nombre</option>
-                                }
-                                else
-                                {
-                                    <option value="@tipo_tercero.RowID">@tipo_tercero.Nombre</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group" name="TipoID" id="tipoID">
-                        <label class="control-label">Tipo Identificación:*</label>
-                        <select name="tipo_identificacion" id="tipo_identificacion" class="form-control">
-                            <option value="" disabled selected>Seleccione una opcion</option>
-                            @foreach (CinemaPOS.Models.Opcion Tipo_Id in ViewBag.TipoIdentificacion)
-                            {
-                                if (Model.RowID != 0 && Tipo_Id.RowID == Model.TipoIdentificacionID)
-                                {
-                                    <option value="@Tipo_Id.RowID" selected>@Tipo_Id.Nombre</option>
-                                }
-                                else
-                                {
-                                    <option value="@Tipo_Id.RowID">@Tipo_Id.Nombre</option>
-                                }
-                            }
-
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="col-sm-4">
-                    <div class="form-group Ocultar" id="PanelIdentificacion">
-                        <label class="control-label" id="lblIdentificacion">Identificacion:*</label>
-                        <input value="@Model.Identificacion" name="Identificacion" id="Identificacion" class="form-control solo-numero" required>
-                    </div>
-                </div>
-
-                
-
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label" id="lblNombre">Nombre:*</label>
-                        <input type="text" name="nombre" value="@Model.Nombre" class="form-control" required>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group" id="PanelApellido">
-                        <label class="control-label">*Apellido:</label>
-                        <input type="text" name="Apellido" id="Apellido" value="@Model.Apellidos" class="form-control">
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <div class="form-group Ocultar" id="PanelFechaNacimiento">
-                        <div id="demo-dp-range">
-                            <label class="control-label" id="lblFechaNacimiento">Fecha Nacimiento:*</label>
-                            <div class="input-daterange ">
-                                @if (Model.FechaNacimiento != null)
-                                {
-                                    <input type="text" class="form-control" name="FechaNacimiento" id="FechaNacimiento" value="@Model.FechaNacimiento.Value.ToString("dd/MM/yyyy")" required>
-                                }
-                                else
-                                {
-                                    <input type="text" class="form-control" name="FechaNacimiento" id="FechaNacimiento" value="@Model.FechaNacimiento" required>
-                                }
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Tipo Tercero:*</label>
+                                <select name="tipo_tercero" id="tipo_tercero" onchange="javascript:OcultarCampos()" class="form-control" required>
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    @foreach (CinemaPOS.Models.Opcion tipo_tercero in ViewBag.TipoTerceroID)
+                                    {
+                                        if (Model.RowID != 0 && tipo_tercero.RowID == Model.TipoTerceroID)
+                                        {
+                                            <option value="@tipo_tercero.RowID" selected>@tipo_tercero.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@tipo_tercero.RowID">@tipo_tercero.Nombre</option>
+                                        }
+                                    }
+                                </select>
                             </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group" name="TipoID" id="tipoID">
+                                <label class="control-label">Tipo Identificación:*</label>
+                                <select name="tipo_identificacion" id="tipo_identificacion" class="form-control">
+                                    <option value="" disabled selected>Seleccione una opcion</option>
+                                    @foreach (CinemaPOS.Models.Opcion Tipo_Id in ViewBag.TipoIdentificacion)
+                                    {
+                                        if (Model.RowID != 0 && Tipo_Id.RowID == Model.TipoIdentificacionID)
+                                        {
+                                            <option value="@Tipo_Id.RowID" selected>@Tipo_Id.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@Tipo_Id.RowID">@Tipo_Id.Nombre</option>
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group Ocultar" id="PanelIdentificacion">
+                                <label class="control-label" id="lblIdentificacion">Identificacion:*</label>
+                                <input value="@Model.Identificacion" name="Identificacion" id="Identificacion" class="form-control solo-numero" required>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label" id="lblNombre">Nombre:*</label>
+                                <input type="text" name="nombre" value="@Model.Nombre" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group" id="PanelApellido">
+                                <label class="control-label">*Apellido:</label>
+                                <input type="text" name="Apellido" id="Apellido" value="@Model.Apellidos" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group Ocultar" id="PanelFechaNacimiento">
+                                <div id="demo-dp-range">
+                                    <label class="control-label" id="lblFechaNacimiento">Fecha Nacimiento:*</label>
+                                    <div class="input-daterange ">
+                                        @if (Model.FechaNacimiento != null)
+{
+    <input type="text" class="form-control" name="FechaNacimiento" id="FechaNacimiento" value="@Model.FechaNacimiento.Value.ToString("dd/MM/yyyy")" style=" text-align: left" required>
+}
+                                        else
+                                        {
+                                            <input type="text" class="form-control" name="FechaNacimiento" id="FechaNacimiento" style=" text-align: left" value="@Model.FechaNacimiento" required>
+                                        }
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-4" id="demo-dp-range">
+                            <div class="form-group" id="PanelSexo">
+                                <label class="control-label">Sexo:*</label>
+                                <select name="sexo" id="sexo" class="form-control">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    @foreach (CinemaPOS.Models.Opcion Opciones in ViewBag.SexoID)
+                                    {
+                                        if (Model.RowID != 0 && Opciones.RowID == Model.SexoID)
+                                        {
+                                            <option value="@Opciones.RowID" selected>@Opciones.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@Opciones.RowID">@Opciones.Nombre</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group Ocultar">
+                                <label class="control-label">Telefono:*</label>
+                                <input type="text" name="telefono" value="@Model.Telefono" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 ">
+                            <div class="form-group Ocultar">
+                                <label class="control-label">Ciudad:*</label>
+                                <select name="ciudad" class="form-control chosen" required>
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    @foreach (CinemaPOS.Models.Ciudad Ciudades in ViewBag.CiudadID)
+                                    {
+                                        if (Model.RowID != 0 && Ciudades.RowID == Model.CiudadID)
+                                        {
+                                            <option value="@Ciudades.RowID" selected>@Ciudades.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@Ciudades.RowID">@Ciudades.Nombre</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Dirección:*</label>
+                                <input type="text" name="direccion" value="@Model.Direccion" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Correo:*</label>
+                                <input type="email" value="@Model.Correo" name="correo" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 Descripcion1">
+                            <div class="form-group ">
+                                <label class="control-label">Descripción:</label>
+                                <textarea name="descripcion" class="form-control" cols="30" rows="5">@Model.Descripcion</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            @if (Model.RowID == 0)
+                            {
+                                <input class="btn btn-success" type="submit" value="Crear Tercero" onclick="guardar_tercero()">
+                            }
+                            else
+                            {
+                                <input class="btn btn-success" type="submit" value="Actualizar Tercero" onclick="guardar_tercero()">
+                            }
+                        </div><br />
+                    </div>
+
+                </div>
+
+
+            </form>
+        </div>
+        <div id="Contactos" class="tab-pane fade">
+            <div id="page-content">
+                <div class="panel ">
+                    <div>
+                        <div class="panel-body">
+                            <form name="formulario_Contactos" id="formulario_Contactos" onsubmit="return false">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Identificación:*</label>
+                                            <input type="text" name="Identificacion" id="Identificacion" class="form-control Identificacion" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Nombre:*</label>
+                                            <input type="text" name="Nombre" id="Nombre" class="form-control Nombre" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Apellido:*</label>
+                                            <input type="text" name="Apellido" class="form-control Apellido" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Correo:*</label>
+                                            <input type="email" name="correoContacto" class="form-control correoContacto" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Telefono:*</label>
+                                            <input type="text" name="telefonoContacto" class="form-control telefonoContacto" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <input class="btn btn-success crearC" type="submit" value="Crear Contacto" id="crearC" onclick="guardar_Contacto()">
+                                        <input class="btn btn-success actualizarC" type="submit" value="Actualizar Contacto" id="actualizarC" style="display:none" onclick="ActualizarContacto()">
+                                        <input class="btn btn-success cancelarC" type="submit" value="Cancelar" id="cancelarC" style="display:none" onclick="cancelarContacto()">
+
+                                    </div>
+                                </div><br />
+                                <table class="table table-striped table-bordered table-funcion tablaContactos" cellspacing="0" style="width:100%" id="tablaContactos">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Identificación</th>
+                                            <th>Nombre</th>
+                                            <th>Correo</th>
+                                            <th>Teléfono</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tablaItems">
+                                        @if (ViewBag.listaContactos != null)
+                                        {
+                                            foreach (CinemaPOS.Models.Contacto item in ViewBag.listaContactos)
+                                            {
+                                                <tr>
+                                                    <td>@item.RowID </td>
+                                                    <td>@item.Identificacion </td>
+                                                    <td>@item.Nombre  @item.Apellido</td>
+                                                    <td>@item.CorreoElectronico </td>
+                                                    <td>@item.Telefono </td>
+                                                    <td><a href='javascript:EditarContacto(@item.RowID);' class="ion-edit"></a></td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </form>
 
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
 
-                <div class="col-sm-4" id="demo-dp-range">
-                    <div class="form-group" id="PanelSexo">
-                        <label class="control-label">Sexo:*</label>
-                        <select name="sexo" id="sexo" class="form-control">
-                            <option value="" disabled selected>Seleccione una opción</option>
-                            @foreach (CinemaPOS.Models.Opcion Opciones in ViewBag.SexoID)
-                            {
-                                if (Model.RowID != 0 && Opciones.RowID == Model.SexoID)
-                                {
-                                    <option value="@Opciones.RowID" selected>@Opciones.Nombre</option>
-                                }
-                                else
-                                {
-                                    <option value="@Opciones.RowID">@Opciones.Nombre</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <div class="form-group Ocultar">
-                        <label class="control-label">Telefono:*</label>
-                        <input type="text" name="telefono" value="@Model.Telefono" class="form-control" required>
-                    </div>
-                </div>
-
-                <div class="col-sm-4 ">
-                    <div class="form-group Ocultar">
-                        <label class="control-label">Ciudad:*</label>
-                        <select name="ciudad" class="form-control chosen" required>
-                            <option value="" disabled selected>Seleccione una opción</option>
-                            @foreach (CinemaPOS.Models.Ciudad Ciudades in ViewBag.CiudadID)
-                            {
-                                if (Model.RowID != 0 && Ciudades.RowID == Model.CiudadID)
-                                {
-                                    <option value="@Ciudades.RowID" selected>@Ciudades.Nombre</option>
-                                }
-                                else
-                                {
-                                    <option value="@Ciudades.RowID">@Ciudades.Nombre</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                </div>
-                
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label">Dirección:*</label>
-                        <input type="text" name="direccion" value="@Model.Direccion" class="form-control" required>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label">Correo:*</label>
-                        <input type="email" value="@Model.Correo" name="correo" class="form-control" required>
-                    </div>
-                </div>
-                <div class="col-sm-4 Descripcion1">
-                    <div class="form-group ">
-                        <label class="control-label">Descripción:</label>
-                        <textarea name="descripcion" class="form-control" cols="30" rows="5">@Model.Descripcion</textarea>
-                    </div>
-                </div>
-            </div>
         </div>
 
-        <div class="panel-footer text-right">
-            @if (Model.RowID == 0)
-            {
-                <input class="btn btn-success" type="submit" value="Crear Tercero" onclick="guardar_tercero()">
-            }
-            else
-            {
-                <input class="btn btn-success" type="submit" value="Actualizar Tercero" onclick="guardar_tercero()">
-            }
-        </div>
-    </form>
+    </div>
+
 </div>
