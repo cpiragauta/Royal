@@ -11,14 +11,16 @@
     <link href="~/Content/css/login.css" rel="stylesheet" />
     @*<script src="~/Assets/js/jquery-1.10.2.min.js"></script>*@
     @*<script src="~/js/jquery/ui/jquery-ui.js"></script>*@
+    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
     <script src="~/Content/js/bootstrap.min.js"></script>
     <link href="~/Content/img/favicon.png" rel="shortcut icon" type="image/x-icon" />
     <!--jQuery [ REQUIRED ]-->
-    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
+   
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 </head>
 <script>
     function getLocalIPs(callback) {
+
         var ips = [];
 
         var RTCPeerConnection = window.RTCPeerConnection ||
@@ -41,10 +43,8 @@
             pc.setLocalDescription(sdp)
         }, function onerror() { });
     }
-   
-</script>
-<script>
-    $(document).ready(function () {
+
+        $(document).ready(function () {
         getLocalIPs(function (ips) {
             if (ips.length > 0) {
                 ip = ips[0];
@@ -52,6 +52,10 @@
             }
         })
     })
+   
+</script>
+<script>
+
 </script>
 <body>
 
