@@ -205,16 +205,11 @@
                 },
                 success: function (data) {
                     debugger;
-                    if (data.respuesta.includes("Error")) {
-                        swal("ERROR", data.repuesta, "error");
-                        return;
-                    } else {
-                        swal("OK", data.repuesta, "success")
+                        swal("OK", data, "success")
                         $("#divpqrs").slideDown();
                         $("#row_id").val(data.rowid_tercero);
                         var url = "../PQRS/ModalTercero?rowid_tercero=" + data.rowid_tercero;
                         $("#Dialog").load(url.trim());
-                    }
 
                 },
                 error: function (data) {
