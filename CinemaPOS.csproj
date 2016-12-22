@@ -131,6 +131,7 @@
     <Compile Include="Controllers\CRMController.cs" />
     <Compile Include="Controllers\Cuenta\CuentaController.cs" />
     <Compile Include="Controllers\Cuenta\Helper.cs" />
+    <Compile Include="Controllers\Encriptacion.cs" />
     <Compile Include="Controllers\Inicio\InicioController.cs" />
     <Compile Include="Controllers\MaestroController.cs" />
     <Compile Include="Controllers\PeliculaController.cs" />
@@ -145,6 +146,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DB_9CAC35_cinemaposDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DB_9CAC35_cinemaposDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DB_9CAC35_cinemaposDataSet1.xsd</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -2310,6 +2316,17 @@
     <Content Include="DB_9CAC35_cinemaposDataSet.xss">
       <DependentUpon>DB_9CAC35_cinemaposDataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="DB_9CAC35_cinemaposDataSet1.xsc">
+      <DependentUpon>DB_9CAC35_cinemaposDataSet1.xsd</DependentUpon>
+    </Content>
+    <None Include="DB_9CAC35_cinemaposDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DB_9CAC35_cinemaposDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="DB_9CAC35_cinemaposDataSet1.xss">
+      <DependentUpon>DB_9CAC35_cinemaposDataSet1.xsd</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\Royal.pubxml" />
     <Content Include="Views\CRM\Actividades.cshtml" />
     <Content Include="Views\CRM\ClienteRoyal.cshtml" />
@@ -2324,6 +2341,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Content\Reportes\Report1.rdlc" />
+    <EmbeddedResource Include="Content\Reportes\VentaEmpresarial.rdlc" />
     <EmbeddedResource Include="Content\Reportes\Convenio.rdlc" />
   </ItemGroup>
   <PropertyGroup>

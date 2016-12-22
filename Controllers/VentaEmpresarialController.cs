@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using CinemaPOS.Models;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Reporting.WebForms;
+using System.Web.UI.WebControls;
 
 namespace CinemaPOS.Controllers
 {
@@ -35,6 +37,44 @@ namespace CinemaPOS.Controllers
             ViewBag.Clientes = db.Tercero.Where(f => f.Activo == true && f.Opcion2.Codigo == "EMPRESA").ToList();
             ViewBag.TipoEstado = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOCONVENIO").ToList();
             var TeatroNoDisp = db.TeatroVentaEmpresarial.Where(f => f.VentaEncabezadoID == RowId_Empresarial).ToList();
+            
+            ///***********Reporte de convenio *************//
+            List<DetalleVentaEmpresarial> detalle = new List<DetalleVentaEmpresarial>();
+            detalle = db.DetalleVentaEmpresarial.Where(f => f.VentaEncabezadoID == RowId_Empresarial).ToList();
+
+            if (detalle.Count != 0)
+            {
+                ReportViewer reportViewer = new ReportViewer();
+                reportViewer.ProcessingMode = ProcessingMode.Local;
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Content/Reportes/Report1.rdlc";
+
+                //////Parametros del reporte
+                //ReportParameter p1 = new ReportParameter("NombreConvenio", detalle.FirstOrDefault().EncabezadoVentaEmpresarial.Nombre);
+                //ReportParameter p2 = new ReportParameter("FechaInicio", detalle.FirstOrDefault().EncabezadoVentaEmpresarial.FechaInicio.Value.ToShortDateString());
+                //ReportParameter p3 = new ReportParameter("FechaFinal", detalle.FirstOrDefault().EncabezadoVentaEmpresarial.FechaFinal.Value.ToShortDateString());
+                //ReportParameter p4 = new ReportParameter("Formato", detalle.FirstOrDefault().EncabezadoVentaEmpresarial.Opcion1.Nombre);
+                ////ReportParameter p5 = new ReportParameter("condiciones", detalle.FirstOrDefault().EncabezadoVentaEmpresarial.Descripcion);
+                //ReportParameter p6 = new ReportParameter("porcentaje",""+detalle.FirstOrDefault().Valor);
+                //ReportParameter p7 = new ReportParameter("codigo", detalle.FirstOrDefault().Codigo);
+
+
+                //reportViewer.LocalReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p6, p7 });
+                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
+                reportViewer.SizeToReportContent = true;
+                reportViewer.Width = Unit.Percentage(100);
+                reportViewer.Height = Unit.Percentage(100);
+                ViewBag.ReportViewer = reportViewer;
+            }
+            else
+            {
+                ReportViewer reportViewer = new ReportViewer();
+                reportViewer.ProcessingMode = ProcessingMode.Local;
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Content/Reportes/Report1.rdlc";
+                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
+                ViewBag.ReportViewer = reportViewer;
+            }
+            ///***********FIN reporte de convenio *************//
+
             List<Teatro> Teatros = new List<Teatro>();
             List<Teatro> TeatrosV2 = db.Teatro.ToList();
             foreach (TeatroVentaEmpresarial item in TeatroNoDisp)
@@ -112,36 +152,54 @@ namespace CinemaPOS.Controllers
             return Json(new { rowidEmpresarial = rowidEmpresarial, mensaje = validate }, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GuardarTodos(int rowidVenta)
+        {
+            TeatroVentaEmpresarial teatro_venta = new TeatroVentaEmpresarial();
+            string validate = "";
+            try
+            {
+                var TeatroNoDisp = db.TeatroVentaEmpresarial.Where(f => f.VentaEncabezadoID == rowidVenta).ToList();
+                List<Teatro> Teatros = new List<Teatro>();
+                List<Teatro> TeatrosV2 = db.Teatro.ToList();
+                foreach (TeatroVentaEmpresarial item in TeatroNoDisp)
+                {
+                    foreach (var item2 in db.Teatro.Where(f => f.RowID == item.TeatroID))
+                    {
+                        TeatrosV2.Remove(item2);
+                    }
 
+                }
+
+                foreach (var item3 in TeatrosV2)
+                {
+                    teatro_venta.TeatroID = item3.RowID;
+                    teatro_venta.VentaEncabezadoID = rowidVenta;
+                    teatro_venta.CreadoPor = Session["usuario_creacion"].ToString();
+                    teatro_venta.FechaCreacion = DateTime.Now;
+                    db.TeatroVentaEmpresarial.Add(teatro_venta);
+                    db.SaveChanges();
+                    validate = "ok";
+                }
+
+            }
+            catch (Exception)
+            { validate = "error"; }
+
+            return Json(validate, JsonRequestBehavior.AllowGet);
+        }
 
         public JsonResult RefrescarTabla(int? rowid)
         {
-            var data = (from teatroEmpresarial in db.TeatroVentaEmpresarial.Where(f => f.VentaEncabezadoID == rowid)
+            var data = (from teatroVenta in db.TeatroVentaEmpresarial.Where(f => f.VentaEncabezadoID == rowid)
                         select new
                         {
-                            rowid = teatroEmpresarial.RowID,
-                            teatro = (teatroEmpresarial.TeatroID == 0) ? "" : teatroEmpresarial.Teatro.Nombre,
-                            ubicacion = (teatroEmpresarial.Teatro.CiudadID == null) ? "" : teatroEmpresarial.Teatro.Ciudad.Nombre
+                            rowid = teatroVenta.RowID,
+                            teatro = (teatroVenta.TeatroID == 0) ? "" : teatroVenta.Teatro.Nombre,
+                            ubicacion = (teatroVenta.Teatro.CiudadID == null) ? "" : teatroVenta.Teatro.Ciudad.Nombre
                         }).ToList();
-
-            //var TeatroNoDisp = db.TeatroVentaEmpresarial.Where(f => f.VentaEncabezadoID == rowid).ToList();
-            //List<Teatro> Teatros = new List<Teatro>();
-            //List<Teatro> TeatrosV2 = db.Teatro.ToList();
-            //foreach (TeatroVentaEmpresarial item in TeatroNoDisp)
-            //{
-            //    foreach (var item2 in db.Teatro.Where(f => f.RowID == item.TeatroID))
-            //    {
-            //        TeatrosV2.Remove(item2);
-            //    }
-
-            //}
-            // foreach (Teatro item in TeatrosV2)
-            //{
-            //    lista+="<option value="+item.RowID+">"+item.Nombre+"-"+item.Ciudad.Nombre+"</option>";
-            //}
-
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+
 
         [CheckSessionOutAttribute]
         public JsonResult GuardarEmpresarial(FormCollection formulario, int? RowID_EncabezadoConvenio)
@@ -205,6 +263,35 @@ namespace CinemaPOS.Controllers
             }
             return Json(proccess, JsonRequestBehavior.AllowGet);
         }
+
+        [CheckSessionOutAttribute]
+        public JsonResult CargarTeatro(Int32 rowidVenta)
+        {
+            ////llenar 
+            var TeatroNoDisp = db.TeatroVentaEmpresarial.Where(f => f.VentaEncabezadoID == rowidVenta).ToList();
+            List<Teatro> Teatros = new List<Teatro>();
+            List<Teatro> TeatrosV2 = db.Teatro.ToList();
+            foreach (TeatroVentaEmpresarial item in TeatroNoDisp)
+            {
+                foreach (var item2 in db.Teatro.Where(f => f.RowID == item.TeatroID))
+                {
+                    TeatrosV2.Remove(item2);
+                }
+            }
+            
+            ///Para formar el Json
+            var query = (from Teatro in TeatrosV2
+                         select new
+                         {
+                             RowId = Teatro.RowID,
+                             Nombre = Teatro.Nombre,
+                             Ciudad = Teatro.Ciudad.Nombre
+                         }
+            ).ToList();
+
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
+
 
         public JsonResult cargarItemsApe(int RowID_Encabezado)
         {
@@ -313,8 +400,7 @@ namespace CinemaPOS.Controllers
             formulario = DeSerialize(formulario);
             DetalleVentaEmpresarial objDetalle;
             if (RowId_Empresarial != 0 && Cantidad != 0)
-            {
-                //DateTime FechaProgramacion = ModelosPropios.Util.HoraInsertar(formulario["FechaInicialFunciones"].ToString());
+            { //DateTime FechaProgramacion = ModelosPropios.Util.HoraInsertar(formulario["FechaInicialFunciones"].ToString());
                 for (int i = 0; i < Cantidad; i++)
                 {
                     try
@@ -324,8 +410,9 @@ namespace CinemaPOS.Controllers
                         objDetalle.VentaEncabezadoID = RowId_Empresarial;
                         objDetalle.EstadoID = db.EncabezadoVentaEmpresarial.Where(f => f.RowID == RowId_Empresarial).FirstOrDefault().EstadoID;
                         objDetalle.Nombre = formulario["NombreItem"];
-                        objDetalle.ListaID = Convert.ToInt32(83);
+                        objDetalle.ListaID = Convert.ToInt32(124);
                         objDetalle.CreadoPor = Session["usuario_creacion"].ToString();
+                        objDetalle.Valor = Convert.ToInt32(formulario["ValorItem"]);
                         objDetalle.FechaCreacion = DateTime.Now;
                         empresarial = db.DetalleVentaEmpresarial.Add(objDetalle);
                         db.SaveChanges();
@@ -338,7 +425,7 @@ namespace CinemaPOS.Controllers
                 }
                 EncabezadoVentaEmpresarial enca;
                 enca = db.EncabezadoVentaEmpresarial.Where(f => f.RowID == RowId_Empresarial).FirstOrDefault();
-                enca.Cantidad = con;
+                enca.Cantidad = enca.Cantidad + con;
                 db.SaveChanges();
 
             }
