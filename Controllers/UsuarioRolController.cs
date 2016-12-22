@@ -221,8 +221,7 @@ namespace CinemaPOS.Controllers
         public Rol CargarRolSistema(Rol ObjRolSistema, FormCollection formulario)
         {
             ObjRolSistema.Nombre = formulario["RolNombre"];
-            ObjRolSistema.CreadoPor = "administrador";
-            ObjRolSistema.FechaCreacion = null;
+            ObjRolSistema.Sincronizado = false;
             if (ObjRolSistema.RowID == 0)
             {
                 ObjRolSistema.CreadoPor = Session["usuario_creacion"].ToString();

@@ -28,7 +28,7 @@ namespace CinemaPOS
         {
             dbCentral.Database.Connection.ConnectionString = db.Parametros.FirstOrDefault(f => f.cod_parametro == ConnCentral).valor_parametros;
             Parametros asjd = db.Parametros.FirstOrDefault(f => f.cod_parametro == ConnLocal);
-            dbLocal.Database.Connection.ConnectionString = asjd.valor_parametros;
+            dbLocal.Database.Connection.ConnectionString = asjd.valor_parametros; 
         }
 
         #region Usuarios
@@ -93,7 +93,6 @@ namespace CinemaPOS
         #endregion
 
         #region Sala 
-
         public void SincronizarSalasSistema()
         {
             InicializarConexiones("CONNCENTRAL", "CONNLOCAL");
@@ -123,7 +122,7 @@ namespace CinemaPOS
                     {
                         dbLocal.SaveChanges();
                     }
-                    catch { SincronizarSalasSistema(); }
+                    catch { return; }
                     GuardarHistorico(Salacentral.RowID, "Sala", SalaReferencia.RowID, "Sala", "Actualizacion");
                     //Actualizo el central
                     Salacentral.Sincronizado = true;
@@ -145,6 +144,7 @@ namespace CinemaPOS
                     SalaReferencia.TipoAudioID = Salacentral.TipoAudioID;
                     dbLocal.Sala.Add(SalaReferencia);
                     dbLocal.SaveChanges();
+
                     GuardarHistorico(Salacentral.RowID, "Sala", SalaReferencia.RowID, "Sala", "Creacion");
                     Salacentral.Sincronizado = true;
                     dbCentral.SaveChanges();
@@ -161,6 +161,21 @@ namespace CinemaPOS
             }
         }
 
+        #endregion
+
+        #region MapaSala
+        public void SincronizarMapaSalaSistema(Int32 RowIDSala)
+        {
+            InicializarConexiones("CONNCENTRAL", "CONNLOCAL");
+            List<MapaSala> MapaCentral = dbCentral.MapaSala.Where(f => f.SalaID == RowIDSala && f.Sincronizado == false).ToList();
+            if (MapaCentral.Count > 0)
+            {
+                Int32 rowid = MapaCentral[cont].RowID;
+                MapaSala mapacentral = dbCentral.MapaSala.FirstOrDefault(f => f.RowID == rowid);
+                MapaSala mapaReferencia = dbLocal.MapaSala.FirstOrDefault(f => f.RowID == rowid);
+                cont = cont + 1;
+            }
+        }
         #endregion
 
         #region Teatro
@@ -313,8 +328,6 @@ namespace CinemaPOS
         }
     }
         #endregion
-
-       
 
 }
 
