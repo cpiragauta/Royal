@@ -180,6 +180,21 @@
             this.value = (this.value + '').replace(/[^0-9]/g, '');
         });
 
+        $("#FechaFinal").click(function (e) {
+            debugger;
+            e.preventDefault();
+            $.ajax({
+               
+                success: function(data){
+                    $('#modal_nueva_incidencia').modal('hide');
+                    $('#modalSuccessInc').modal('show');
+                }
+            });
+            //alert("Your data has been saved!");
+            clearInputModificar();
+        });
+    
+
         $('#Print').click(function () {
             debugger;
             $.ajax({

@@ -74,32 +74,46 @@ namespace CinemaPOS.Controllers
             String respuesta = "";
             UsuarioSistema ObjUsuarioSistema = new UsuarioSistema();
             formulario = DeSerialize(formulario);
+            String nombreU= formulario["nombreUsuario"];
+
             if (RowID_UsuarioSistema == 0)
             {
-
-                ObjUsuarioSistema = CargarUsuarioSistema(ObjUsuarioSistema, formulario);
-                try
+                if (db.UsuarioSistema.Where(f => f.NombreUsuario == nombreU).Count() == 0)
                 {
-                    db.UsuarioSistema.Add(ObjUsuarioSistema);
-                    db.SaveChanges();
-                }
-                catch (Exception ex)
-                { return Json("Error " + ex.Message); }
-                respuesta = "Guardado Correctamente";
+                    ObjUsuarioSistema = CargarUsuarioSistema(ObjUsuarioSistema, formulario);
+                    try
+                    {
+                        db.UsuarioSistema.Add(ObjUsuarioSistema);
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    { return Json("Error " + ex.Message); }
+                    respuesta = "Guardado Correctamente";
+                } else {
+                    respuesta = "Existe";
 
+                }
             }
             if (RowID_UsuarioSistema != 0)//Para Actualiar
             {
                 ObjUsuarioSistema = db.UsuarioSistema.Where(t => t.RowID == RowID_UsuarioSistema).FirstOrDefault();
-                ObjUsuarioSistema = CargarUsuarioSistema(ObjUsuarioSistema, formulario);
-                try
+                    List<UsuarioSistema> listaUsuario = db.UsuarioSistema.Where(f => f.NombreUsuario == nombreU).ToList();
+                if (listaUsuario.Count() == 1 && listaUsuario.FirstOrDefault().RowID == ObjUsuarioSistema.RowID)
                 {
-                    db.SaveChanges();
-                }
-                catch (Exception ex)
-                { return Json("Error " + ex.Message); }
-                respuesta = "Actualizado Correctamente";
+                    ObjUsuarioSistema = CargarUsuarioSistema(ObjUsuarioSistema, formulario);
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    { return Json("Error " + ex.Message); }
+                    respuesta = "Actualizado Correctamente";
 
+                }
+                else
+                {
+                  respuesta = "Existe";
+                }
             }
             return Json(respuesta);
         }

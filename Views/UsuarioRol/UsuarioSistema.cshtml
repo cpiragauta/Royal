@@ -7,6 +7,7 @@
 
 <script>
     function guardar_UsuarioSistema() {
+        debugger;
         var validator = $("#formulario_UsuarioSistema").validate();
         if (validator.form()) {
 
@@ -18,9 +19,13 @@
                     formulario: $("#formulario_UsuarioSistema").serialize(),
                 },
                 success: function (data) {
-                    swal("OK", data, "success")
-                    window.location = "/UsuarioRol/VistaUsuarioSistema/"
-                },
+                    if (data == "Existe") {
+                        Alerts("El nombre de usuario, ya existe!!!", "warning");
+                    } else {
+                        Alerts("Usuario guardado con exito!!!", "success");
+                        window.location = "/UsuarioRol/VistaUsuarioSistema/"
+                    }
+                                 },
                 error: function (data) {
                     swal("ERROR", data, "error");
                 }

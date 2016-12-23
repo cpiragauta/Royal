@@ -47,9 +47,9 @@
                             @foreach (var item in (List<CinemaPOS.Models.Teatro>)ViewBag.teatros)
                             {
                                 if (Model.TeatroID == item.RowID)
-                                {<option value="@item.RowID" selected>@item.Nombre</option>}
+                                {<option value="@item.RowID" selected>@item.Nombre - @item.Ciudad.Nombre</option>}
                                 else
-                                {<option value="@item.RowID">@item.Nombre</option>}
+                                {<option value="@item.RowID">@item.Nombre - @item.Ciudad.Nombre</option>}
                             }
                         </select>
                     </div>
