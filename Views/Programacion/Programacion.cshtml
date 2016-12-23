@@ -50,10 +50,10 @@
         background-color: aqua;
     }
 
-
-
+    .Funcion:hover{
+        background-color:rgba(87, 85, 85, 0.63);
+    }
     /******************Estilo para tabla **************************/
-
     .day {
         height: 34px;
         width: 218px;
@@ -277,7 +277,7 @@
 
 
     function Guardar_DetalleProgramacion() {
-        debugger
+        debugger;
         var validator = $("#formulario_Programacion_Detalle").validate();
         if (validator.form()) {
             if($("#HorasFunciones").val() == null  || $("#HorasFunciones").val() == ""){
@@ -298,6 +298,8 @@
                         swal("ERROR", data, "error");
                         return;
                     } else if(data == ""){
+                        $('#HorasFunciones').tagsinput('removeAll');
+                        Alerts("Función agregada con exito !!! ","success");
                         cargarFunciones();
                         CargarFuncionesGraficas();
                     }
@@ -306,12 +308,17 @@
                         cargarFunciones();
                         CargarFuncionesGraficas();
                     }
+                    ModalProcesandoHiden();
+
                 },
                 error: function (data) {
                     debugger
                     ModalProcesandoHiden();
                     swal("ERROR", data, "error");
+                    ModalProcesandoHiden();
+
                 }
+
             });
         }
     }
@@ -775,11 +782,11 @@
                                     {
                                         if (Model.RowID != 0 && item.RowID == Model.TeatroID)
                                         {
-                                            <option value="@item.RowID" selected>@item.Nombre</option>
+                                            <option value="@item.RowID" selected>@item.Nombre - @item.Ciudad.Nombre</option>
                                         }
                                         else
                                         {
-                                            <option value="@item.RowID">@item.Nombre</option>
+                                            <option value="@item.RowID">@item.Nombre  - @item.Ciudad.Nombre</option>
                                         }
                                     }
                                 </select>
@@ -953,11 +960,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-
-
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="control-label">Horas funciones:*</label>
