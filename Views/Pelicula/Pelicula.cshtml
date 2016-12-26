@@ -11,7 +11,28 @@
 <script src="~/Content/js/demo/form-wizard.js"></script>
 <script src="~/Content/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 <script src="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
-<link href="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
+@*<link href="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />*@
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+@*<script src="http://code.jquery.com/jquery-1.9.1.js"></script>*@
+@*<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>*@
+<script src="jquery.ui.datepicker-es.js"></script>
+
+
+<script>
+    $(function () {
+        $("#fecha_inicial_porcentaje[]").datepicker({
+            onClose: function (selectedDate) {
+                $("#fecha_final_porcentaje[]").datepicker("option", "minDate", selectedDate);
+}
+        });
+        $("#fecha_final_porcentaje[]").datepicker({
+            onClose: function (selectedDate) {
+                $("#fecha_inicial_porcentaje[]").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+});
+</script>
+
 <script>
     function valida_formulario() {
         hasChangue = false;
@@ -159,9 +180,11 @@
         //jQuery(".listaversion").chosen({ width: "95%;" });
 
     });
+
+ 
     //GUARDAR TEATRO
     function GuardarTeatro() {
-        debugger;
+        
         ModalProcesandoShow();
         $.ajax({
             type: "POST",
@@ -748,9 +771,9 @@
                                         <div class="form-group" id="demo-dp-range">
                                             <label class="control-label">Fecha vigencia :</label>
                                             <div class="input-daterange input-group">
-                                                <input type="text" value="@porcentajespeliculas.FechaInicial.Value.ToString("dd/MM/yyyy")" name="fecha_inicial_porcentaje[]" class="fecha_inicial_porcentaje form-control" />
+                                                <input type="text" value="@porcentajespeliculas.FechaInicial.Value.ToString("dd/MM/yyyy")" name="fecha_inicial_porcentaje[]" id="fecha_inicial_porcentaje[]" class="fecha_inicial_porcentaje form-control" />
                                                 <span class="input-group-addon">a</span>
-                                                <input type="text" value="@porcentajespeliculas.FechaFinal.Value.ToString("dd/MM/yyyy")" name="fecha_final_porcentaje[]" class="fecha_final_porcentaje form-control"/>
+                                                <input type="text" value="@porcentajespeliculas.FechaFinal.Value.ToString("dd/MM/yyyy")" name="fecha_final_porcentaje[]" id="fecha_final_porcentaje[]" class="fecha_final_porcentaje form-control"/>
                                             </div>
                                         </div>
                                     </div>
@@ -822,9 +845,9 @@
                                             <div class="form-group" id="demo-dp-range">
                                                 <label class="control-label">Fecha vigencia :</label>
                                                 <div class="input-daterange input-group">
-                                                    <input type="text" value="" name="fecha_inicial" class="fecha_inicial_porcentaje form-control"/>
+                                                    <input type="text" value="" name="fecha_inicial_porcentaje[]" id="fecha_inicial_porcentaje[]" class="fecha_inicial_porcentaje form-control"/>
                                                     <span class="input-group-addon">a:</span>
-                                                    <input type="text" value="" name="fecha_final" class="fecha_final_porcentaje form-control" />
+                                                    <input type="text" value="" name="fecha_final_porcentaje[]" id="fecha_final_porcentaje[]" class="fecha_final_porcentaje form-control" />
                                                 </div>
                                             </div>
                                         </div>

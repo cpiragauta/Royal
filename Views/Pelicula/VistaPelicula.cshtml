@@ -1,5 +1,4 @@
 ﻿@model CinemaPOS.Models.EncabezadoPelicula
-
 @{
     ViewBag.Title = "VistaPelicula";
     Layout = "~/Views/Inicio/Diseño.cshtml";
@@ -72,7 +71,7 @@
                                     <img style="width:50px;" src="/@peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().Afiche">
                                   }
                                   else { 
-                                    <img style="width:50px;" src="~/Repositorio_Imagenes/Imagenes_Generales/imagen_nodisponible.png">
+                                    <img style="width:50px;" src="~/Repositorio_Imagenes/Imagenes_Generales/nodisponible.png">
                                   }
                                 }
                             </td>
