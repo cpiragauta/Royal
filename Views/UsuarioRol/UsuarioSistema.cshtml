@@ -57,7 +57,8 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
-                    if (data == "Existe") {
+                    debugger;
+                    if (data=="false") {
                         Alerts("El nombre de usuario, ya existe!!!", "warning");
                     } else {
                         Alerts("Usuario guardado con exito!!!", "success");
