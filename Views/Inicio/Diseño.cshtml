@@ -906,7 +906,7 @@
 
                                     <ul id="mainnav-menu" class="list-group">
 
-                                        @foreach (var item in ((List<TipoMenu>)Session["tipoMenu"]).OrderBy(p => p.Orden))
+                                        @foreach (var item in (((List<TipoMenu>)Session["tipoMenu"]).OrderBy(p => p.Orden)))
                                         {
                                         <!--Menu list item-->
                                             <li class="active-sub">
@@ -918,7 +918,7 @@
                                                 </a>
                                                 <ul class="collapse" aria-expanded="false">
 
-                                                    @foreach (var item2 in ((List<Menu>)Session["menu"]).Where(f => f.TipoMenu.RowID == item.RowID).OrderBy(p => p.Orden))
+                                                    @foreach (var item2 in (((List<Menu>)Session["menu"]).Where(f => f.TipoMenu.RowID == item.RowID).OrderBy(p => p.Orden)))
                                                     {
 
                                                         <li>

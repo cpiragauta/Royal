@@ -236,7 +236,7 @@ namespace CinemaPOS.Controllers.Pelicula
                 ObjMedio.Trailer = formulario["trailer"];
                 ObjMedio.Teaser = formulario["teaser"];
                 ObjMedio.EncabezadoPeliculaID = codigo_pelicula;
-                ObjMedio.EstadoID = int.Parse(db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOPELICULA" && e.Nombre == "Confirmada").Select(e => e.RowID).First().ToString());
+                ObjMedio.EstadoID = int.Parse(formulario["estado"]);
                 ObjMedio.CreadoPor = Session["usuario_creacion"].ToString();
                 ObjMedio.FechaCreacion = DateTime.Now;
                 db.MedioPelicula.Add(ObjMedio);

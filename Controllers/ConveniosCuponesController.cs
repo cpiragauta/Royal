@@ -400,7 +400,7 @@ namespace CinemaPOS.Controllers
                 }
                 EncabezadoConvenio enca;
                 enca = db.EncabezadoConvenio.Where(f => f.RowID == RowID_EncabezadoConvenio).FirstOrDefault();
-                enca.Cantidad = enca.Cantidad+con;
+                enca.Cantidad = enca.Cantidad + con;
                 db.SaveChanges();
 
             }
