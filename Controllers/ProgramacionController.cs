@@ -155,7 +155,9 @@ namespace CinemaPOS.Controllers
                 try
                 {
                     db.SaveChanges();
-                    respuesta = "Actualizado Correctamente";
+                    respuesta = "Actualizado Correctamente";  
+
+
                     RowID = ObjEncabezado.RowID;
                 }
                 catch (Exception ex)
