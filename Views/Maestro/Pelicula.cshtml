@@ -129,6 +129,14 @@
             template: 'dropdown',
             showMeridian: false
         });
+
+        $('#demo-dp-range .input-daterange').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+
         new Switchery(document.getElementById('demo-sw-checked'));
         jQuery("#select-distribuidor").chosen({ width: "95%;" });
         jQuery("#select-clasificacion").chosen({ width: "95%;" });
@@ -620,9 +628,9 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div class="form-group">
+                            <div class="form-group" id="demo-dp-range">
                                 <label class="control-label">Fecha vigencia</label>
-                                <div class="input-daterange input-group">
+                                <div class="input-daterange input-group" id="datepicker">
                                     <input type="text" value="@porcentajespeliculas.FechaInicial.Value.ToString("dd/MM/yyyy")" name="fecha_inicial_porcentaje[]" class="fecha_inicial_porcentaje form-control" />
                                     <span class="input-group-addon">to</span>
                                     <input type="text" value="@porcentajespeliculas.FechaFinal.Value.ToString("dd/MM/yyyy")" name="fecha_final_porcentaje[]" class="fecha_final_porcentaje form-control" />
@@ -659,9 +667,9 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="form-group">
+                        <div class="form-group" id="demo-dp-range">
                             <label class="control-label">Fecha vigencia</label>
-                            <div class="input-daterange input-group">
+                            <div class="input-daterange input-group" id="datepicker">
                                 <input type="text" name="fecha_inicial_porcentaje[]" class="fecha_inicial_porcentaje form-control" />
                                 <span class="input-group-addon">to</span>
                                 <input type="text" name="fecha_final_porcentaje[]" class="fecha_final_porcentaje form-control" />
