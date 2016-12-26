@@ -717,6 +717,7 @@ namespace CinemaPOS.Controllers.Master
         public ActionResult VistaSilla()
         {
             ViewBag.TipoSillas = db.SalaObjeto.ToList();
+          
             return View();
         }
 

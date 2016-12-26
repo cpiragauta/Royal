@@ -23,55 +23,61 @@
         <h3 class="panel-title">Lista Programación</h3>
     </div>
     <div class="panel-body">
-        <table id="demo-dt-basic" class="table table-striped table-bordered table-funcion" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Teatro</th>
-                    <th>Cant Funciones</th>
-                    <th>Fecha Inicial</th>
-                    <th>Fecha Final</th>
-                    <th>Estado</th>
-                    <th>Usuario Creación</th>
-                    <th>Fecha Creación</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (CinemaPOS.Models.EncabezadoProgramacion item in Model)
-                {
-                    <tr>
-                        <td>@item.Titulo</td>
-                        @if (@item.Teatro != null)
+        <div class="fixed-table-container" style="padding-bottom: 0px;">
+            <div class="fixed-table-header" style="display: none;">
+                <table id="demo-dt-basic" class="table table-striped table-responsive table-bordered table-funcion" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Teatro</th>
+                            <th>Cant Funciones</th>
+                            <th>Fecha Inicial</th>
+                            <th>Fecha Final</th>
+                            <th>Estado</th>
+                            <th>Usuario Creación</th>
+                            <th>Fecha Creación</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (CinemaPOS.Models.EncabezadoProgramacion item in Model)
                         {
-                            <td>@item.Teatro.Nombre - @item.Teatro.Ciudad.Nombre</td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
-                        <td>@item.Funcion.Count</td>
-                        <td>@item.FechaInicial.Value.ToString("dd/MM/yyyy")</td>
-                        <td>@item.FechaFinal.Value.ToString("dd/MM/yyyy")</td>
-                        @if (@item.Estado != null)
-                        {
-                            <td>@item.Estado.Nombre</td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
-                        <td>@item.CreadoPor</td>
-                        <td>@item.FechaCreacion.ToString("dd/MM/yyyy")</td>
-                        <td><a href="@Url.Action("Programacion", "Programacion", new { RowID_EncabezadoProgramacion = item.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
+                            <tr>
+                                <td>@item.Titulo</td>
+                                @if (@item.Teatro != null)
+                                {
+                                    <td>@item.Teatro.Nombre - @item.Teatro.Ciudad.Nombre</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                                <td>@item.Funcion.Count</td>
+                                <td>@item.FechaInicial.Value.ToString("dd/MM/yyyy")</td>
+                                <td>@item.FechaFinal.Value.ToString("dd/MM/yyyy")</td>
+                                @if (@item.Estado != null)
+                                {
+                                    <td>@item.Estado.Nombre</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                                <td>@item.CreadoPor</td>
+                                <td>@item.FechaCreacion.ToString("dd/MM/yyyy")</td>
+                                <td><a href="@Url.Action("Programacion", "Programacion", new { RowID_EncabezadoProgramacion = item.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
 
-                    </tr>
-                }
+                            </tr>
+                        }
 
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
+
 
 
 

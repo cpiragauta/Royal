@@ -23,6 +23,7 @@ namespace CinemaPOS.Controllers.Pelicula
             ViewBag.Idioma = db.Opcion.Where(i => i.Tipo.Codigo == "TIPOIDIOMA" && i.Activo == true).ToList();
             ViewBag.GeneroPelicula = db.Opcion.Where(i => i.Tipo.Codigo == "TIPOGENEROPELICULA" && i.Activo == true).ToList();
             ViewBag.Teatros = db.TeatroPelicula.Where(f => f.EncabezadoPeliculaID == RowID_Pelicula).ToList();
+            ViewBag.Estado = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOPELICULA");
             var TeatroNoDisp = db.TeatroPelicula.Where(f => f.EncabezadoPeliculaID == RowID_Pelicula ).ToList();
             List<Teatro> Teatros = new List<Teatro>();
             List<Teatro> TeatrosV2 = db.Teatro.ToList();
@@ -79,7 +80,7 @@ namespace CinemaPOS.Controllers.Pelicula
                 ObjPelicula.Sinopsis = formulario["sinopsis"];
                 ObjPelicula.WebOficial = formulario["web_oficial"];
                 ObjPelicula.FechaEstreno = ModelosPropios.Util.FechaInsertar(formulario["fecha_estreno"]);
-                ObjPelicula.EstadoID = int.Parse(db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOPELICULA" && e.Nombre == "Confirmada").Select(e => e.RowID).First().ToString());
+                ObjPelicula.EstadoID = int.Parse(formulario["estado"]);
                 ObjPelicula.CreadoPor = Session["usuario_creacion"].ToString();
                 ObjPelicula.FechaCreacion = DateTime.Now;
                 db.EncabezadoPelicula.Add(ObjPelicula);
@@ -100,7 +101,7 @@ namespace CinemaPOS.Controllers.Pelicula
                 ObjPelicula.Sinopsis = formulario["sinopsis"];
                 ObjPelicula.WebOficial = formulario["web_oficial"];
                 ObjPelicula.FechaEstreno = ModelosPropios.Util.FechaInsertar(formulario["fecha_estreno"]);
-                ObjPelicula.EstadoID = int.Parse(db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOPELICULA" && e.Nombre == "Confirmada").Select(e => e.RowID).First().ToString());
+                ObjPelicula.EstadoID = int.Parse(formulario["estado"]);
                 ObjPelicula.CreadoPor = Session["usuario_creacion"].ToString();
                 ObjPelicula.FechaCreacion = DateTime.Now;
                 db.SaveChanges();
@@ -278,7 +279,7 @@ namespace CinemaPOS.Controllers.Pelicula
                 ObjMedio.Trailer = formulario["trailer"];
                 ObjMedio.Teaser = formulario["teaser"];
                 ObjMedio.EncabezadoPeliculaID = codigo_pelicula;
-                ObjMedio.EstadoID = int.Parse(db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOPELICULA" && e.Nombre == "Confirmada").Select(e => e.RowID).First().ToString());
+                ObjMedio.EstadoID = int.Parse(formulario["estado"]);
                 ObjMedio.CreadoPor = Session["usuario_creacion"].ToString();
                 ObjMedio.FechaCreacion = DateTime.Now;
 

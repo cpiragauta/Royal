@@ -129,6 +129,7 @@
     border-color: black;
     border: solid 1px;
 }*/
+
 </style>
 <script>
 
@@ -295,16 +296,17 @@
                     debugger
                     ModalProcesandoHiden();
                     if (data.includes("Error")) {
-                        swal("ERROR", data, "error");
+                        Alerts(data ,"warning");
                         return;
-                    } else if(data == ""){
+                    }else if(data == ""){
                         $('#HorasFunciones').tagsinput('removeAll');
                         Alerts("Función agregada con exito !!! ","success");
+                      
                         cargarFunciones();
                         CargarFuncionesGraficas();
                     }
                     else{
-                        swal(data);
+                        Alerts(data ,"warning");
                         cargarFunciones();
                         CargarFuncionesGraficas();
                     }
@@ -314,7 +316,7 @@
                 error: function (data) {
                     debugger
                     ModalProcesandoHiden();
-                    swal("ERROR", data, "error");
+                    Alerts(data ,"warning");
                     ModalProcesandoHiden();
 
                 }
@@ -867,11 +869,11 @@
                                             {
                                                 <option value="@item.RowID">
                                                     @item.Nombre
-                                                @foreach (CinemaPOS.Models.FormatoSala itemSala in item.FormatoSala)
-                                                {
-                                                    @itemSala.Opcion.Codigo;@:
+                                                    @foreach (CinemaPOS.Models.FormatoSala itemSala in item.FormatoSala)
+                                                    {
+                                                        @itemSala.Opcion.Codigo;@:
                                          }
-                                            </option>
+                                                </option>
                                             }
                                         }
                                     </select>
@@ -970,116 +972,123 @@
                         <input class="btn btn-success" type="submit" value="Adicionar" onclick="Guardar_DetalleProgramacion()">
                     </form>
                     <hr />
-                    <table id="demo-dt-basic" class="table table-striped table-bordered listaFunciones" cellspacing="0" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>ID</th>
-                                <th>Teatro - Sala</th>
-                                <th>Película</th>
-                                <th>Formato</th>
-                                <th>Fecha</th>
-                                <th>Hora Inicial - Final</th>
-                                <th>T. Total</th>
-                                <th>Precio</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (ViewBag.listaFunciones != null)
-                            {
-                                System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
-                                foreach (CinemaPOS.Models.Funcion funcion in ViewBag.listaFunciones)
-                                {
-                                    <tr>
-                                        <td>
-                                            <div class="dropdown">
-                                                <a class="dropdown-toggle rowlink" data-toggle="dropdown" href="#" title="Opciones función #@funcion.RowID">
-                                                    <i class="glyphicon glyphicon-th-list"></i>
-                                                </a>
-                                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                                    <li>
-                                                        <a href="javascript:EliminarFuncion(@funcion.RowID)" style="color:black;" data-toggle="tooltip" data-placement="bottom" title="Eliminar función No. @funcion.RowID">
-                                                            <i class="ion-trash-a"></i> Eliminar
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:Duplicar_Funcion(@funcion.RowID)" style="color:black;" data-toggle="tooltip" data-placement="bottom" title="Duplicar función No. @funcion.RowID">
-                                                            <i class="ion-edit"></i> Duplicar
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                        <td>@funcion.RowID </td>
-                                        <td>@funcion.Sala.Teatro.Nombre - @funcion.Sala.Nombre @funcion.Sala.ServicioSala.First().Opcion.Codigo</td>
-                                        <td>@funcion.DetallePelicula.EncabezadoPelicula.TituloLocal </td>
-                                        <td>@funcion.DetallePelicula.Opcion.Codigo @funcion.DetallePelicula.Opcion1.Codigo2</td>
-                                        @if (funcion.Fecha != null)
-                                        {
-                                            <td>@ci.DateTimeFormat.GetDayName(funcion.Fecha.Value.DayOfWeek) - @funcion.Fecha.Value.ToString("dd/MM/yyyy")</td>}
-                                        else
-                                        {
-                                            <td> @funcion.Fecha</td>
-                                        }
-                                        <td>
-                                            @if (funcion.HoraInicial != null)
-                                            {
-                                                @funcion.HoraInicial.Value;
-                                            }
-                                            else
-                                            {
-                                                @funcion.HoraInicial
-                                            }
-                                            -
-                                            @if (funcion.HoraFinal != null)
-                                            {
-                                                @funcion.HoraFinal.Value;
-                                            }
-                                            else
-                                            {
-                                                @funcion.HoraFinal
-                                            }
-                                        </td>
+                    <div class="fixed-table-container" style="padding-bottom: 0px;">
+                        <div class="fixed-table-header" style="display: none;">
 
-                                        <td>@(Convert.ToInt32(funcion.TiempoCorto) + funcion.DetallePelicula.EncabezadoPelicula.Duracion + Convert.ToInt32(funcion.TiempoAseo))</td>
-                                        <td>
-                                            <table>
-                                                @foreach (CinemaPOS.Models.ListaPrecioFuncion precio in funcion.ListaPrecioFuncion)
+                            <table id="demo-dt-basic" class="table table-striped table-responsive table-bordered listaFunciones" cellspacing="0" style="width:100%; ">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>ID</th>
+                                        <th>Teatro - Sala</th>
+                                        <th>Película</th>
+                                        <th>Formato</th>
+                                        <th>Fecha</th>
+                                        <th>Hora Inicial - Final</th>
+                                        <th>T. Total</th>
+                                        <th>Precio</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.listaFunciones != null)
+                                    {
+                                        System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
+                                        foreach (CinemaPOS.Models.Funcion funcion in ViewBag.listaFunciones)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="dropdown">
+                                                        <a class="dropdown-toggle rowlink" data-toggle="dropdown" href="#" title="Opciones función #@funcion.RowID">
+                                                            <i class="glyphicon glyphicon-th-list"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                                            <li>
+                                                                <a href="javascript:EliminarFuncion(@funcion.RowID)" style="color:black;" data-toggle="tooltip" data-placement="bottom" title="Eliminar función No. @funcion.RowID">
+                                                                    <i class="ion-trash-a"></i> Eliminar
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:Duplicar_Funcion(@funcion.RowID)" style="color:black;" data-toggle="tooltip" data-placement="bottom" title="Duplicar función No. @funcion.RowID">
+                                                                    <i class="ion-edit"></i> Duplicar
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td>@funcion.RowID </td>
+                                                <td>@funcion.Sala.Teatro.Nombre - @funcion.Sala.Nombre @funcion.Sala.ServicioSala.First().Opcion.Codigo</td>
+                                                <td>@funcion.DetallePelicula.EncabezadoPelicula.TituloLocal </td>
+                                                <td>@funcion.DetallePelicula.Opcion.Codigo @funcion.DetallePelicula.Opcion1.Codigo2</td>
+                                                @if (funcion.Fecha != null)
                                                 {
-                                                    if (precio.ListaDetalle.TipoListaDetalle != null)
+                                                    <td>@ci.DateTimeFormat.GetDayName(funcion.Fecha.Value.DayOfWeek) - @funcion.Fecha.Value.ToString("dd/MM/yyyy")</td>}
+                                                else
+                                                {
+                                                    <td> @funcion.Fecha</td>
+                                                }
+                                                <td>
+                                                    @if (funcion.HoraInicial != null)
                                                     {
-                                                        <tr>
-                                                            <td>@precio.ListaDetalle.Precio.Value.ToString("N0") - @precio.ListaDetalle.Opcion2.Nombre </td>
-                                                        </tr>
+                                                        @funcion.HoraInicial.Value;
                                                     }
                                                     else
                                                     {
-                                                        <tr>
-                                                            <td>@precio.ListaDetalle.Precio</td>
-                                                        </tr>
+                                                        @funcion.HoraInicial
                                                     }
+                                                    -
+                                                    @if (funcion.HoraFinal != null)
+                                                    {
+                                                        @funcion.HoraFinal.Value;
+                                                    }
+                                                    else
+                                                    {
+                                                        @funcion.HoraFinal
+                                                    }
+                                                </td>
 
+                                                <td>@(Convert.ToInt32(funcion.TiempoCorto) + funcion.DetallePelicula.EncabezadoPelicula.Duracion + Convert.ToInt32(funcion.TiempoAseo))</td>
+                                                <td>
+                                                    <table>
+                                                        @foreach (CinemaPOS.Models.ListaPrecioFuncion precio in funcion.ListaPrecioFuncion)
+                                                        {
+                                                            if (precio.ListaDetalle.TipoListaDetalle != null)
+                                                            {
+                                                                <tr>
+                                                                    <td>@precio.ListaDetalle.Precio.Value.ToString("N0") - @precio.ListaDetalle.Opcion2.Nombre </td>
+                                                                </tr>
+                                                            }
+                                                            else
+                                                            {
+                                                                <tr>
+                                                                    <td>@precio.ListaDetalle.Precio</td>
+                                                                </tr>
+                                                            }
+
+                                                        }
+                                                    </table>
+                                                </td>
+                                                @if (funcion.Estado != null)
+                                                {
+                                                    <td>@funcion.Estado.Descripcion </td>
                                                 }
-                                            </table>
-                                        </td>
-                                        @if (funcion.Estado != null)
-                                        {
-                                            <td>@funcion.Estado.Descripcion </td>
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+
+
+                                            </tr>
                                         }
-                                        else
-                                        {
-                                            <td></td>
-                                        }
+                                    }
 
+                                </tbody>
+                            </table>
 
-                                    </tr>
-                                }
-                            }
-
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
                 </div>
+
 
                 <div id="Tabla" class="tab-pane fade">
                     <input type="hidden" id="Cant_Dias" name="Cant_Dias" value="0" />
