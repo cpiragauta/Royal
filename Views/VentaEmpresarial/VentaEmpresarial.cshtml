@@ -224,6 +224,7 @@
                         }
                     });
                 } else {
+                    RefrescarTabla();
                 }
             });
         }
@@ -338,7 +339,7 @@
                 $("#rowidTeatro").append("<option disabled selected value='' >Seleccione una Opción</option>").trigger("chosen:updated");
                 data.forEach(function (Teatro) {
                     $("#rowidTeatro").append("<option value='" + Teatro.RowId + "' >" + Teatro.Nombre
-                        + " " + Teatro.Ciudad + " " +"</option>").trigger("chosen:updated");
+                        + " - " + Teatro.Ciudad + " " +"</option>").trigger("chosen:updated");
                     $("#rowidTeatro").trigger("chosen:updated");
                 });
             },
