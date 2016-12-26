@@ -104,6 +104,7 @@ namespace CinemaPOS.Controllers.Cuenta
         {
             Session["POS"] = "INACTIVO";
             UsuarioSistema usuario = db.UsuarioSistema.FirstOrDefault(f => f.NombreUsuario == username && f.Contrasena == passwd );
+            Session["ruta_foto"] = usuario.Foto_Empleado;
             List<TipoMenu> tipoMenu;
             List<Menu> menu;
             if (usuario != null)

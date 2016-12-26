@@ -278,7 +278,7 @@ namespace CinemaPOS.Controllers
         public JsonResult CargarSalas(Int32 IdTeatro)
         {
             var query = (from salas in db.Sala
-                         where salas.TeatroID == IdTeatro
+                         where salas.TeatroID == IdTeatro && salas.Nombre == "EnFuncionamiento"
                          select new
                          {
                              rowid = salas.RowID,
