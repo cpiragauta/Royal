@@ -470,7 +470,15 @@
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label class="control-label">Fecha Estreno:</label>
-                                        <input type="text" name="fecha_estreno" class="fecha_estreno form-control" value="@Model.FechaEstreno">
+                                        @if (Model.FechaEstreno == null)
+                                        {
+                                            <input type="text" name="fecha_estreno" class="fecha_estreno form-control" value="">
+                                        }
+                                        else
+                                        {
+                                            <input type="text" name="fecha_estreno" class="fecha_estreno form-control" value="@Model.FechaEstreno.Value.ToShortDateString()">
+                                        }
+                                        
                                     </div>
                                 </div>
                             </div>

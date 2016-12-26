@@ -1855,6 +1855,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\plugins\flot-charts\examples\gauge\" />
+    <Folder Include="Repositorio_Imagenes\Fotos_Empleados\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

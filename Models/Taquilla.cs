@@ -30,7 +30,7 @@ namespace CinemaPOS.Models
         public Nullable<bool> Sincronizado { get; set; }
         public string IP { get; set; }
         public string Prefijo { get; set; }
-        public string RowIDCentral { get; set; }
+        public Nullable<int> RowIDCentral { get; set; }
         public string ConsecutivoInicial { get; set; }
         public string ConsecutivoFinal { get; set; }
         public Nullable<System.DateTime> FechaInicial { get; set; }

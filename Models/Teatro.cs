@@ -22,10 +22,10 @@ namespace CinemaPOS.Models
             this.ListaEncabezado = new HashSet<ListaEncabezado>();
             this.Pqrs = new HashSet<Pqrs>();
             this.Sala = new HashSet<Sala>();
-            this.Taquilla = new HashSet<Taquilla>();
             this.TeatroPelicula = new HashSet<TeatroPelicula>();
             this.TeatroVentaEmpresarial = new HashSet<TeatroVentaEmpresarial>();
             this.UsuarioSistema = new HashSet<UsuarioSistema>();
+            this.Taquilla = new HashSet<Taquilla>();
         }
     
         public int RowID { get; set; }
@@ -51,10 +51,10 @@ namespace CinemaPOS.Models
         public virtual ICollection<ListaEncabezado> ListaEncabezado { get; set; }
         public virtual ICollection<Pqrs> Pqrs { get; set; }
         public virtual ICollection<Sala> Sala { get; set; }
-        public virtual ICollection<Taquilla> Taquilla { get; set; }
         public virtual Tercero Tercero { get; set; }
         public virtual ICollection<TeatroPelicula> TeatroPelicula { get; set; }
         public virtual ICollection<TeatroVentaEmpresarial> TeatroVentaEmpresarial { get; set; }
         public virtual ICollection<UsuarioSistema> UsuarioSistema { get; set; }
+        public virtual ICollection<Taquilla> Taquilla { get; set; }
     }
 }
