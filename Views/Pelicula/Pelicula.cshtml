@@ -38,7 +38,6 @@
                 success: function (data) {
                     swal("","Informacion Guardada");
                     window.location = "/Pelicula/VistaPelicula/"
-
                 },
                 error: function () {
                     swal("","Verifica la informacion que estas guardando","warning")
@@ -137,6 +136,13 @@
             startDate: '1d'
         });
 
+        $('#demo-dp-range .input-daterange').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+
         $(".duracion").timepicker({
             defaultTime: 'value',
             minuteStep: 5,
@@ -153,10 +159,6 @@
         //jQuery(".listaversion").chosen({ width: "95%;" });
 
     });
-
-
-
-    
     //GUARDAR TEATRO
     function GuardarTeatro() {
         debugger;
@@ -188,10 +190,7 @@
                 hasChangue = true;
             }
         });
-    }
-
-    
-    
+    } 
     //GUARDAR TEATRO
     function GuardarTodos() {
         debugger;
@@ -263,6 +262,8 @@
             font-size: 20px;
         }
 </style>
+
+
 
 <div>
     <p>
@@ -737,27 +738,25 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <div class="form-group">
-                                            <label class="control-label">Porcentaje</label>
-                                            <input type="text" value="@porcentajespeliculas.Porcentaje" name="porcentaje[]" class="porcentaje form-control">
+                                            <label class="control-label">Porcentaje %:</label>
+                                            <input type="text" value="@porcentajespeliculas.Porcentaje" name="porcentaje[]" class="porcentaje form-control"  />
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="control-label">Fecha vigencia</label>
+                                    <div class="col-sm-4">
+                                        <div class="form-group" id="demo-dp-range">
+                                            <label class="control-label">Fecha vigencia :</label>
                                             <div class="input-daterange input-group">
                                                 <input type="text" value="@porcentajespeliculas.FechaInicial.Value.ToString("dd/MM/yyyy")" name="fecha_inicial_porcentaje[]" class="fecha_inicial_porcentaje form-control" />
-                                                <span class="input-group-addon">to</span>
-                                                <input type="text" value="@porcentajespeliculas.FechaFinal.Value.ToString("dd/MM/yyyy")" name="fecha_final_porcentaje[]" class="fecha_final_porcentaje form-control" />
+                                                <span class="input-group-addon">a</span>
+                                                <input type="text" value="@porcentajespeliculas.FechaFinal.Value.ToString("dd/MM/yyyy")" name="fecha_final_porcentaje[]" class="fecha_final_porcentaje form-control"/>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row ultimo-control ">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <div class="form-group">
-                                            <label class="control-label">Nombre </label>
+                                            <label class="control-label">Nombre: </label>
                                             <input type="text" value="@porcentajespeliculas.Nombre" name="nombre_porcentaje[]" class="nombre_porcentaje form-control">
                                         </div>
                                     </div>
@@ -813,36 +812,32 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div class="form-group">
-                                                <label class="control-label">Porcentaje</label>
+                                                <label class="control-label">Porcentaje %:</label>
                                                 <input type="text" class="porcentaje form-control">
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label class="control-label">Fecha vigencia</label>
+                                        <div class="col-sm-4">
+                                            <div class="form-group" id="demo-dp-range">
+                                                <label class="control-label">Fecha vigencia :</label>
                                                 <div class="input-daterange input-group">
-                                                    <input type="text" class="fecha_inicial_porcentaje form-control" />
-                                                    <span class="input-group-addon">to</span>
-                                                    <input type="text" class="fecha_final_porcentaje form-control" />
+                                                    <input type="text" value="" name="fecha_inicial" class="fecha_inicial_porcentaje form-control"/>
+                                                    <span class="input-group-addon">a:</span>
+                                                    <input type="text" value="" name="fecha_final" class="fecha_final_porcentaje form-control" />
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row ultimo-control ">
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div class="form-group">
-                                                <label class="control-label">Nombre</label>
+                                                <label class="control-label">Nombre:</label>
                                                 <input type="text" class="nombre_porcentaje form-control">
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                             <a href="javascript:;" class="btn btn-success btn-hover-warning add-panel-porcentaje"><i class="icon-plus">&nbsp;&nbsp;Agregar Porcentaje</i></a>
-
 
                             <!--Fourth tab-->
                             @*<div id="demo-cls-tab4" class="tab-pane mar-btm">
@@ -877,8 +872,6 @@
 
                         <!--TAB ASIGNAR TEATROS-->
                         <div id="demo-cls-tab4" class="tab-pane">
-                        
-
                             <div class="row">
                                 <div class="col-sm-3">
                                     <input type="hidden" name="rowidEmpresarial" value="@ViewBag.RowEmpresa" id="rowidEmpresarial" />
@@ -922,14 +915,12 @@
                                     }
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                     <div class="panel-footer text-right">
                         <div class="box-inline">
                             <button type="button" class="previous btn btn-mint">Anterior</button>
                             <button type="button" class="next btn btn-mint">Siguiente</button>
-
                         </div>
                     </div>
                     @*<button type="submit" class="btn btn btn-danger" onclick="javascript:valida_formulario()">Crear Pelicula</button>*@
@@ -1027,7 +1018,6 @@
                                     '',
                                     'error'
                                 }
-
                             },
                             error: function (request) {
                                 hasChangue = true;
@@ -1037,7 +1027,6 @@
                     }
                 });
             }
-
     }
     function ModalTeatroPelicula(rowid) {
         ModalProcesandoShow();
