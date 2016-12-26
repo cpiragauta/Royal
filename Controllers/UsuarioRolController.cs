@@ -230,13 +230,14 @@ namespace CinemaPOS.Controllers
                 {
                     db.Rol.Add(ObjRolSistema);
                     db.SaveChanges();
+                    RowID_RolesSistema = ObjRolSistema.RowID;
                 }
                 catch (Exception ex)
                 { return Json("Error " + ex.Message); }
                 respuesta = "Guardado Correctamente";
 
             }
-            if (RowID_RolesSistema != 0)//Para Actualiar
+            else if (RowID_RolesSistema != 0)//Para Actualiar
             {
                 ObjRolSistema = db.Rol.Where(t => t.RowID == RowID_RolesSistema).FirstOrDefault();
                 ObjRolSistema = CargarRolSistema(ObjRolSistema, formulario);
@@ -249,7 +250,7 @@ namespace CinemaPOS.Controllers
                 respuesta = "Actualizado Correctamente";
 
             }
-            return Json(respuesta);
+            return Json(new { respuesta = respuesta, RolID = RowID_RolesSistema });
         }
 
         public Rol CargarRolSistema(Rol ObjRolSistema, FormCollection formulario)
