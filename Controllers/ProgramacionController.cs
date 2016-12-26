@@ -230,6 +230,7 @@ namespace CinemaPOS.Controllers
                                 {
                                     FuncionesExistentes.Add(ObjFuncion);
                                     ObjFuncion = new Funcion();//Limpio el Objeto
+
                                 }
                             }
                             else

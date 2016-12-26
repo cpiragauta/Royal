@@ -469,8 +469,15 @@
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="form-group">
-                                        <label class="control-label">Fecha Estreno:</label>
-                                        <input type="text" name="fecha_estreno" class="fecha_estreno form-control" value="@Model.FechaEstreno">
+                                     <label class="control-label">Fecha Estreno:</label>
+                                        @if (Model.FechaEstreno == null)
+                                        {
+                                            <input type="text" name="fecha_estreno" class="fecha_estreno form-control" value="">
+                                        }
+                                        else
+                                        {
+                                            <input type="text" name="fecha_estreno" class="fecha_estreno form-control" value="@Model.FechaEstreno.Value.ToShortDateString()">
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -524,7 +531,7 @@
 
                             </div>
                             <div class="row">
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <label class="control-label">Derecho a Corto:</label>
                                         <div class="form-control">
@@ -532,7 +539,26 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-8">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Estado:</label>
+                                            <select name="estado" id="estado" class="form-control">
+                                                <option value="" disabled selected>Seleccione una opcion</option>
+                                                @foreach (CinemaPOS.Models.Estado estado in ViewBag.Estado)
+                                                {
+                                                    if (Model.RowID != 0 && estado.RowID == Model.Estado.RowID)
+                                                    {
+                                                        <option value="@estado.RowID" selected>@estado.Nombre</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@estado.RowID">@estado.Nombre</option>
+                                                    }
+                                                }
+                                            </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label">Sinopsis:</label>
                                         <textarea name="sinopsis" class="form-control" cols="80" rows="3">@Model.Sinopsis</textarea>

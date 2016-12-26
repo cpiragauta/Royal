@@ -28,6 +28,7 @@ namespace CinemaPOS.Models
         public string creadoPor { get; set; }
         public Nullable<System.DateTime> fechaMod { get; set; }
         public string usuarioMod { get; set; }
+        public string Adjunto { get; set; }
     
         public virtual Estado Estado { get; set; }
         public virtual Opcion Opcion { get; set; }

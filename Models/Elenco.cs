@@ -18,6 +18,8 @@ namespace CinemaPOS.Models
         public int TipoElencoID { get; set; }
         public int EncabezadoPeliculaID { get; set; }
         public string Nombre { get; set; }
+        public Nullable<int> RowIDCentral { get; set; }
+        public Nullable<bool> Sincronizado { get; set; }
     
         public virtual Opcion Opcion { get; set; }
         public virtual EncabezadoPelicula EncabezadoPelicula { get; set; }
