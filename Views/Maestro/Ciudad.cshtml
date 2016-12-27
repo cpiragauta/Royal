@@ -130,7 +130,8 @@
                             @foreach (CinemaPOS.Models.Pais pais in ViewBag.Pais)
                             {
                                 
-                                if (@Model.Departamento.PaisID!=null && @Model.Departamento.PaisID.Equals(@pais.RowID))
+
+                                if (@Model.RowID!=0 && @Model.Departamento.PaisID.Equals(@pais.RowID))
                                 {
                                     <option value="@pais.RowID" selected>@pais.Nombre</option>
                                 }
@@ -150,7 +151,7 @@
                             <option value="" disabled selected>Seleccione una opcion</option>
                             @foreach (CinemaPOS.Models.Departamento departamento in ViewBag.Departamento)
                             {
-                                if (@Model.DepartamentoID != null && @Model.DepartamentoID.Equals(@departamento.RowID))
+                                if (@Model.RowID != 0 && @Model.DepartamentoID.Equals(@departamento.RowID))
                                 {
                                     <option value="@departamento.RowID" selected>@departamento.Nombre</option>
 

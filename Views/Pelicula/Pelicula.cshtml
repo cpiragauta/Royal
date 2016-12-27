@@ -537,7 +537,16 @@
                                     <div class="form-group">
                                         <label class="control-label">Derecho a Corto:</label>
                                         <div class="form-control">
-                                            <input id="demo-sw-checked" type="checkbox" name="derecho_corto" checked>
+                                            @{ string class_activo = "";}
+                                            @if (Model.DerechoCorto==true)
+                                            {
+                                                class_activo = "checked";
+                                            }
+                                            else
+                                            {
+                                                class_activo="";
+                                            }
+                                            <input id="demo-sw-checked" type="checkbox" name="derecho_corto" @class_activo>
                                         </div>
                                     </div>
                                 </div>
@@ -580,13 +589,13 @@
                                             <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label class="control-label">Formato:</label>
-                                                    <select name="formato[]" class="form-control listaformato">
+                                                    <select name="formato[]" class="form-control listaformato" disabled>
                                                         <option value="" disabled selected>Seleccione una opción</option>
                                                         @foreach (CinemaPOS.Models.Opcion formato in ViewBag.Formato)
                                                         {
                                                             if (DetallesPeliculas.Opcion.RowID == formato.RowID)
                                                             {
-                                                                <option value="@formato.RowID" selected>@formato.Nombre</option>
+                                                                <option value="@formato.RowID" selected >@formato.Nombre</option>
                                                             }
                                                             else
                                                             {
@@ -599,13 +608,13 @@
                                             <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label class="control-label">Versión:</label>
-                                                    <select name="version[]" class="form-control listaversion">
+                                                    <select name="version[]" class="form-control listaversion" disabled>
                                                         <option value="" disabled>Seleccione una opción</option>
                                                         @foreach (CinemaPOS.Models.Opcion version in ViewBag.Version)
                                                         {
                                                             if (DetallesPeliculas.Opcion1.RowID == version.RowID)
                                                             {
-                                                                <option value="@version.RowID" selected>@version.Nombre</option>
+                                                                <option value="@version.RowID" selected > @version.Nombre</option>
                                                             }
                                                             else
                                                             {
