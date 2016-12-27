@@ -27,7 +27,7 @@ namespace CinemaPOS.Models
         public virtual Funcion Funcion { get; set; }
         public virtual ListaDetalle ListaDetalle { get; set; }
         public virtual MapaSala MapaSala { get; set; }
-        public virtual UsuarioSistema UsuarioSistema { get; set; }
+        //public virtual UsuarioSistema UsuarioSistema { get; set; }
         public virtual Taquilla Taquilla { get; set; }
     }
 }
