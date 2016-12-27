@@ -33,6 +33,9 @@
 @*<link href="~/Content/css/Forms.css" rel="stylesheet" />*@
 
 <style>
+    .icon-identificador {
+        margin-right:2px;
+    }
         #Table_length {
             display: none;
         }
@@ -1129,6 +1132,29 @@
                                                                     @funcion.DetallePelicula.Opcion1.Codigo2
                                                                     <br />
                                                                     @funcion.HoraInicial.Value  @funcion.HoraFinal.Value @*@funcion.Fecha.Value.ToString("dd/MM/yyyy")*@
+                                                                    <br />
+                                                                    @if(funcion.ListaPrecioFuncion.Count >0){
+                                                                        <i class="ion-cash icon-identificador" style="font-size: x-large;">&nbsp;</i>
+                                                                    }
+                                                                    @if (funcion.Estado != null)
+                                                                    {
+                                                                        if (funcion.Estado.Nombre == "Abierta")
+                                                                        {
+                                                                            <i class="ion-unlocked " style="font-size: large;"></i>
+                                                                        }
+                                                                        else if (funcion.Estado.Nombre == "Cerrada")
+                                                                        {
+                                                                            <i class="ion-locked" style="font-size: large;"></i>
+                                                                        }
+                                                                        else if (funcion.Estado.Nombre == "Planeada")
+                                                                        {
+                                                                            <i class="ion-calendar" style="font-size: large;"></i>
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i class="ion-alert-circled" style="font-size: large;"></i>
+                                                                    }
                                                                 </p>
 
                                                             }
@@ -1142,6 +1168,15 @@
                             </tbody>
                         </table>
                     }
+                </div>
+
+                <div class="clearfix demo-icon-list" style="font-size: 14px;">
+                        <div class="demo-icon col-sm-4"><i class="ion-cash"></i><span>La función tiene asignada una o más tarifas</span></div>
+                    <div class="demo-icon col-sm-4"><i class="ion-unlocked"></i><span>La función se encuentra en estado Abierta</span></div>
+                    <div class="demo-icon col-sm-4"><i class="ion-locked"></i><span>La función se encuentra en estado Cerrada</span></div>
+                    <div class="demo-icon col-sm-4"><i class="ion-calendar"></i><span>La función se encuentra en estado Planeada</span></div>
+                    <div class="demo-icon col-sm-4"><i class="ion-alert-circled"></i><span>La función NO tiene estado</span></div>
+
                 </div>
             </div>
 

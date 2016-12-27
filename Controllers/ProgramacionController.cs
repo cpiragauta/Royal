@@ -25,7 +25,7 @@ namespace CinemaPOS.Controllers
         {
             ViewBag.ListaTeatro = db.Teatro;
             ViewBag.ListasPrecios = db.ListaEncabezado.ToList();
-            ViewBag.ListaEstados = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOPROGRAMACIONENCABEZADO");
+            ViewBag.ListaEstados = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOFUNCION");
             if (RowID_EncabezadoProgramacion != null && RowID_EncabezadoProgramacion != 0)
             {
                 RowID_EncabezadoProgramacion = int.Parse(Request.Params["RowID_EncabezadoProgramacion"].ToString());
@@ -516,6 +516,30 @@ namespace CinemaPOS.Controllers
                                     tabla += funcion.DetallePelicula.Opcion1.Codigo2;
                                     tabla += "<br /> ";
                                     tabla += funcion.HoraInicial.Value + "  " + funcion.HoraFinal.Value;// @*@funcion.Fecha.Value.ToString("dd/MM/yyyy")*@
+                                    tabla += "<br />";
+                                    if (funcion.ListaPrecioFuncion.Count > 0)
+                                    {
+                                        tabla += "<i class=\"ion-cash icon-identificador\" style=\"font-size: x-large;\">&nbsp;</i>";
+                                    }
+                                    if (funcion.Estado != null)
+                                    {
+                                        if (funcion.Estado.Nombre == "Abierta")
+                                        {
+                                            tabla += "<i class=\"ion-unlocked \" style=\"font-size: large;\"></i>";
+                                        }
+                                        else if (funcion.Estado.Nombre == "Cerrada")
+                                        {
+                                            tabla += "<i class=\"ion-locked\" style=\"font-size: large;\"></i>";
+                                        }
+                                        else if (funcion.Estado.Nombre == "Planeada")
+                                        {
+                                            tabla += "<i class=\"ion-calendar\" style=\"font-size: large;\"></i>";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        tabla += "<i class=\"ion-alert-circled\" style=\"font-size: large;\"></i>";
+                                    }
                                     tabla += "</p>";
 
                                 }
