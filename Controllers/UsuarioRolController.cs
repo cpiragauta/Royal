@@ -72,16 +72,16 @@ namespace CinemaPOS.Controllers
         public JsonResult GuardarUsuarioSistema(FormCollection formulario, int? RowID_UsuarioSistema, HttpPostedFileBase foto_empleado)
         {
             Boolean respuesta = false;
-            
+
             UsuarioSistema ObjUsuarioSistema = new UsuarioSistema();
             string ruta_foto = ObjUsuarioSistema.Foto_Empleado;
-            String nombreU= formulario["nombreUsuario"];
-            
-            
-            // inserta solamente el afiche en miniatura
-           
+            String nombreU = formulario["nombreUsuario"];
 
-            
+
+            // inserta solamente el afiche en miniatura
+
+
+
             if (RowID_UsuarioSistema == 0)
             {
                 if (db.UsuarioSistema.Where(f => f.NombreUsuario == nombreU).Count() == 0)
@@ -108,26 +108,25 @@ namespace CinemaPOS.Controllers
             if (RowID_UsuarioSistema != 0)//Para Actualiar
             {
                 ObjUsuarioSistema = db.UsuarioSistema.Where(t => t.RowID == RowID_UsuarioSistema).FirstOrDefault();
-                    List<UsuarioSistema> listaUsuario = db.UsuarioSistema.Where(f => f.NombreUsuario == nombreU).ToList();
+                List<UsuarioSistema> listaUsuario = db.UsuarioSistema.Where(f => f.NombreUsuario == nombreU).ToList();
                 if (listaUsuario.Count() == 1 && listaUsuario.FirstOrDefault().RowID == ObjUsuarioSistema.RowID)
                 {
                     ObjUsuarioSistema = CargarUsuarioSistema(ObjUsuarioSistema, formulario);
                     if (foto_empleado != null)
                     {
-                        String path ="~/"+ObjUsuarioSistema.Foto_Empleado;
-                        
+                        String path = "~/" + ObjUsuarioSistema.Foto_Empleado;
+                        if (System.IO.File.Exists(path))
+                        {
                             System.IO.File.Delete(Server.MapPath(path));
-                            //documento.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales/" + adjunto));
-                            //adjunto = "Repositorio_Imagenes/Imagenes_Generales/" + adjunto;
-                     
-                            ruta_foto = formulario["nombre"] + formulario["apellido"] + Path.GetExtension(foto_empleado.FileName);
-                            foto_empleado.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Fotos_Empleados/" + ruta_foto));
-                            ruta_foto = "Repositorio_Imagenes/Fotos_Empleados/" + ruta_foto;
-                            ObjUsuarioSistema.Foto_Empleado = ruta_foto;
+                        }
                         
+                        //documento.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales/" + adjunto));
+                        //adjunto = "Repositorio_Imagenes/Imagenes_Generales/" + adjunto;
 
-                      
-
+                        ruta_foto = formulario["nombre"] + formulario["apellido"] + Path.GetExtension(foto_empleado.FileName);
+                        foto_empleado.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Fotos_Empleados/" + ruta_foto));
+                        ruta_foto = "Repositorio_Imagenes/Fotos_Empleados/" + ruta_foto;
+                        ObjUsuarioSistema.Foto_Empleado = ruta_foto;
                     }
 
                     //if (foto_empleado != null)
@@ -138,21 +137,20 @@ namespace CinemaPOS.Controllers
                     //{
                     //    ObjUsuarioSistema.Foto_Empleado = ruta_foto;
                     //}
-                   
+
                     try
                     {
-                        db.SaveChanges(); 
+                        db.SaveChanges();
                         respuesta = true;
                     }
                     catch (Exception ex)
                     { return Json("Error " + ex.Message); }
 
                 }
-                
+
             }
             return Json(respuesta);
         }
-
         public UsuarioSistema CargarUsuarioSistema(UsuarioSistema ObjUsuarioSistema, FormCollection formulario)
         {
             ObjUsuarioSistema.NombreUsuario = formulario["nombreUsuario"];

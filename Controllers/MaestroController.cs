@@ -740,6 +740,7 @@ namespace CinemaPOS.Controllers.Master
                     {
                         numeracion = false;
                     }
+
                     string adjunto = formulario["nombre"] + Path.GetExtension(documento.FileName);
                     documento.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales/" + adjunto));
                     ObjSillaTipo.Nombre = formulario["nombre"];

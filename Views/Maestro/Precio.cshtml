@@ -277,22 +277,48 @@
             todayHighlight: false,
             startDate: '1d'
         });
-        $('#fecha_inicial_detalle').datepicker({
-            format: "dd/mm/yyyy",
-            todayBtn: "linked",
-            autoclose: true,
-            todayHighlight: false,
-            startDate: $("#fechainicialvigencia").val(),
-            endDate:$("#fechafinalvigencia").val()
-        });
-        $('#fecha_final_detalle').datepicker({
-            format: "dd/mm/yyyy",
-            todayBtn: "linked",
-            autoclose: true,
-            todayHighlight: false,
-            startDate: $("#fechainicialvigencia").val(),
-            endDate:$("#fechafinalvigencia").val()
-        });
+        $("#fechainicialvigencia").change(function(){
+            $('#fecha_inicial_detalle').datepicker("destroy");
+            $('#fecha_inicial_detalle').datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                autoclose: true,
+                todayHighlight: false,
+                startDate: $("#fechainicialvigencia").val(),
+                endDate:$("#fechafinalvigencia").val()
+            });
+            $('#fecha_final_detalle').datepicker("destroy");
+            $('#fecha_final_detalle').datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                autoclose: true,
+                todayHighlight: false,
+                startDate: $("#fechainicialvigencia").val(),
+                endDate:$("#fechafinalvigencia").val()
+            });
+        })
+        $("#fechafinalvigencia").change(function(){
+            $('#fecha_inicial_detalle').datepicker("destroy");
+            $('#fecha_inicial_detalle').datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                autoclose: true,
+                todayHighlight: false,
+                startDate: $("#fechainicialvigencia").val(),
+                endDate:$("#fechafinalvigencia").val()
+            });
+            $('#fecha_final_detalle').datepicker("destroy");
+            $('#fecha_final_detalle').datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                autoclose: true,
+                todayHighlight: false,
+                startDate: $("#fechainicialvigencia").val(),
+                endDate:$("#fechafinalvigencia").val()
+            });
+        })
+        
+        
 
     })
     function crear_nombre(){
