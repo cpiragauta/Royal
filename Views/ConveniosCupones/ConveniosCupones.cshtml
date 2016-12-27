@@ -7,10 +7,17 @@
 @using ReportViewerForMvc
 
 <head>
-    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
+    <!--Bootstrap Validator [ OPTIONAL ]-->
+    <script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.js"></script>
+    <script src="~/Content/js/demo/form-wizard.js"></script>
+    <script src="~/Content/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+    <script src="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+    <link href="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
+    <!--DataTables [ OPTIONAL ]-->
     <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
     <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
     <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <!--DataTables Sample [ SAMPLE ]-->
     <script src="~/Content/js/demo/tables-datatables.js"></script>
 </head>
 
@@ -39,7 +46,7 @@
                             Alerts("No se guardo el convenio", "error");
                             return;
                         } else {
-                            Alerts("Convenio Guardado con exito!!!!",  "success");
+                            Alerts("Convenio Guardado con exito!!!!", "success");
                             $("#row_id").val(data.RowID_EncabezadoConvenio);
                             window.location = "/ConveniosCupones/ConveniosCupones/?RowId_Covenio=" + data.RowID_EncabezadoConvenio;
                             jQuery(".Ocultar").slideDown();
@@ -78,7 +85,7 @@
 
                             return;
                         } else {
-                            Alerts("Item guardado con exito!!!",  "success");
+                            Alerts("Item guardado con exito!!!", "success");
                             window.location = "/ConveniosCupones/ConveniosCupones/?RowId_Covenio=" + $("#row_id").val();
 
                         }
@@ -161,42 +168,45 @@
             disableFocus: true
         });
 
-        $('#demo-dp-range .input-daterange').datepicker({
+        $('#FechaInicial').datepicker({
             format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
+            startDate: "1d",
             todayHighlight: false
         });
+        //$('#FechaFinal').datepicker({
+        //    format: "dd/mm/yyyy",
+        //    todayBtn: "linked",
+        //    autoclose: true,
+        //    startDate: $("#FechaInicial").val(),
+        //    todayHighlight: false
+        //});
 
         $('.solo-numero').keyup(function () {
             this.value = (this.value + '').replace(/[^0-9]/g, '');
         });
 
-        //$("#FechaFinal").datepicker().on('changeDate', function(e){
 
-        //        debugger;
-        //        var inicio = document.getElementById('FechaInicial').value;
-        //        var finalq = document.getElementById('FechaFinal').value;
-        //        inicio = new Date(inicio);
-        //        finalq = new Date(finalq);
 
-        //        if (inicio.toDateString() == finalq.toDateString) {
-        //            Alerts("La fecha inicial no puede ser mayor a la final", "warning");
-        //        } 
-            
-        //});
-
-        $("#FechaFinal").change(function () {
-
+        $("#FechaInicial").change(function () {
             debugger;
-            var inicio = document.getElementById('FechaInicial').value;
-            var finalq = document.getElementById('FechaFinal').value;
-            inicio = new Date(inicio);
-            finalq = new Date(finalq);
+            //var inicio = document.getElementById('FechaInicial').value;
+            //var finalq = document.getElementById('FechaFinal').value;
+            //inicio = new Date(inicio);
+            //finalq = new Date(finalq);
 
-            if (inicio.toDateString() == finalq.toDateString()) {
-                Alerts("La fecha inicial no puede ser mayor a la final", "warning");
-            }
+            //if (inicio.toDateString() == finalq.toDateString()) {
+            //    Alerts("La fecha inicial no puede ser mayor a la final", "warning");
+            //}
+            $("#FechaFinal").datepicker("destroy");
+            $('#FechaFinal').datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                autoclose: true,
+                startDate: $("#FechaInicial").val(),
+                todayHighlight: false
+            });
 
         });
 
@@ -338,7 +348,7 @@
                             </div>
                         </div>
                         <div class="col-sm-3">
-                            <div class="form-group" id="demo-dp-range">
+                            <div class="form-group" >
                                 <label class="control-label">Fecha vigencia:*</label>
                                 <div class="input-daterange input-group" id="datepicker">
                                     @if (Model.RowID != 0)
@@ -455,35 +465,35 @@
 
                             </form>
                             <table id="demo-dt-basic" class="table table-striped table-bordered table-funcion table-responsive tablaItems" cellspacing="0" data-show-pagination-switch="true">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Nombre</th>
-                                            <th>Código</th>
-                                            <th>Estado</th>
-                                            <th>Descuento</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tablaItems">
-                                        @if (ViewBag.listaDetalleConvenio != null)
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Código</th>
+                                        <th>Estado</th>
+                                        <th>Descuento</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaItems">
+                                    @if (ViewBag.listaDetalleConvenio != null)
+                                    {
+                                        foreach (CinemaPOS.Models.DetalleConvenio item in ViewBag.listaDetalleConvenio)
                                         {
-                                            foreach (CinemaPOS.Models.DetalleConvenio item in ViewBag.listaDetalleConvenio)
-                                            {
-                                                <tr>
-                                                    <td>@item.RowID </td>
-                                                    <td>@item.Nombre </td>
-                                                    <td>@item.Codigo </td>
-                                                    <td>@item.Estado.Nombre </td>
-                                                    <td><center>@item.Porcentaje%</center></td>
-                                                    <td><a href='javascript:EliminarItems(@item.RowID);' class="ion-trash-a"></a></td>
+                                            <tr>
+                                                <td>@item.RowID </td>
+                                                <td>@item.Nombre </td>
+                                                <td>@item.Codigo </td>
+                                                <td>@item.Estado.Nombre </td>
+                                                <td><center>@item.Porcentaje%</center></td>
+                                                <td><a href='javascript:EliminarItems(@item.RowID);' class="ion-trash-a"></a></td>
 
 
-                                                </tr>
-                                            }
+                                            </tr>
                                         }
-                                    </tbody>
-                                </table>
-                          </div>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
