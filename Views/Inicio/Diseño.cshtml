@@ -920,15 +920,30 @@
 
                                                     @foreach (var item2 in (((List<Menu>)Session["menu"]).Where(f => f.TipoMenu.RowID == item.RowID).OrderBy(p => p.Orden)))
                                                     {
+                                                        if (item.Nombre == "POS")
+                                                        {
+                                                            <li>
+                                                                <a href="@item2.URL">
+                                                                    <i class="@item2.Imagen"></i>
+                                                                    <span class="menu-title">
+                                                                        <strong>@item2.Nombre</strong>
+                                                                    </span>
+                                                                </a>
+                                                            </li>
+                                                        }
+                                                        else
+                                                        {
+                                                            <li>
+                                                                <a href="@item2.URL">
+                                                                    <i class="@item2.Imagen"></i>
+                                                                    <span class="menu-title">
+                                                                        <strong>@item2.Nombre</strong>
+                                                                    </span>
+                                                                </a>
+                                                            </li>
+                                                        }
 
-                                                        <li>
-                                                            <a href="@item2.URL">
-                                                                <i class="@item2.Imagen"></i>
-                                                                <span class="menu-title">
-                                                                    <strong>@item2.Nombre</strong>
-                                                                </span>
-                                                            </a>
-                                                        </li>
+
                                                     }
                                                 </ul>
                                             </li>
