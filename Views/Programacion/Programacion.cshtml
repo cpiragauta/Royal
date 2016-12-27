@@ -873,8 +873,11 @@
                                                 @item.Nombre
                                                 @foreach (CinemaPOS.Models.FormatoSala itemSala in item.FormatoSala)
                                                 {
-                                                    @itemSala.Opcion.Codigo;@:
-                                         }
+                                                    if (itemSala.Opcion.Activo == true)
+                                                    {
+                                                        @itemSala.Opcion.Codigo;@:
+                                            }
+                                                }
                                             </option>
                                         }
                                     }

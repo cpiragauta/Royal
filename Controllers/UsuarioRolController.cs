@@ -268,7 +268,7 @@ namespace CinemaPOS.Controllers
         [CheckSessionOutAttribute]
         public JsonResult GuardarPermisosRol(int RolID, String pantallasAsignadas, String pantallasNOAsignadas)
         {
-            pantallasAsignadas = pantallasAsignadas.TrimEnd(',');
+            pantallasAsignadas = pantallasAsignadas.TrimEnd(',').TrimStart(',');
             pantallasNOAsignadas = pantallasNOAsignadas.TrimEnd(',').TrimStart(',');
             String[] patallasAsignadas2 = pantallasAsignadas.Split(',');
             String[] pantallasNOAsignadas2 = pantallasNOAsignadas.Split(',');
