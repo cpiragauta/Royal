@@ -50,6 +50,7 @@ namespace CinemaPOS.Controllers
             return View();
         }
 
+
         [CheckSessionOutAttribute]
         public ActionResult UsuarioSistema(int? RowID_UsuarioSistema)
         {
