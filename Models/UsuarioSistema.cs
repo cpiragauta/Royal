@@ -14,6 +14,11 @@ namespace CinemaPOS.Models
     
     public partial class UsuarioSistema
     {
+        public UsuarioSistema()
+        {
+            this.BoletaVendida = new HashSet<BoletaVendida>();
+        }
+    
         public int RowID { get; set; }
         public int RolID { get; set; }
         public string Nombre { get; set; }
@@ -30,8 +35,10 @@ namespace CinemaPOS.Models
         public Nullable<bool> Sincronizado { get; set; }
         public Nullable<int> TeatroID { get; set; }
         public Nullable<int> RowIDCentral { get; set; }
+        public string Foto_Empleado { get; set; }
     
         public virtual Teatro Teatro { get; set; }
         public virtual Rol Rol { get; set; }
+        public virtual ICollection<BoletaVendida> BoletaVendida { get; set; }
     }
 }

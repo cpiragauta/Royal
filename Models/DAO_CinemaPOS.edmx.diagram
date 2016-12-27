@@ -60,7 +60,6 @@
         <EntityTypeShape EntityType="CinemaPOSModel.MapaSala" Width="1.5" PointX="7.5" PointY="83" />
         <EntityTypeShape EntityType="CinemaPOSModel.Sala" Width="1.5" PointX="5.25" PointY="65.375" />
         <EntityTypeShape EntityType="CinemaPOSModel.ServicioSala" Width="1.5" PointX="10.5" PointY="61.625" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Taquilla" Width="1.5" PointX="8.25" PointY="60.375" />
         <EntityTypeShape EntityType="CinemaPOSModel.DetalleVentaEmpresarial" Width="1.5" PointX="21.75" PointY="68.75" />
         <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoVentaEmpresarial" Width="1.5" PointX="5.25" PointY="77.625" />
         <EntityTypeShape EntityType="CinemaPOSModel.TeatroVentaEmpresarial" Width="1.5" PointX="13.5" PointY="86.75" />
@@ -110,7 +109,6 @@
         <AssociationConnector Association="CinemaPOSModel.FK__Sala__EstadoID__787EE5A0" />
         <AssociationConnector Association="CinemaPOSModel.FK__Seguimien__Estad__5B438874" />
         <AssociationConnector Association="CinemaPOSModel.FK__Silla__EstadoID__7D439ABD" />
-        <AssociationConnector Association="CinemaPOSModel.FK__Taquilla__Estado__01142BA1" />
         <AssociationConnector Association="CinemaPOSModel.FK__Teatro__EstadoID__76818E95" />
         <AssociationConnector Association="CinemaPOSModel.FK_TipoEstado" />
         <AssociationConnector Association="CinemaPOSModel.FK__Impuesto__TipoIm__5165187F" />
@@ -134,7 +132,6 @@
         <AssociationConnector Association="CinemaPOSModel.FK__Seguimien__AreaA__595B4002" />
         <AssociationConnector Association="CinemaPOSModel.FK__Seguimien__AreaA__5A4F643B" />
         <AssociationConnector Association="CinemaPOSModel.FK__ServicioS__TipoS__7C4F7684" />
-        <AssociationConnector Association="CinemaPOSModel.FK__Taquilla__TipoTa__4944D3CA" />
         <AssociationConnector Association="CinemaPOSModel.FK__Tercero__SexoID__3FD07829" />
         <AssociationConnector Association="CinemaPOSModel.FK__Tercero__TipoIde__2CBDA3B5" />
         <AssociationConnector Association="CinemaPOSModel.FK__Tercero__TipoTer__5535A963" />
@@ -148,7 +145,6 @@
         <AssociationConnector Association="CinemaPOSModel.FK__ListaEnca__Teatr__7D2E8C24" />
         <AssociationConnector Association="CinemaPOSModel.FK__Pqrs__TeatroID__4DE98D56" />
         <AssociationConnector Association="CinemaPOSModel.FK__Sala__TeatroID__797309D9" />
-        <AssociationConnector Association="CinemaPOSModel.FK__Taquilla__Teatro__02084FDA" />
         <AssociationConnector Association="CinemaPOSModel.FK__Teatro__Compania__534D60F1" />
         <AssociationConnector Association="CinemaPOSModel.FK__TeatroPel__Teatr__68336F3E" />
         <AssociationConnector Association="CinemaPOSModel.FK__TeatroVen__Teatr__4D7F7902" />
@@ -184,12 +180,17 @@
         <AssociationConnector Association="CinemaPOSModel.FK__DetalleVe__Lista__505BE5AD" />
         <AssociationConnector Association="CinemaPOSModel.FK__ListaDeta__Lista__72C60C4A" />
         <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Silla__5026DB83" />
-        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Taqui__520F23F5" />
         <AssociationConnector Association="CinemaPOSModel.FK__FormatoSa__SalaI__76969D2E" />
         <AssociationConnector Association="CinemaPOSModel.FK__Silla__SalaID__7E37BEF6" />
         <AssociationConnector Association="CinemaPOSModel.FK__ServicioS__SalaI__7B5B524B" />
         <AssociationConnector Association="CinemaPOSModel.FK__DetalleVe__Venta__47C69FAC" />
         <AssociationConnector Association="CinemaPOSModel.FK__TeatroVen__Venta__4C8B54C9" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Usuar__5B638405" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Taquilla" Width="1.5" PointX="26.75" PointY="65.625" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Taquilla__Estado__01142BA1" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Taquilla__TipoTa__4944D3CA" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Taquilla__Teatro__02084FDA" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Taqui__520F23F5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using CinemaPOS.Models;
 using CinemaPOS.Controllers;
-
+using System.IO;
 
 namespace CinemaPOS.Controllers
 {
@@ -69,18 +69,29 @@ namespace CinemaPOS.Controllers
         }
 
         [CheckSessionOutAttribute]
-        public JsonResult GuardarUsuarioSistema(FormCollection formulario, int RowID_UsuarioSistema)
+        public JsonResult GuardarUsuarioSistema(FormCollection formulario, int? RowID_UsuarioSistema, HttpPostedFileBase foto_empleado)
         {
             String respuesta = "";
+            
             UsuarioSistema ObjUsuarioSistema = new UsuarioSistema();
-            formulario = DeSerialize(formulario);
+            string ruta_foto = ObjUsuarioSistema.Foto_Empleado;
             String nombreU= formulario["nombreUsuario"];
+            if (foto_empleado != null)
+            {
+                ruta_foto = formulario["nombre"]+formulario["apellido"]+Path.GetExtension(foto_empleado.FileName);
+                foto_empleado.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Fotos_Empleados/" + ruta_foto));
+                ruta_foto = "Repositorio_Imagenes/Fotos_Empleados/" + ruta_foto;
+            }
+            // inserta solamente el afiche en miniatura
+           
 
+            
             if (RowID_UsuarioSistema == 0)
             {
                 if (db.UsuarioSistema.Where(f => f.NombreUsuario == nombreU).Count() == 0)
                 {
                     ObjUsuarioSistema = CargarUsuarioSistema(ObjUsuarioSistema, formulario);
+                    ObjUsuarioSistema.Foto_Empleado = ruta_foto;
                     try
                     {
                         db.UsuarioSistema.Add(ObjUsuarioSistema);
@@ -101,6 +112,15 @@ namespace CinemaPOS.Controllers
                 if (listaUsuario.Count() == 1 && listaUsuario.FirstOrDefault().RowID == ObjUsuarioSistema.RowID)
                 {
                     ObjUsuarioSistema = CargarUsuarioSistema(ObjUsuarioSistema, formulario);
+                    if (foto_empleado!=null)
+                    {
+                        ObjUsuarioSistema.Foto_Empleado = ruta_foto;
+                    }
+                    else
+                    {
+                        ObjUsuarioSistema.Foto_Empleado = ruta_foto;
+                    }
+                   
                     try
                     {
                         db.SaveChanges();
