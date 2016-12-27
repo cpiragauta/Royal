@@ -33,7 +33,7 @@ namespace CinemaPOS.Controllers
                 EncabezadoProgramacion programacion = db.EncabezadoProgramacion.FirstOrDefault(t => t.RowID == RowID_EncabezadoProgramacion);
                 if (programacion != null)
                 {
-                    ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID);
+                    ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Nombre == "EnFuncionamiento");
                     ViewBag.ListaPeliculas = db.TeatroPelicula.Where(f => f.TeatroID == programacion.TeatroID);
                     ViewBag.ListasPrecios = db.ListaEncabezado.Where(f => f.TeatroID == programacion.TeatroID);
                 }
@@ -300,7 +300,7 @@ namespace CinemaPOS.Controllers
         public JsonResult CargarSalas(Int32 IdTeatro)
         {
             var query = (from salas in db.Sala
-                         where salas.TeatroID == IdTeatro && salas.Nombre == "EnFuncionamiento"
+                         where salas.TeatroID == IdTeatro && salas.Estado.Nombre == "EnFuncionamiento"
                          select new
                          {
                              rowid = salas.RowID,
@@ -462,7 +462,15 @@ namespace CinemaPOS.Controllers
             string tabla = "";
             List<Funcion> ListaFunciones = db.Funcion.Where(ld => ld.EncabezadoProgramacionID == RowID_Encabezado).ToList();
             List<Sala> listaSalas = null;
+            if (ListaFunciones.Count == 0)
+            {
+                return tabla;
+            }
             EncabezadoProgramacion programacion = ListaFunciones.First().EncabezadoProgramacion;
+            if (ListaFunciones.Count == 0)
+            {
+
+            }
             if (programacion == null)
             {
                 programacion = db.EncabezadoProgramacion.FirstOrDefault(f => f.RowID == ListaFunciones.First().EncabezadoProgramacionID);
