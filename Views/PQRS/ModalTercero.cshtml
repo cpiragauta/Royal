@@ -2,6 +2,16 @@
     ViewBag.Title = "ModalTercero";
     Layout = null;
 }
+
+
+<link href="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.css" rel="stylesheet">
+
+<!--Bootstrap Validator [ OPTIONAL ]-->
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.js"></script>
+<script src="~/Content/js/demo/form-wizard.js"></script>
+<script src="~/Content/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+<script src="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+<link href="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
 <script>
     $("#myModal").modal('show');
     //alert();
@@ -22,6 +32,16 @@
         }
         
     }
+    
+    $(document).ready(function () {
+        $('#fecha_suceso').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: false,
+        startDate:"1d"
+    });
+    });
 </script>
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">

@@ -239,7 +239,7 @@
             <ul class="nav nav-tabs">
                 <li class="active" id="tabEncabezado"><a data-toggle="tab" href="#Convenio">Convenio</a></li>
                 <li><a data-toggle="tab" href="#Items">Items</a></li>
-                <li><a data-toggle="tab" href="#Ticket">Tickets</a></li>
+                    @*<li><a data-toggle="tab" href="#Ticket">Tickets</a></li>*@
 
             </ul>
         </div>
@@ -499,7 +499,7 @@
             </div>
         </div>
         @*****************TAB TICKET******************@
-        <div id="Ticket" class="tab-pane fade">
+        @*<div id="Ticket" class="tab-pane fade">
             <div id="page-content" class="Ocultar">
                 <div class="panel">
                     <div class="panel-body">
@@ -507,13 +507,7 @@
                             <input type="button" id="Print" class="btn btn-success" value="Imprimir" style="background: #74a838; color:white" />
                         </div>
                         <form name="formulario_Convenio_Ticket" id="formulario_Convenio_Ticket" onsubmit="return false">
-                            @*@Html.ReportViewer(
-                                new { ProcessingMode = Microsoft.Reporting.WebForms.ProcessingMode.Local, },// Report Viewer
-                                    new { ReportPath = Request.MapPath(Request.ApplicationPath) + @"Content/Reportes/Report1.rdlc" }, //Report
-                                                               new { @parametro1="lo que quieras"},//Parametros
-                                                          new { Name = "DataSet1", Value = ViewBag.listaDetalleConvenio }, //Datasources
-                                        new { @style = "Width:1000px" } //Htmltributtes
-                                )*@
+                         
 
                             @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)
 
@@ -523,6 +517,6 @@
                 </div>
             </div>
 
-        </div>
+        </div>*@
     </div>
 </div>
