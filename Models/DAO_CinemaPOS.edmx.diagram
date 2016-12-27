@@ -4,12 +4,11 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="ae8727279e94475199cbe851b869d483" Name="Diagram1" ZoomLevel="94">
+      <Diagram DiagramId="ae8727279e94475199cbe851b869d483" Name="Diagram1" ZoomLevel="85">
         <EntityTypeShape EntityType="CinemaPOSModel.DetalleConvenio" Width="1.5" PointX="10.5" PointY="83.125" />
         <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoConvenio" Width="1.5" PointX="5.25" PointY="71.375" />
         <EntityTypeShape EntityType="CinemaPOSModel.Actividades" Width="1.5" PointX="8.25" PointY="77.75" />
         <EntityTypeShape EntityType="CinemaPOSModel.ClienteRoyal" Width="1.5" PointX="14.25" PointY="64.375" />
-        <EntityTypeShape EntityType="CinemaPOSModel.OportunidadVenta" Width="1.5" PointX="18.75" PointY="77.125" />
         <EntityTypeShape EntityType="CinemaPOSModel.TarjetaMembresia" Width="1.5" PointX="14.25" PointY="57.625" />
         <EntityTypeShape EntityType="CinemaPOSModel.TarjetaMembresiaClienteRoyal" Width="1.5" PointX="16.5" PointY="65.5" />
         <EntityTypeShape EntityType="CinemaPOSModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" />
@@ -81,11 +80,6 @@
         <AssociationConnector Association="CinemaPOSModel.FK__ClienteRo__Gener__0ABD916C" />
         <AssociationConnector Association="CinemaPOSModel.FK__TarjetaMe__Clien__162F4418" />
         <AssociationConnector Association="CinemaPOSModel.fk_preferencias" />
-        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Conta__4C564A9F" />
-        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Lista__4979DDF4" />
-        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Prosp__4A6E022D" />
-        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Teatr__4B622666" />
-        <AssociationConnector Association="CinemaPOSModel.fk_estado_cotizacion" />
         <AssociationConnector Association="CinemaPOSModel.FK__TarjetaMe__Estad__1D9B5BB6" />
         <AssociationConnector Association="CinemaPOSModel.FK__TarjetaMe__Tarje__153B1FDF" />
         <AssociationConnector Association="CinemaPOSModel.FK__TarjetaMe__Estad__1E8F7FEF" />
@@ -191,6 +185,12 @@
         <AssociationConnector Association="CinemaPOSModel.FK__Taquilla__TipoTa__4944D3CA" />
         <AssociationConnector Association="CinemaPOSModel.FK__Taquilla__Teatro__02084FDA" />
         <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Taqui__520F23F5" />
+        <EntityTypeShape EntityType="CinemaPOSModel.OportunidadVenta" Width="1.5" PointX="27.75" PointY="71.5" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Conta__4C564A9F" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Lista__4979DDF4" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Prosp__4A6E022D" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Teatr__4B622666" />
+        <AssociationConnector Association="CinemaPOSModel.fk_estado_cotizacion" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -17,7 +17,6 @@ namespace CinemaPOS.Models
         public Teatro()
         {
             this.DetalleConvenio = new HashSet<DetalleConvenio>();
-            this.OportunidadVenta = new HashSet<OportunidadVenta>();
             this.EncabezadoProgramacion = new HashSet<EncabezadoProgramacion>();
             this.ListaEncabezado = new HashSet<ListaEncabezado>();
             this.Pqrs = new HashSet<Pqrs>();
@@ -26,6 +25,7 @@ namespace CinemaPOS.Models
             this.TeatroVentaEmpresarial = new HashSet<TeatroVentaEmpresarial>();
             this.UsuarioSistema = new HashSet<UsuarioSistema>();
             this.Taquilla = new HashSet<Taquilla>();
+            this.OportunidadVenta = new HashSet<OportunidadVenta>();
         }
     
         public int RowID { get; set; }
@@ -44,7 +44,6 @@ namespace CinemaPOS.Models
         public string CadenaBD { get; set; }
     
         public virtual ICollection<DetalleConvenio> DetalleConvenio { get; set; }
-        public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }
         public virtual Ciudad Ciudad { get; set; }
         public virtual Estado Estado { get; set; }
         public virtual ICollection<EncabezadoProgramacion> EncabezadoProgramacion { get; set; }
@@ -56,5 +55,6 @@ namespace CinemaPOS.Models
         public virtual ICollection<TeatroVentaEmpresarial> TeatroVentaEmpresarial { get; set; }
         public virtual ICollection<UsuarioSistema> UsuarioSistema { get; set; }
         public virtual ICollection<Taquilla> Taquilla { get; set; }
+        public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }
     }
 }

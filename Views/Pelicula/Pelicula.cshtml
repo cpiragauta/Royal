@@ -162,6 +162,7 @@
     function GuardarTeatro() {
         debugger;
         ModalProcesandoShow();
+        @*if(@Model.RowID==0){}*@
         $.ajax({
             type: "POST",
             url: "/Pelicula/GuardarTeatro",
