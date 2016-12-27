@@ -130,12 +130,12 @@
     }*/
 </style>
 <script>
-
     function guardar_EncabezadoProgramacion() {
-        ModalProcesandoShow();
-
+        debugger;
         var validator = $("#formulario_Programacion_Encabezado").validate();
         if (validator.form()) {
+            ModalProcesandoShow();
+
             $.ajax({
                 type: "POST",
                 url: "/Programacion/GuardarProgramacionEncabezado",
@@ -146,27 +146,30 @@
                 success: function (data) {
                     if (data.respuesta.includes("Error")) {
                         swal("ERROR", data.respuesta, "error");
+                        ModalProcesandoHiden();
+
                         return;
                     } else {
                         jQuery(".Detalle_Programacion").slideDown();
-                        swal("OK", data.respuesta, "success");
+                        Alerts("Actualizado con exito !!!", "success");
+                        cargarFunciones();
+                        CargarFuncionesGraficas();
+                        //window.location = "/Programacion/Programacion/?RowID_EncabezadoProgramacion=" + $("#row_id").val();
                         $("#row_id").val(data.RowID_EncabezadoProgramacion);
+                        ModalProcesandoHiden();
+
                     }
                 },
                 error: function (data) {
                     swal("ERROR", data.respuesta, "error");
+                    ModalProcesandoHiden();
                 }
             });
         }
-        ModalProcesandoHiden();
-
     }
 
 
-
-
     function CargarSalas(IdTeatro) {
-
         $("#Sala").empty();
         $.ajax({
             type: "POST",
@@ -186,7 +189,6 @@
     }
 
     function CargarPeliculas(IdSala) {
-
         $("#DetallePelicula").empty();
         $.ajax({
             type: "POST",
@@ -352,6 +354,7 @@
     }
 
     function cargarFunciones() {
+        debugger;
         $.ajax({
             type: "POST",
             url: "/Programacion/CargarFunciones",
@@ -768,7 +771,6 @@
         <!--Tabs content-->
         <div class="tab-content">
             <div id="Encabezado" class="tab-pane fade in active">
-
                 <form name="formulario_Programacion_Encabezado" id="formulario_Programacion_Encabezado" onsubmit="return false">
                     <input type="hidden" class="row_id" id="row_id" name="RowID_EncabezadoProgramacion" value="@Model.RowID" />
                     <div class="col-sm-3">
@@ -820,7 +822,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="col-sm-2">
                         <div class="form-group">
                             <label class="control-label">Estado:*</label>
@@ -840,7 +841,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="col-sm-6">
                         @if (Model.RowID == 0)
                         {
@@ -852,7 +852,6 @@
                         }
                     </div>
                 </form>
-
             </div>
 
             <div id="Funciones" class="tab-pane fade">
@@ -1069,8 +1068,6 @@
                                             {
                                                 <td></td>
                                             }
-
-
                                         </tr>
                                     }
                                 }

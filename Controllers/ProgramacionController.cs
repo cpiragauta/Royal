@@ -120,6 +120,7 @@ namespace CinemaPOS.Controllers
                 try
                 {
                     db.EncabezadoProgramacion.Add(ObjEncabezado);
+
                     //List<Funcion> listaFuncion = new List<Funcion>();
                     //listaFuncion = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_EncabezadoProgramacion).ToList();
                     //foreach (Funcion item in listaFuncion)
@@ -146,8 +147,15 @@ namespace CinemaPOS.Controllers
 
                 ObjEncabezado = db.EncabezadoProgramacion.Where(t => t.RowID == RowID_EncabezadoProgramacion).FirstOrDefault();
                 ObjEncabezado = CargarDatosEncabezadoProgramacion(ObjEncabezado, formulario);
-                List<Funcion> listaFuncion = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_EncabezadoProgramacion).ToList();
-                listaFuncion.ForEach(a => a.EstadoID = ObjEncabezado.EstadoID);
+                using (var context = new CinemaPOSEntities())
+                {
+                    context.Database.ExecuteSqlCommand(
+                        "UPDATE [Programacion].[Funcion] set [EstadoID] =" + ObjEncabezado.EstadoID + " where [EncabezadoProgramacionID] = " + RowID_EncabezadoProgramacion);
+                }
+  
+
+                //List<Funcion> listaFuncion = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_EncabezadoProgramacion).ToList();
+                //listaFuncion.ForEach(a => a.EstadoID = ObjEncabezado.EstadoID);
                 //foreach (Funcion item in listaFuncion)
                 //{
                 //    item.EstadoID = ObjEncabezado.EstadoID;
