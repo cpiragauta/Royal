@@ -6,35 +6,72 @@
 }
 
 <script>
-    function guardar_UsuarioSistema() {
+    //function guardar_UsuarioSistema() {
+    //    debugger;
+    //    var validator = $("#formulario_UsuarioSistema").validate();
+    //    if (validator.form()) {
+
+    //        $.ajax({
+    //            type: "POST",
+    //            url: "/UsuarioRol/GuardarUsuarioSistema",
+    //            data: {
+    //                RowID_UsuarioSistema: $("#row_id").val(),
+    //                formulario: $("#formulario_UsuarioSistema").serialize(),
+    //                afiche:$("#foto").val()
+    //            },
+    //            success: function (data) {
+    //                if (data == "Existe") {
+    //                    Alerts("El nombre de usuario, ya existe!!!", "warning");
+    //                } else {
+    //                    Alerts("Usuario guardado con exito!!!", "success");
+    //                    window.location = "/UsuarioRol/VistaUsuarioSistema/"
+    //                }
+    //                             },
+    //            error: function (data) {
+    //                swal("ERROR", data, "error");
+    //            }
+    //        });
+    //    }
+    //}
+
+    function valida_formulario() {
+        hasChangue = false;
         var validator = $("#formulario_UsuarioSistema").validate();
         if (validator.form()) {
-
-            $.ajax({
-                type: "POST",
-                url: "/UsuarioRol/GuardarUsuarioSistema",
-                data: {
-                    RowID_UsuarioSistema: $("#row_id").val(),
-                    formulario: $("#formulario_UsuarioSistema").serialize(),
-                },
-                success: function (data) {
-                    swal("OK", data, "success")
-                    window.location = "/UsuarioRol/VistaUsuarioSistema/"
-                },
-                error: function (data) {
-                    swal("ERROR", data, "error");
-                }
-            });
+            enviar_formulario();
         }
     }
+    function enviar_formulario() {
+        $("#formulario_UsuarioSistema").on("submit", function (e) {
+            e.preventDefault();
+            RowID_UsuarioSistema= $("#row_id").val();
+            var f = $(this);
+            var formData = new FormData(document.getElementById("formulario_UsuarioSistema"));
+            //formData.append(f.attr("name"), $(this)[0].files[0]);
+            $.ajax({
+                url: "/UsuarioRol/GuardarUsuarioSistema?RowID_UsuarioSistema=" + RowID_UsuarioSistema,
+                type: "post",
+                dataType: "html",
+                data:  formData, 
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    debugger;
+                    if (data=="false") {
+                        Alerts("El nombre de usuario, ya existe!!!", "warning");
+                    } else {
+                        Alerts("Usuario guardado con exito!!!", "success");
+                        window.location = "/UsuarioRol/VistaUsuarioSistema/"
+                    }
+                },
+                error: function (data) {
+                    swal("ERROR", data, "warning");
+                }
 
-    
-    $(document).ready(function () {
-        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
-        jQuery.validator.messages.required = '*Este campo es obligatorio.';
-        jQuery.validator.messages.number = '*Esta campo debe ser num&eacute;rico.';
-    })
-
+            })
+        });
+    }
 </script>
 
 <div>
@@ -50,7 +87,7 @@
     </div>
     
 
-        <form name="formulario_UsuarioSistema" id="formulario_UsuarioSistema" onsubmit="return false">
+        <form name="formulario_UsuarioSistema" id="formulario_UsuarioSistema"  enctype="multipart/form-data">
             <input type="hidden" class="row_id" id="row_id" name="RowID_UsuarioSistema" value="@Model.RowID" />
             <div class="panel-body">
                 <div class="row">
@@ -145,19 +182,53 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label">Foto del empleado</label>
+                            <div class="fileupload fileupload-new" data-provides="fileupload">
+                                <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
+                                    @if (Model.Foto_Empleado != null)
+                                    {
+                                        <img src="/@Model.Foto_Empleado" />
+                                    }
+                                    else
+                                    {
+                                        <img src="/Repositorio_Imagenes/Imagenes_Generales/thumbnail-default.png" />
+                                    }
 
-                </div>
+                                        
+                                </div>
+                                <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
+                                </div>
+                                <div>
+                                    <span class="btn btn-file">
+                                        <span class="fileupload-new">Selecccionar imagen</span>
+                                        <span class="fileupload-exists">Cambiar</span>
+                                        <input type="file" accept="image/jpeg,image/png,image/gif" id="foto"  class="default" name="foto_empleado">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                        </div>
 
             </div>
             <div class="panel-footer text-right">
                 @*<a class="btn btn-success" href="javascript:guardar_tercero();">Crear Tercero</a>*@
                 @if (Model.RowID == 0)
                 {
-                    <input class="btn btn-success" type="submit" value="Crear Usuario" onclick="guardar_UsuarioSistema()">
+                    <input class="btn btn-success" type="submit" value="Crear Usuario" onclick="javascript:valida_formulario()">
                 }
                 else
                 {
-                    <input class="btn btn-success" type="submit" value="Actualizar Usuario" onclick="guardar_UsuarioSistema()">
+                    <input class="btn btn-success" type="submit" value="Actualizar Usuario" onclick="javascript:valida_formulario()">
                 }
             </div>
         </form>

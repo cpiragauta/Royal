@@ -20,6 +20,16 @@
     <a class="btn btn-success" href='@Url.Action("Taquilla", "Maestro")'>+ Adicionar Taquilla</a>
 </p>
 
+<style>
+    .Verde {
+        background-color: rgb(139, 195, 74);
+    }
+
+    .Rojo {
+        background-color: rgba(236, 64, 64, 0.71);
+    }
+</style>
+
 <div class="panel">
     <div class="panel-heading">
         <h3 class="panel-title">Taquilla</h3>
@@ -32,28 +42,20 @@
                     <th>Nombre</th>
                     <th>Teatro</th>
                     <th>Estado</th>
-                    <th>Sincronizado</th>
+                    <th class="ion-ios-loop-strong center"></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (CinemaPOS.Models.Taquilla lista_Taquilla in ViewBag.Taquilla)
                 {
+                    String Color = lista_Taquilla.Sincronizado == true ? "Verde" : "Rojo";
                     <tr>
                         <td>@lista_Taquilla.RowID</td>
                         <td>@lista_Taquilla.Nombre</td>
                         <td>@lista_Taquilla.Teatro.Nombre</td>
                         <td>@lista_Taquilla.Estado.Nombre</td>
-                        @if (@lista_Taquilla.Sincronizado == true)
-                        {
-                            <td>SI</td>
-                        }
-                        else
-                        {
-                            <td>NO</td>
-
-                        }
-
+                        <td class="@Color"></td>
                         <td><a href="@Url.Action("Taquilla", "Maestro", new { RowID_Lista = lista_Taquilla.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
                     </tr>
                 }

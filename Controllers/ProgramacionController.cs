@@ -120,6 +120,12 @@ namespace CinemaPOS.Controllers
                 try
                 {
                     db.EncabezadoProgramacion.Add(ObjEncabezado);
+                    //List<Funcion> listaFuncion = new List<Funcion>();
+                    //listaFuncion = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_EncabezadoProgramacion).ToList();
+                    //foreach (Funcion item in listaFuncion)
+                    //{
+                    //    item.EstadoID = ObjEncabezado.EstadoID;
+                    //}
                     db.SaveChanges();
                     respuesta = respuesta + "Guardado Correctamente";
                     RowID = ObjEncabezado.RowID;
@@ -140,10 +146,18 @@ namespace CinemaPOS.Controllers
 
                 ObjEncabezado = db.EncabezadoProgramacion.Where(t => t.RowID == RowID_EncabezadoProgramacion).FirstOrDefault();
                 ObjEncabezado = CargarDatosEncabezadoProgramacion(ObjEncabezado, formulario);
+                List<Funcion> listaFuncion = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_EncabezadoProgramacion).ToList();
+                listaFuncion.ForEach(a => a.EstadoID = ObjEncabezado.EstadoID);
+                //foreach (Funcion item in listaFuncion)
+                //{
+                //    item.EstadoID = ObjEncabezado.EstadoID;
+                //}
                 try
                 {
                     db.SaveChanges();
-                    respuesta = "Actualizado Correctamente";
+                    respuesta = "Actualizado Correctamente";  
+
+
                     RowID = ObjEncabezado.RowID;
                 }
                 catch (Exception ex)

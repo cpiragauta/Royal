@@ -71,7 +71,7 @@ namespace CinemaPOS.Controllers
         [CheckSessionOutAttribute]
         public JsonResult GuardarUsuarioSistema(FormCollection formulario, int? RowID_UsuarioSistema, HttpPostedFileBase foto_empleado)
         {
-            String respuesta = "";
+            Boolean respuesta = false;
             
             UsuarioSistema ObjUsuarioSistema = new UsuarioSistema();
             string ruta_foto = ObjUsuarioSistema.Foto_Empleado;
@@ -96,13 +96,11 @@ namespace CinemaPOS.Controllers
                     {
                         db.UsuarioSistema.Add(ObjUsuarioSistema);
                         db.SaveChanges();
+                        respuesta = true;
+
                     }
                     catch (Exception ex)
                     { return Json("Error " + ex.Message); }
-                    respuesta = "Guardado Correctamente";
-                } else {
-                    respuesta = "Existe";
-
                 }
             }
             if (RowID_UsuarioSistema != 0)//Para Actualiar
@@ -123,17 +121,14 @@ namespace CinemaPOS.Controllers
                    
                     try
                     {
-                        db.SaveChanges();
+                        db.SaveChanges(); 
+                        respuesta = true;
                     }
                     catch (Exception ex)
                     { return Json("Error " + ex.Message); }
-                    respuesta = "Actualizado Correctamente";
 
                 }
-                else
-                {
-                  respuesta = "Existe";
-                }
+                
             }
             return Json(respuesta);
         }
@@ -230,13 +225,14 @@ namespace CinemaPOS.Controllers
                 {
                     db.Rol.Add(ObjRolSistema);
                     db.SaveChanges();
+                    RowID_RolesSistema = ObjRolSistema.RowID;
                 }
                 catch (Exception ex)
                 { return Json("Error " + ex.Message); }
                 respuesta = "Guardado Correctamente";
 
             }
-            if (RowID_RolesSistema != 0)//Para Actualiar
+            else if (RowID_RolesSistema != 0)//Para Actualiar
             {
                 ObjRolSistema = db.Rol.Where(t => t.RowID == RowID_RolesSistema).FirstOrDefault();
                 ObjRolSistema = CargarRolSistema(ObjRolSistema, formulario);
@@ -249,7 +245,7 @@ namespace CinemaPOS.Controllers
                 respuesta = "Actualizado Correctamente";
 
             }
-            return Json(respuesta);
+            return Json(new { respuesta = respuesta, RolID = RowID_RolesSistema });
         }
 
         public Rol CargarRolSistema(Rol ObjRolSistema, FormCollection formulario)
