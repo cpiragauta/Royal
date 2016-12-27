@@ -328,8 +328,8 @@ namespace CinemaPOS.Controllers
         public EncabezadoVentaEmpresarial CargarDatosEncabezadoEmpresarial(EncabezadoVentaEmpresarial ObjEncabezado, FormCollection formulario)
         {
             ObjEncabezado.Nombre = formulario["Nombre"];
-            ObjEncabezado.FechaInicio = ModelosPropios.Util.HoraInsertar(formulario["FechaInicial"]);
-            ObjEncabezado.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["FechaFinal"]);
+            ObjEncabezado.FechaInicio = ModelosPropios.Util.FechaInsertar(formulario["FechaInicial"]);
+            ObjEncabezado.FechaFinal = ModelosPropios.Util.FechaInsertar(formulario["FechaFinal"]);
             ObjEncabezado.EstadoID = db.Estado.FirstOrDefault().RowID; //Cambiar por el que es
             ObjEncabezado.TerceroID = Convert.ToInt32(formulario["Cliente"]);
             ObjEncabezado.FormatoID = Convert.ToInt32(formulario["Formato"]);
@@ -416,7 +416,15 @@ namespace CinemaPOS.Controllers
                         objDetalle.FechaCreacion = DateTime.Now;
                         empresarial = db.DetalleVentaEmpresarial.Add(objDetalle);
                         db.SaveChanges();
-                        empresarial.Codigo = Hash(RowId_Empresarial + "-" + empresarial.RowID + "-" + empresarial.FechaCreacion.Value.ToString("dd/MM/yyyy"));
+                        Encriptacion encrip = new Encriptacion(System.Text.Encoding.UTF8);
+                        RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
+                        byte[] key = new byte[32];
+                        byte[] iv = new byte[32];
+
+                        // Generate random key and IV
+                        rngCsp.GetBytes(key);
+                        rngCsp.GetBytes(iv);
+                        empresarial.Codigo = encrip.Encrypt("V" + empresarial.RowID, key, iv);
                         con++;
                     }
                     catch (Exception ex)

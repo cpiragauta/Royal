@@ -81,8 +81,13 @@ namespace CinemaPOS.ModelosPropios
             /*PRIORIDAD*/
             public const int PRIORIDAD = 22;
 
-            /*TIPO DEESTADOS ACTIVIDADES*/
+            /*TIPO DE ESTADOS ACTIVIDADES*/
             public const int ESTADOS_ACTIVIDAD = 14;
+            /*ESTADOS DE ACTIVIDADES*/
+            public const int ACTIVIDAD_CERRADA = 49;
+            public const int ACTIVIDAD_EN_CURSO = 45;
+            public const int ACTIVIDAD_EN_ESPERA = 46;
+            public const int ACTIVIDAD_PROGRAMADA = 44;
             /*REFERENCIAS*/
             public const int ACTIVIDAD_TIPO_RELACION_Cliente = 104;
             public const int ACTIVIDAD_TIPO_RELACION_Oportunidad = 105;
@@ -93,6 +98,10 @@ namespace CinemaPOS.ModelosPropios
             public const int OPORTUNIDAD_VENTA = 43;
             /*TIPO SELLO*/
             public const int TIPO_SELLO = 99;
+            /*TIPO DE USUARIOS*/
+            public const int ROL_ADMINISTRADOR = 1;
+
+            
         }
         public class Actividades
         {
@@ -128,7 +137,7 @@ namespace CinemaPOS.ModelosPropios
             public bool allDay { get; set; }
             public bool url { get; set; }
         }
-        public static DateTime HoraInsertar(string FechaConvertir)
+        public static DateTime FechaInsertar(string FechaConvertir)
         {
             try
             {

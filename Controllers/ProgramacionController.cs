@@ -92,12 +92,12 @@ namespace CinemaPOS.Controllers
             formulario = DeSerialize(formulario);
 
             IFormatProvider culture = new CultureInfo("es-ES", true);
-            DateTime NuevaFechaInicial = ModelosPropios.Util.HoraInsertar(formulario["FechaInicial"]);
+            DateTime NuevaFechaInicial = ModelosPropios.Util.FechaInsertar(formulario["FechaInicial"]);
 
             respuesta = formulario["FechaInicial"] + "   " + NuevaFechaInicial.ToString();
 
 
-            DateTime NuevaFechaFinal = ModelosPropios.Util.HoraInsertar(formulario["FechaFinal"]);
+            DateTime NuevaFechaFinal = ModelosPropios.Util.FechaInsertar(formulario["FechaFinal"]);
             int TeatroID = Convert.ToInt32(formulario["Teatro"]);
             List<EncabezadoProgramacion> Programaciones = db.EncabezadoProgramacion.Where(f => f.TeatroID == TeatroID
                 && (
@@ -157,8 +157,8 @@ namespace CinemaPOS.Controllers
         {
             IFormatProvider culture = new CultureInfo("es-ES", true);
             ObjEncabezado.Titulo = formulario["Titulo"].ToUpper();
-            ObjEncabezado.FechaInicial = ModelosPropios.Util.HoraInsertar(formulario["FechaInicial"]);
-            ObjEncabezado.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["FechaFinal"]);
+            ObjEncabezado.FechaInicial = ModelosPropios.Util.FechaInsertar(formulario["FechaInicial"]);
+            ObjEncabezado.FechaFinal = ModelosPropios.Util.FechaInsertar(formulario["FechaFinal"]);
             ObjEncabezado.EstadoID = Convert.ToInt32(formulario["Estado"]);
             ObjEncabezado.TeatroID = Convert.ToInt32(formulario["Teatro"]);
             if (ObjEncabezado.RowID == 0)
@@ -204,11 +204,11 @@ namespace CinemaPOS.Controllers
 
             if (RowID_EncabezadoProgramacion != 0)
             {
-                DateTime FechaProgramacion = ModelosPropios.Util.HoraInsertar(formulario["FechaInicialFunciones"].ToString());
+                DateTime FechaProgramacion = ModelosPropios.Util.FechaInsertar(formulario["FechaInicialFunciones"].ToString());
                 List<Funcion> FuncionesExistentes = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_EncabezadoProgramacion).ToList();
                 //Recorro Uno a uno los dias del rango que selecciono
-                TimeSpan diferencia = ModelosPropios.Util.HoraInsertar(formulario["FechaFinalFunciones"].ToString()) - ModelosPropios.Util.HoraInsertar(formulario["FechaInicialFunciones"].ToString());
-                DateTime FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["FechaFinalFunciones"].ToString());
+                TimeSpan diferencia = ModelosPropios.Util.FechaInsertar(formulario["FechaFinalFunciones"].ToString()) - ModelosPropios.Util.FechaInsertar(formulario["FechaInicialFunciones"].ToString());
+                DateTime FechaFinal = ModelosPropios.Util.FechaInsertar(formulario["FechaFinalFunciones"].ToString());
                 TimeSpan HoraInicial = TimeSpan.MinValue;
                 TimeSpan HoraFinal;
                 for (int i = 0; i <= diferencia.Days; i++)
@@ -230,6 +230,7 @@ namespace CinemaPOS.Controllers
                                 {
                                     FuncionesExistentes.Add(ObjFuncion);
                                     ObjFuncion = new Funcion();//Limpio el Objeto
+
                                 }
                             }
                             else
@@ -277,7 +278,7 @@ namespace CinemaPOS.Controllers
         public JsonResult CargarSalas(Int32 IdTeatro)
         {
             var query = (from salas in db.Sala
-                         where salas.TeatroID == IdTeatro
+                         where salas.TeatroID == IdTeatro && salas.Nombre == "EnFuncionamiento"
                          select new
                          {
                              rowid = salas.RowID,
@@ -789,7 +790,7 @@ namespace CinemaPOS.Controllers
                 List<Funcion> FuncionesExistentes = db.Funcion.Where(f => f.EncabezadoProgramacionID == funcion.EncabezadoProgramacionID).ToList();
                 funcion.EstadoID = Convert.ToInt32(formulario["Estado"].ToString());
                 funcion.SalaID = Int32.Parse(formulario["Sala"]);
-                funcion.Fecha = Util.HoraInsertar(formulario["FechaFuncion"]);
+                funcion.Fecha = Util.FechaInsertar(formulario["FechaFuncion"]);
                 funcion.DetallePeliculaID = Int32.Parse(formulario["DetallePelicula"]);
                 funcion.Sincronizado = false;
                 String validacion = ValidarFuncion(funcion, FuncionesExistentes);

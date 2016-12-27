@@ -1831,13 +1831,7 @@
     </Content>
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Cargando.gif" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\modal-loading.gif" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Silla General.svg" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\SillaDiscapacitados.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\SillaVIP.svg" />
-    <Content Include="Repositorio_Imagenes\Poster_Peliculas\14081071_1755072081437818_1356734659_n.png" />
-    <Content Include="Repositorio_Imagenes\Poster_Peliculas\14101829_1755072098104483_2116779590_n.png" />
-    <Content Include="Repositorio_Imagenes\Poster_Peliculas\14111913_1755072091437817_556926428_n.png" />
-    <Content Include="Repositorio_Imagenes\Poster_Peliculas\VIP.jpg" />
     <Content Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <Content Include="RoyalSync.asmx" />
     <Content Include="Web.config">
@@ -1855,6 +1849,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\plugins\flot-charts\examples\gauge\" />
+    <Folder Include="Repositorio_Imagenes\Fotos_Empleados\" />
+    <Folder Include="Repositorio_Imagenes\Poster_Peliculas\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

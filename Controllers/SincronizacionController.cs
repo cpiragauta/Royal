@@ -5,14 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using CinemaPOS.Models;
 
-
 namespace CinemaPOS.Controllers
 {
     public class SincronizacionController : Controller
     {
-        //
-        // GET: /Sincronizacion/
-
         CinemaPOSEntities db = new CinemaPOSEntities();
 
         public ActionResult VistaPrincipal()
@@ -33,23 +29,44 @@ namespace CinemaPOS.Controllers
         {
             String respuesta = "";
             RoyalSync WS = new RoyalSync();
-            //WS.SincronizarSalasSistema();
+            WS.SincronizarSalasSistema();
             return "SINCRONIZADO OK";
         }
 
         public String Sincronizarteatroscentral()
         {
+            String respuesta = "SINCRONIZADO OK";
             RoyalSync WS = new RoyalSync();
-            WS.SincronizarTeatros();
-            return "SINCRONIZADO OK";
+            while ((WS.SincronizarTeatros() == false))
+            {
+                WS = new RoyalSync();
+                WS.SincronizarTeatros();
+            }
+            return respuesta;
         }
 
-        public String SincronizarTerceros()
+        public String SincronizacionTerceros()
         {
-            String respuesta = "";
+            String respuesta = "SINCRONIZADO OK";
             RoyalSync WS = new RoyalSync();
-            WS.SincronizarTerceros();
-            return "SINCRONIZADO OK";
+            while ((WS.SincronizarTerceros() == false))
+            {
+                WS = new RoyalSync();
+                WS.SincronizarTerceros();
+            }
+            return respuesta;
+        }
+
+        public String SincronizacionTaquillas()
+        {
+            String respuesta = "SINCRONIZADO OK";
+            RoyalSync WS = new RoyalSync();
+            while ((WS.SincronizarTaquillas() == false))
+            {
+                WS = new RoyalSync();
+                WS.SincronizarTaquillas();
+            }
+            return respuesta;
         }
     }
 }

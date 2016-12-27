@@ -68,14 +68,17 @@
                             <td>
                                 @if (peliculas.MedioPelicula.Count() != 0)
                                 {
+                                  if(@peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().Afiche != "") { 
                                     <img style="width:50px;" src="/@peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().Afiche">
+                                  }
+                                  else { 
+                                    <img style="width:50px;" src="~/Repositorio_Imagenes/Imagenes_Generales/imagen_nodisponible.png">
+                                  }
                                 }
-
                             </td>
-                            <td><a href="@Url.Action("Pelicula", "Pelicula", new { @RowID_Pelicula =peliculas.RowID})"><i class="glyphicon glyphicon-pencil"></i></a> </td>
+                            <td><a href="@Url.Action("Pelicula", "Pelicula", new { @RowID_Pelicula =peliculas.RowID})"><i class="glyphicon glyphicon-pencil"></i></a></td>
                         </tr>
                     }
-
                 </tbody>
             </table>
         </div>

@@ -100,8 +100,8 @@ namespace CinemaPOS.Controllers.Master
                 ObjEncabezado.Nombre = formulario["nombre"];
                 ObjEncabezado.TeatroID = int.Parse(formulario["teatro"]);
                 ObjEncabezado.Descripcion = formulario["descripcion"];
-                ObjEncabezado.FechaInicial = ModelosPropios.Util.HoraInsertar(formulario["fechainicialvigencia"]);
-                ObjEncabezado.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["fechafinalvigencia"]);
+                ObjEncabezado.FechaInicial = ModelosPropios.Util.FechaInsertar(formulario["fechainicialvigencia"]);
+                ObjEncabezado.FechaFinal = ModelosPropios.Util.FechaInsertar(formulario["fechafinalvigencia"]);
                 ObjEncabezado.CreadoPor = Session["usuario_creacion"].ToString();
                 ObjEncabezado.EstadoID = int.Parse(formulario["Estado"]);
                 ObjEncabezado.FechaCreacion = DateTime.Now;
@@ -115,8 +115,8 @@ namespace CinemaPOS.Controllers.Master
                 ObjEncabezado.Nombre = formulario["nombre"];
                 ObjEncabezado.TeatroID = int.Parse(formulario["teatro"]);
                 ObjEncabezado.Descripcion = formulario["descripcion"];
-                ObjEncabezado.FechaInicial = ModelosPropios.Util.HoraInsertar(formulario["fechainicialvigencia"]);
-                ObjEncabezado.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["fechafinalvigencia"]);
+                ObjEncabezado.FechaInicial = ModelosPropios.Util.FechaInsertar(formulario["fechainicialvigencia"]);
+                ObjEncabezado.FechaFinal = ModelosPropios.Util.FechaInsertar(formulario["fechafinalvigencia"]);
                 ObjEncabezado.ModificadoPor = Session["usuario_creacion"].ToString();
                 ObjEncabezado.EstadoID = int.Parse(formulario["Estado"]);
                 ObjEncabezado.FechaModificacion = DateTime.Now;
@@ -265,8 +265,8 @@ namespace CinemaPOS.Controllers.Master
                             ObjDetalle.DiasAsignados = formulario["dias"];
                             ObjDetalle.Precio = int.Parse(formulario["precio"].Replace(".", ""));
                             ObjDetalle.PrecioDistribuidor = int.Parse(formulario["precio_distribuidor"].Replace(".", ""));
-                            ObjDetalle.FechaInicial = ModelosPropios.Util.HoraInsertar(formulario["fecha_inicial"]);
-                            ObjDetalle.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["fecha_final"]);
+                            ObjDetalle.FechaInicial = ModelosPropios.Util.FechaInsertar(formulario["fecha_inicial"]);
+                            ObjDetalle.FechaFinal = ModelosPropios.Util.FechaInsertar(formulario["fecha_final"]);
                             ObjDetalle.CreadoPor = Session["usuario_creacion"].ToString();
                             ObjDetalle.EstadoID = estado;
                             ObjDetalle.FechaCreacion = DateTime.Now;
@@ -290,8 +290,8 @@ namespace CinemaPOS.Controllers.Master
                         }
                         ObjDetalle.Precio = int.Parse(formulario["precio"].Replace(".", ""));
                         ObjDetalle.PrecioDistribuidor = int.Parse(formulario["precio_distribuidor"].Replace(".", ""));
-                        ObjDetalle.FechaInicial = ModelosPropios.Util.HoraInsertar(formulario["fecha_inicial"]);
-                        ObjDetalle.FechaFinal = ModelosPropios.Util.HoraInsertar(formulario["fecha_final"]);
+                        ObjDetalle.FechaInicial = ModelosPropios.Util.FechaInsertar(formulario["fecha_inicial"]);
+                        ObjDetalle.FechaFinal = ModelosPropios.Util.FechaInsertar(formulario["fecha_final"]);
                         ObjDetalle.CreadoPor = Session["usuario_creacion"].ToString();
                         ObjDetalle.EstadoID = estado;
                         ObjDetalle.FechaCreacion = DateTime.Now;
@@ -717,6 +717,7 @@ namespace CinemaPOS.Controllers.Master
         public ActionResult VistaSilla()
         {
             ViewBag.TipoSillas = db.SalaObjeto.ToList();
+          
             return View();
         }
 
@@ -928,7 +929,7 @@ namespace CinemaPOS.Controllers.Master
         }
 
         [CheckSessionOutAttribute]
-        public JsonResult GuardarTercero(FormCollection formulario, int RowID_Tercero)
+        public JsonResult GuardarTercero(FormCollection formulario, int? RowID_Tercero)
         {
             String respuesta = "";
             Tercero ObjTercero = new Tercero();
@@ -945,6 +946,7 @@ namespace CinemaPOS.Controllers.Master
                 catch (Exception ex)
                 { return Json("Error " + ex.Message); }
                 respuesta = "Guardado Correctamente";
+
 
             }
             if (RowID_Tercero != 0)//Para Actualiar
@@ -966,7 +968,7 @@ namespace CinemaPOS.Controllers.Master
         public Tercero CargarDatosTercero(Tercero ObjTercero, FormCollection formulario)
         {
             ObjTercero.TipoTerceroID = int.Parse(formulario["tipo_tercero"].ToString());
-            ObjTercero.FechaNacimiento = ModelosPropios.Util.HoraInsertar(formulario["FechaNacimiento"].ToString());
+            ObjTercero.FechaNacimiento = ModelosPropios.Util.FechaInsertar(formulario["FechaNacimiento"].ToString());
             ObjTercero.Identificacion = formulario["identificacion"].ToString();
             int RowIdIdentificacion = Int32.Parse(formulario["tipo_tercero"].ToString());
             ObjTercero.Apellidos = "";
@@ -1112,7 +1114,6 @@ namespace CinemaPOS.Controllers.Master
         }
 
         #endregion
-
         #region Opcion
         [CheckSessionOutAttribute]
         public ActionResult Opcion(int? RowID_Lista)
@@ -1326,7 +1327,7 @@ namespace CinemaPOS.Controllers.Master
         {
             ViewBag.Taquilla = db.Taquilla.ToList();
             ViewBag.Teatros = db.Teatro.ToList();
-            ViewBag.Estado = db.Estado.ToList();
+            ViewBag.Estado = db.Estado.Where(e=>e.TipoEstado.Codigo== "TIPOSILLA").ToList();
 
             if (RowID_Lista != null)
             {
@@ -1489,6 +1490,22 @@ namespace CinemaPOS.Controllers.Master
 
         }
 
+
+        [CheckSessionOutAttribute]
+        public JsonResult CargarDepartamento(Int32 rowid)
+        {
+            List<Departamento> departamentos = db.Departamento.Where(f => f.PaisID == rowid).ToList();
+            ///Para formar el Json
+            var query = (from Departamento in departamentos
+                         select new
+                         {
+                             RowId = Departamento.RowID,
+                             Nombre = Departamento.Nombre
+                         }
+            ).ToList();
+
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region zona
@@ -1995,7 +2012,7 @@ namespace CinemaPOS.Controllers.Master
                 }
                 db.SaveChanges();
                 if (rowid == null || rowid == 0)
-                { MailSender.Enviar_Actividad(actividad, "PLANTILLA_ACTIVIDAD", Session["usuario_creacion"].ToString()); }
+                { MailSender.Enviar_Actividad(actividad, "PLANTILLA_ACTIVIDAD", Session["usuario_creacion"].ToString(),""); }
                 return Json(new { respuesta = "ok", Act = actividad.rowID });
             }
             catch (Exception e)

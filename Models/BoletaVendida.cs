@@ -21,10 +21,12 @@ namespace CinemaPOS.Models
         public Nullable<int> FuncionID { get; set; }
         public Nullable<System.DateTime> FechaVenta { get; set; }
         public string MedioPago { get; set; }
+        public Nullable<int> UsuarioID { get; set; }
     
         public virtual Funcion Funcion { get; set; }
         public virtual ListaDetalle ListaDetalle { get; set; }
         public virtual MapaSala MapaSala { get; set; }
+        public virtual UsuarioSistema UsuarioSistema { get; set; }
         public virtual Taquilla Taquilla { get; set; }
     }
 }

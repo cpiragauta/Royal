@@ -73,7 +73,7 @@ namespace CinemaPOS.Controllers.Inicio
             Obj_pqrs.EstadoID = db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOPQRS" && e.Nombre == "Recibida").FirstOrDefault().RowID;
             Obj_pqrs.Titulo = formulario["Titulo"];
             Obj_pqrs.Descripcion = formulario["descripcion-pqrs"];
-            Obj_pqrs.FechaSuceso = ModelosPropios.Util.HoraInsertar( formulario["fecha_suceso"]);
+            Obj_pqrs.FechaSuceso = ModelosPropios.Util.FechaInsertar( formulario["fecha_suceso"]);
             Obj_pqrs.FechaCreacion = DateTime.Now;
             Obj_pqrs.CreadoPor = Session["usuario_creacion"].ToString();
             db.Pqrs.Add(Obj_pqrs);

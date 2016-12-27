@@ -119,7 +119,7 @@ namespace CinemaPOS.ModelosPropios
 
         }
 
-        public static void Enviar_Actividad(object Actividad,string CodPlantilla,string usuario)
+        public static void Enviar_Actividad(object Actividad,string CodPlantilla,string usuario,string adjunto)
         {
             if (db == null)
                 db = new CinemaPOSEntities();
@@ -147,6 +147,20 @@ namespace CinemaPOS.ModelosPropios
                 sent = 0
             };
 
+            if (!string.IsNullOrEmpty(adjunto))
+            {
+                try
+                {
+                    //Crear el attachment con el file creado
+                    //Carpeta Documentos - Adjuntos
+                    StreamWriter file = new StreamWriter(adjunto);
+                    file.WriteLine(mensaje);
+                    file.Close();
+
+                    SendMail.Adjunto = adjunto;
+                }
+                catch { }
+            }
             db.EnvioMail.Add(SendMail);
             db.SaveChanges();
 

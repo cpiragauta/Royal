@@ -23,5 +23,6 @@ namespace CinemaPOS.Models
         public System.DateTime FechaCreacion { get; set; }
         public System.DateTime FechaEnviado { get; set; }
         public Nullable<int> sent { get; set; }
+        public string Adjunto { get; set; }
     }
 }

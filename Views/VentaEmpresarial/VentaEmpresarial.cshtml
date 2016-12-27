@@ -48,7 +48,7 @@
                                 swal("ERROR", data.respuesta, "error");
                                 return;
                             } else {
-                                Alerts("OK", "Se actualizo el estado de los items", "success");
+                                Alerts("Se actualizo el estado de los items", "success");
                                 $("#row_id").val(data.RowID_EncabezadoConvenio);
                                 window.location = "/VentaEmpresarial/VentaEmpresarial?RowId_Empresarial=" + data.RowID_EncabezadoConvenio;
                                 //jQuery(".Ocultar").slideDown();
@@ -75,7 +75,7 @@
                 },
                 success: function (data) {
 
-                    Alerts("OK", "Se actualizo el estado de los items", "success");
+                    Alerts( "Items creados con exito!!!", "success");
                    //$("#row_id").val(data.RowID_EncabezadoConvenio);
                    window.location = "/VentaEmpresarial/VentaEmpresarial?RowId_Empresarial=" + $("#row_id").val();
                    jQuery(".Ocultar").slideDown();
@@ -158,6 +158,7 @@
         $('#demo-dp-range .input-daterange').datepicker({
             format: "dd/mm/yyyy",
             todayBtn: "linked",
+            startDate: "1d",
             autoclose: true,
             todayHighlight: false
         });
