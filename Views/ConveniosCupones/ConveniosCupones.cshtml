@@ -7,10 +7,20 @@
 @using ReportViewerForMvc
 
 <head>
-    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
+
+    <link href="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.css" rel="stylesheet">
+
+    <!--Bootstrap Validator [ OPTIONAL ]-->
+    <script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.js"></script>
+    <script src="~/Content/js/demo/form-wizard.js"></script>
+    <script src="~/Content/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+    <script src="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+    <link href="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
+    <!--DataTables [ OPTIONAL ]-->
     <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
     <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
     <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <!--DataTables Sample [ SAMPLE ]-->
     <script src="~/Content/js/demo/tables-datatables.js"></script>
 </head>
 
@@ -143,6 +153,7 @@
 
 
     $(document).ready(function () {
+
         debugger;
 
         jQuery.validator.messages.required = '*Este campo es obligatorio.';
@@ -161,42 +172,41 @@
             disableFocus: true
         });
 
-        $('#demo-dp-range .input-daterange').datepicker({
+        $('#FechaInicial').datepicker({
             format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
-            todayHighlight: false
+            todayHighlight: false,
+            startDate:"1d"
         });
+
 
         $('.solo-numero').keyup(function () {
             this.value = (this.value + '').replace(/[^0-9]/g, '');
         });
 
-        //$("#FechaFinal").datepicker().on('changeDate', function(e){
 
-        //        debugger;
-        //        var inicio = document.getElementById('FechaInicial').value;
-        //        var finalq = document.getElementById('FechaFinal').value;
-        //        inicio = new Date(inicio);
-        //        finalq = new Date(finalq);
-
-        //        if (inicio.toDateString() == finalq.toDateString) {
-        //            Alerts("La fecha inicial no puede ser mayor a la final", "warning");
-        //        } 
-            
-        //});
-
-        $("#FechaFinal").change(function () {
+        $("#FechaInicial").change(function () {
 
             debugger;
-            var inicio = document.getElementById('FechaInicial').value;
-            var finalq = document.getElementById('FechaFinal').value;
+            var inicio = $('#FechaInicial').val().replace('/','-');
+            var finalq = $('#FechaFinal').val();
             inicio = new Date(inicio);
             finalq = new Date(finalq);
-
-            if (inicio.toDateString() == finalq.toDateString()) {
-                Alerts("La fecha inicial no puede ser mayor a la final", "warning");
-            }
+                if (inicio.toDateString() > finalq.toDateString() ) {
+                    Alerts("La fecha inicial no puede ser mayor a la final", "warning");
+                }
+            
+                $('#FechaFinal').empty().val($("#FechaInicial").val());
+            $("#FechaFinal").datepicker("destroy");
+            $('#FechaFinal').datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                autoclose: true,
+                todayHighlight: false,
+                startDate: $("#FechaInicial").val()
+            });
+            
 
         });
 
