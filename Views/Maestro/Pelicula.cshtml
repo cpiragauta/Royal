@@ -52,6 +52,13 @@
 <script>
     var cantidadcontrol = 0;
     $(document).ready(function () {
+
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+        jQuery.validator.messages.number = '*Esta campo debe ser num&eacute;rico.';
+        jQuery.validator.messages.email = '*La direcci&oacute;n de correo es incorrecta.';
+
+
         $("#genero_pelicula").chosen();
         $('.fecha_estreno').datepicker({
             format: "dd/mm/yyyy",

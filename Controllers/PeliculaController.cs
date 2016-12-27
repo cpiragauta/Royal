@@ -109,28 +109,32 @@ namespace CinemaPOS.Controllers.Pelicula
             #endregion
             int codigo_pelicula = ObjPelicula.RowID;
             #region Genero Pelicula
-            var generos = formulario["genero_pelicula"].Split(',');
-            if (generos.Count() != 0)
+            if (!String.IsNullOrEmpty(formulario["genero_pelicula"]))
             {
-                if (RowID_Pelicula != 0 && ObjPelicula.GeneroPelicula.Count() != 0)
+                var generos = formulario["genero_pelicula"].Split(',');
+                if (generos.Count() != 0)
                 {
-                    foreach (GeneroPelicula item in ObjPelicula.GeneroPelicula.Where(e => e.EncabezadoPelicula.RowID == ObjPelicula.RowID).ToList())
+                    if (RowID_Pelicula != 0 && ObjPelicula.GeneroPelicula.Count() != 0)
                     {
-                        db.GeneroPelicula.Remove(item);
+                        foreach (GeneroPelicula item in ObjPelicula.GeneroPelicula.Where(e => e.EncabezadoPelicula.RowID == ObjPelicula.RowID).ToList())
+                        {
+                            db.GeneroPelicula.Remove(item);
+                            db.SaveChanges();
+                        }
+                    }
+                    GeneroPelicula obj_genero = new GeneroPelicula();
+                    for (int i = 0; i < generos.Count(); i++)
+                    {
+                        obj_genero.EncabezadoPeliculaID = codigo_pelicula;
+                        obj_genero.TipoGeneroID = int.Parse(generos[i].ToString());
+                        obj_genero.CreadoPor = Session["usuario_creacion"].ToString();
+                        obj_genero.FechaCreacion = DateTime.Now;
+                        db.GeneroPelicula.Add(obj_genero);
                         db.SaveChanges();
                     }
                 }
-                GeneroPelicula obj_genero = new GeneroPelicula();
-                for (int i = 0; i < generos.Count(); i++)
-                {
-                    obj_genero.EncabezadoPeliculaID = codigo_pelicula;
-                    obj_genero.TipoGeneroID = int.Parse(generos[i].ToString());
-                    obj_genero.CreadoPor = Session["usuario_creacion"].ToString();
-                    obj_genero.FechaCreacion = DateTime.Now;
-                    db.GeneroPelicula.Add(obj_genero);
-                    db.SaveChanges();
-                }
             }
+          
             #endregion
             #region Detalle
             if (formulario["formato[]"] != null)
@@ -140,7 +144,7 @@ namespace CinemaPOS.Controllers.Pelicula
                 if (formatos.Length != ObjPelicula.DetallePelicula.Count())
                 {
                     int cantidad_detalles = ObjPelicula.DetallePelicula.Count();
-                    int estadoId = db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOPELICULA" && e.Nombre == "EnCreacion").FirstOrDefault().RowID;
+                    int estadoId = int.Parse(formulario["estado"]); 
                     for (int i = cantidad_detalles; i < formatos.Length; i++)
                     {
                         int FormatoID = int.Parse(formatos[i].ToString());
@@ -165,46 +169,53 @@ namespace CinemaPOS.Controllers.Pelicula
             #endregion
 
             #region Elenco
-            var actores = formulario["actores"].Split(',');
             Elenco ObjElenco = new Elenco();
-            if (actores.Count() != 0)
-            {
-                if (RowID_Pelicula != 0 && ObjPelicula.Elenco.Count() != 0)
-                {
-                    foreach (Elenco item in ObjPelicula.Elenco.Where(e => e.EncabezadoPelicula.RowID == ObjPelicula.RowID && e.Opcion.Codigo == "ACTOR").ToList())
-                    {
-                        db.Elenco.Remove(item);
-                        db.SaveChanges();
-                    }
-                }
-                foreach (var actor in actores)
-                {
-                    ObjElenco.Nombre = actor;
-                    ObjElenco.TipoElencoID = int.Parse(db.Opcion.Where(o => o.Codigo == "ACTOR").FirstOrDefault().RowID.ToString());
-                    ObjElenco.EncabezadoPeliculaID = codigo_pelicula;
-                    db.Elenco.Add(ObjElenco);
-                    db.SaveChanges();
-                }
 
-            }
-            var directores = formulario["directores"].Split(',');
-            if (directores.Count() != 0)
+            if (!String.IsNullOrEmpty(formulario["actores"]))
             {
-                if (RowID_Pelicula != 0 && ObjPelicula.Elenco.Count() != 0)
+                var actores = formulario["actores"].Split(',');
+                if (actores.Count() != 0)
                 {
-                    foreach (Elenco item in ObjPelicula.Elenco.Where(e => e.EncabezadoPelicula.RowID == ObjPelicula.RowID && e.Opcion.Codigo == "DIRECTORES").ToList())
+                    if (RowID_Pelicula != 0 && ObjPelicula.Elenco.Count() != 0)
                     {
-                        db.Elenco.Remove(item);
+                        foreach (Elenco item in ObjPelicula.Elenco.Where(e => e.EncabezadoPelicula.RowID == ObjPelicula.RowID && e.Opcion.Codigo == "ACTOR").ToList())
+                        {
+                            db.Elenco.Remove(item);
+                            db.SaveChanges();
+                        }
+                    }
+                    foreach (var actor in actores)
+                    {
+                        ObjElenco.Nombre = actor;
+                        ObjElenco.TipoElencoID = int.Parse(db.Opcion.Where(o => o.Codigo == "ACTOR").FirstOrDefault().RowID.ToString());
+                        ObjElenco.EncabezadoPeliculaID = codigo_pelicula;
+                        db.Elenco.Add(ObjElenco);
                         db.SaveChanges();
                     }
+
                 }
-                foreach (var director in directores)
+            }
+            if (!String.IsNullOrEmpty(formulario["directores"]))
+            {
+                var directores = formulario["directores"].Split(',');
+                if (directores.Count() != 0)
                 {
-                    ObjElenco.Nombre = director;
-                    ObjElenco.TipoElencoID = int.Parse(db.Opcion.Where(o => o.Codigo == "DIRECTORES").FirstOrDefault().RowID.ToString());
-                    ObjElenco.EncabezadoPeliculaID = codigo_pelicula;
-                    db.Elenco.Add(ObjElenco);
-                    db.SaveChanges();
+                    if (RowID_Pelicula != 0 && ObjPelicula.Elenco.Count() != 0)
+                    {
+                        foreach (Elenco item in ObjPelicula.Elenco.Where(e => e.EncabezadoPelicula.RowID == ObjPelicula.RowID && e.Opcion.Codigo == "DIRECTORES").ToList())
+                        {
+                            db.Elenco.Remove(item);
+                            db.SaveChanges();
+                        }
+                    }
+                    foreach (var director in directores)
+                    {
+                        ObjElenco.Nombre = director;
+                        ObjElenco.TipoElencoID = int.Parse(db.Opcion.Where(o => o.Codigo == "DIRECTORES").FirstOrDefault().RowID.ToString());
+                        ObjElenco.EncabezadoPeliculaID = codigo_pelicula;
+                        db.Elenco.Add(ObjElenco);
+                        db.SaveChanges();
+                    }
                 }
             }
 

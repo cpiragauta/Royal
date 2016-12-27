@@ -2012,7 +2012,7 @@ namespace CinemaPOS.Controllers.Master
                 }
                 db.SaveChanges();
                 if (rowid == null || rowid == 0)
-                { MailSender.Enviar_Actividad(actividad, "PLANTILLA_ACTIVIDAD", Session["usuario_creacion"].ToString()); }
+                { MailSender.Enviar_Actividad(actividad, "PLANTILLA_ACTIVIDAD", Session["usuario_creacion"].ToString(),""); }
                 return Json(new { respuesta = "ok", Act = actividad.rowID });
             }
             catch (Exception e)

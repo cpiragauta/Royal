@@ -15,6 +15,7 @@
 <script>
     function valida_formulario() {
         hasChangue = false;
+        debugger;
         var validator = $("#formulario_pelicula").validate();
         if (validator.form()) {
             enviar_formulario();
@@ -176,7 +177,7 @@
                     CargarTeatro();
                 }else{
                     swal(
-                            'El teatro ya se encuentra asociado a la pelicula',
+                            'El teatro ya se encuentra asociado a la venta empresarial',
                             '',
                             'error'
                             )
@@ -326,8 +327,8 @@
                             <div class="row">
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label class="control-label">Distribuidor:</label>
-                                        <select name="distribuidor" id="select-distribuidor" class="form-control">
+                                        <label class="control-label">Distribuidor:*</label>
+                                        <select name="distribuidor" id="select-distribuidor" class="form-control" required>
                                             <option value="" disabled selected>Seleccione una opcion</option>
                                             @foreach (CinemaPOS.Models.Tercero terceros in ViewBag.Distribuidor)
                                             {
@@ -367,6 +368,7 @@
                                     <div class="form-group">
                                         <label class="control-label">Género Película:</label>
                                         <select name="genero_pelicula" multiple id="genero_pelicula" class="form-control">
+                                            <option value="" disabled selected>Seleccione una opcion</option>
                                             @foreach (CinemaPOS.Models.Opcion genero_pelicula in ViewBag.GeneroPelicula)
                                             {
                                                 var genero = Model.GeneroPelicula.Where(gp => gp.EncabezadoPeliculaID == Model.RowID && gp.TipoGeneroID == genero_pelicula.RowID).ToList();
@@ -394,14 +396,14 @@
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="control-label">Titulo Original:</label>
-                                        <input type="text" name="titulo_original" class="form-control Mayus" value="@Model.TituloOriginal">
+                                        <label class="control-label">Titulo Original:*</label>
+                                        <input type="text" name="titulo_original" class="form-control Mayus" value="@Model.TituloOriginal" required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="control-label">Título Local:</label>
-                                        <input type="text" name="titulo_local" class="form-control Mayus" value="@Model.TituloLocal">
+                                        <label class="control-label">Título Local:*</label>
+                                        <input type="text" name="titulo_local" class="form-control Mayus" value="@Model.TituloLocal" required>
                                     </div>
                                 </div>
                             </div>
@@ -458,11 +460,11 @@
                                             int? Hora = Model.Duracion / 60;
                                             int? Minutos = (Model.Duracion - (Hora * 60));
                                             string val = Hora + ":" + Minutos;
-                                            <input type="text" name="duracion" class="form-control solo-numero" value="@Model.Duracion">
+                                            <input type="text" placeholder="mm" name="duracion" class="form-control solo-numero add-tooltip" data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Duración en minutos" value="@Model.Duracion">
                                         }
                                         else
                                         {
-                                            <input type="text" name="duracion" class="solo-numero form-control">
+                                            <input type="text" name="duracion" placeholder="mm" class="solo-numero form-control add-tooltip"  data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Duración en minutos">
                                         }
 
                                     </div>
@@ -493,11 +495,11 @@
                                             {
                                                 elenco = elenco + elencopelicula.Nombre + ",";
                                             }
-                                            <input type="text" class="form-control" placeholder="Add a tag" name="directores" data-role="tagsinput" value="@elenco">
+                                            <input type="text" class="form-control" placeholder="Agregar directores" name="directores" data-role="tagsinput" value="@elenco">
                                         }
                                         else
                                         {
-                                            <input type="text" class="form-control" placeholder="Add a tag" name="directores" data-role="tagsinput">
+                                            <input type="text" class="form-control" placeholder="Agregar directores" name="directores" data-role="tagsinput">
                                         }
 
                                     </div>
@@ -513,11 +515,11 @@
                                             {
                                                 elenco = elenco + elencopelicula.Nombre + ",";
                                             }
-                                            <input type="text" class="form-control" placeholder="Add a tag" name="actores" data-role="tagsinput" value="@elenco">
+                                            <input type="text" class="form-control" placeholder="Agregar actor" name="actores" data-role="tagsinput" value="@elenco">
                                         }
                                         else
                                         {
-                                            <input type="text" class="form-control" placeholder="Add a tag" name="actores" data-role="tagsinput">
+                                            <input type="text" class="form-control" placeholder="Agregar actor" name="actores" data-role="tagsinput">
                                         }
 
                                     </div>
@@ -535,14 +537,23 @@
                                     <div class="form-group">
                                         <label class="control-label">Derecho a Corto:</label>
                                         <div class="form-control">
-                                            <input id="demo-sw-checked" type="checkbox" name="derecho_corto" checked>
+                                            @{ string class_activo = "";}
+                                            @if (Model.DerechoCorto==true)
+                                            {
+                                                class_activo = "checked";
+                                            }
+                                            else
+                                            {
+                                                class_activo="";
+                                            }
+                                            <input id="demo-sw-checked" type="checkbox" name="derecho_corto" @class_activo>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label class="control-label">Estado:</label>
-                                        <select name="estado" id="estado" class="form-control">
+                                        <label class="control-label">Estado:*</label>
+                                        <select name="estado" id="estado" class="form-control" required>
                                             <option value="" disabled selected>Seleccione una opcion</option>
                                             @foreach (CinemaPOS.Models.Estado estado in ViewBag.Estado)
                                             {
@@ -578,13 +589,13 @@
                                             <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label class="control-label">Formato:</label>
-                                                    <select name="formato[]" class="form-control listaformato">
+                                                    <select name="formato[]" class="form-control listaformato" disabled>
                                                         <option value="" disabled selected>Seleccione una opción</option>
                                                         @foreach (CinemaPOS.Models.Opcion formato in ViewBag.Formato)
                                                         {
                                                             if (DetallesPeliculas.Opcion.RowID == formato.RowID)
                                                             {
-                                                                <option value="@formato.RowID" selected>@formato.Nombre</option>
+                                                                <option value="@formato.RowID" selected >@formato.Nombre</option>
                                                             }
                                                             else
                                                             {
@@ -597,13 +608,13 @@
                                             <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label class="control-label">Versión:</label>
-                                                    <select name="version[]" class="form-control listaversion">
+                                                    <select name="version[]" class="form-control listaversion" disabled>
                                                         <option value="" disabled>Seleccione una opción</option>
                                                         @foreach (CinemaPOS.Models.Opcion version in ViewBag.Version)
                                                         {
                                                             if (DetallesPeliculas.Opcion1.RowID == version.RowID)
                                                             {
-                                                                <option value="@version.RowID" selected>@version.Nombre</option>
+                                                                <option value="@version.RowID" selected > @version.Nombre</option>
                                                             }
                                                             else
                                                             {
@@ -681,11 +692,10 @@
                                             </div>
                                             <div>
                                                 <span class="btn btn-file">
-                                                    <span class="fileupload-new">Select image</span>
-                                                    <span class="fileupload-exists">Change</span>
+                                                    <span class="fileupload-new">Seleccionar imagen</span>
+                                                    <span class="fileupload-exists">Cambiar</span>
                                                     <input type="file" accept="image/jpeg,image/png,image/gif" class="default image_invoice_clone" name="afiche">
                                                 </span>
-                                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
                                             </div>
                                         </div>
                                     </div>
@@ -710,11 +720,11 @@
                                             </div>
                                             <div>
                                                 <span class="btn btn-file">
-                                                    <span class="fileupload-new">Select image</span>
-                                                    <span class="fileupload-exists">Change</span>
+                                                    <span class="fileupload-new">Seleccionar imagen</span>
+                                                    <span class="fileupload-exists">Cambiar</span>
                                                     <input type="file" accept="image/jpeg,image/png,image/gif" class="default image_invoice_clone" name="thumbnail">
                                                 </span>
-                                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                                @*<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>*@
                                             </div>
                                         </div>
                                     </div>
@@ -764,8 +774,10 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-6">
+                                                
+
                                                 <div class="form-group">
-                                                    <label class="control-label">Porcentaje</label>
+                                                    <label class="control-label">Porcentaje distribuidor</label>
                                                     <input type="text" value="@porcentajespeliculas.Porcentaje" name="porcentaje[]" class="porcentaje form-control">
                                                 </div>
                                             </div>

@@ -72,7 +72,7 @@
 
         <script>
             $(document).ready(function () {
-                jQuery(".chosen").chosen({widht:"100%;"});
+                jQuery(".chosen").chosen({ widht: "100%;" });
             });
         </script>
         <script src="~/Content/js/bootstrap-fileupload.js"></script>
@@ -138,22 +138,22 @@
         <script type="text/javascript" src="~/Content/js/noty/layouts/bottom.js"></script>
         <script type="text/javascript" src="~/Content/js/noty/theme/default.js"></script>
         <script>
-        function Mensajes(text, type, layout) {
-            if (layout == '')
-                layout = 'bottomRight';
+            function Mensajes(text, type, layout) {
+                if (layout == '')
+                    layout = 'bottomRight';
 
-            var self = $(this);
-            noty({
-                text: text,
-                type: type,
-                theme: 'defaultTheme',
-                layout: layout,
-                timeout: 10000,
-                modal: self.data('modal')
-            });
+                var self = $(this);
+                noty({
+                    text: text,
+                    type: type,
+                    theme: 'defaultTheme',
+                    layout: layout,
+                    timeout: 10000,
+                    modal: self.data('modal')
+                });
 
-            return false;
-        }
+                return false;
+            }
         </script>
         <style>
             textarea {
@@ -545,7 +545,7 @@
 
                     <!--Page content-->
                     <!--===================================================-->
-                    <div id="page-content" >
+                    <div id="page-content" style="height:1200px">
 
                         @RenderBody()
                         <div id="loader"></div>
@@ -1417,7 +1417,6 @@
                         </div>
                     </div>*@
             </div>
-            <button id="demo-set-btn" class="btn" data-toggle="collapse" data-target="#demo-set-body"><i class="demo-psi-gear icon-lg"></i></button>
         </div>
         <!--===================================================-->
         <!-- END SETTINGS -->
