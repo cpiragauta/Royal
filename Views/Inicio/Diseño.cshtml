@@ -160,6 +160,18 @@
                 resize: none;
             }
         </style>
+        <script>
+            function ValidaPOS(){
+                var sesion = "@Session["RowID_Taquilla"]";
+                if (sesion != null || sesion!="") {
+                    swal("Advertencia","Este equipo no está registrado en el sistema como una taquilla, la ip (@Session["ip"]) del equipo debe estar asociada a una taquilla en el sistema  ","warning")
+                }
+                else {
+                    swal("", "El rol asociado al usario no se permite realizar la operación", "warning");
+                }
+
+            }
+        </script>
     </head>
     <!--TIPS-->
     <!--You may remove all ID or Class names which contain "demo-", they are only used for demonstration. -->
@@ -464,7 +476,7 @@
                                         <!--<img class="img-circle img-user media-object" src="~/Content/img/profile-photos/1.png" alt="Profile Picture">-->
                                         <i class="demo-pli-male ic-user"></i>
                                     </span>
-                                    <div class="username hidden-xs">@(((UsuarioSistema)(Session["usuario"])).Nombre + " " + ((UsuarioSistema)(Session["usuario"])).Apellido + " " + ((string)(Session["lol"])) )</div>
+                                    <div class="username hidden-xs">@(((UsuarioSistema)(Session["usuario"])).Nombre + " " + ((UsuarioSistema)(Session["usuario"])).Apellido )</div>
 
                                 </a>
 
@@ -856,8 +868,8 @@
                                                 <span class="pull-right dropdown-toggle">
                                                     <i class="dropdown-caret"></i>
                                                 </span>
-                                                <p class="mnp-name">@(((UsuarioSistema)(Session["usuario"])).Nombre + " " + ((UsuarioSistema)(Session["usuario"])).Apellido + " " + Session["IP"])</p>
-                                                <span class="mnp-desc">@(((UsuarioSistema)(Session["usuario"])).Rol.Nombre + " " + Session["IP"])</span>
+                                                <p class="mnp-name">@(((UsuarioSistema)(Session["usuario"])).Nombre + " " + ((UsuarioSistema)(Session["usuario"])).Apellido )</p>
+                                                <span class="mnp-desc">@(((UsuarioSistema)(Session["usuario"])).Rol.Nombre)</span>
                                             </a>
                                         </div>
                                         <div id="profile-nav" class="collapse list-group bg-trans">
@@ -923,7 +935,7 @@
                                                         if (item.Nombre == "POS")
                                                         {
                                                             <li>
-                                                                <a href="@item2.URL">
+                                                                <a onclick="ValidaPOS()">
                                                                     <i class="@item2.Imagen"></i>
                                                                     <span class="menu-title">
                                                                         <strong>@item2.Nombre</strong>
@@ -1441,7 +1453,7 @@
 }
 <script>
 
-
+    
 
     function ModalProcesandoShow() {
         $("#ModalProcessing").modal();// initialized with defaults

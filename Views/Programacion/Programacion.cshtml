@@ -537,17 +537,34 @@
             todayHighlight: false,
             startDate: '1d'
         });
-        $('#FechaFinal').datepicker({
+        $('#FechaInicialFunciones').datepicker({
             format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
             todayHighlight: false,
-            startDate: '1d'
+            startDate: $("#FechaInicial").val(),
+            endDate:$('#FechaFinal').val()
+        });
+        $('#FechaFinalFunciones').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false,
+            startDate: $("#FechaInicial").val(),
+            endDate:$('#FechaFinal').val()
         });
         $('#FechaFinal').change(function(){
             $('#FechaInicialFunciones').datepicker("destroy");
             $('#FechaInicialFunciones').val($('#FechaInicial').val())
             $('#FechaInicialFunciones').datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                autoclose: true,
+                todayHighlight: false,
+                startDate: $("#FechaInicial").val(),
+                endDate:$('#FechaFinal').val()
+            });
+            $('#FechaFinalFunciones').datepicker({
                 format: "dd/mm/yyyy",
                 todayBtn: "linked",
                 autoclose: true,
@@ -567,6 +584,14 @@
             });
         })
         $('#FechaInicial').change(function(){
+            $('#FechaFinal').datepicker("destroy");
+            $('#FechaFinal').datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                autoclose: true,
+                todayHighlight: false,
+                startDate:  $('#FechaInicial').val()
+            });
             $('#FechaInicialFunciones').datepicker("destroy");
             $('#FechaInicialFunciones').val($('#FechaInicial').val())
             $('#FechaInicialFunciones').datepicker({

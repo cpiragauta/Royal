@@ -72,7 +72,16 @@
             });
 
         }
-
+    $("#fechainicialvigencia").change(function(){
+        $("#fechafinalvigencia").datepicker("destroy");
+        $("#fechafinalvigencia").datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false,
+            startDate:  $("#fechainicialvigencia").val()
+        });
+    })
     function guardar_precio(encabezado){
             if ($(".RowID_Encabezado").val() != 0) {
                 $.ajax({
@@ -270,14 +279,38 @@
         }else{
             $(".detalle_lista").slideUp();
         }
-        $('#demo-dp-range .input-daterange').datepicker({
+        $('#fechainicialvigencia').datepicker({
             format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
             todayHighlight: false,
             startDate: '1d'
         });
+        $('#fecha_inicial_detalle').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false,
+            startDate: $("#fechainicialvigencia").val(),
+            endDate:$("#fechafinalvigencia").val()
+        });
+        $('#fecha_final_detalle').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false,
+            startDate: $("#fechainicialvigencia").val(),
+            endDate:$("#fechafinalvigencia").val()
+        });
         $("#fechainicialvigencia").change(function(){
+            $('#fechafinalvigencia').datepicker("destroy");
+            $('#fechafinalvigencia').datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                autoclose: true,
+                todayHighlight: false,
+                startDate: $("#fechainicialvigencia").val(),
+            });
             $('#fecha_inicial_detalle').datepicker("destroy");
             $('#fecha_inicial_detalle').datepicker({
                 format: "dd/mm/yyyy",

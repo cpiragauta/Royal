@@ -2063,5 +2063,17 @@ namespace CinemaPOS.Controllers.Master
             }
             return "Actualizacion exitosa";
         }
+        public string CodigoRol()
+        {
+            List<Rol> objrol = db.Rol.ToList();
+            Rol rolactualiza = new Rol();
+            foreach (Rol item in objrol)
+            {
+                rolactualiza = db.Rol.Where(e => e.RowID == item.RowID).FirstOrDefault();
+                rolactualiza.Codigo = item.Nombre.Replace(" ", "").ToUpper();
+                db.SaveChanges();
+            }
+            return "Actualizacion exitosa";
+        }
     }
 }

@@ -61,7 +61,6 @@ namespace CinemaPOS.Models
         public virtual DbSet<PorcentajeParticipacion> PorcentajeParticipacion { get; set; }
         public virtual DbSet<TeatroPelicula> TeatroPelicula { get; set; }
         public virtual DbSet<Menu> Menu { get; set; }
-        public virtual DbSet<Rol> Rol { get; set; }
         public virtual DbSet<RolMenu> RolMenu { get; set; }
         public virtual DbSet<TipoMenu> TipoMenu { get; set; }
         public virtual DbSet<UsuarioSistema> UsuarioSistema { get; set; }
@@ -87,6 +86,7 @@ namespace CinemaPOS.Models
         public virtual DbSet<Taquilla> Taquilla { get; set; }
         public virtual DbSet<OportunidadVenta> OportunidadVenta { get; set; }
         public virtual DbSet<Seguimiento> Seguimiento { get; set; }
+        public virtual DbSet<Rol> Rol { get; set; }
     
         public virtual int Eliminar_sillas_sala(Nullable<int> rowIDSala)
         {

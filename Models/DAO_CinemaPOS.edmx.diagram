@@ -39,7 +39,6 @@
         <EntityTypeShape EntityType="CinemaPOSModel.PorcentajeParticipacion" Width="1.5" PointX="22.5" PointY="73.125" />
         <EntityTypeShape EntityType="CinemaPOSModel.TeatroPelicula" Width="1.5" PointX="16.5" PointY="69.75" />
         <EntityTypeShape EntityType="CinemaPOSModel.Menu" Width="1.5" PointX="3" PointY="64.125" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Rol" Width="1.5" PointX="3" PointY="59.75" />
         <EntityTypeShape EntityType="CinemaPOSModel.RolMenu" Width="1.5" PointX="5.25" PointY="61.5" />
         <EntityTypeShape EntityType="CinemaPOSModel.TipoMenu" Width="1.5" PointX="0.75" PointY="63.75" />
         <EntityTypeShape EntityType="CinemaPOSModel.UsuarioSistema" Width="1.5" PointX="27.75" PointY="82.75" />
@@ -155,8 +154,6 @@
         <AssociationConnector Association="CinemaPOSModel.FK__TeatroPel__Encab__673F4B05" />
         <AssociationConnector Association="CinemaPOSModel.FK__Menu__TipoMenuID__15DA3E5D" />
         <AssociationConnector Association="CinemaPOSModel.FK__RolMenu__MenuID__18B6AB08" />
-        <AssociationConnector Association="CinemaPOSModel.FK__RolMenu__RolID__19AACF41" />
-        <AssociationConnector Association="CinemaPOSModel.FK__UsuarioSi__RolID__7BE56230" />
         <AssociationConnector Association="CinemaPOSModel.FK__Evidencia__PqrsI__53A266AC" />
         <AssociationConnector Association="CinemaPOSModel.FK__Pqrs__TipoSolici__2A6B46EF" />
         <AssociationConnector Association="CinemaPOSModel.FK__Funcion__Encabez__6E01572D" />
@@ -191,6 +188,9 @@
         <AssociationConnector Association="CinemaPOSModel.FK__Seguimien__AreaA__5A4F643B" />
         <AssociationConnector Association="CinemaPOSModel.FK__Seguimien__PQRS___297722B6" />
         <AssociationConnector Association="CinemaPOSModel.FK__Seguiento__Segui__5E1FF51F" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Rol" Width="1.5" PointX="0.75" PointY="9" />
+        <AssociationConnector Association="CinemaPOSModel.FK__RolMenu__RolID__19AACF41" />
+        <AssociationConnector Association="CinemaPOSModel.FK__UsuarioSi__RolID__7BE56230" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

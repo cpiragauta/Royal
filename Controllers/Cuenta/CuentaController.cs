@@ -54,7 +54,7 @@ namespace CinemaPOS.Controllers.Cuenta
         {
             
             string IP =get_ip_local(model.ip);
-            
+            Session["ip"] = IP;
             if (ModelState.IsValid)
             {
                 if (ValidateLogin(model.NombreUsuario, model.Contraseña))
