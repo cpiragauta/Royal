@@ -218,6 +218,7 @@ namespace CinemaPOS.Controllers
         [CheckSessionOutAttribute]
         public ActionResult Cotizaciones(int? rowid)
         {
+            //db.Database.Connection.ConnectionString = "";
             ViewBag.prospectos = db.Tercero.ToList();
             ViewBag.teatros = db.Teatro.ToList();
             ViewBag.estado = db.Estado.Where(f => f.TipoEstadoID == Util.Constantes.TIPO_ESTADO_COTIZACION).ToList();
@@ -469,6 +470,36 @@ namespace CinemaPOS.Controllers
             }
             catch (Exception e)
             { return Json("Error"); }
+        }
+        #endregion
+
+        #region CRM TERCERO - SELLOS
+        public ActionResult ModalSello()
+        {
+            Tercero tercero = new Tercero();
+            ViewBag.Ciudades = db.Ciudad.ToList();
+            return View(tercero);
+        }
+        public JsonResult GuardarSello(FormCollection formulario)
+        {
+            formulario = DeSerialize(formulario);
+
+            Tercero tercero = new Tercero();
+            try
+            {
+                tercero.Nombre = formulario["Nombre"];
+                tercero.Direccion = formulario["Direccion"];
+                tercero.Correo = formulario["Correo"];
+                tercero.Descripcion = formulario["Descripcion"];
+                tercero.CiudadID = Convert.ToInt32(formulario["CiudadID"]);
+                tercero.TipoTerceroID = Util.Constantes.TIPO_SELLO;
+                tercero.FechaCreacion = DateTime.Now;
+                tercero.CreadoPor = Session["usuario_creacion"].ToString();
+                db.Tercero.Add(tercero);
+                db.SaveChanges();
+                return Json("ok");
+            }
+            catch (Exception){ return Json("Error"); }
         }
         #endregion
     }

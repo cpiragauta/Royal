@@ -83,6 +83,17 @@
             });
         }
     }
+    function actualizaestado() {
+        $.ajax({
+            url: "/Maestro/CodigoEstado",
+            success:function(data){
+                alert(data);
+            },
+            error: function () {
+                alert("malo")
+            }
+        })
+    }
 </script>
 <script>
     $(document).ready(function () {
@@ -110,7 +121,7 @@
     <div class="panel-heading">
         <h3 class="panel-title">Opción</h3>
     </div>
-
+    @*<a href="javascript:actualizaestado()" class="btn btn-success">estado</a>*@
     <form id="formulario_lista_opciones" data-toggle="validator" role="form">
         <input type="hidden" class="RowID_Encabezado" name="RowID_Encabezado" value="@Model.RowID" />
         <div class="panel-body">

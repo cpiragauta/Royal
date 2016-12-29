@@ -1,0 +1,132 @@
+﻿@model CinemaPOS.Models.Tercero
+@{
+    ViewBag.Title = "ModalSello";
+    Layout = null;
+}
+<script>
+    ModalProcesandoHiden();
+    jQuery("#CiudadID").chosen({ width: "100%;" });
+
+    $("#myModal1").modal('show')
+</script>
+<div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="false" style="overflow: auto; border-radius:2px;">
+    <div class="modal-dialog" style="width:500px ;margin-top:-25px;height:auto">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 5px;">
+                <button type="button" class="close salir" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" style="padding:1px;color:#455A64;font-weight:normal;font-family:'Segoe UI';text-align:center;"><b>Crear Sello</b></h4>
+            </div>
+            <div class="modal-body" style="overflow-x: hidden; overflow-y: hidden;">
+                <form method="post" id="form_sello" name="form_sello" style="margin:0 auto">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label for="RAZONSOCIAL">*Raz&oacute;n Social:</label>
+                                <input type="text" name="Nombre" value="@Model.Nombre" id="Nombre" class="form-control" required style="width:100%"/>
+                            </div>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <label for="CIUDAD">*Ciudad:</label>
+                        <select name="CiudadID" id="CiudadID" class="form-control" required>
+                            <option value="" selected disabled>Seleccione una Opci&oacute;n</option>
+                            @foreach (var item in (List<CinemaPOS.Models.Ciudad>)ViewBag.Ciudades)
+                            {
+                                <option value="@item.RowID">@item.Nombre - @item.Departamento.Nombre</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="DIRECCION">*Direcci&oacute;n:</label>
+                            <input type="text" name="Direccion" value="@Model.Direccion" id="Direccion" class="form-control" required  style="width:100%"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="DIRECCION">*Correo:</label>
+                            <input type="text" name="Correo" value="@Model.Correo" id="Correo" class="form-control" required  style="width:100%"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="DESCRIPCION">*Descripci&oacute;n:</label>
+                            <textarea name="Descripcion" id="Descripcion" class="form-control" required  style="width:100%">@Model.Descripcion</textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <br />
+            <a onclick="javascript:GuardarSello()" class="btn btn-success">Guardar Sello</a>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+</div>
+    <!-- /.modal -->
+<script>
+function GuardarSello() {
+    var validator = $("#form_sello").validate();
+    if (validator.form()) {
+        ModalProcesandoShow();
+        $.ajax({
+            type: "POST",
+            url: "/CRM/GuardarSello",
+            data: {
+                formulario: $("#form_sello").serialize(),
+            },
+            success: function (data) {
+                if (data == "ok") {
+                    ModalProcesandoHiden();
+                    RefrescarSellos();
+                    $("#sello_query").val("ok");
+                    $("#myModal1").modal('hide');
+                    Alerts("Datos Guardados Correctamente.", "success");
+                } else {
+                    ModalProcesandoHiden();
+                    Alerts("Error al guardar los datos.", "danger");
+                }
+            },
+            error: function (request) {
+                ModalProcesandoHiden();
+                hasChangue = true;
+            }
+        });
+    }
+}
+</script>
+<script>
+    function RefrescarSellos() {
+        $("#tipo_sello").empty();
+        $.ajax({
+            type: "POST",
+            url: "/Maestro/CargarSellosV2",
+            data: {
+                rowID: "@Model.RowID",
+            },
+            success: function (data) {
+                $("#tipo_sello").empty()
+                $("#tipo_sello").append(data).trigger("chosen:updated");
+                $("#tipo_sello").trigger("chosen:updated");
+                debugger
+                //if (data.length >=56) {
+                $("#modal_sello").removeAttr("disabled");
+                $("#modal_sello").css("cursor", "pointer");
+                $("#modal_sello").attr("onclick", "javascript:CrearSello()");
+                //}
+            },
+            error: function (request) {
+                hasChangue = true;
+            }
+        });
+        $("#tipo_se").slideDown('fast');
+    }
+</script>

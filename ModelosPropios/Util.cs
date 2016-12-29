@@ -104,7 +104,13 @@ namespace CinemaPOS.ModelosPropios
             /*TIPO DE USUARIOS*/
             public const int ROL_ADMINISTRADOR = 1;
 
-            
+            /*TIPO DE AREA*/
+            public const int TIPO_AREA = 14;
+
+            /*TIPO ESTADO SEGUIMIENTO PQRS*/
+            public const int TIPO_ESTADO_PQRS = 14;
+
+
         }
         public class Actividades
         {

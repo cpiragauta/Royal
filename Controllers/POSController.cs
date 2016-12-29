@@ -15,6 +15,7 @@ namespace CinemaPOS.Controllers
         // GET: /POS/
 
         CinemaPOSEntities db = new CinemaPOSEntities();
+        [CheckSessionOutAttribute]
         public ActionResult VistaPrincipal()
         {
 
@@ -139,12 +140,13 @@ namespace CinemaPOS.Controllers
         ////    }
         ////    return htmlvista;
         ////}
+        [CheckSessionOutAttribute]
         public ActionResult MapaVenta(int? SalaID, int? FuncionID)
         {
             //MapaSala =db.MapaSala          
             return View();
         }
-
+        [CheckSessionOutAttribute]
         public string GetFechaFiltro(int? accion, string fechavista)
         {
 
@@ -168,7 +170,7 @@ namespace CinemaPOS.Controllers
 
 
         }
-
+        [CheckSessionOutAttribute]
         public string htmlvista(string fecha_programacion, int? multicineID)
         {
             string hoy = "12/01/2016"/* DateTime.Now.ToString("dd/MM/yyyy")*/;
@@ -261,7 +263,7 @@ namespace CinemaPOS.Controllers
 
             return html;
         }
-
+        [CheckSessionOutAttribute]
         public string Get_Tarifas_Funcion(int RowID_Funcion)
         {
             string html_tarifas = "";
@@ -314,6 +316,7 @@ namespace CinemaPOS.Controllers
 
             return html_tarifas;
         }
+        [CheckSessionOutAttribute]
         public string AdicionarItemVenta(int RowID_ListaFuncion, short? cantidad)
         {
             ListaPrecioFuncion ItemVenta = db.ListaPrecioFuncion.Where(lpf => lpf.RowID == RowID_ListaFuncion).FirstOrDefault();
@@ -343,7 +346,7 @@ namespace CinemaPOS.Controllers
             html_item_venta += "<input type='hidden' class='item-ventas " + ItemVenta.RowID + "' >";
             return html_item_venta;
         }
-
+        [CheckSessionOutAttribute]
         public ActionResult Mapa_Sala_funcion(int RowID_Sala, short? cantidad_sillas_venta, int RowIDFuncion, string RowIDTarifas)
         {
             Sala obj_sala = new Sala();
@@ -355,6 +358,7 @@ namespace CinemaPOS.Controllers
             ViewBag.Funcion = db.Funcion.Where(f => f.RowID == RowIDFuncion).FirstOrDefault();
             return View(obj_sala);
         }
+        [CheckSessionOutAttribute]
         public string Get_Mapa_Sala(int RowID_Sala, int? RowID_Funcion)
         {
             Sala ObjSala = db.Sala.Where(s => s.RowID == RowID_Sala).FirstOrDefault();
@@ -416,6 +420,7 @@ namespace CinemaPOS.Controllers
 
             return Data_Table;
         }
+        [CheckSessionOutAttribute]
         public ActionResult pruebabuscador()
         {
             //string s = "string to print";
@@ -436,6 +441,7 @@ namespace CinemaPOS.Controllers
             //}
             return View();
         }
+        [CheckSessionOutAttribute]
         public JsonResult TerminarVenta(string IDSillas, string IDTarifas, int RowIDFuncion)
         {
             string Boletas = "";

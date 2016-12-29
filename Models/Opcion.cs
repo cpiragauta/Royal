@@ -42,14 +42,14 @@ namespace CinemaPOS.Models
             this.Sala = new HashSet<Sala>();
             this.SalaObjeto = new HashSet<SalaObjeto>();
             this.SalaObjeto1 = new HashSet<SalaObjeto>();
-            this.Seguimiento = new HashSet<Seguimiento>();
-            this.Seguimiento1 = new HashSet<Seguimiento>();
             this.ServicioSala = new HashSet<ServicioSala>();
             this.Tercero = new HashSet<Tercero>();
             this.Tercero1 = new HashSet<Tercero>();
             this.Tercero2 = new HashSet<Tercero>();
             this.TipoSolicitud = new HashSet<TipoSolicitud>();
             this.Taquilla = new HashSet<Taquilla>();
+            this.Seguimiento = new HashSet<Seguimiento>();
+            this.Seguimiento1 = new HashSet<Seguimiento>();
         }
     
         public int RowID { get; set; }
@@ -88,8 +88,6 @@ namespace CinemaPOS.Models
         public virtual ICollection<Sala> Sala { get; set; }
         public virtual ICollection<SalaObjeto> SalaObjeto { get; set; }
         public virtual ICollection<SalaObjeto> SalaObjeto1 { get; set; }
-        public virtual ICollection<Seguimiento> Seguimiento { get; set; }
-        public virtual ICollection<Seguimiento> Seguimiento1 { get; set; }
         public virtual ICollection<ServicioSala> ServicioSala { get; set; }
         public virtual ICollection<Tercero> Tercero { get; set; }
         public virtual ICollection<Tercero> Tercero1 { get; set; }
@@ -97,5 +95,7 @@ namespace CinemaPOS.Models
         public virtual ICollection<TipoSolicitud> TipoSolicitud { get; set; }
         public virtual Tipo Tipo { get; set; }
         public virtual ICollection<Taquilla> Taquilla { get; set; }
+        public virtual ICollection<Seguimiento> Seguimiento { get; set; }
+        public virtual ICollection<Seguimiento> Seguimiento1 { get; set; }
     }
 }

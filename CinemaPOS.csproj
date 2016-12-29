@@ -457,6 +457,7 @@
     <Content Include="Content\css\themes\type-c\theme-well-red.min.css" />
     <Content Include="Content\css\themes\type-c\theme-yellow.css" />
     <Content Include="Content\css\themes\type-c\theme-yellow.min.css" />
+    <Content Include="Content\font-own\icomoon.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\bg-img\1.jpg" />
     <Content Include="Content\img\bg-img\2.jpg" />
@@ -2304,6 +2305,9 @@
     <Content Include="DB_9CAC35_cinemaposDataSet.xsc">
       <DependentUpon>DB_9CAC35_cinemaposDataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="Content\font-own\icomoon.eot" />
+    <Content Include="Content\font-own\icomoon.ttf" />
+    <Content Include="Content\font-own\icomoon.woff" />
     <None Include="DB_9CAC35_cinemaposDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DB_9CAC35_cinemaposDataSet.Designer.cs</LastGenOutput>

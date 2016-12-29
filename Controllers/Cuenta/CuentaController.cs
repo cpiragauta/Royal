@@ -102,9 +102,9 @@ namespace CinemaPOS.Controllers.Cuenta
 
         private bool ValidateLogin(string username, string passwd)
         {
+            Session["estadousuario"] = "";
             Session["POS"] = "INACTIVO";
             UsuarioSistema usuario = db.UsuarioSistema.FirstOrDefault(f => f.NombreUsuario == username && f.Contrasena == passwd );
-            Session["ruta_foto"] = usuario.Foto_Empleado;
             List<TipoMenu> tipoMenu;
             List<Menu> menu;
             if (usuario != null)
@@ -114,6 +114,8 @@ namespace CinemaPOS.Controllers.Cuenta
                     Session["estadousuario"] = "El usuario está inactivo.";
                     return false;
                 }
+                Session["ruta_foto"] = usuario.Foto_Empleado;
+
                 Session["usuario"] = usuario;
                 Session["usuario_creacion"] = usuario.NombreUsuario;
                 if (usuario.Rol.Nombre.ToUpper() != "ADMINISTRADOR")
