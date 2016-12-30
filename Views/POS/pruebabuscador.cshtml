@@ -187,33 +187,33 @@
 
     <link href="~/Content/css/EstiloBoleta.css" rel="stylesheet" />
     <script src="~/Content/js/jquery.PrintArea.js"></script>
-    @*<script type="text/javascript">
-        //$(function () {
-        //    $("#btnPrint").click(function () {
-        //        var contents = $("#dvContents").html();
-        //        var frame1 = $('<iframe />');
-        //        frame1[0].name = "frame1";
-        //        frame1.css({ "position": "absolute", "top": "-1000000px", "widht": "100px", "height":"10px" });
-        //        $("body").append(frame1);
-        //        var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
-        //        frameDoc.document.open('','','width=200,height=100');
-        //        //Create a new HTML document.
-        //        frameDoc.document.write('</head><body>');
-        //        //Append the external CSS file.
-        //        frameDoc.document.write('<link href="/Content/css/EstiloBoleta.css" rel="stylesheet" />');
-        //        //Append the DIV contents.
-        //        frameDoc.document.write(contents);
-        //        frameDoc.document.write('</body></html>');
-        //        frameDoc.document.close();
-        //        setTimeout(function () {
-        //            window.frames["frame1"].focus();
-        //            window.frames["frame1"].print();
-        //            frame1.remove();
-        //        }, 500);
-        //    });
-            //});
-           <script>*@
-    <script>
+    <script type="text/javascript">
+        $(function () {
+            $("#btnPrint").click(function () {
+                var contents = $("#dvContents").html();
+                var frame1 = $('<iframe />');
+                frame1[0].name = "frame1";
+                frame1.css({ "position": "absolute", "top": "-1000000px", "widht": "100px", "height":"10px" });
+                $("body").append(frame1);
+                var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+                frameDoc.document.open('','','width=200,height=100');
+                //Create a new HTML document.
+                frameDoc.document.write('</head><body>');
+                //Append the external CSS file.
+                frameDoc.document.write('<link href="/Content/css/EstiloBoleta.css" rel="stylesheet" />');
+                //Append the DIV contents.
+                frameDoc.document.write(contents);
+                frameDoc.document.write('</body></html>');
+                frameDoc.document.close();
+                setTimeout(function () {
+                    window.frames["frame1"].focus();
+                    window.frames["frame1"].print();
+                    frame1.remove();
+                }, 500);
+            });
+            });
+           </script>
+    @*<script>
         $(document).ready(function () {
             $("#printButton").click(function () {
                 var mode = 'iframe'; //popup
@@ -222,7 +222,7 @@
                 $(".printableArea").printArea(options);
             });
         });
-    </script>
+    </script>*@
     <style>
         ul li {
             display: inline;
@@ -275,3 +275,45 @@
         </div>
     </div>
 </body>
+@*<html>
+<head>
+    <title>Reloj con Javascript</title>
+    <script language="JavaScript">
+
+function mueveReloj(){
+   	momentoActual = new Date()
+   	hora = momentoActual.getHours()
+   	minuto = momentoActual.getMinutes()
+   	segundo = momentoActual.getSeconds()
+
+   	str_segundo = new String (segundo)
+   	if (str_segundo.length == 1)
+      	segundo = "0" + segundo
+
+   	str_minuto = new String (minuto)
+   	if (str_minuto.length == 1)
+      	minuto = "0" + minuto
+
+   	str_hora = new String (hora)
+   	if (str_hora.length == 1)
+      	hora = "0" + hora
+
+   	horaImprimible = hora + " : " + minuto + " : " + segundo
+
+   	document.form_reloj.reloj.value = horaImprimible
+
+   	setTimeout("mueveReloj()",1000)
+}
+    </script>
+</head>
+
+<body onload="mueveReloj()">
+
+    Vemos aquí el reloj funcionando...
+
+    <form name="form_reloj">
+        <input type="text" name="reloj" size="10" style="background-color : Black; color : White; font-family : Verdana, Arial, Helvetica; font-size : 8pt; text-align : center;" onfocus="window.document.form_reloj.reloj.blur()">
+    </form>
+
+</body>
+</html>*@ 
