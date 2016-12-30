@@ -18,36 +18,45 @@ namespace CinemaPOS.Controllers
             UsuarioSistema user = (UsuarioSistema)session["Usuario"];
 
             //VALIDACIONES DE LOGIN
-            if (!controllerName.Contains("Cuenta"))
-            {
+            
                 if ((user == null) || (session.IsNewSession))
                 {
                     //send them off to the login page
                     var url = new UrlHelper(filterContext.RequestContext);
                     var loginUrl = url.Content("~/Cuenta/Login");
                     filterContext.HttpContext.Response.Redirect(loginUrl, true);
-                }            
-                //else {                    
-                //    List<RolMenu> PantallasAutorizadas = user.Rol.RolMenu.ToList();
-                //    String PantallaSolicitada = "/" + filterContext.ActionDescriptor.ControllerDescriptor.ControllerName + "/" + filterContext.ActionDescriptor.ActionName;
-                //    bool acceso = false;
-                //    if (PantallaSolicitada.Contains("Index"))
-                //    { return; }
-                //    foreach (RolMenu item in PantallasAutorizadas)
-                //    {
-                //        if (item.Menu.URL == PantallaSolicitada && item.Menu.Activo == true)
-                //        {
-                //            acceso = true;
-                //            return;
-                //        }
-                //    }
-                //    if (acceso == false)
-                //    {
-                //        var url = new UrlHelper(filterContext.RequestContext);
-                //        var loginUrl = url.Content("~/Inicio/Index");
-                //        filterContext.HttpContext.Response.Redirect(loginUrl, true);
-                //    }                    
-                //}
+                }
+                else
+                {
+                    //List<RolMenu> PantallasAutorizadas = user.Rol.RolMenu.ToList();
+                    //String PantallaSolicitada = "/" + filterContext.ActionDescriptor.ControllerDescriptor.ControllerName + "/" + filterContext.ActionDescriptor.ActionName;
+                    //bool acceso = false;
+                    //if (PantallaSolicitada.Contains("Index")) //Si apunta al index,
+                    //{ return; }
+                    //if (session["ValidarPantalla"] == null)
+                    //{
+                    //    foreach (RolMenu item in PantallasAutorizadas)
+                    //    {
+                    //        if (item.Menu.URL == PantallaSolicitada && item.Menu.Activo == true)
+                    //        {
+                    //            session["ValidarPantalla"] = "NO"; //Para que no valide la proxima pantalla a la que va a ingresar
+                    //            acceso = true;
+                    //            return;
+                    //        }
+                    //    }
+                    //    if (acceso == false)
+                    //    {
+                    //        var url = new UrlHelper(filterContext.RequestContext);
+                    //        var loginUrl = url.Content("~/Inicio/Index");
+                    //        filterContext.HttpContext.Response.Redirect(loginUrl, true);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    session["ValidarPantalla"] = null;
+                    //    return;
+                    //}
+                    
                 //else if (user.ind_cambiarclave == 1)
                 //{
                 //    var url = new UrlHelper(filterContext.RequestContext);
