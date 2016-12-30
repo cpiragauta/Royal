@@ -65,9 +65,9 @@
                                 </table>
                             </td>
                             <td>
-                                @if (peliculas.MedioPelicula.Count() != 0)
+                                @if (peliculas.MedioPelicula.Count != 0)
                                 {
-                                  if(@peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().Afiche != "") { 
+                                    if(@peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().Afiche != "" || @peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().AficheMiniatura != "") {
                                     <img style="width:50px;" src="/@peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().Afiche">
                                   }
                                   else { 

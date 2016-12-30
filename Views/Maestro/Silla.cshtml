@@ -6,7 +6,6 @@
 }
 
 <script>
-
     $(function () {
         $("#tipo_silla").on("submit", function (e) {
             e.preventDefault();
@@ -41,14 +40,16 @@
     });
     $(document).ready(function () {
         if (@Model.RowID!=0) {
-            $(".btn-success").empty().append('Actualizar Objeto @Model.Nombre');
+            $(".btncrearoactualizar").empty().append('Actualizar Objeto @Model.Nombre');
         }
         new Switchery(document.getElementById('demo-sw-checked'));
     })
 </script>
-<h2>Crear objeto sala</h2>
-<a class="btn btn-primary btn-icon" href="@Url.Action("VistaSilla", "Maestro")"><i class="ion-reply-all">  Vista objeto sala</i></a>
-<div id="page-content">
+<div>
+    <p>
+        <a class="btn btn-success" href="@Url.Action("VistaSilla", "Maestro")">Vista objeto sala</a>
+    </p>
+</div>
     <div class="panel">
         <!--Block Styled Form -->
         <!--===================================================-->
@@ -100,8 +101,6 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-
-
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
@@ -130,17 +129,14 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-
             <div class="panel-footer text-right">
-                <button class="btn btn-success">Crear Objeto</button>
+                <button class="btn btn-success btncrearoactualizar">Crear Objeto</button>
             </div>
         </form>
         <!--===================================================-->
         <!--End Block Styled Form -->
-
     </div>
-</div>
+

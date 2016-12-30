@@ -33,7 +33,6 @@ namespace CinemaPOS.Controllers.Pelicula
                 {
                     TeatrosV2.Remove(item2);
                 }
-
             }
 
             ViewBag.TeatrosDisp = TeatrosV2;
@@ -163,7 +162,6 @@ namespace CinemaPOS.Controllers.Pelicula
             }
 
             #endregion
-
             #region Elenco
             var actores = formulario["actores"].Split(',');
             Elenco ObjElenco = new Elenco();
@@ -209,7 +207,6 @@ namespace CinemaPOS.Controllers.Pelicula
             }
 
             #endregion
-
             #region Medio
             MedioPelicula ObjMedio = new MedioPelicula();
             string ruta_fiche = "";
@@ -356,7 +353,6 @@ namespace CinemaPOS.Controllers.Pelicula
                         var nombre = formulario["nombre_porcentaje[]"].Split(',');
                         if (porcentajes.Count() != 0)
                         {
-
                             for (int i = 0; i < porcentajes.Length; i++)
                             {
                                 ObjParticipacion.EncabezadoPeliculaID = codigo_pelicula;
@@ -434,6 +430,7 @@ namespace CinemaPOS.Controllers.Pelicula
                     }
                 }
             }
+
             #endregion
             return Json("Realizado");
         }
@@ -574,9 +571,6 @@ namespace CinemaPOS.Controllers.Pelicula
 
             return Json(validate, JsonRequestBehavior.AllowGet);
         }
-
-
-
         [CheckSessionOutAttribute]
         public JsonResult CargarTeatro(Int32 rowidPelicula)
         {
