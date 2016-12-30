@@ -11,7 +11,6 @@ namespace CinemaPOS.Controllers.Cuenta
     public class CuentaController : Controller
     {
         CinemaPOSEntities db = new CinemaPOSEntities();
-
         //[AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -22,6 +21,7 @@ namespace CinemaPOS.Controllers.Cuenta
             else
             {
                 Session.Clear();
+                Session.Timeout=40;
                 Session.RemoveAll();
             }
             //ViewBag.Message = "Your contact page.";

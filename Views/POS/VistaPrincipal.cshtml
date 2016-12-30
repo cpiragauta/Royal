@@ -3,12 +3,16 @@
 
 @{
     ViewBag.Title = "VistaPrincipal";
-
+    Layout = null;
 }
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>@ViewBag.Title - CinemaPOS</title>
-
+<style>
+    #floating-top-right {
+        z-index: 999999999;
+    }
+</style>
 
 <!--STYLESHEET-->
 <!--=================================================-->
@@ -69,7 +73,6 @@
 <script src="~/Content/plugins/chosen/chosen.jquery.min.js"></script>
 <script src="~/Content/plugins/blockUI/jquery.blockUI.js"></script>
 <!--jQuery [ REQUIRED ]-->
-<script src="~/Content/js/jquery-2.2.4.min.js"></script>
 <!--DataTables [ OPTIONAL ]-->
 <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
 <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
@@ -248,7 +251,9 @@
         <div class="row pad-no mar-no mar-lft">
             <div style="float:right;" class="pad-no mar-no">
                 <ul class="nav nav-tabs tabs-left pad-no mar-no" style="margin-top:30px;border-bottom:none;">
-
+                    <li class="alignright">
+                        <a id="reloj" class="ion-clock" onfocus="window.document.form_reloj.reloj.blur()"  style="font-size:20px"></a>
+                    </li>
                     <li class="alignright">
                         <a class="" href="javascript:Fechas(0)" style="font-size:20px">Hoy&nbsp;<i class="ion-calendar"></i></a>
                     </li>
@@ -268,7 +273,7 @@
                 </ul>
             </div>
         </div>
-        <div class="row">
+        <div class="row pad-lft pad-rgt">
             <div id="panel-funciones" class="tab-pane fade active in">
 
                 <div class="row panel-visualizacion-funciones">
@@ -281,7 +286,7 @@
                                         <input type="text" id="myInput" class="form-control" onkeyup="myFunction()" placeholder="Nombre de la pelicula..">
                                     </div>
                                    
-                                    <table id="tabla-funciones" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                    <table id="tabla-funciones" class="table table-striped table-bordered" cellspacing="0">
                                         <thead style="display:none;">
                                             <tr>
                                                 <th>Poster</th>
@@ -330,6 +335,14 @@
 
                 </div>
             </a>
+            <a class="col-sm-1" style="float:right;">
+                <div class="row text-center">
+                    <div id="" onclick="validar_cupon()" data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Redención de convenios y venta empresarial" style="color:black;font-size:3em;cursor:pointer" class="ion-ios-barcode text-main icon-3x add-tooltip" disabled></div>
+                </div>
+                <div class="row text-center pad-no" style="margin-top:-10%;">
+                    <h5>Cupones</h5>
+                </div>
+            </a>
         </div>
     </div>
     <div class="col-sm-4 pad-no ">
@@ -339,43 +352,6 @@
                     <h3 class="panel-title text-center">Tarifas para la función</h3>
                 </div>
                 <div id="panel-tarifas-funcion" style="height:30%;overflow-y:scroll;overflow-x:hidden;">
-                    <div class="row">
-                        <div class="col-sm-6 mar-hor" style="width:40%;">
-                            <div class="panel panel-mint panel-colorful" style="height:50%">
-                                <div class="pad-all bg-mint text-center">
-                                    <span class="text-2x text-thin">$15.000</span>
-                                    <p>Adulto 2D</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 mar-hor" style="width:40%;">
-                            <div class="panel panel-mint panel-colorful" style="height:50%">
-                                <div class="pad-all bg-mint text-center">
-                                    <span class="text-2x text-thin">$12.000</span>
-                                    <p>Militares 2D</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6 mar-hor" style="width:40%;">
-                            <div class="panel panel-mint panel-colorful" style="height:50%">
-                                <div class="pad-all text-center">
-                                    <span class="text-2x text-thin">$12.000</span>
-                                    <p>Niños 2D</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 mar-hor" style="width:40%;">
-                            <div class="panel panel-mint panel-colorful" style="height:50%">
-                                <div class="pad-all text-center">
-                                    <span class="text-2x text-thin valor_item">$12.000</span>
-                                    <p>TCR 2D</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
 
             </div>
@@ -419,7 +395,6 @@
         })
     }
     function buscar_funciones(fecha) {
-        launchFullScreen(document.documentElement);
         $.ajax({
             url: "/POS/htmlvista",
             async: false,
@@ -536,31 +511,21 @@
     //    }
 
     //}
-    function Alerts(menssage, tipo) {
-        //warning,success,error
-        $.niftyNoty({
-            type: tipo,
-            container: "floating",
-            title: menssage,
-            message: "",
-            closeBtn: true,
-            timer: 5000
-        });
-    }
+
 
     function ver_mapa_sala(SalaID, cantidad, RowID_Funcion) {
-        debugger;
-        if (SalaID == null || SalaID == 0 || RowID_Funcion == 0 || $(".tarifas_id").length==0) {
+        if (SalaID == null || SalaID == 0 || RowID_Funcion == 0 || $(".tarifas_id").length == 0) {
             //swal("Advertencia", "no hay boletas a vender", "warning");
             alert("No hay boleteas para la venta");
+            debugger
+
         }
         else {
-            debugger;
             cantidad = $("#cantidad_sillas").val();
             //ModalProcesandoShow();
             var RowID_Tarifas = "";
             $(".tarifas_id").each(function (index, element) {
-                RowID_Tarifas += $(this).val()+',';
+                RowID_Tarifas += $(this).val() + ',';
             })
 
 
@@ -572,12 +537,14 @@
         }
     }
     $(document).ready(function () {
+        mueveReloj();
         buscar_funciones();
         getLocalIPs(function (ips) {
             if (ips.length > 0) {
                 ip = ips[0];
             }
-        })
+        });
+
     })
     //$(document).keydown(function (event) {
     //    event.preventDefault();
@@ -586,6 +553,17 @@
     //        window.alert("no dejo maximizar");
     //    }
     //});
+    function Alerts(menssage, tipo) {
+        //warning,success,error
+        $.niftyNoty({
+            type: tipo,
+            container: "floating",
+            title: menssage,
+            message: menssage,
+            closeBtn: true,
+            timer: 5000
+        });
+    }
 </script>
 <script>
     function myFunction() {
@@ -652,8 +630,30 @@
 </script>
 
 <script language="JavaScript">
-    function launchFullScreen(element) {
-            document.documentElement.webkitRequestFullScreen();
+    function mueveReloj() {
+        momentoActual = new Date()
+        hora = momentoActual.getHours()
+        minuto = momentoActual.getMinutes()
+        segundo = momentoActual.getSeconds()
+
+        str_segundo = new String(segundo)
+        if (str_segundo.length == 1)
+            segundo = "0" + segundo
+
+        str_minuto = new String(minuto)
+        if (str_minuto.length == 1)
+            minuto = "0" + minuto
+
+        str_hora = new String(hora)
+        if (str_hora.length == 1)
+            hora = "0" + hora
+
+        horaImprimible = hora + " : " + minuto + " : " + segundo
+        $("#reloj").text(horaImprimible)
+        //document.getElementById("reloj").value = horaImprimible;
+        //document.form_reloj.reloj.value = horaImprimible
+
+        setTimeout("mueveReloj()", 1000)
     }
     function requestFullScreen() {
         var el = document.body;
@@ -675,7 +675,8 @@
             }
         }
     }
-    // Lanza en pantalla completa en navegadores que lo soporten
-    // la página entera
+    function validar_cupon() {
+        
+    }
 </script>
 

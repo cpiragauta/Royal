@@ -86,7 +86,7 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
@@ -2336,6 +2336,7 @@
     <Content Include="Views\CRM\ModalReferenciado.cshtml" />
     <Content Include="Views\CRM\NuevoClienteRoyal.cshtml" />
     <Content Include="Views\CRM\RegistroClienteTarjeta.cshtml" />
+    <Content Include="Views\POS\ValidaCupones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

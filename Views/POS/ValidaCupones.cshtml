@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "ValidaCupones";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<script>
+    function validacupones() {
+        $.ajax({
+            url: "/POS/valida_estado_cupon",
+            data: { codigo_convenio: $("#codigo").val() },
+            success: function (data) {
+                $("#cupones").append(data);
+            },
+            error: function (data) {
+                alert(data);
+            }
+        })
+    }
+</script>
+<form>
+    <div class="form-group">
+        <label class="control-label">Codigo Convenio / Venta Empresarial</label>
+        <input type="password" id="codigo"/>
+    </div>
+    <div id="cupones">
+
+    </div>
+</form>
+<h2>ValidaCupones</h2>

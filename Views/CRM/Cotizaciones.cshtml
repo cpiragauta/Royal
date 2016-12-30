@@ -205,23 +205,30 @@
         });
     });
     $('#FechaEntrega').datepicker({
-        format: "dd-mm-yyyy",
+        format: "dd/mm/yyyy",
         todayBtn: "linked",
         autoclose: true,
-        todayHighlight: false
+        todayHighlight: false,
+        startDate:"1d"
     });
+    $('#FechaApertura').change(function () {
+        $('#FechaCierra').datepicker("destroy");
+        $('#FechaCierra').datepicker({
+            format: "dd-mm-yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false,
+            startDate: $('#FechaApertura').val()
+        });
+    })
     $('#FechaApertura').datepicker({
-        format: "dd-mm-yyyy",
+        format: "dd/mm/yyyy",
         todayBtn: "linked",
         autoclose: true,
-        todayHighlight: false
+        todayHighlight: false,
+        startDate:"1d"
     });
-    $('#FechaCierra').datepicker({
-        format: "dd-mm-yyyy",
-        todayBtn: "linked",
-        autoclose: true,
-        todayHighlight: false
-    });
+    
 </script>
 
 <!--GUARDAR COTIZACIÓN-->
