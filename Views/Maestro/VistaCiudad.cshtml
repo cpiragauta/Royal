@@ -31,7 +31,8 @@
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Descripción</th>   
-                    <th>Departamento</th>                 
+                    <th>Departamento</th>
+                    <th>País</th>                 
                     <th></th>
                 </tr>
             </thead>
@@ -42,7 +43,8 @@
                         <td>@lista_Ciudad.RowID</td>
                         <td>@lista_Ciudad.Nombre</td>
                         <td>@lista_Ciudad.Descripcion</td>
-                        <td>@lista_Ciudad.Departamento.Nombre</td>                    
+                        <td>@lista_Ciudad.Departamento.Nombre</td>
+                        <td>@lista_Ciudad.Departamento.Pais.Nombre</td>                    
                         <td><a href="@Url.Action("Ciudad", "Maestro", new { RowID_Lista = lista_Ciudad.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
                     </tr>
                 }

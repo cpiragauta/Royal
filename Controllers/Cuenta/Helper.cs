@@ -26,7 +26,28 @@ namespace CinemaPOS.Controllers
                     var url = new UrlHelper(filterContext.RequestContext);
                     var loginUrl = url.Content("~/Cuenta/Login");
                     filterContext.HttpContext.Response.Redirect(loginUrl, true);
-                }
+                }            
+                //else {                    
+                //    List<RolMenu> PantallasAutorizadas = user.Rol.RolMenu.ToList();
+                //    String PantallaSolicitada = "/" + filterContext.ActionDescriptor.ControllerDescriptor.ControllerName + "/" + filterContext.ActionDescriptor.ActionName;
+                //    bool acceso = false;
+                //    if (PantallaSolicitada.Contains("Index"))
+                //    { return; }
+                //    foreach (RolMenu item in PantallasAutorizadas)
+                //    {
+                //        if (item.Menu.URL == PantallaSolicitada && item.Menu.Activo == true)
+                //        {
+                //            acceso = true;
+                //            return;
+                //        }
+                //    }
+                //    if (acceso == false)
+                //    {
+                //        var url = new UrlHelper(filterContext.RequestContext);
+                //        var loginUrl = url.Content("~/Inicio/Index");
+                //        filterContext.HttpContext.Response.Redirect(loginUrl, true);
+                //    }                    
+                //}
                 //else if (user.ind_cambiarclave == 1)
                 //{
                 //    var url = new UrlHelper(filterContext.RequestContext);

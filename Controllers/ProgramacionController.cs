@@ -529,6 +529,10 @@ namespace CinemaPOS.Controllers
                                     {
                                         tabla += "<i class=\"ion-cash icon-identificador\" style=\"font-size: x-large;\">&nbsp;</i>";
                                     }
+                                    if (funcion.BoletaVendida.Count > 0)
+                                    {
+                                        tabla += "<i class=\"ion-ios-film-outline icon-identificador\" style=\"font-size: x-large;\">&nbsp;</i>";
+                                    }
                                     if (funcion.Estado != null)
                                     {
                                         if (funcion.Estado.Nombre == "Abierta")
@@ -683,8 +687,16 @@ namespace CinemaPOS.Controllers
 
         public JsonResult EliminarFuncion(int RowID_Funcion)
         {
-            if (db.Funcion.FirstOrDefault(f => f.RowID == RowID_Funcion) != null)
+            String tipoMensaje = "", Respuesta = "";
+            if (db.Funcion.FirstOrDefault(f => f.RowID == RowID_Funcion) != null) //Valido si existe la funcion
             {
+                //Valido si esta funcion tiene boletas Vendidas
+                List<BoletaVendida> BoletasVendidas = db.BoletaVendida.Where(f => f.FuncionID == RowID_Funcion).ToList();
+                if (BoletasVendidas.Count > 0)
+                {
+                    return Json(new { tipoMensaje = "warning", Respuesta = "No puede eliminar esta Función, tiene una boleta Vendida." });
+                }
+
                 List<ListaPrecioFuncion> PreciosFuncion = db.ListaPrecioFuncion.Where(f => f.FuncionID == RowID_Funcion).ToList();
 
                 foreach (ListaPrecioFuncion item in PreciosFuncion)
@@ -695,8 +707,10 @@ namespace CinemaPOS.Controllers
 
                 db.Funcion.Remove(db.Funcion.Where(lt => lt.RowID == RowID_Funcion).First());
                 db.SaveChanges();
+                Respuesta = "Función eliminada correctamente";
+                tipoMensaje = "success";
             }
-            return Json("");
+            return Json(new { tipoMensaje = tipoMensaje, Respuesta = Respuesta});
         }
 
         public String ValidarFuncion(Funcion funcion, List<Funcion> FuncionesExistentes)
