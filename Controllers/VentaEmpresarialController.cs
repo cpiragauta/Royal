@@ -64,6 +64,13 @@ namespace CinemaPOS.Controllers
                 reportViewer.Width = Unit.Percentage(100);
                 reportViewer.Height = Unit.Percentage(100);
                 ViewBag.ReportViewer = reportViewer;
+                ViewBag.detalle = detalle;
+                ViewBag.Nombre = detalle.FirstOrDefault().EncabezadoVentaEmpresarial.Nombre;
+                ViewBag.FechaI = detalle.FirstOrDefault().EncabezadoVentaEmpresarial.FechaInicio.Value.ToShortDateString();
+                ViewBag.FechaF = detalle.FirstOrDefault().EncabezadoVentaEmpresarial.FechaFinal.Value.ToShortDateString();
+                ViewBag.Formato = detalle.FirstOrDefault().EncabezadoVentaEmpresarial.Opcion1.Nombre;
+                ViewBag.porcentaje = "$"+detalle.FirstOrDefault().Valor;
+                ViewBag.codigo = detalle.FirstOrDefault().Codigo;
             }
             else
             {
