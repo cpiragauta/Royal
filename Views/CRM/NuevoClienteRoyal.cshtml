@@ -35,11 +35,10 @@
                         <label class="control-label">*Tipo Identificaci&oacute;n:</label>
                         <select name="tipo_identificacion" id="tipo_identificacion" class="form-control" required>
                             <option value="" disabled selected>Seleccione una opcion</option>
-                            @*@foreach (var Tipo_Id in (List<CinemaPOS.Models.Opcion>)ViewBag.TipoIdentificacion)
+                            @foreach (var Tipo_Id in (List<CinemaPOS.Models.Opcion>)ViewBag.TipoIdentificacion)
                             {
-
                                 <option value="@Tipo_Id.RowID">@Tipo_Id.Nombre</option>
-                            }*@
+                            }
                         </select>
                     </div>
                 </div>
@@ -62,7 +61,7 @@
                         <label class="control-label">*Genero:</label>
                         <select name="GeneroID" id="GeneroID" class="form-control" required>
                             <option value="" disabled selected>Seleccione una opci&oacute;n</option>
-                            @*@foreach (var opciones in (List<CinemaPOS.Models.Opcion>)ViewBag.SexoID)
+                            @foreach (var opciones in (List<CinemaPOS.Models.Opcion>)ViewBag.SexoID)
                             {
                                 if (Model.GeneroID == opciones.RowID)
                                 {
@@ -73,7 +72,7 @@
                                     <option value="@opciones.RowID">@opciones.Nombre</option>
                                 }
 
-                            }*@
+                            }
                         </select>
                     </div>
                 </div>
@@ -187,7 +186,7 @@
         jQuery("#tipo_identificacion").chosen({ width: "95%;" });
 
         $('#FechaNacimiento').datepicker({
-            format: "dd-mm-yyyy",
+            format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
             todayHighlight: false,

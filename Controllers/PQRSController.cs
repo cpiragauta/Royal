@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CinemaPOS.Models;
-
+using CinemaPOS.ModelosPropios;
 namespace CinemaPOS.Controllers.Inicio
 {
     public class PQRSController : Controller
@@ -60,6 +60,8 @@ namespace CinemaPOS.Controllers.Inicio
             
             ViewBag.Teatros = db.Teatro.ToList();
             ViewBag.TipoPQRS = db.TipoSolicitud.Where(ts => ts.Estado == true).ToList();
+            ViewBag.CambioArea = db.Opcion.Where(f => f.TipoID == Util.Constantes.TIPO_AREA).ToList();
+            ViewBag.Estados = db.Estado.Where(f => f.TipoEstadoID == Util.Constantes.TIPO_ESTADO_PQRS).ToList();
             return View();
         }
         public JsonResult Guardar_PQRS(FormCollection formulario,int? RowIDTercero)
@@ -67,18 +69,18 @@ namespace CinemaPOS.Controllers.Inicio
             Pqrs Obj_pqrs = new Pqrs();
             
             formulario = DeSerialize(formulario);
-            Obj_pqrs.TeatroID = int.Parse(formulario["teatro"]);
+            Obj_pqrs.TeatroID = int.Parse(formulario["TeatroID"]);
             Obj_pqrs.TipoSolicitudID = int.Parse(formulario["tiposolicitud"]);
             Obj_pqrs.TerceroID = RowIDTercero;
             Obj_pqrs.EstadoID = db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOPQRS" && e.Nombre == "Recibida").FirstOrDefault().RowID;
             Obj_pqrs.Titulo = formulario["Titulo"];
             Obj_pqrs.Descripcion = formulario["descripcion-pqrs"];
-            Obj_pqrs.FechaSuceso = ModelosPropios.Util.FechaInsertar( formulario["fecha_suceso"]);
+            Obj_pqrs.FechaSuceso = Convert.ToDateTime(formulario["fecha_suceso"]);
             Obj_pqrs.FechaCreacion = DateTime.Now;
             Obj_pqrs.CreadoPor = Session["usuario_creacion"].ToString();
             db.Pqrs.Add(Obj_pqrs);
             db.SaveChanges();
-            return Json(new { respuesta="Creado Exitosamente"});
+            return Json(Obj_pqrs.RowID);
         }
         public JsonResult CargarCLiente()
         {
@@ -112,6 +114,30 @@ namespace CinemaPOS.Controllers.Inicio
         public ActionResult Seguimiento(int? Rowid_Pqrs)
         {
             return View(db.Pqrs.Where(s=>s.RowID==Rowid_Pqrs).FirstOrDefault());
+        }
+
+        public JsonResult GuardarSeguimiento(FormCollection formulario)
+        {
+            formulario = DeSerialize(formulario);
+
+            Seguimiento seguimiento = new Seguimiento();
+            try
+            {
+                seguimiento.AreaAnteriorID = Convert.ToInt32(formulario["AreaAnteriorID"]);
+                seguimiento.AreaActualID = Convert.ToInt32(formulario["AreaActualID"]);
+                seguimiento.EstadoID = Convert.ToInt32(formulario["EstadoID"]);
+                seguimiento.Observaciones = formulario["Observaciones"];
+                seguimiento.FechaCreacion = DateTime.Now;
+                seguimiento.CreadoPor = Session["usuario_creacion"].ToString();
+                seguimiento.PQRS_ID = Convert.ToInt32(formulario["PQRS_ID"]);
+                db.Seguimiento.Add(seguimiento);
+                db.SaveChanges();
+                return Json(seguimiento.RowID);
+            }
+            catch (Exception)
+            {
+                return Json("error");
+            }
         }
     }
 }

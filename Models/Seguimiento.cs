@@ -25,7 +25,7 @@ namespace CinemaPOS.Models
         public Nullable<int> EstadoID { get; set; }
         public string Observaciones { get; set; }
         public Nullable<System.DateTime> FechaCreacion { get; set; }
-        public Nullable<System.DateTime> CreadoPor { get; set; }
+        public string CreadoPor { get; set; }
         public Nullable<int> PQRS_ID { get; set; }
     
         public virtual Estado Estado { get; set; }

@@ -76,6 +76,7 @@
 <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
 <!--DataTables Sample [ SAMPLE ]-->
 <script src="~/Content/js/demo/tables-datatables.js"></script>
+<link href="~/Content/css/demo/nifty-demo-icons.css" rel="stylesheet" />
 
 <style>
     /* Animación con keyframe llamada "latidos" */
@@ -215,18 +216,22 @@
     body {
         width: expression(document.body.clientWidth > 1201? "1200px": "1800px");
     }
+    .funcion:hover{
+        cursor:pointer;
+        background-color:rgba(129, 122, 122, 0.93);
+        -moz-transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
+    }
 </style>
-<script>
 
-</script>
 <div class="panel">
     <input type="hidden" id="cantidad_boletas" />
-    <div class="tab-content">
-        <div class="row">
-
-            <div class="col-sm-8" style="float:left;">
-                <ul class="nav nav-tabs tabs-left" style="margin-top:30px;border-bottom:none;">
-                    <li class="col-sm-4">
+    
+    <div class="col-sm-8 pad-no">
+        <div class="row pad-no mar-no">
+            <div class="row col-lg-12 pad-no mar-no">
+                <di class="nav nav-tabs tabs-left" style="border-bottom:none;">
                         <div id="info-taq">
                             <div class="col-sm-12">
                                 <div class="pad-no mar-no text-overflow">
@@ -237,7 +242,13 @@
 
 
                         </div>
-                    </li>
+                </di>
+            </div>
+        </div>
+        <div class="row pad-no mar-no mar-lft">
+            <div style="float:right;" class="pad-no mar-no">
+                <ul class="nav nav-tabs tabs-left pad-no mar-no" style="margin-top:30px;border-bottom:none;">
+
                     <li class="alignright">
                         <a class="" href="javascript:Fechas(0)" style="font-size:20px">Hoy&nbsp;<i class="ion-calendar"></i></a>
                     </li>
@@ -252,273 +263,138 @@
                     </li>
                     @*<li>
 
-                            <A HREF="javascript:void(0);" onclick="requestFullScreen()">Pantalla completa</A>
-                        </li>*@
+                    <A HREF="javascript:void(0);" onclick="requestFullScreen()">Pantalla completa</A>
+                </li>*@
                 </ul>
             </div>
         </div>
+        <div class="row">
+            <div id="panel-funciones" class="tab-pane fade active in">
 
-        <div id="panel-funciones" class="tab-pane fade active in">
+                <div class="row panel-visualizacion-funciones">
+                    <div class="panel-body  mar-no ">
+                        <div class="row">
+                            <div class="">
+                                <div class="row" id="caja-funciones" style="height:67%;overflow-y: scroll; overflow-x:hidden;">
+                                    <div class="input-group mar-btm">
+                                        <span class="input-group-addon"><i class="ion-ios-search-strong "></i></span>
+                                        <input type="text" id="myInput" class="form-control" onkeyup="myFunction()" placeholder="Nombre de la pelicula..">
+                                    </div>
+                                   
+                                    <table id="tabla-funciones" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                        <thead style="display:none;">
+                                            <tr>
+                                                <th>Poster</th>
+                                                <th>Descripcion</th>
+                                                <th>Funciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                        </tbody>
 
-            <div class="row panel-visualizacion-funciones">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <div class="row" id="caja-funciones" style="height:70%;overflow-y: scroll; overflow-x:hidden;">
-                                <input type="search" id="myInput" class="form-control col-sm-4" onkeyup="myFunction()" placeholder="Nombre de la pelicula..">
-                                <table id="tabla-funciones" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                                    <thead style="display:none;">
-                                        <tr>
-                                            <th>Poster</th>
-                                            <th>Descripcion</th>
-                                            <th>Funciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <img class="poster-peliculas" src="~/Repositorio_Imagenes/Poster_Peliculas/LA VIDA SECRETA DE LAS MASCOTAS.jpg" />
-                                            </td>
-                                            <td>
-                                                <h5>LA VIDA SECRETA DE LAS MASCOTAS</h5>
-                                                <h5>2D Doblada</h5>
-                                                <h5>Infantil / Comedia</h5>
-                                                <h5>Capacidad de la sala</h5>
-                                            </td>
-                                            <td>
-                                                <div id="carrusel-funciones-rowiddetallepeliculas1" class="carousel slide" data-ride="carousel" data-interval="false">
-                                                    <div class="carousel-inner text-center " style="margin-left:30px;">
-
-                                                        <!--Item 1-->
-                                                        <div class='item active'>
-                                                            <div class='col-sm-3 funcion mar-hor'>
-                                                                <h5 class='text-main'>10:00 AM</h5>
-                                                                <p>
-                                                                    Sala 1 Ultra<br />
-                                                                    Disponible: 120
-                                                                </p>
-                                                            </div>
-                                                            <div class='col-sm-3 funcion mar-hor'>
-                                                                <h5 class='text-main'>10:00 AM</h5>
-                                                                <p>
-                                                                    Sala 1 Ultra<br />
-                                                                    Disponible: 120
-                                                                </p>
-                                                            </div>
-                                                            <div class='col-sm-3 funcion mar-hor'>
-                                                                <h5 class='text-main'>10:00 AM</h5>
-                                                                <p>
-                                                                    Sala 1 Ultra<br />
-                                                                    Disponible: 120
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="item">
-                                                            <div class="col-sm-3 funcion mar-hor">
-                                                                <h5 class="text-main">10:00 AM</h5>
-                                                                <p>
-                                                                    Sala 1 Ultra<br />
-                                                                    Disponible: 120
-                                                                </p>
-                                                            </div>
-                                                            <div class="col-sm-3 funcion mar-hor">
-                                                                <h5 class="text-main">10:00 AM</h5>
-                                                                <p>
-                                                                    Sala 1 Ultra<br />
-                                                                    Disponible: 120
-                                                                </p>
-                                                            </div>
-                                                            <div class="col-sm-3 funcion mar-hor">
-                                                                <h5 class="text-main">10:00 AM</h5>
-                                                                <p>
-                                                                    Sala 1 Ultra<br />
-                                                                    Disponible: 120
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!--carousel-control-->
-                                                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-                                                    <a class='carousel-control left' data-slide='prev' href='#carrusel-funciones-rowiddetallepeliculas1'><i class='demo-pli-arrow-left icon-3x'></i></a>
-                                                    <a class='carousel-control right' data-slide='next' href='#carrusel-funciones-rowiddetallepeliculas1' style='margin-right:-20px;'><i class='demo-pli-arrow-right icon-3x'></i></a>
-                                                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img class="poster-peliculas" src="~/Repositorio_Imagenes/Poster_Peliculas/LA VIDA SECRETA DE LAS MASCOTAS.jpg" />
-                                            </td>
-                                            <td>
-                                                <h5>LA VIDA SECRETA DE LAS MASCOTAS</h5>
-                                                <h5>2D Doblada</h5>
-                                                <h5>Infantil / Comedia</h5>
-                                                <h5>Capacidad de la sala</h5>
-                                            </td>
-                                            <td>
-                                                <div id="carrusel-funciones-rowiddetallepeliculas1" class="carousel slide" data-ride="carousel" data-interval="false">
-                                                    <div class="carousel-inner text-center " style="margin-left:30px;">
-
-                                                        <!--Item 1-->
-                                                        <div class='item active'>
-                                                            <div class='col-sm-3 funcion mar-hor'>
-                                                                <h5 class='text-main'>10:00 AM</h5>
-                                                                <p>
-                                                                    Sala 1 Ultra<br />
-                                                                    Disponible: 120
-                                                                </p>
-                                                            </div>
-                                                            <div class='col-sm-3 funcion mar-hor'>
-                                                                <h5 class='text-main'>10:00 AM</h5>
-                                                                <p>
-                                                                    Sala 1 Ultra<br />
-                                                                    Disponible: 120
-                                                                </p>
-                                                            </div>
-                                                            <div class='col-sm-3 funcion mar-hor'>
-                                                                <h5 class='text-main'>10:00 AM</h5>
-                                                                <p>
-                                                                    Sala 1 Ultra<br />
-                                                                    Disponible: 120
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="item">
-                                                            <div class="col-sm-3 funcion mar-hor">
-                                                                <h5 class="text-main">10:00 AM</h5>
-                                                                <p>
-                                                                    Sala 1 Ultra<br />
-                                                                    Disponible: 120
-                                                                </p>
-                                                            </div>
-                                                            <div class="col-sm-3 funcion mar-hor">
-                                                                <h5 class="text-main">10:00 AM</h5>
-                                                                <p>
-                                                                    Sala 1 Ultra<br />
-                                                                    Disponible: 120
-                                                                </p>
-                                                            </div>
-                                                            <div class="col-sm-3 funcion mar-hor">
-                                                                <h5 class="text-main">10:00 AM</h5>
-                                                                <p>
-                                                                    Sala 1 Ultra<br />
-                                                                    Disponible: 120
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!--carousel-control-->
-                                                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-                                                    <a class='carousel-control left' data-slide='prev' href='#carrusel-funciones-rowiddetallepeliculas1'><i class='demo-pli-arrow-left icon-3x'></i></a>
-                                                    <a class='carousel-control right' data-slide='next' href='#carrusel-funciones-rowiddetallepeliculas1' style='margin-right:-20px;'><i class='demo-pli-arrow-right icon-3x'></i></a>
-                                                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-
-                                </table>
-                            </div>
-
-                            <div class="row " style="border:solid 1px rgba(174, 174, 174, 0.43);">
-                                <div class="col-sm-4">
-                                    <img src="~/Repositorio_Imagenes/Imagenes_Generales/logo1.png" style="height:75px;width:200px;" />
+                                    </table>
                                 </div>
-                                <a class="col-sm-1" style="float:right;">
-                                    <div class="row text-center">
-                                        <i style="color:red;font-size:40px" class="ion-close"></i>
-                                    </div>
-                                    <div class="row text-center pad-no" style="margin-top:-10%;">
-                                        <h5>Cancelar pedido</h5>
 
-                                    </div>
-                                </a>
-
-                                <a class="col-sm-1" style="float:right;">
-                                    <div class="row text-center">
-                                        <div id="ver_sala" style="color:black;font-size:50px" class="ion-easel" disabled></div>
-                                    </div>
-                                    <div class="row text-center pad-no" style="margin-top:-10%;">
-                                        <h5>Ver sala</h5>
-
-                                    </div>
-                                </a>
-                            </div>
-
-                        </div>
-                        <div class="col-sm-4" style="margin-top:-100px;">
-                            <div class="row panel">
-                                <div class="panel-heading" style="background-color:#c3c3c3">
-                                    <h3 class="panel-title text-center">Tarifas para la función</h3>
-                                </div>
-                                <div id="panel-tarifas-funcion" style="height:30%;overflow-y:scroll;overflow-x:hidden;">
-                                    <div class="row">
-                                        <div class="col-sm-6 mar-hor" style="width:40%;">
-                                            <div class="panel panel-mint panel-colorful" style="height:50%">
-                                                <div class="pad-all bg-mint text-center">
-                                                    <span class="text-2x text-thin">$15.000</span>
-                                                    <p>Adulto 2D</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 mar-hor" style="width:40%;">
-                                            <div class="panel panel-mint panel-colorful" style="height:50%">
-                                                <div class="pad-all bg-mint text-center">
-                                                    <span class="text-2x text-thin">$12.000</span>
-                                                    <p>Militares 2D</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-6 mar-hor" style="width:40%;">
-                                            <div class="panel panel-mint panel-colorful" style="height:50%">
-                                                <div class="pad-all text-center">
-                                                    <span class="text-2x text-thin">$12.000</span>
-                                                    <p>Niños 2D</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 mar-hor" style="width:40%;">
-                                            <div class="panel panel-mint panel-colorful" style="height:50%">
-                                                <div class="pad-all text-center">
-                                                    <span class="text-2x text-thin valor_item">$12.000</span>
-                                                    <p>TCR 2D</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
+                                
 
                             </div>
-                            <div class="row panel" style="height:60%;overflow-y:hidden;overflow-x:hidden;">
-                                <div class="panel-heading" style="background-color:#c3c3c3;">
-                                    <h3 class="panel-title text-center">Items a vender</h3>
-                                </div>
-                                <div id="boletas-comprar" style="height:80%;overflow-y:scroll;overflow-x:hidden;">
+                            
 
-
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6" id="precio-items"><h4>Total $</h4></div>
-                                    <div class="col-sm-6" id="cantidad-items"><h4>Total #:</h4></div>
-                                    <input type="hidden" id="cantidad_sillas" />
-                                </div>
-                            </div>
                         </div>
 
                     </div>
-
                 </div>
             </div>
         </div>
+        <div class="row" style="border:solid 1px rgba(174, 174, 174, 0.43);padding-right:3%;padding-bottom:2%;">
+            <div class="col-sm-4">
+                <img src="~/Repositorio_Imagenes/Imagenes_Generales/logo1.png" style="width:40%" />
+            </div>
+            <a class="col-sm-1 add-tooltip" style="float:right;" data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Remover la boletas seleccionadas para la venta">
+                <div class="row text-center">
+                    <i style="color:red;font-size:3em;cursor:pointer" class="icon-remove_shopping_cart icon-3x icon-fw"></i>
+                </div>
+                <div class="row text-center pad-no" style="margin-top:-10%;">
+                    <h5>Cancelar</h5>
 
+                </div>
+            </a>
+
+            <a class="col-sm-1" style="float:right;">
+                <div class="row text-center">
+                    <div id="ver_sala" onclick="javascript:ver_mapa_sala(0,0,0)" data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Permite ver en el mapa de la sala para la función seleccionada" style="color:black;font-size:3em;cursor:pointer" class="demo-pli-monitor-2 text-main icon-3x add-tooltip" disabled></div>
+                </div>
+                <div class="row text-center pad-no" style="margin-top:-10%;">
+                    <h5>Ver sala</h5>
+
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-sm-4 pad-no ">
+        <div class="">
+            <div class="row panel">
+                <div class="panel-heading" style="background-color:#c3c3c3">
+                    <h3 class="panel-title text-center">Tarifas para la función</h3>
+                </div>
+                <div id="panel-tarifas-funcion" style="height:30%;overflow-y:scroll;overflow-x:hidden;">
+                    <div class="row">
+                        <div class="col-sm-6 mar-hor" style="width:40%;">
+                            <div class="panel panel-mint panel-colorful" style="height:50%">
+                                <div class="pad-all bg-mint text-center">
+                                    <span class="text-2x text-thin">$15.000</span>
+                                    <p>Adulto 2D</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 mar-hor" style="width:40%;">
+                            <div class="panel panel-mint panel-colorful" style="height:50%">
+                                <div class="pad-all bg-mint text-center">
+                                    <span class="text-2x text-thin">$12.000</span>
+                                    <p>Militares 2D</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 mar-hor" style="width:40%;">
+                            <div class="panel panel-mint panel-colorful" style="height:50%">
+                                <div class="pad-all text-center">
+                                    <span class="text-2x text-thin">$12.000</span>
+                                    <p>Niños 2D</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 mar-hor" style="width:40%;">
+                            <div class="panel panel-mint panel-colorful" style="height:50%">
+                                <div class="pad-all text-center">
+                                    <span class="text-2x text-thin valor_item">$12.000</span>
+                                    <p>TCR 2D</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="row panel" style="overflow-y:hidden;overflow-x:hidden;">
+                <div class="panel-heading" style="background-color:#c3c3c3;">
+                    <h3 class="panel-title text-center">Items a vender</h3>
+                </div>
+                <div id="boletas-comprar" style="height:80%;overflow-y:scroll;overflow-x:hidden;">
+
+
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-6" id="precio-items"><h4>Total $</h4></div>
+                    <div class="col-sm-6" id="cantidad-items"><h4>Total #:</h4></div>
+                    <input type="hidden" id="cantidad_sillas" />
+                </div>
+            </div>
+        </div>
     </div>
     <input type="hidden" id="RowID_Funcion" />
 </div>
@@ -530,6 +406,7 @@
         debugger;
         $.ajax({
             url: "/POS/GetFechaFiltro",
+            async: false,
             data: { accion: accion, fechavista: $("#fecha_filtro").text() },
 
             success: function (data) {
@@ -545,6 +422,7 @@
         launchFullScreen(document.documentElement);
         $.ajax({
             url: "/POS/htmlvista",
+            async: false,
             data: { fecha_programacion: $("#fecha_filtro").text(), multicineID: 1 },
             cache: false,
             success: function (data) {
@@ -556,27 +434,31 @@
 
     }
     function get_tarifas(rowid_funcion) {
-        $.ajax({
-            url: "/POS/Get_Tarifas_Funcion",
-            data: {
-                RowID_Funcion: rowid_funcion
-            },
-            success:function(data){
-                $("#panel-tarifas-funcion").empty().append(data);
-                $("#boletas-comprar").empty();
 
-                $("#ver_sala").attr('onclick', 'javascrip:ver_mapa_sala(' + $("#SalaID").val() + ',0,' + rowid_funcion + ')');
-                ContarBoletasVender();
-            },
-            error: function () {
-                Console.log("Error");
-            }
-        })
+            $.ajax({
+                url: "/POS/Get_Tarifas_Funcion",
+                async: false,
+                data: {
+                    RowID_Funcion: rowid_funcion
+                },
+                success: function (data) {
+                    $("#panel-tarifas-funcion").empty().append(data);
+                    $("#boletas-comprar").empty();
+
+                    $("#ver_sala").attr('onclick', 'javascrip:ver_mapa_sala(' + $("#SalaID").val() + ',0,' + rowid_funcion + ')');
+                    ContarBoletasVender();
+                },
+                error: function () {
+                    Console.log("Error");
+                }
+            })
+        
     }
     function adicionar_item(rowid_funcion) {
 
         $.ajax({
             url: "/POS/AdicionarItemVenta",
+            async: false,
             data: {
                 RowID_ListaFuncion: rowid_funcion,
                 cantidad: $('.' + rowid_funcion + '').length + 1,
@@ -654,22 +536,40 @@
     //    }
 
     //}
+    function Alerts(menssage, tipo) {
+        //warning,success,error
+        $.niftyNoty({
+            type: tipo,
+            container: "floating",
+            title: menssage,
+            message: "",
+            closeBtn: true,
+            timer: 5000
+        });
+    }
 
     function ver_mapa_sala(SalaID, cantidad, RowID_Funcion) {
         debugger;
-        cantidad = $("#cantidad_sillas").val();
-        //ModalProcesandoShow();
-        var RowID_Tarifas = "";
-        $(".tarifas_id").each(function (index, element) {
-            RowID_Tarifas += $(this).val()+',';
-        })
+        if (SalaID == null || SalaID == 0 || RowID_Funcion == 0 || $(".tarifas_id").length==0) {
+            //swal("Advertencia", "no hay boletas a vender", "warning");
+            alert("No hay boleteas para la venta");
+        }
+        else {
+            debugger;
+            cantidad = $("#cantidad_sillas").val();
+            //ModalProcesandoShow();
+            var RowID_Tarifas = "";
+            $(".tarifas_id").each(function (index, element) {
+                RowID_Tarifas += $(this).val()+',';
+            })
 
 
 
 
-        var urlWithCont = '../POS/Mapa_Sala_funcion?RowID_Sala=' + SalaID + '&cantidad_sillas_venta=' + cantidad + '&RowIDFuncion=' + RowID_Funcion + '&RowIDTarifas=' + RowID_Tarifas + '';
-        console.log(urlWithCont);
-        $("#Dialog").load(urlWithCont.trim()).dialog('open');
+            var urlWithCont = '../POS/Mapa_Sala_funcion?RowID_Sala=' + SalaID + '&cantidad_sillas_venta=' + cantidad + '&RowIDFuncion=' + RowID_Funcion + '&RowIDTarifas=' + RowID_Tarifas + '';
+            console.log(urlWithCont);
+            $("#Dialog").load(urlWithCont.trim()).dialog('open');
+        }
     }
     $(document).ready(function () {
         buscar_funciones();

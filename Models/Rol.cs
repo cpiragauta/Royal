@@ -28,6 +28,7 @@ namespace CinemaPOS.Models
         public Nullable<System.DateTime> FechaModificacion { get; set; }
         public Nullable<bool> Sincronizado { get; set; }
         public Nullable<int> RowIDCentral { get; set; }
+        public string Codigo { get; set; }
     
         public virtual ICollection<RolMenu> RolMenu { get; set; }
         public virtual ICollection<UsuarioSistema> UsuarioSistema { get; set; }

@@ -740,6 +740,7 @@ namespace CinemaPOS.Controllers.Master
                     {
                         numeracion = false;
                     }
+
                     string adjunto = formulario["nombre"] + Path.GetExtension(documento.FileName);
                     documento.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales/" + adjunto));
                     ObjSillaTipo.Nombre = formulario["nombre"];
@@ -1112,6 +1113,36 @@ namespace CinemaPOS.Controllers.Master
                         }).ToList();
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+        public string CargarSellosV2(int rowID)
+        {
+
+            string result = "<option value='' disabled>Seleccione una Opción</option>";
+            List<Tercero> tercero = db.Tercero.Where(f => f.TipoTerceroID == Util.Constantes.TIPO_SELLO).Distinct().ToList();
+            List<Sello_Distribuidor> diss = db.Sello_Distribuidor.Where(f => f.DistribuidorID == rowID).Distinct().ToList();
+            bool duplicate = false;
+            foreach (Tercero item in tercero)
+            {
+                duplicate = false;
+
+                foreach (Sello_Distribuidor sello in diss)
+                {
+                    if (item.RowID == sello.SelloID)
+                    {
+                        duplicate = true;
+                    }
+
+                }
+                if (duplicate)
+                {
+                    result += "<option value =" + item.RowID + " selected='selected'>" + item.Identificacion + " - " + item.Nombre + " " + item.Apellidos + "</option>";
+                }
+                else
+                {
+                    result += "<option value =" + item.RowID + ">" + item.Identificacion + " - " + item.Nombre + " " + item.Apellidos + "</option>";
+                }
+            }
+            return result;
+        }   
 
         #endregion
         #region Opcion
@@ -2012,12 +2043,37 @@ namespace CinemaPOS.Controllers.Master
                 }
                 db.SaveChanges();
                 if (rowid == null || rowid == 0)
-                { MailSender.Enviar_Actividad(actividad, "PLANTILLA_ACTIVIDAD", Session["usuario_creacion"].ToString()); }
+                { MailSender.Enviar_Actividad(actividad, "PLANTILLA_ACTIVIDAD", Session["usuario_creacion"].ToString(),""); }
                 return Json(new { respuesta = "ok", Act = actividad.rowID });
             }
             catch (Exception e)
             { return Json(new { respuesta = "error", Act = actividad.rowID }); }
         }
         #endregion
+
+        public string CodigoEstado()
+        {
+            List<Estado> objestado = db.Estado.ToList();
+            Estado estadoactualiza = new Estado();
+            foreach (Estado item in objestado)
+            {
+                estadoactualiza = db.Estado.Where(e => e.RowID == item.RowID).FirstOrDefault();
+                estadoactualiza.Codigo = item.Nombre.Replace(" ","").ToUpper();
+                db.SaveChanges();
+            }
+            return "Actualizacion exitosa";
+        }
+        public string CodigoRol()
+        {
+            List<Rol> objrol = db.Rol.ToList();
+            Rol rolactualiza = new Rol();
+            foreach (Rol item in objrol)
+            {
+                rolactualiza = db.Rol.Where(e => e.RowID == item.RowID).FirstOrDefault();
+                rolactualiza.Codigo = item.Nombre.Replace(" ", "").ToUpper();
+                db.SaveChanges();
+            }
+            return "Actualizacion exitosa";
+        }
     }
 }

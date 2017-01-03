@@ -19,7 +19,6 @@ namespace CinemaPOS.Models
             this.DetalleConvenio = new HashSet<DetalleConvenio>();
             this.EncabezadoConvenio = new HashSet<EncabezadoConvenio>();
             this.Actividades = new HashSet<Actividades>();
-            this.OportunidadVenta = new HashSet<OportunidadVenta>();
             this.TarjetaMembresia = new HashSet<TarjetaMembresia>();
             this.TarjetaMembresiaClienteRoyal = new HashSet<TarjetaMembresiaClienteRoyal>();
             this.DetallePelicula = new HashSet<DetallePelicula>();
@@ -35,21 +34,22 @@ namespace CinemaPOS.Models
             this.PorcentajeParticipacion = new HashSet<PorcentajeParticipacion>();
             this.Pqrs = new HashSet<Pqrs>();
             this.Sala = new HashSet<Sala>();
-            this.Seguimiento = new HashSet<Seguimiento>();
             this.MapaSala = new HashSet<MapaSala>();
             this.Teatro = new HashSet<Teatro>();
             this.Taquilla = new HashSet<Taquilla>();
+            this.OportunidadVenta = new HashSet<OportunidadVenta>();
+            this.Seguimiento = new HashSet<Seguimiento>();
         }
     
         public int RowID { get; set; }
         public Nullable<int> TipoEstadoID { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
+        public string Codigo { get; set; }
     
         public virtual ICollection<DetalleConvenio> DetalleConvenio { get; set; }
         public virtual ICollection<EncabezadoConvenio> EncabezadoConvenio { get; set; }
         public virtual ICollection<Actividades> Actividades { get; set; }
-        public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }
         public virtual ICollection<TarjetaMembresia> TarjetaMembresia { get; set; }
         public virtual ICollection<TarjetaMembresiaClienteRoyal> TarjetaMembresiaClienteRoyal { get; set; }
         public virtual ICollection<DetallePelicula> DetallePelicula { get; set; }
@@ -65,10 +65,11 @@ namespace CinemaPOS.Models
         public virtual ICollection<PorcentajeParticipacion> PorcentajeParticipacion { get; set; }
         public virtual ICollection<Pqrs> Pqrs { get; set; }
         public virtual ICollection<Sala> Sala { get; set; }
-        public virtual ICollection<Seguimiento> Seguimiento { get; set; }
         public virtual ICollection<MapaSala> MapaSala { get; set; }
         public virtual ICollection<Teatro> Teatro { get; set; }
         public virtual TipoEstado TipoEstado { get; set; }
         public virtual ICollection<Taquilla> Taquilla { get; set; }
+        public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }
+        public virtual ICollection<Seguimiento> Seguimiento { get; set; }
     }
 }

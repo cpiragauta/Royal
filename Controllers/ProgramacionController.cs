@@ -25,7 +25,7 @@ namespace CinemaPOS.Controllers
         {
             ViewBag.ListaTeatro = db.Teatro;
             ViewBag.ListasPrecios = db.ListaEncabezado.ToList();
-            ViewBag.ListaEstados = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOPROGRAMACIONENCABEZADO");
+            ViewBag.ListaEstados = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOFUNCION");
             if (RowID_EncabezadoProgramacion != null && RowID_EncabezadoProgramacion != 0)
             {
                 RowID_EncabezadoProgramacion = int.Parse(Request.Params["RowID_EncabezadoProgramacion"].ToString());
@@ -33,7 +33,7 @@ namespace CinemaPOS.Controllers
                 EncabezadoProgramacion programacion = db.EncabezadoProgramacion.FirstOrDefault(t => t.RowID == RowID_EncabezadoProgramacion);
                 if (programacion != null)
                 {
-                    ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID);
+                    ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Nombre == "EnFuncionamiento");
                     ViewBag.ListaPeliculas = db.TeatroPelicula.Where(f => f.TeatroID == programacion.TeatroID);
                     ViewBag.ListasPrecios = db.ListaEncabezado.Where(f => f.TeatroID == programacion.TeatroID);
                 }
@@ -120,6 +120,13 @@ namespace CinemaPOS.Controllers
                 try
                 {
                     db.EncabezadoProgramacion.Add(ObjEncabezado);
+
+                    //List<Funcion> listaFuncion = new List<Funcion>();
+                    //listaFuncion = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_EncabezadoProgramacion).ToList();
+                    //foreach (Funcion item in listaFuncion)
+                    //{
+                    //    item.EstadoID = ObjEncabezado.EstadoID;
+                    //}
                     db.SaveChanges();
                     respuesta = respuesta + "Guardado Correctamente";
                     RowID = ObjEncabezado.RowID;
@@ -140,10 +147,25 @@ namespace CinemaPOS.Controllers
 
                 ObjEncabezado = db.EncabezadoProgramacion.Where(t => t.RowID == RowID_EncabezadoProgramacion).FirstOrDefault();
                 ObjEncabezado = CargarDatosEncabezadoProgramacion(ObjEncabezado, formulario);
+                using (var context = new CinemaPOSEntities())
+                {
+                    context.Database.ExecuteSqlCommand(
+                        "UPDATE [Programacion].[Funcion] set [EstadoID] =" + ObjEncabezado.EstadoID + " where [EncabezadoProgramacionID] = " + RowID_EncabezadoProgramacion);
+                }
+  
+
+                //List<Funcion> listaFuncion = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_EncabezadoProgramacion).ToList();
+                //listaFuncion.ForEach(a => a.EstadoID = ObjEncabezado.EstadoID);
+                //foreach (Funcion item in listaFuncion)
+                //{
+                //    item.EstadoID = ObjEncabezado.EstadoID;
+                //}
                 try
                 {
                     db.SaveChanges();
-                    respuesta = "Actualizado Correctamente";
+                    respuesta = "Actualizado Correctamente";  
+
+
                     RowID = ObjEncabezado.RowID;
                 }
                 catch (Exception ex)
@@ -278,7 +300,7 @@ namespace CinemaPOS.Controllers
         public JsonResult CargarSalas(Int32 IdTeatro)
         {
             var query = (from salas in db.Sala
-                         where salas.TeatroID == IdTeatro && salas.Nombre == "EnFuncionamiento"
+                         where salas.TeatroID == IdTeatro && salas.Estado.Nombre == "EnFuncionamiento"
                          select new
                          {
                              rowid = salas.RowID,
@@ -440,7 +462,15 @@ namespace CinemaPOS.Controllers
             string tabla = "";
             List<Funcion> ListaFunciones = db.Funcion.Where(ld => ld.EncabezadoProgramacionID == RowID_Encabezado).ToList();
             List<Sala> listaSalas = null;
+            if (ListaFunciones.Count == 0)
+            {
+                return tabla;
+            }
             EncabezadoProgramacion programacion = ListaFunciones.First().EncabezadoProgramacion;
+            if (ListaFunciones.Count == 0)
+            {
+
+            }
             if (programacion == null)
             {
                 programacion = db.EncabezadoProgramacion.FirstOrDefault(f => f.RowID == ListaFunciones.First().EncabezadoProgramacionID);
@@ -494,6 +524,30 @@ namespace CinemaPOS.Controllers
                                     tabla += funcion.DetallePelicula.Opcion1.Codigo2;
                                     tabla += "<br /> ";
                                     tabla += funcion.HoraInicial.Value + "  " + funcion.HoraFinal.Value;// @*@funcion.Fecha.Value.ToString("dd/MM/yyyy")*@
+                                    tabla += "<br />";
+                                    if (funcion.ListaPrecioFuncion.Count > 0)
+                                    {
+                                        tabla += "<i class=\"ion-cash icon-identificador\" style=\"font-size: x-large;\">&nbsp;</i>";
+                                    }
+                                    if (funcion.Estado != null)
+                                    {
+                                        if (funcion.Estado.Nombre == "Abierta")
+                                        {
+                                            tabla += "<i class=\"ion-unlocked \" style=\"font-size: large;\"></i>";
+                                        }
+                                        else if (funcion.Estado.Nombre == "Cerrada")
+                                        {
+                                            tabla += "<i class=\"ion-locked\" style=\"font-size: large;\"></i>";
+                                        }
+                                        else if (funcion.Estado.Nombre == "Planeada")
+                                        {
+                                            tabla += "<i class=\"ion-calendar\" style=\"font-size: large;\"></i>";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        tabla += "<i class=\"ion-alert-circled\" style=\"font-size: large;\"></i>";
+                                    }
                                     tabla += "</p>";
 
                                 }

@@ -16,6 +16,7 @@
                 formulario: $("#formulario_RolSistema").serialize(),
             },
             success: function (data) {
+                $("#row_id").val(data.RolID);
                 guardar_Permisos();
             },
             error: function (data) {

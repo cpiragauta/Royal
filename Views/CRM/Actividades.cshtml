@@ -13,6 +13,11 @@
 <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
 <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
 <div id="Dialog"></div>
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("ListadoActividades", "CRM")'>Vista Actividades</a>
+    </p>
+</div>
 <div class="panel panel-dark">
     <!--Panel heading-->
     <div class="panel-heading">
@@ -35,7 +40,7 @@
             <div id="info" class="tab-pane fade in active">
                 <h4>Informaci&oacute;n General</h4>
                 <hr />
-                <form id="formActividad" name="formActividad" onkeypress="if(event.keyCode==8)return false;">
+                <form id="formActividad" name="formActividad" onkeypress="if(event.keyCode==8)return false;"  onsubmit="return false" enctype="multipart/form-data">
                     <div class="row">
                         <input type="hidden" name="rowID" value="@Model.rowID" />
                         <div class="col-sm-4">
@@ -94,7 +99,7 @@
                                         {
                                             <option value="@item.RowID">@item.Nombre</option>
                                         }
-                                    }
+                                    }   
                                 </select>
                             </div>
                         </div>
@@ -147,16 +152,46 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4">
-                            <label for="DESCRIPCION">*Descripci&oacute;n:</label>
-                            <textarea name="descripcion" id="descripcion" placeholder="---" class="form-control">@Model.descripcion</textarea>
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <label for="DESCRIPCION">*Descripci&oacute;n:</label>
+                                <textarea name="descripcion" id="descripcion" placeholder="---" class="form-control">@Model.descripcion</textarea>
+                            </div>
                         </div>
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <label class="control-label">Archivo Adjunto:</label>
+                                <div class="fileupload fileupload-new" data-provides="fileupload">
+                                    <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
+                                        @if (Model.rowID != 0)
+                                        {
+
+                                            <img src="@Model.Adjunto" alt="" name="Archivo" id="Archivo">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Repositorio_Imagenes/Imagenes_Generales/ImagenNoDisponible.png"  name="Archivo" id="Archivo"/>
+                                        }
+                                    </div>
+                                    <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
+                                    </div>
+                                    <div>
+                                        <span class="btn btn-file">
+                                            <span class="fileupload-new">Seleccionar Imagen</span>
+                                            <span class="fileupload-exists">Cambiar</span>
+                                            <input type="file" accept="image/jpeg,image/png,image/gif" class="default image_invoice_clone" name="afiche">
+                                        </span>
+                                        <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remover</a>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
                     </div>
                     <br />
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <a onclick="jascript:GuardarActividad()" class="btn btn-success" id="guardar">Guardar</a>
+                                <input type="submit" name="guardar" value="Guardar" onclick="jascript:GuardarActividad()" id="guardar" class="btn btn-success"/>
                             </div>
                         </div>
                     </div>
@@ -174,6 +209,7 @@
         CargarCalendar();
     }
     $(document).ready(function () {
+        ModalProcesandoShow();
         debugger
         if ($("#fechaInicio").val() == "01/01/0001 0:00:00") {
             $("#fechaInicio").val('');
@@ -205,6 +241,7 @@
             autoclose: true,
             todayHighlight: false
         });
+        ModalProcesandoHiden();
     });
 
     function Modal_Referenciado_A() {
@@ -221,6 +258,7 @@
     }
 
     function CargarCalendar() {
+        ModalProcesandoShow();
         $('#calendario').fullCalendar({
             header: {
                 left: 'prev,next today',
@@ -248,33 +286,67 @@
                 EditEvento(id, data)
             }
         });
+        ModalProcesandoHiden();
     }
-
-    function GuardarActividad() {
-        var validator = $("#formActividad").validate();
+    function valida_formulario() {
+        hasChangue = false;
+        var validator = $("#formulario_pelicula").validate();
         if (validator.form()) {
-            $.ajax({
-                type: "POST",
-                url: "/CRM/GuardarActividad",
-                data: {
-                    rowid: $("#rowID").val(),
-                    formulario: $("#formActividad").serialize(),
-                },
-                success: function (data) {
-                    debugger;
-                    if (data.respuesta.includes("error")) {
-                        swal("ERROR", data.respuesta, "error");
-                        return;
-                    } else {
-                        swal("OK", data.respuesta, "success")
-                        location.href = '/CRM/Actividades?rowID=' + data.Act+'';
-                    }
-
-                },
-                error: function (data) {
-                    swal("ERROR", data.respuesta, "error");
-                }
-            });
+            enviar_formulario();
         }
     }
+    function GuardarActividad() {
+        ModalProcesandoShow();
+        debugger
+        $("#formActividad").on("submit", function (e) {
+            e.preventDefault();
+            var f = $(this);
+            var formData = new FormData(document.getElementById("formActividad"));
+                $.ajax({
+                    type: "POST",
+                    dataType: "html",
+                    url: "/CRM/GuardarActividad",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        debugger
+                        if (data == '"Error"') {
+                            swal("ERROR", "Surgio un problema al guardar los datos.", "error");
+                            ModalProcesandoHiden();
+                            return;
+                        } else {
+                            debugger
+                            swal("", "Datos Guardados Correctamente", "success");
+                            debugger
+                            location.href = '/CRM/Actividades?rowid=' + data;
+                            ModalProcesandoHiden();
+                        }
+                        ModalProcesandoHiden();
+                    },
+                    error: function (data) {
+                        debugger
+                        swal("ERROR", "Surgio un problema al guardar los datos.", "error");
+                    }
+                });
+        });
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        if ("@Model.estadoID" == "@CinemaPOS.ModelosPropios.Util.Constantes.ACTIVIDAD_CERRADA") {
+            if ("@ViewBag.rol"!="@CinemaPOS.ModelosPropios.Util.Constantes.ROL_ADMINISTRADOR") {
+                $("#asunto").attr("disabled", "disabled");
+                $("#tipoActividadID").attr("disabled", "disabled");
+                $("#fechaInicio").attr("disabled", "disabled");
+                $("#tipoReferenciaID").attr("disabled", "disabled");
+                $("#prioridadID").attr("disabled", "disabled");
+                $("#descripcion").attr("disabled", "disabled");
+                $("#estadoID").attr("disabled", "disabled");
+                $("#guardar").attr("disabled", "disabled");
+            } else {
+            }
+        }
+    });
 </script>

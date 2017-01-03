@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using CinemaPOS.Models;
 using CinemaPOS.ModelosPropios;
+using System.IO;
+
 namespace CinemaPOS.Controllers
 {
     public class CRMController : Controller
@@ -216,6 +218,7 @@ namespace CinemaPOS.Controllers
         [CheckSessionOutAttribute]
         public ActionResult Cotizaciones(int? rowid)
         {
+            //db.Database.Connection.ConnectionString = "";
             ViewBag.prospectos = db.Tercero.ToList();
             ViewBag.teatros = db.Teatro.ToList();
             ViewBag.estado = db.Estado.Where(f => f.TipoEstadoID == Util.Constantes.TIPO_ESTADO_COTIZACION).ToList();
@@ -305,6 +308,9 @@ namespace CinemaPOS.Controllers
             ViewBag.tipoRef = db.Opcion.Where(f => f.TipoID == Util.Constantes.TIPO_REFERENCIA).ToList();
             ViewBag.Prioridad = db.Opcion.Where(f => f.TipoID == Util.Constantes.PRIORIDAD).OrderBy(f => f.NumOrden).ToList();
             ViewBag.Estados = db.Estado.Where(f => f.TipoEstadoID == Util.Constantes.ESTADOS_ACTIVIDAD).ToList();
+            var usuario = Session["usuario_creacion"].ToString();
+            var rol = db.UsuarioSistema.Where(f => f.NombreUsuario.Contains(usuario.Trim())).FirstOrDefault().RolID;
+            ViewBag.rol = rol;
             return View(actividad);
         }
 
@@ -416,17 +422,29 @@ namespace CinemaPOS.Controllers
 
         [CheckSessionOutAttribute]
         [HttpPost]
-        public JsonResult GuardarActividad(FormCollection formulario, int? rowid)
+        public JsonResult GuardarActividad(FormCollection formulario, int? rowid,HttpPostedFileBase afiche)
         {
-            formulario = DeSerialize(formulario);
+            //formulario = DeSerialize(formulario);
             Actividades actividad = db.Actividades.Where(f => f.rowID == rowid).FirstOrDefault();
             if (rowid == null || rowid == 0)
             { actividad = new Models.Actividades(); }
+            string RutaAdjunto = "";
+            string name = "Actividad" + DateTime.Now.ToString("dd-MM-yyyy");
+            if (afiche != null)
+            {
+                RutaAdjunto = name+Path.GetExtension(afiche.FileName);
+                afiche.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales/") + RutaAdjunto);
+                RutaAdjunto = "../Repositorio_Imagenes/Imagenes_Generales/" + RutaAdjunto;
+            }
             try
             {
                 actividad.asunto = formulario["asunto"];
                 actividad.tipoActividadID = Convert.ToInt32(formulario["tipoActividadID"]);
                 actividad.fechaInicio = Convert.ToDateTime(formulario["fechaInicio"]);
+                try
+                {actividad.fechaFin = Convert.ToDateTime(formulario["fechaFin"]);}
+                catch
+                {}
                 actividad.tipoReferenciaID = Convert.ToInt32(formulario["tipoReferenciaID"]);
                 actividad.referenciado_a = formulario["referenciado_a"];
                 actividad.prioridadID = Convert.ToInt32(formulario["prioridadID"]);
@@ -434,6 +452,7 @@ namespace CinemaPOS.Controllers
                 actividad.descripcion = formulario["descripcion"];
                 actividad.fechaCreacion = DateTime.Now;
                 actividad.creadoPor = Session["usuario_creacion"].ToString();
+                actividad.Adjunto = RutaAdjunto;
                 if (rowid == 0 || rowid == null)
                 { db.Actividades.Add(actividad); }
                 else
@@ -443,11 +462,44 @@ namespace CinemaPOS.Controllers
                 }
                 db.SaveChanges();
                 if (rowid == null || rowid == 0)
-                { MailSender.Enviar_Actividad(actividad, "PLANTILLA_ACTIVIDAD", Session["usuario_creacion"].ToString()); }
-                return Json(new { respuesta = "ok", Act = actividad.rowID });
+                {
+                    
+                    MailSender.Enviar_Actividad(actividad, "PLANTILLA_ACTIVIDAD", Session["usuario_creacion"].ToString(),"");
+                }
+                return Json(actividad.rowID);
             }
             catch (Exception e)
-            { return Json(new { respuesta = "error", Act = actividad.rowID }); }
+            { return Json("Error"); }
+        }
+        #endregion
+
+        #region CRM TERCERO - SELLOS
+        public ActionResult ModalSello()
+        {
+            Tercero tercero = new Tercero();
+            ViewBag.Ciudades = db.Ciudad.ToList();
+            return View(tercero);
+        }
+        public JsonResult GuardarSello(FormCollection formulario)
+        {
+            formulario = DeSerialize(formulario);
+
+            Tercero tercero = new Tercero();
+            try
+            {
+                tercero.Nombre = formulario["Nombre"];
+                tercero.Direccion = formulario["Direccion"];
+                tercero.Correo = formulario["Correo"];
+                tercero.Descripcion = formulario["Descripcion"];
+                tercero.CiudadID = Convert.ToInt32(formulario["CiudadID"]);
+                tercero.TipoTerceroID = Util.Constantes.TIPO_SELLO;
+                tercero.FechaCreacion = DateTime.Now;
+                tercero.CreadoPor = Session["usuario_creacion"].ToString();
+                db.Tercero.Add(tercero);
+                db.SaveChanges();
+                return Json("ok");
+            }
+            catch (Exception){ return Json("Error"); }
         }
         #endregion
     }

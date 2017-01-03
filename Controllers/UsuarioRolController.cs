@@ -50,6 +50,7 @@ namespace CinemaPOS.Controllers
             return View();
         }
 
+
         [CheckSessionOutAttribute]
         public ActionResult UsuarioSistema(int? RowID_UsuarioSistema)
         {
@@ -71,73 +72,86 @@ namespace CinemaPOS.Controllers
         [CheckSessionOutAttribute]
         public JsonResult GuardarUsuarioSistema(FormCollection formulario, int? RowID_UsuarioSistema, HttpPostedFileBase foto_empleado)
         {
-            String respuesta = "";
-            
+            Boolean respuesta = false;
+
             UsuarioSistema ObjUsuarioSistema = new UsuarioSistema();
             string ruta_foto = ObjUsuarioSistema.Foto_Empleado;
-            String nombreU= formulario["nombreUsuario"];
-            if (foto_empleado != null)
-            {
-                ruta_foto = formulario["nombre"]+formulario["apellido"]+Path.GetExtension(foto_empleado.FileName);
-                foto_empleado.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Fotos_Empleados/" + ruta_foto));
-                ruta_foto = "Repositorio_Imagenes/Fotos_Empleados/" + ruta_foto;
-            }
-            // inserta solamente el afiche en miniatura
-           
+            String nombreU = formulario["nombreUsuario"];
 
-            
+
+            // inserta solamente el afiche en miniatura
+
+
+
             if (RowID_UsuarioSistema == 0)
             {
                 if (db.UsuarioSistema.Where(f => f.NombreUsuario == nombreU).Count() == 0)
                 {
                     ObjUsuarioSistema = CargarUsuarioSistema(ObjUsuarioSistema, formulario);
-                    ObjUsuarioSistema.Foto_Empleado = ruta_foto;
+                    if (foto_empleado != null)
+                    {
+                        ruta_foto = formulario["nombre"] + formulario["apellido"] + Path.GetExtension(foto_empleado.FileName);
+                        foto_empleado.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Fotos_Empleados/" + ruta_foto));
+                        ruta_foto = "Repositorio_Imagenes/Fotos_Empleados/" + ruta_foto;
+                        ObjUsuarioSistema.Foto_Empleado = ruta_foto;
+                    }
                     try
                     {
                         db.UsuarioSistema.Add(ObjUsuarioSistema);
                         db.SaveChanges();
+                        respuesta = true;
+
                     }
                     catch (Exception ex)
                     { return Json("Error " + ex.Message); }
-                    respuesta = "Guardado Correctamente";
-                } else {
-                    respuesta = "Existe";
-
                 }
             }
             if (RowID_UsuarioSistema != 0)//Para Actualiar
             {
                 ObjUsuarioSistema = db.UsuarioSistema.Where(t => t.RowID == RowID_UsuarioSistema).FirstOrDefault();
-                    List<UsuarioSistema> listaUsuario = db.UsuarioSistema.Where(f => f.NombreUsuario == nombreU).ToList();
+                List<UsuarioSistema> listaUsuario = db.UsuarioSistema.Where(f => f.NombreUsuario == nombreU).ToList();
                 if (listaUsuario.Count() == 1 && listaUsuario.FirstOrDefault().RowID == ObjUsuarioSistema.RowID)
                 {
                     ObjUsuarioSistema = CargarUsuarioSistema(ObjUsuarioSistema, formulario);
-                    if (foto_empleado!=null)
+                    if (foto_empleado != null)
                     {
+                        String path = "~/" + ObjUsuarioSistema.Foto_Empleado;
+                        if (System.IO.File.Exists(path))
+                        {
+                            System.IO.File.Delete(Server.MapPath(path));
+                        }
+                        
+                        //documento.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales/" + adjunto));
+                        //adjunto = "Repositorio_Imagenes/Imagenes_Generales/" + adjunto;
+
+                        ruta_foto = formulario["nombre"] + formulario["apellido"] + Path.GetExtension(foto_empleado.FileName);
+                        foto_empleado.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Fotos_Empleados/" + ruta_foto));
+                        ruta_foto = "Repositorio_Imagenes/Fotos_Empleados/" + ruta_foto;
                         ObjUsuarioSistema.Foto_Empleado = ruta_foto;
                     }
-                    else
-                    {
-                        ObjUsuarioSistema.Foto_Empleado = ruta_foto;
-                    }
-                   
+
+                    //if (foto_empleado != null)
+                    //{
+                    //    ObjUsuarioSistema.Foto_Empleado = ruta_foto;
+                    //}
+                    //else
+                    //{
+                    //    ObjUsuarioSistema.Foto_Empleado = ruta_foto;
+                    //}
+
                     try
                     {
                         db.SaveChanges();
+                        respuesta = true;
                     }
                     catch (Exception ex)
                     { return Json("Error " + ex.Message); }
-                    respuesta = "Actualizado Correctamente";
 
                 }
-                else
-                {
-                  respuesta = "Existe";
-                }
+
             }
             return Json(respuesta);
         }
-
         public UsuarioSistema CargarUsuarioSistema(UsuarioSistema ObjUsuarioSistema, FormCollection formulario)
         {
             ObjUsuarioSistema.NombreUsuario = formulario["nombreUsuario"];
@@ -230,13 +244,14 @@ namespace CinemaPOS.Controllers
                 {
                     db.Rol.Add(ObjRolSistema);
                     db.SaveChanges();
+                    RowID_RolesSistema = ObjRolSistema.RowID;
                 }
                 catch (Exception ex)
                 { return Json("Error " + ex.Message); }
                 respuesta = "Guardado Correctamente";
 
             }
-            if (RowID_RolesSistema != 0)//Para Actualiar
+            else if (RowID_RolesSistema != 0)//Para Actualiar
             {
                 ObjRolSistema = db.Rol.Where(t => t.RowID == RowID_RolesSistema).FirstOrDefault();
                 ObjRolSistema = CargarRolSistema(ObjRolSistema, formulario);
@@ -249,7 +264,7 @@ namespace CinemaPOS.Controllers
                 respuesta = "Actualizado Correctamente";
 
             }
-            return Json(respuesta);
+            return Json(new { respuesta = respuesta, RolID = RowID_RolesSistema });
         }
 
         public Rol CargarRolSistema(Rol ObjRolSistema, FormCollection formulario)
@@ -272,7 +287,7 @@ namespace CinemaPOS.Controllers
         [CheckSessionOutAttribute]
         public JsonResult GuardarPermisosRol(int RolID, String pantallasAsignadas, String pantallasNOAsignadas)
         {
-            pantallasAsignadas = pantallasAsignadas.TrimEnd(',');
+            pantallasAsignadas = pantallasAsignadas.TrimEnd(',').TrimStart(',');
             pantallasNOAsignadas = pantallasNOAsignadas.TrimEnd(',').TrimStart(',');
             String[] patallasAsignadas2 = pantallasAsignadas.Split(',');
             String[] pantallasNOAsignadas2 = pantallasNOAsignadas.Split(',');

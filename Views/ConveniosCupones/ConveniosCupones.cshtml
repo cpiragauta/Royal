@@ -6,21 +6,23 @@
 }
 @using ReportViewerForMvc
 
+<head>
 
-<link href="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.css" rel="stylesheet">
+    <link href="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.css" rel="stylesheet">
 
-<!--Bootstrap Validator [ OPTIONAL ]-->
-<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.js"></script>
-<script src="~/Content/js/demo/form-wizard.js"></script>
-<script src="~/Content/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-<script src="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
-<link href="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
-<!--DataTables [ OPTIONAL ]-->
-<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
-<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
-<script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
-<!--DataTables Sample [ SAMPLE ]-->
-<script src="~/Content/js/demo/tables-datatables.js"></script>
+    <!--Bootstrap Validator [ OPTIONAL ]-->
+    <script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.js"></script>
+    <script src="~/Content/js/demo/form-wizard.js"></script>
+    <script src="~/Content/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+    <script src="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+    <link href="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
+    <!--DataTables [ OPTIONAL ]-->
+    <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+    <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <!--DataTables Sample [ SAMPLE ]-->
+    <script src="~/Content/js/demo/tables-datatables.js"></script>
+</head>
 
 <script>
 
@@ -151,6 +153,7 @@
 
 
     $(document).ready(function () {
+
         debugger;
 
         jQuery.validator.messages.required = '*Este campo es obligatorio.';
@@ -169,42 +172,41 @@
             disableFocus: true
         });
 
-        $('#demo-dp-range .input-daterange').datepicker({
+        $('#FechaInicial').datepicker({
             format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
-            todayHighlight: false
+            todayHighlight: false,
+            startDate:"1d"
         });
+
 
         $('.solo-numero').keyup(function () {
             this.value = (this.value + '').replace(/[^0-9]/g, '');
         });
 
-        //$("#FechaFinal").datepicker().on('changeDate', function(e){
 
-        //        debugger;
-        //        var inicio = document.getElementById('FechaInicial').value;
-        //        var finalq = document.getElementById('FechaFinal').value;
-        //        inicio = new Date(inicio);
-        //        finalq = new Date(finalq);
-
-        //        if (inicio.toDateString() == finalq.toDateString) {
-        //            Alerts("La fecha inicial no puede ser mayor a la final", "warning");
-        //        } 
-            
-        //});
-
-        $("#FechaFinal").change(function () {
+        $("#FechaInicial").change(function () {
 
             debugger;
-            var inicio = document.getElementById('FechaInicial').value;
-            var finalq = document.getElementById('FechaFinal').value;
+            var inicio = $('#FechaInicial').val().replace('/','-');
+            var finalq = $('#FechaFinal').val();
             inicio = new Date(inicio);
             finalq = new Date(finalq);
-
-            if (inicio.toDateString() == finalq.toDateString()) {
-                Alerts("La fecha inicial no puede ser mayor a la final", "warning");
-            }
+                if (inicio.toDateString() > finalq.toDateString() ) {
+                    Alerts("La fecha inicial no puede ser mayor a la final", "warning");
+                }
+            
+                $('#FechaFinal').empty().val($("#FechaInicial").val());
+            $("#FechaFinal").datepicker("destroy");
+            $('#FechaFinal').datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                autoclose: true,
+                todayHighlight: false,
+                startDate: $("#FechaInicial").val()
+            });
+            
 
         });
 
@@ -237,7 +239,7 @@
             <ul class="nav nav-tabs">
                 <li class="active" id="tabEncabezado"><a data-toggle="tab" href="#Convenio">Convenio</a></li>
                 <li><a data-toggle="tab" href="#Items">Items</a></li>
-                <li><a data-toggle="tab" href="#Ticket">Tickets</a></li>
+                    @*<li><a data-toggle="tab" href="#Ticket">Tickets</a></li>*@
 
             </ul>
         </div>
@@ -450,7 +452,7 @@
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <label class="control-label">Cantidad:*</label>
-                                            <input type="text" id="CantidadItem" class="form-control" maxlength="8" required>
+                                            <input type="text" id="CantidadItem" class="form-control solo-numero" maxlength="8" required>
                                         </div>
                                     </div>
                                 </div>
@@ -462,42 +464,42 @@
                                 </div><br />
 
                             </form>
-                            <table class="table table-striped table-bordered tablaItems" cellspacing="0" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nombre</th>
-                                        <th>Código</th>
-                                        <th>Estado</th>
-                                        <th>Descuento</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tablaItems">
-                                    @if (ViewBag.listaDetalleConvenio != null)
-                                    {
-                                        foreach (CinemaPOS.Models.DetalleConvenio item in ViewBag.listaDetalleConvenio)
+                            <table id="demo-dt-basic" class="table table-striped table-bordered table-funcion table-responsive tablaItems" cellspacing="0" data-show-pagination-switch="true">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>Código</th>
+                                            <th>Estado</th>
+                                            <th>Descuento</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tablaItems">
+                                        @if (ViewBag.listaDetalleConvenio != null)
                                         {
-                                            <tr>
-                                                <td>@item.RowID </td>
-                                                <td>@item.Nombre </td>
-                                                <td>@item.Codigo </td>
-                                                <td>@item.Estado.Nombre </td>
-                                                <td><center>@item.Porcentaje%</center></td>
-                                                <td><a href='javascript:EliminarItems(@item.RowID);' class="ion-trash-a"></a></td>
+                                            foreach (CinemaPOS.Models.DetalleConvenio item in ViewBag.listaDetalleConvenio)
+                                            {
+                                                <tr>
+                                                    <td>@item.RowID </td>
+                                                    <td>@item.Nombre </td>
+                                                    <td>@item.Codigo </td>
+                                                    <td>@item.Estado.Nombre </td>
+                                                    <td><center>@item.Porcentaje%</center></td>
+                                                    <td><a href='javascript:EliminarItems(@item.RowID);' class="ion-trash-a"></a></td>
 
 
-                                            </tr>
+                                                </tr>
+                                            }
                                         }
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
+                                    </tbody>
+                                </table>
+                          </div>
                     </div>
                 </div>
             </div>
         </div>
         @*****************TAB TICKET******************@
-        <div id="Ticket" class="tab-pane fade">
+        @*<div id="Ticket" class="tab-pane fade">
             <div id="page-content" class="Ocultar">
                 <div class="panel">
                     <div class="panel-body">
@@ -505,13 +507,7 @@
                             <input type="button" id="Print" class="btn btn-success" value="Imprimir" style="background: #74a838; color:white" />
                         </div>
                         <form name="formulario_Convenio_Ticket" id="formulario_Convenio_Ticket" onsubmit="return false">
-                            @*@Html.ReportViewer(
-                                new { ProcessingMode = Microsoft.Reporting.WebForms.ProcessingMode.Local, },// Report Viewer
-                                    new { ReportPath = Request.MapPath(Request.ApplicationPath) + @"Content/Reportes/Report1.rdlc" }, //Report
-                                                               new { @parametro1="lo que quieras"},//Parametros
-                                                          new { Name = "DataSet1", Value = ViewBag.listaDetalleConvenio }, //Datasources
-                                        new { @style = "Width:1000px" } //Htmltributtes
-                                )*@
+                         
 
                             @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)
 
@@ -521,6 +517,6 @@
                 </div>
             </div>
 
-        </div>
+        </div>*@
     </div>
 </div>
