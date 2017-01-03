@@ -1044,7 +1044,7 @@
                                         @for (int i = 0; i < 5; i++)
                                         {
                                             System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
-                                            String fechaEncabezado = Model.FechaInicial.Value.AddDays(i).ToShortDateString();
+                                            String fechaEncabezado = Model.FechaInicial.Value.AddDays(i).ToString("dd/MM/yyyy");
                                             <td class="day Bordes" id="table-header-days">
                                                 <p>
                                                     @{fechaEncabezado = "'" + fechaEncabezado + "'";}
@@ -1063,7 +1063,7 @@
                                             <tr>
                                                 <td class="Sala Bordes" id="SalaTitle">
                                                     <p>
-                                                        <a class="ion-clipboard" href="javascript:ModalEliminarFunMasivo()" title="Replicar Funciones por Sala"></a>
+                                                        <a class="ion-clipboard" href="javascript:ModalReplicarFuncionxSala(@itemSala.RowID)" title="Replicar Funciones por Sala"></a>
                                                         @itemSala.Nombre 
                                                     </p>
                                                 </td>
@@ -1184,6 +1184,12 @@
         debugger
         ModalProcesandoShow();
         var urlWithCont = '../Programacion/ModalReplicarFuncionxDia?rowid=' +  $("#row_id").val()+ '&FechaFuncion='+FechaFuncion;
+        $("#Dialog").load(urlWithCont.trim())
+    }
+    function ModalReplicarFuncionxSala(RowIdSala){
+        debugger
+        ModalProcesandoShow();
+        var urlWithCont = '../Programacion/ModalReplicarFuncionxSala?rowid=' +  $("#row_id").val()+ '&RowIdSala='+RowIdSala;
         $("#Dialog").load(urlWithCont.trim())
     }
 </script>

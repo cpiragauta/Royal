@@ -493,7 +493,7 @@ namespace CinemaPOS.Controllers
             {
                 if ((programacion.FechaInicial.Value.AddDays(i)) <= programacion.FechaFinal.Value)
                 {
-                   String fechaEncabezado = programacion.FechaInicial.Value.AddDays(i).ToShortDateString();
+                   String fechaEncabezado = programacion.FechaInicial.Value.AddDays(i).ToString("dd/MM/yyyy");
 
                     tabla += "<td class=\"day Bordes\" id=\"table-header-days\">";
                     tabla += "<p>";
@@ -511,7 +511,7 @@ namespace CinemaPOS.Controllers
                 tabla += "<tr>";
                 tabla += "<td class=\"Sala Bordes\" id=\"SalaTitle\">";
                 tabla += "<p>";
-                tabla += "<a class=\"ion-clipboard\" href=\"javascript:ModalEliminarFunMasivo()\" title=\"Replicar Funciones por Sala\"></a>";
+                tabla += "<a class=\"ion-clipboard\" href=\"javascript:ModalReplicarFuncionxSala(" + itemSala.RowID + ")\" title=\"Replicar Funciones por Sala\"></a>";
                 tabla += itemSala.Nombre + "</p>";
                 tabla += "</td>";
                 for (int i = DiasACorrer; i < cantDias; i++)
@@ -701,6 +701,7 @@ namespace CinemaPOS.Controllers
             return respuesta;
         }
 
+        [CheckSessionOutAttribute]
         public JsonResult EliminarFuncion(int RowID_Funcion)
         {
             String tipoMensaje = "", Respuesta = "";
@@ -810,6 +811,7 @@ namespace CinemaPOS.Controllers
 
 #region modal editarFuncion
 
+        [CheckSessionOutAttribute]
         public ActionResult ModalEditarFuncion(int? rowid)
         {
             Funcion funcion = db.Funcion.FirstOrDefault(f => f.RowID == rowid);
@@ -866,6 +868,7 @@ namespace CinemaPOS.Controllers
             return View(funcion);
         }
 
+        [CheckSessionOutAttribute]
         public JsonResult EditarFuncion(int? rowIdFuncion, FormCollection formulario)
         {
             String respuesta = "", tipoRespuesta = "success";
@@ -904,6 +907,7 @@ namespace CinemaPOS.Controllers
 
         #region ModalEliminarFuncion Masivo
 
+        [CheckSessionOutAttribute]
         public ActionResult ModalEliminarFuncionMasivo(int rowid)
         {
             EncabezadoProgramacion programacion = db.EncabezadoProgramacion.FirstOrDefault(f => f.RowID == rowid);
@@ -919,6 +923,7 @@ namespace CinemaPOS.Controllers
             }
         }
 
+        [CheckSessionOutAttribute]
         public JsonResult EliminarTodasFunciones(int RowID_Programacion)
         {
             String tipoMensaje = "", Respuesta = "";
@@ -951,6 +956,7 @@ namespace CinemaPOS.Controllers
             return Json(new { tipoMensaje = tipoMensaje, Respuesta = Respuesta });
         }
 
+        [CheckSessionOutAttribute]
         public JsonResult EliminarFuncionesMasivo(int RowID_Programacion, FormCollection formulario)
         {
             formulario = DeSerialize(formulario);
@@ -1013,9 +1019,11 @@ namespace CinemaPOS.Controllers
 
         #region ReplicarFuncionPorDia
 
-        public ActionResult ModalReplicarFuncionxDia(int rowid, DateTime FechaFuncion)
+        [CheckSessionOutAttribute]
+        public ActionResult ModalReplicarFuncionxDia(int rowid, String FechaFuncion)
         {
             EncabezadoProgramacion programacion = db.EncabezadoProgramacion.FirstOrDefault(f => f.RowID == rowid);
+            DateTime FechaFuncion1 = ModelosPropios.Util.FechaInsertar(FechaFuncion);
             if (programacion == null)
             {
                 return View(new EncabezadoProgramacion { });
@@ -1030,27 +1038,36 @@ namespace CinemaPOS.Controllers
                     FechaReferencia = FechaReferencia.AddDays(1);
                 }
                 ViewBag.FechasFunciones = FechasFunciones;
-                ViewBag.FechaReplicar = FechaFuncion;
+                ViewBag.FechaReplicar = FechaFuncion1;
                 return View(programacion);
             }
         }
 
+        [CheckSessionOutAttribute]
         public JsonResult ReplicarFuncionesxDia(int RowID_Programacion, DateTime FechaReplicar, FormCollection formulario)
         {
             String tipoMensaje = "", respuesta = "";
             formulario = DeSerialize(formulario);
             int contFunciones = 0;
-            List<Funcion> ListaFuncionesAInsertar = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_Programacion).ToList();
+            List<Funcion> ListaFuncionesAInsertar = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_Programacion && f.Fecha == FechaReplicar).ToList();
             //Recorro las fechas seleccionadas e intento insertar las funciones del dia que selecciono
             List<Funcion> FuncionesExistentes = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_Programacion).ToList();
+            if (ListaFuncionesAInsertar.Count == 0)
+            {
+                return Json(new { tipoMensaje = "warning", Respuesta = "Este día no tiene funciones para replicar" });
+            }
             foreach (var NuevaFecha in formulario)
             {
+                DateTime FechaFuncion;
+                try
+                { FechaFuncion = Convert.ToDateTime(NuevaFecha.ToString()); }
+                catch (Exception)
+                { continue; }
+
                 foreach (var funcion in ListaFuncionesAInsertar)
                 {
-
                     try
                     {
-                        DateTime FechaFuncion = Convert.ToDateTime(NuevaFecha.ToString());
                         Funcion ObjFuncion = new Funcion();
                         ObjFuncion.DetallePeliculaID = funcion.DetallePeliculaID;
                         ObjFuncion.EncabezadoProgramacionID = funcion.EncabezadoProgramacionID;
@@ -1093,7 +1110,90 @@ namespace CinemaPOS.Controllers
 
         #endregion
 
+        #region Replicar Funcion x Sala
+        [CheckSessionOutAttribute]
+        public ActionResult ModalReplicarFuncionxSala(int rowid, int RowIdSala)
+        {
+            EncabezadoProgramacion programacion = db.EncabezadoProgramacion.FirstOrDefault(f => f.RowID == rowid);
+            if (programacion == null)
+            {
+                return View(new EncabezadoProgramacion { });
+            }
+            else
+            {
+                ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Nombre == "EnFuncionamiento").OrderBy(f => f.RowID);
+                ViewBag.SalaReplicar = db.Sala.FirstOrDefault(f=>f.RowID == RowIdSala);
+                return View(programacion);
+            }
+        }
 
+        [CheckSessionOutAttribute]
+        public JsonResult ReplicarFuncionesxSala(int RowID_Programacion, int RowIdSala, FormCollection formulario)
+        {
+            String tipoMensaje = "", respuesta = "";
+            formulario = DeSerialize(formulario);
+            int contFunciones = 0;
+            List<Funcion> ListaFuncionesAInsertar = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_Programacion && f.SalaID == RowIdSala).ToList();
+            //Recorro las fechas seleccionadas e intento insertar las funciones del dia que selecciono
+            List<Funcion> FuncionesExistentes = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_Programacion).ToList();
+            if (ListaFuncionesAInsertar.Count == 0)
+            {
+                return Json(new { tipoMensaje = "warning", Respuesta = "Esta Sala no tiene funciones para replicar" });
+            }
+            foreach (var NuevaSala in formulario)
+            {
+                int RowIdNuevaSala = 0;
+                try
+                { RowIdNuevaSala = Convert.ToInt32(NuevaSala.ToString()); }
+                catch (Exception)
+                { continue; }
+
+                foreach (var funcion in ListaFuncionesAInsertar)
+                {
+                    try
+                    {
+                        if (RowIdNuevaSala > 0)
+                        {
+                            Funcion ObjFuncion = new Funcion();
+                            ObjFuncion.DetallePeliculaID = funcion.DetallePeliculaID;
+                            ObjFuncion.EncabezadoProgramacionID = funcion.EncabezadoProgramacionID;
+                            ObjFuncion.SalaID = RowIdNuevaSala;
+                            ObjFuncion.Fecha = funcion.Fecha;
+                            ObjFuncion.HoraInicial = funcion.HoraInicial;
+                            ObjFuncion.HoraFinal = funcion.HoraFinal;
+                            ObjFuncion.TiempoAseo = funcion.TiempoAseo;
+                            ObjFuncion.TiempoCorto = funcion.TiempoCorto;
+                            ObjFuncion.Sincronizado = false;
+                            ObjFuncion.CreadoPor = Session["usuario_creacion"].ToString();
+                            ObjFuncion.FechaCreacion = DateTime.Now;
+                            ObjFuncion.EstadoID = funcion.EstadoID;
+
+                            String validacion = ValidarFuncion(ObjFuncion, FuncionesExistentes);
+                            if (String.IsNullOrEmpty(validacion))
+                            {
+                                db.Funcion.Add(ObjFuncion);
+                                db.SaveChanges();
+                                FuncionesExistentes.Add(ObjFuncion);
+                                ObjFuncion = new Funcion();//Limpio el Objeto
+                                contFunciones++;
+                            }
+                            else
+                            {
+                                respuesta += validacion;
+                                ObjFuncion = new Funcion();//Limpio el Objeto
+                            }
+                        }
+                        
+                    }
+                    catch (Exception ex)
+                    { return Json(new { respuesta = "Error " + ex.Message }); }
+                }
+            }
+            respuesta = contFunciones + " Funciones Replicadas correctamente " + respuesta;
+            tipoMensaje = "success";
+            return Json(new { tipoMensaje = tipoMensaje, Respuesta = respuesta });
+        }
+        #endregion
     }
 
 
