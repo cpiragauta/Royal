@@ -56,7 +56,12 @@ namespace CinemaPOS.Controllers.Pelicula
             DetallePelicula ObjDetalle = new DetallePelicula();
             Boolean derecho_corto;
             EncabezadoPelicula ObjPelicula = new EncabezadoPelicula();
+
+            string poster = "";
+            string miniatura = "";
+
             var l = formulario["derecho_corto"];
+
             if (formulario["derecho_corto"] == "on")
             {
                 derecho_corto = true;
@@ -65,28 +70,88 @@ namespace CinemaPOS.Controllers.Pelicula
             {
                 derecho_corto = false;
             }
+
             if (RowID_Pelicula == 0)
             {
-                ObjPelicula.DerechoCorto = derecho_corto;
-                ObjPelicula.Duracion = int.Parse(formulario["duracion"].ToString());
-                ObjPelicula.DistribuidorID = int.Parse(formulario["distribuidor"]);
-                ObjPelicula.PaisID = int.Parse(formulario["pais"]);
-                ObjPelicula.TipoClasificacionID = int.Parse(formulario["clasificacion"]);
-                ObjPelicula.TipoIdiomaOriginalID = int.Parse(formulario["idioma"]);
-                ObjPelicula.TituloLocal = formulario["titulo_local"].ToUpper();
-                ObjPelicula.TituloOriginal = formulario["titulo_original"].ToUpper();
-                ObjPelicula.NumeroActa = formulario["numero_acta"];
-                ObjPelicula.Sinopsis = formulario["sinopsis"];
-                ObjPelicula.WebOficial = formulario["web_oficial"];
-                ObjPelicula.FechaEstreno = ModelosPropios.Util.FechaInsertar(formulario["fecha_estreno"]);
-                ObjPelicula.EstadoID = int.Parse(formulario["estado"]);
-                ObjPelicula.CreadoPor = Session["usuario_creacion"].ToString();
-                ObjPelicula.FechaCreacion = DateTime.Now;
-                db.EncabezadoPelicula.Add(ObjPelicula);
-                db.SaveChanges();
+                try
+                {
+                    if (afiche != null)
+                    {
+                        poster = ObjPelicula.TituloLocal + Path.GetExtension(afiche.FileName);
+                        afiche.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Poster_Peliculas/" + poster));
+                        poster = "Repositorio_Imagenes/Poster_Peliculas/" + poster;
+                    }
+
+                    if (thumbnail != null)
+                    {
+                        miniatura = ObjPelicula.TituloLocal + "_thumbnail" + Path.GetExtension(thumbnail.FileName);
+                        afiche.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Poster_Peliculas/" + miniatura));
+                        miniatura = "Repositorio_Imagenes/Poster_Peliculas/" + miniatura;
+                    }
+
+                    ObjPelicula = new EncabezadoPelicula();
+                    ObjPelicula.DerechoCorto = derecho_corto;
+                    ObjPelicula.Duracion = int.Parse(formulario["duracion"].ToString());
+                    ObjPelicula.DistribuidorID = int.Parse(formulario["distribuidor"]);
+                    ObjPelicula.PaisID = int.Parse(formulario["pais"]);
+                    ObjPelicula.TipoClasificacionID = int.Parse(formulario["clasificacion"]);
+                    ObjPelicula.TipoIdiomaOriginalID = int.Parse(formulario["idioma"]);
+                    ObjPelicula.TituloLocal = formulario["titulo_local"].ToUpper();
+                    ObjPelicula.TituloOriginal = formulario["titulo_original"].ToUpper();
+                    ObjPelicula.NumeroActa = formulario["numero_acta"];
+                    ObjPelicula.Sinopsis = formulario["sinopsis"];
+                    ObjPelicula.WebOficial = formulario["web_oficial"];
+                    ObjPelicula.FechaEstreno = ModelosPropios.Util.FechaInsertar(formulario["fecha_estreno"]);
+                    ObjPelicula.EstadoID = 3;
+                    ObjPelicula.Afiche = poster;
+                    ObjPelicula.Thumbnail = miniatura;
+                    ObjPelicula.Trailer = formulario["trailer"];
+                    ObjPelicula.Teaser = formulario["teaser"];
+                    ObjPelicula.CreadoPor = Session["usuario_creacion"].ToString();
+                    ObjPelicula.Sincronizado = false;
+                    ObjPelicula.FechaCreacion = DateTime.Now;
+                    db.EncabezadoPelicula.Add(ObjPelicula);
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    return Json("Error al guardar los datos " + ex.Message);
+                    throw;
+                }
             }
             else
             {
+
+                ObjPelicula = db.EncabezadoPelicula.Where(mp => mp.RowID == RowID_Pelicula).OrderByDescending(mp => mp.RowID).First();
+                poster = ObjPelicula.Afiche;
+                miniatura = ObjPelicula.Thumbnail;
+                //Actualiza solamente el afiche
+                if (afiche != null)
+                {
+                    poster = ObjPelicula.TituloLocal + Path.GetExtension(afiche.FileName);
+                    var path = System.IO.Path.Combine(Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales"), poster);
+                    if (System.IO.File.Exists(path))
+                    {
+                        System.IO.File.Delete(path);
+                    }
+                    afiche.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Poster_Peliculas/" + poster));
+                    poster = "Repositorio_Imagenes/Poster_Peliculas/" + poster;
+
+                }
+                // Actualiza solamente el afiche en miniatura
+                if (thumbnail != null)
+                {
+                    miniatura = ObjPelicula.TituloLocal + "_thumbnail" + Path.GetExtension(thumbnail.FileName);
+                    var path = System.IO.Path.Combine(Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales"), miniatura);
+                    if (System.IO.File.Exists(path))
+                    {
+                        System.IO.File.Delete(path);
+                    }
+
+                    thumbnail.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Poster_Peliculas/" + miniatura));
+                    miniatura = "Repositorio_Imagenes/Poster_Peliculas/" + miniatura;
+                }
+
                 ObjPelicula = db.EncabezadoPelicula.Where(ep => ep.RowID == RowID_Pelicula).FirstOrDefault();
                 ObjPelicula.DerechoCorto = derecho_corto;
                 ObjPelicula.Duracion = int.Parse(formulario["duracion"]);
@@ -100,13 +165,18 @@ namespace CinemaPOS.Controllers.Pelicula
                 ObjPelicula.Sinopsis = formulario["sinopsis"];
                 ObjPelicula.WebOficial = formulario["web_oficial"];
                 ObjPelicula.FechaEstreno = ModelosPropios.Util.FechaInsertar(formulario["fecha_estreno"]);
-                ObjPelicula.EstadoID = int.Parse(formulario["estado"]);
+                ObjPelicula.EstadoID = 2;
+                ObjPelicula.Afiche = poster;
+                ObjPelicula.Thumbnail = miniatura;
+                ObjPelicula.Trailer = formulario["trailer"];
+                ObjPelicula.Teaser = formulario["teaser"];
                 ObjPelicula.CreadoPor = Session["usuario_creacion"].ToString();
+                ObjPelicula.Sincronizado = false;
                 ObjPelicula.FechaCreacion = DateTime.Now;
-                db.SaveChanges();
-            }
-            #endregion
-            int codigo_pelicula = ObjPelicula.RowID;
+                db.SaveChanges();  
+        }
+        #endregion
+        int codigo_pelicula = ObjPelicula.RowID;
             #region Genero Pelicula
             if (!String.IsNullOrEmpty(formulario["genero_pelicula"]))
             {
@@ -220,6 +290,7 @@ namespace CinemaPOS.Controllers.Pelicula
             #endregion
             #region Medio
             MedioPelicula ObjMedio = new MedioPelicula();
+            
             string ruta_fiche = "";
             string ruta_thumbnail = "";
             if (RowID_Pelicula == 0 || ObjPelicula.MedioPelicula.Count() == 0)
@@ -349,7 +420,6 @@ namespace CinemaPOS.Controllers.Pelicula
 
             //}
             #endregion
-
             #region Porcentaje
             PorcentajeParticipacion ObjParticipacion = new PorcentajeParticipacion();
             if (RowID_Pelicula != 0)

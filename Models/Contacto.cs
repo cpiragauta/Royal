@@ -27,7 +27,7 @@ namespace CinemaPOS.Models
         public string Telefono { get; set; }
         public Nullable<int> EmpresaID { get; set; }
     
-        public virtual Tercero Tercero { get; set; }
         public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }
+        public virtual Tercero Tercero { get; set; }
     }
 }

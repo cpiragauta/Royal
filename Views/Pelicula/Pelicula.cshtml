@@ -17,7 +17,7 @@
         var validator = $("#formulario_pelicula").validate();
         if (validator.form()) {
             debugger
-            validacion_de_fechas();
+            enviar_formulario();
         }
     }
 
@@ -28,7 +28,9 @@
             var formData = new FormData(document.getElementById("formulario_pelicula"));
             var RowID_Pelicula = $(".RowID_Pelicula").val();
             //formData.append(f.attr("name"), $(this)[0].files[0]);
+            debugger
             $.ajax({
+                
                 url: "/Pelicula/GuardarPelicula?RowID_Pelicula=" + RowID_Pelicula,
                 type: "post",
                 dataType: "html",
@@ -124,10 +126,10 @@
 
         debugger
         
-        var cont = @Model.PorcentajeParticipacion.Count;
+        @*var cont = @Model.PorcentajeParticipacion.Count;
         for(var i= 0; i < cont ; i++){
             var fecha_inicial = $("#fecha_inicial_porce").val();
-            var fecha_final = $("#fecha_final_porce").val();
+            var fecha_final = $("#fecha_final_porce").val();*@
 
             $('.fecha_inicial_porcentaje ').datepicker({
                 format: "dd/mm/yyyy",
@@ -143,7 +145,7 @@
                 todayHighlight: false,
                 startDate: fecha_final
             });
-        }
+       // }
       
         $('#demo-dp-range .input-daterange').datepicker({
             format: "dd/mm/yyyy",
@@ -568,6 +570,18 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label class="control-label"> Estado:</label>
+                                                    <select>
+                                                        @foreach (CinemaPOS.Models.Estado estado in ViewBag.Estado)
+                                                        {
+                                                            <option value="@estado.RowID">@estado.Nombre</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+
                                             <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label class="control-label">Versión:</label>
@@ -1010,7 +1024,7 @@
     });
 </script>
 
-<script>
+@*<script>
     var fechaInicial =$("#fecha_inicial_porce").val();
     var fechaFinal = $("#fecha_final_porce").val();
 
@@ -1038,5 +1052,5 @@
                 enviar_formulario();
             }
     }
-</script>
+</script>*@
 

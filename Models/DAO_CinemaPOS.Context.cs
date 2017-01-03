@@ -31,6 +31,7 @@ namespace CinemaPOS.Models
         public virtual DbSet<EncabezadoConvenio> EncabezadoConvenio { get; set; }
         public virtual DbSet<Actividades> Actividades { get; set; }
         public virtual DbSet<ClienteRoyal> ClienteRoyal { get; set; }
+        public virtual DbSet<OportunidadVenta> OportunidadVenta { get; set; }
         public virtual DbSet<TarjetaMembresia> TarjetaMembresia { get; set; }
         public virtual DbSet<TarjetaMembresiaClienteRoyal> TarjetaMembresiaClienteRoyal { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
@@ -61,12 +62,14 @@ namespace CinemaPOS.Models
         public virtual DbSet<PorcentajeParticipacion> PorcentajeParticipacion { get; set; }
         public virtual DbSet<TeatroPelicula> TeatroPelicula { get; set; }
         public virtual DbSet<Menu> Menu { get; set; }
+        public virtual DbSet<Rol> Rol { get; set; }
         public virtual DbSet<RolMenu> RolMenu { get; set; }
         public virtual DbSet<TipoMenu> TipoMenu { get; set; }
         public virtual DbSet<UsuarioSistema> UsuarioSistema { get; set; }
         public virtual DbSet<EvidenciaPqrs> EvidenciaPqrs { get; set; }
         public virtual DbSet<Pqrs> Pqrs { get; set; }
         public virtual DbSet<SeguientoEvidencia> SeguientoEvidencia { get; set; }
+        public virtual DbSet<Seguimiento> Seguimiento { get; set; }
         public virtual DbSet<TipoSolicitud> TipoSolicitud { get; set; }
         public virtual DbSet<EncabezadoProgramacion> EncabezadoProgramacion { get; set; }
         public virtual DbSet<Funcion> Funcion { get; set; }
@@ -79,14 +82,11 @@ namespace CinemaPOS.Models
         public virtual DbSet<MapaSala> MapaSala { get; set; }
         public virtual DbSet<Sala> Sala { get; set; }
         public virtual DbSet<ServicioSala> ServicioSala { get; set; }
+        public virtual DbSet<Taquilla> Taquilla { get; set; }
         public virtual DbSet<DetalleVentaEmpresarial> DetalleVentaEmpresarial { get; set; }
         public virtual DbSet<EncabezadoVentaEmpresarial> EncabezadoVentaEmpresarial { get; set; }
         public virtual DbSet<TeatroVentaEmpresarial> TeatroVentaEmpresarial { get; set; }
         public virtual DbSet<Funciones> Funciones { get; set; }
-        public virtual DbSet<Taquilla> Taquilla { get; set; }
-        public virtual DbSet<OportunidadVenta> OportunidadVenta { get; set; }
-        public virtual DbSet<Seguimiento> Seguimiento { get; set; }
-        public virtual DbSet<Rol> Rol { get; set; }
     
         public virtual int Eliminar_sillas_sala(Nullable<int> rowIDSala)
         {
