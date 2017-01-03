@@ -2341,6 +2341,7 @@
     <Content Include="Views\POS\ValidaCupones.cshtml" />
     <Content Include="Views\Programacion\ModalEliminarFuncionMasivo.cshtml" />
     <Content Include="Views\Programacion\ModalReplicarFuncionxDia.cshtml" />
+    <Content Include="Views\Programacion\ModalReplicarFuncionxSala.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

@@ -21,15 +21,14 @@
         $(".table").DataTable();
     });
 
-    function ReplicarFuncionesxDia() {
+    function ReplicarFuncionesxSala() {
         ModalProcesandoShow();
         $.ajax({
-            //async: false,
             type: "POST",
-            url: "/Programacion/ReplicarFuncionesxDia",
+            url: "/Programacion/ReplicarFuncionesxSala",
             data: {
                 RowID_Programacion: $("#RowID_Programacion").val(),
-                FechaReplicar : $("#FechaReplicar").val(),
+                RowIdSala: $("#RowIdSala").val(),
                 formulario: $("#formulario_replicar").serialize(),
             },
             success: function (data) {                
@@ -60,33 +59,32 @@
                 @{System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");}
 
                 <h3 class="modal-title title">
-                    Replicar Funciones por Día @(((DateTime)ViewBag.FechaReplicar).ToString("dd/MM/yyyy")) - @Model.Titulo
-
+                    Replicar Funciones por Sala @(((CinemaPOS.Models.Sala)ViewBag.SalaReplicar).Nombre) - @Model.Titulo
                 </h3>
-
-
             </div>
             <div class="modal-body">
                 <div class="bootbox-body">
                     <input type="hidden" id="RowID_Programacion" name="RowID_Programacion" value="@Model.RowID" />
-                    <input type="hidden" id="FechaReplicar" name="FechaReplicar" value="@(((DateTime)ViewBag.FechaReplicar).ToString("dd/MM/yyyy"))" />
+                    <input type="hidden" id="RowIdSala" name="RowIdSala" value="@(((CinemaPOS.Models.Sala)ViewBag.SalaReplicar).RowID)" />
                     <form id="formulario_replicar">
                         <div class="fixed-table-body">
                             <table class="table table-hover table-responsive table-bordered table-condensed table-striped">
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Día</th>
-                                        <th>Fecha</th>
+                                        <th>Teatro</th>
+                                        <th>Nombre</th>
+                                        <th>Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in (List<DateTime>)ViewBag.FechasFunciones)
+                                    @foreach (CinemaPOS.Models.Sala salas in ViewBag.listaSalas)
                                     {
                                         <tr>
-                                            <td><input type="checkbox" name="@item.ToShortDateString()" value="@item.ToShortDateString()" id="@item.ToShortDateString()" checked data-rowid="@item.ToShortDateString()" /></td>
-                                            <td>@item.ToString("dd/MM/yyyy")</td>
-                                            <td>@item.ToLongDateString()</td>
+                                            <td><input type="checkbox" name="@salas.RowID" value="@salas.RowID" id="@salas.RowID" checked /></td>
+                                            <td>@salas.Teatro.Nombre</td>
+                                            <td>@salas.Nombre</td>
+                                            <td>@salas.Estado.Descripcion</td>
                                         </tr>
                                     }
                                 </tbody>
@@ -95,9 +93,8 @@
                     </form>
                 </div>
             </div>
-
             <div class="modal-footer">
-                <button data-bb-handler="confirm" type="button" class="btn btn-success" onclick="ReplicarFuncionesxDia()" >Replicar funciones</button>
+                <button data-bb-handler="confirm" type="button" class="btn btn-success" onclick="ReplicarFuncionesxSala()">Replicar funciones</button>
                 <button data-bb-handler="cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
