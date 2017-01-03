@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Windows;
 using System.Web.Mvc;
 using CinemaPOS.Models;
 using System.Security.Cryptography;
@@ -46,7 +47,7 @@ namespace CinemaPOS.Controllers
             ViewBag.Clientes = db.Tercero.Where(f => f.Activo == true && f.Opcion2.Codigo == "EMPRESA").ToList();
             ViewBag.TipoEstado = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOCONVENIO").ToList();
 
-                 ///***********Reporte de convenio *************//
+            ///***********Reporte de convenio *************//
             List<DetalleConvenio> detalle = new List<DetalleConvenio>();
             detalle = db.DetalleConvenio.Where(f => f.EncabezadoConvenioID == RowId_Covenio).ToList();
 
@@ -73,8 +74,17 @@ namespace CinemaPOS.Controllers
                 reportViewer.Width = Unit.Percentage(100);
                 reportViewer.Height = Unit.Percentage(100);
                 ViewBag.ReportViewer = reportViewer;
+                ViewBag.detalle = detalle;
+                ViewBag.Nombre = detalle.FirstOrDefault().EncabezadoConvenio.Nombre;
+                ViewBag.FechaI = detalle.FirstOrDefault().EncabezadoConvenio.FechaInicio.Value.ToShortDateString();
+                ViewBag.FechaF = detalle.FirstOrDefault().EncabezadoConvenio.FechaFinal.Value.ToShortDateString();
+                ViewBag.Formato = detalle.FirstOrDefault().EncabezadoConvenio.Opcion1.Nombre;
+                ViewBag.condiciones = detalle.FirstOrDefault().EncabezadoConvenio.Descripcion;
+                ViewBag.porcentaje = detalle.FirstOrDefault().Porcentaje + "%";
+                ViewBag.codigo = detalle.FirstOrDefault().Codigo;
             }
-            else {
+            else
+            {
                 ReportViewer reportViewer = new ReportViewer();
                 reportViewer.ProcessingMode = ProcessingMode.Local;
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Content/Reportes/Convenio.rdlc";
@@ -115,7 +125,7 @@ namespace CinemaPOS.Controllers
                     ReportParameter p6 = new ReportParameter("porcentaje", det.Porcentaje + "%");
                     ReportParameter p7 = new ReportParameter("codigo", det.Codigo);
 
-                    localReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p5, p6,p7 });
+                    localReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p5, p6, p7 });
                     localReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
                     string deviceInfo =
                      @"<DeviceInfo>
@@ -369,6 +379,7 @@ namespace CinemaPOS.Controllers
                 {
                     try
                     {
+                        String des = "";
                         DetalleConvenio convenio;
                         objDetalle = new DetalleConvenio();
                         objDetalle.Nombre = formulario["NombreItem"];
@@ -388,7 +399,19 @@ namespace CinemaPOS.Controllers
                         // Generate random key and IV
                         rngCsp.GetBytes(key);
                         rngCsp.GetBytes(iv);
-                        convenio.Codigo = encrip.Encrypt("C"+ convenio.RowID , key, iv);
+                        convenio.Codigo = encrip.Encrypt("C" + convenio.RowID, key, iv);
+
+                        string output = "";
+                        char[] readChar = convenio.Codigo.ToCharArray();
+                        for (int j = 0; j < readChar.Length; j++)
+                        {
+                            int no = Convert.ToInt32(readChar[j]) - 10;
+                            string r = Convert.ToChar(no).ToString();
+                            output += r;
+                        }
+                        DESCryptoServiceProvider DESalg = new DESCryptoServiceProvider();
+
+                        //des = encrip.Decrypt(convenio.Codigo, DESalg.CreateDecryptor(convenio.Codigo)., DESalg.iv);
                         con++;
                         db.SaveChanges();
 
@@ -430,11 +453,7 @@ namespace CinemaPOS.Controllers
                 respuesta = "Guardado Correctamente";
             }
             return Json(respuesta);
-
         }
-
-
-
     }
 
 }

@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using CinemaPOS.Models;
 using System.Drawing.Printing;
 using System.Drawing;
+using System.Globalization;
+using System.Security.Cryptography;
 
 namespace CinemaPOS.Controllers
 {
@@ -230,7 +232,7 @@ namespace CinemaPOS.Controllers
                         }
                         else { carrusel = false; }
                         html += "<div class='col-sm-3 funcion mar-hor' onclick='javascrip:get_tarifas(" + funciones.RowID_Funcion + ")'>";
-                        html += "<h5 class='text-main'>" + funciones.HoraInicial.Value + "</h5>";
+                        html += "<h5 class='text-main'>" + funciones.HoraInicial + "</h5>";
                         html += "<p>" + funciones.NombreSala + "<br />Disponible: 120</p>";
                         html += "</div>";
                         if (contador_funciones_pelicula == 3)
@@ -486,6 +488,26 @@ namespace CinemaPOS.Controllers
                 Respuesta = "Las siguientes boletas ya se encuentran vendidas";
             }
             return Json(new { Respuesta = Respuesta, data = ListaBoletas });
+        }
+        [CheckSessionOutAttribute]
+        public ActionResult ValidaCupones()
+        {
+            return View();
+        }
+        public string valida_estado_cupon(string codigo_barras)
+        {
+            String des = "";
+
+            Encriptacion encrip = new Encriptacion(System.Text.Encoding.UTF8);
+            RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
+            byte[] key = new byte[32];
+            byte[] iv = new byte[32];
+
+            rngCsp.GetBytes(key);
+            rngCsp.GetBytes(iv);
+            des = encrip.Decrypt(codigo_barras, key, iv);
+           
+            return des;
         }
     }
 }
