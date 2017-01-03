@@ -345,7 +345,7 @@
             </a>
         </div>
     </div>
-    <div class="col-sm-4 pad-no ">
+    <div class="row col-sm-4 pad-no ">
         <div class="">
             <div class="row panel">
                 <div class="panel-heading" style="background-color:#c3c3c3">
@@ -359,7 +359,7 @@
                 <div class="panel-heading" style="background-color:#c3c3c3;">
                     <h3 class="panel-title text-center">Items a vender</h3>
                 </div>
-                <div id="boletas-comprar" style="height:80%;overflow-y:scroll;overflow-x:hidden;">
+                <div id="boletas-comprar" style="height:46%;overflow-y:scroll;overflow-x:hidden;">
 
 
 
@@ -375,6 +375,7 @@
     <input type="hidden" id="RowID_Funcion" />
 </div>
 <div id="Dialog"></div>
+<div id="DialogCupones"></div>
 
 <script>
 
@@ -532,7 +533,6 @@
 
 
             var urlWithCont = '../POS/Mapa_Sala_funcion?RowID_Sala=' + SalaID + '&cantidad_sillas_venta=' + cantidad + '&RowIDFuncion=' + RowID_Funcion + '&RowIDTarifas=' + RowID_Tarifas + '';
-            console.log(urlWithCont);
             $("#Dialog").load(urlWithCont.trim()).dialog('open');
         }
     }
@@ -544,6 +544,26 @@
                 ip = ips[0];
             }
         });
+        var fechasistema = $("#reloj").text();
+        $(".funcion ").each(function (index, element) {
+            //var hora_funcion="15:15:00" $(this).find(".hora_funcion").text();
+            var hora_funcion="15:15:00";
+           debugger
+
+           if ((hora_funcion.replace(":", "")) > fechasistema.replace(":", "") && hora_funcion.replace(":", "") < (fechasistema.replace(":", "") + 20)) {
+                console.log("por iniciar");
+                $(this).find(".hora_funcion").addClass("proximamente_cerrar");
+            }
+
+           else if ((hora_funcion.replace(":", "")) > (fechasistema.replace(":", "")+20)) {
+                console.log("mayor");
+                $(this).find(".hora_funcion").addClass("proximamente_iniciar");
+            }
+           //if ((hora_funcion.replace(":", "") + 20) > fechasistema.replace(":", "")) {
+           //     console.log("mayor");
+           //     $(this).find(".hora_funcion").addClass("proximamente_iniciar");
+           // }
+        })
 
     })
     //$(document).keydown(function (event) {
@@ -553,17 +573,17 @@
     //        window.alert("no dejo maximizar");
     //    }
     //});
-    function Alerts(menssage, tipo) {
+    //function Alerts(menssage, tipo) {
         //warning,success,error
-        $.niftyNoty({
-            type: tipo,
-            container: "floating",
-            title: menssage,
-            message: menssage,
-            closeBtn: true,
-            timer: 5000
-        });
-    }
+    //    $.niftyNoty({
+    //        type: tipo,
+    //        container: "floating",
+    //        title: menssage,
+    //        message: menssage,
+    //        closeBtn: true,
+    //        timer: 5000
+    //    });
+    //}
 </script>
 <script>
     function myFunction() {
@@ -676,7 +696,10 @@
         }
     }
     function validar_cupon() {
-        
+        var urlWithCont = '../POS/ValidaCupones';
+        console.log(urlWithCont);
+        $("#DialogCupones").load(urlWithCont.trim()).dialog('open');
+
     }
 </script>
 

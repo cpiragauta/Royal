@@ -13,29 +13,51 @@
     }
     function asignar_nombres() {
         var fila = "";
-        var cantidadfila=$(".cantidad_fila").val();
-        var cantiadcolumna=$('.cantidad_columna').val() ;
-        for (var i = 0; i < cantiadcolumna ; i++) {
-            var numero = 1;
-            for (var j = 0; j <cantidadfila  ; j++) {
+        var cantiadcolumna=$('.cantidad_columna').val() ;        var cantidadfila=$(".cantidad_fila").val();
 
-                if (j >= 27) {
+        for (var i = 0; i <cantidadfila    ; i++) {
+            var numero = 1;
+            for (var j = 0; j < cantiadcolumna ; j++) {
+
+                if (i >= 27) {
                     fila = String.fromCharCode(0 + 97) + String.fromCharCode((i - 26));
                 }
                 else {
-                    fila = String.fromCharCode((96+parseInt( $('.cantidad_columna').val())) - i);
+                    fila = String.fromCharCode((64+(cantidadfila-i)));
+                    console.log(fila);
                 }
                 if ($(".posicion_objeto" + i + "_" + j + "").find(".tipo_silla").length) {
+                    //console.log(".posicion_objeto" + i + "_" + j + " small");
+                    $(".posicion_objeto" + i + "_" + j + " small").empty().append(fila.toUpperCase() + "-" + numero);
+                    $(".posicion_objeto" + i + "_" + j + " .posicion_columna"+ i + "_" + j +" ").remove();
+                    $(".posicion_objeto" + i + "_" + j + "").append("<input type='hidden' class='posicion_columna"+ i + "_" + j +"' name='posicion_columna"+ i + "_" + j +"' value='"+fila.toUpperCase()+"' />");
+                    numero = numero + 1;
+                }
+                //console.log(fila+"  Columna"+ (122 - i));
+            }
+        }
+        /*
+         for (var i = 0; i <cantidadfila    ; i++) {
+            var numero = 1;
+            for (var j = 0; j < cantiadcolumna ; j++) {
+
+                if (i >= 27) {
+                    fila = String.fromCharCode(0 + 97) + String.fromCharCode((i - 26));
+                }
+                else {
+                    fila = String.fromCharCode((90-/*parseInt($('.cantidad_columna').val()))  i));
+                }
+                if ($(".posicion_objeto" + i + "_" + j + "").find(".tipo_silla").length) {
+                    console.log(".posicion_objeto" + i + "_" + j + " small");
                     $(".posicion_objeto" + i + "_" + j + " small").empty().append(fila.toUpperCase() + "-" + numero);
                     $(".posicion_objeto" + i + "_" + j + " .posicion_columna"+ i + "_" + j +" ").remove();
                     $(".posicion_objeto" + i + "_" + j + "").append("<input type='hidden' class='posicion_columna"+ i + "_" + j +"' name='posicion_columna"+ i + "_" + j +"' value='"+fila.toUpperCase()+"' />");
                     numero = numero + 1;
                 }
                 console.log(fila+"  Columna"+ (122 - i));
-
-            }
-
-        }
+                }
+                }
+        -*/
     }
     function crear_sillas(clase) {
             $.ajax({
@@ -69,12 +91,12 @@
                     }
                     else {
                         if ($(".cantidad_sillas").text()<(@Model.Capacidad)||claseObjeto!="Silla") {
-                            $("." + clase + "").append("<strong><small></small></strong><img  src='" + Ruta + "' style='width:50px'/><input type='hidden' class='" + tipobjeto + "' name='" + clase + "' value='" + RowID_TipoSilla + "'/>");
+                            $("." + clase + "").append("<strong><i class='ion-close-circled icon-remove-element'></i><small></small></strong><img  src='" + Ruta + "' style='width:50px'/><input type='hidden' class='" + tipobjeto + "' name='" + clase + "' value='" + RowID_TipoSilla + "'/>");
                         }
+                        
                         else{
                             swal("La capacidad máxima de la sala ha sido alcanzada", "");
                         }
-
                     }
                     calcular_cantidad_sillas();
                     asignar_nombres();
@@ -86,6 +108,7 @@
 
 
     }
+
     function CargarMapaSala(){
         $.ajax({
             type:"POST",
@@ -140,17 +163,19 @@
                                 tipobjeto = "" + da.TipoObjeto + "  tipo_silla objeto";
                             }
                         });
-                        for (var i = 0; i < $(".cantidad_columna").val(); i++) {
-                            for (var j = 0; j < $(".cantidad_fila").val(); j++) {
+                        for (var i = 0; i < $(".cantidad_fila").val(); i++) {
+                            for (var j = 0; j <$(".cantidad_columna").val();  j++) {
                                 var clase="posicion_objeto"+i+"_"+j+"";
                                 debugger;
                                 $("#Silla").attr({ 'src': Ruta, style: "width:30px" });
                                 //adicionar_cantidad();
                                     $("." + clase + "").find("img").remove();
                                     $("." + clase + "").find(".objeto").remove();
-                                    $("." + clase + "").find("small").empty();
-                                    if ($(".cantidad_sillas").text()<(@Model.Capacidad)||claseObjeto!="Silla") {
-                                        $("." + clase + "").append("<strong><small></small></strong><img  src='" + Ruta + "' style='width:50px'/><input type='hidden' class='" + tipobjeto + "' name='" + clase + "' value='" + RowID_TipoSilla + "'/>");
+                                    $("." + clase + "").find("strong").remove();
+                                    if ($(".cantidad_sillas").text()
+                                        <(@Model.Capacidad)||claseObjeto!="Silla") {
+                                        $("." + clase + "").append("<strong><i class='ion-close-circled icon-remove-element'></i><small></small></strong><img  src='" + Ruta + "' style='width:50px'/><input type='hidden' class='" + tipobjeto + "' name='" + clase + "' value='" + RowID_TipoSilla + "'/>");
+                                        $(".icon-remove-element").css("display","none");
                                     }
                                     else{
                                         swal("La capacidad máxima de la sala ha sido alcanzada", "");
@@ -159,7 +184,7 @@
                             }
                         }
 
-                   
+
                         calcular_cantidad_sillas();
                         asignar_nombres();
                     },
@@ -196,7 +221,7 @@
         crear_sillas(clase);
     }
     function guardar_sala() {
-        $.blockUI({ message: '<img style="width:30%;"src="@("/Repositorio_Imagenes/Imagenes_Generales/Cargando.gif")" />' });
+        ModalProcesandoShow();
         $.ajax({
             type: "POST",
             url: '/Maestro/Guardar_Mapa_Sala',
@@ -207,12 +232,12 @@
 
             success: function (data) {
                 swal("OK", data, "success");
-                $.unblockUI();
+                ModalProcesandoHiden();
 
             },
             error: function (data) {
                 swal("Advertencia", data, "warning");
-                $.unblockUI();
+                ModalProcesandoHiden();
             }
         });
     }
@@ -258,18 +283,20 @@
         calcular_cantidad_sillas();
         var fila = '';
         var clase = "";
-        for (var i = $(".cantidad_columna").val()-1; i >=0; i--) {
-            for (var j = $(".cantidad_fila").val()-1; j >=0; j--) {
-                if (i >= 26) {
-                    fila = String.fromCharCode(0 + 97) + String.fromCharCode(i + 97);
-                }
-                else {
-                    fila = String.fromCharCode(i + 97);
-                }
-                $(".fila_"+i+" .posicion_objeto" + i + "_" + j + "").append("<strong><small>" + fila.toUpperCase() + "</small></strong>");
-            }
+        //for (var i =$(".cantidad_columna").val()-1;   i >=0; i--) {
+        //    for (var j =$(".cantidad_fila").val()-1; j >=0; j--) {
+        //        console.clear();
+        //        if (j >= 26) {
+        //            fila = String.fromCharCode(0 + 97) + String.fromCharCode(j + 97);
+        //        }
+        //        else {
+        //            fila = String.fromCharCode(j + 97);
+        //            console.log(fila)
+        //        }
+        //        $(".fila_"+i+" .posicion_objeto" + i + "_" + j + "").append("<strong><small>" + fila.toUpperCase() + "</small></strong>");
+        //    }
 
-        }
+        //}
         asignar_nombres();
         CargarMapaSala();
 
@@ -285,7 +312,9 @@
         width: 50px;
         z-index: 0;
     }
-
+    .icon-remove-element {
+        display:none;
+    }
     small {
         margin-left: 1.3%;
         display: inline;
@@ -293,21 +322,40 @@
         z-index: 99999;
         display: none;
     }
-
-    td:hover small {
+    td:hover{
+        cursor:pointer;
+    }
+    td:hover small{
         display: block;
         position: absolute;
         z-index: 8888;
         margin-top: -3%;
         margin-left: 17px;
     }
+    td:hover .icon-remove-element {
+        display: inline;
+        position: absolute;
+        z-index: 8888;
+        color:rgba(245, 107, 10, 0.86);
+    }
+
 
     #esquema_mapa {
         width: 50%;
-        height: 50%;
+        height: 50%;    
         margin-right: auto;
         margin-left: auto;
-        
+    }
+    .pantalla{
+        border-radius:0px 0 100px 100px;
+        background-color:black;
+        margin-right:auto;
+        margin-left:auto;
+
+       
+    }
+    .pantalla h1{
+         color:rgb(128, 128, 128);
     }
 </style>
 
@@ -357,13 +405,13 @@
 </div>
 <div style="overflow-x:scroll;margin-top:90px;">
     <form id="mapa_sala">
-        <table id="esquema_mapa" style="border:double;width:@(Model.Cantidad_Filas *50)px" class="table table-responsive">
+        <table id="esquema_mapa" style="border:double;width:@(Model.Cantidad_Columnas *50)px" class="table table-responsive">
             @*@if (Model.MapaSala.Count != 0)
                 {
 
                     for (int i = 0; i < Model.Cantidad_Columnas; i++)
                     {
-                        <tr class="fila_@i" style="padding:0px,0px,0px,0px;">
+                        <tr class="fila_@i" style="padding:0px,0px,0px,0px;"> 
                             @for (int j = 0; j < Model.Cantidad_Filas; j++)
                             {
                                 string clase ="posicion_objeto"+i+"_"+j+"";
@@ -387,6 +435,9 @@
 
                 }*@
         </table>
-        <center><h1>Pantalla</h1></center>
+        <div class="pantalla" style="width:@(Model.Cantidad_Columnas *50)px">
+            <center><h1>Pantalla</h1></center>
+        </div>
+        
     </form>
 </div>

@@ -381,6 +381,7 @@
     <Content Include="Content\css\demo\nifty-demo.min.css" />
     <Content Include="Content\css\demo\premium-icon-screenshot.css" />
     <Content Include="Content\css\Forms.css" />
+    <Content Include="Content\css\Global.min.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\nifty.css" />
     <Content Include="Content\css\nifty.min.css" />
@@ -555,6 +556,7 @@
     <Content Include="Content\js\demo\ui-panels.js" />
     <Content Include="Content\js\demo\widgets.js" />
     <Content Include="Content\js\jquery-2.2.4.min.js" />
+    <Content Include="Content\js\JsBarcode.all.min.js" />
     <Content Include="Content\js\nifty.js" />
     <Content Include="Content\js\nifty.min.js" />
     <Content Include="Content\js\noty\jquery.noty.js" />

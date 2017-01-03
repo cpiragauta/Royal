@@ -109,7 +109,8 @@ namespace CinemaPOS.ModelosPropios
 
             /*TIPO ESTADO SEGUIMIENTO PQRS*/
             public const int TIPO_ESTADO_PQRS = 14;
-
+            public const string ESTADO_CONVENIO_REDIMIDO = "REDIMIDO";
+            public const string TIPO_ESTADO_CONVENIO = "TIPOCONVENIO";
 
         }
         public class Actividades

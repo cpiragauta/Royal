@@ -21,6 +21,8 @@
 <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
 <!--DataTables Sample [ SAMPLE ]-->
 <script src="~/Content/js/demo/tables-datatables.js"></script>
+<script src="~/Content/js/JsBarcode.all.min.js"></script>
+
 
 <script>
 
@@ -139,6 +141,7 @@
 
     $(document).ready(function () {
         debugger;
+        JsBarcode(".barcode").init();
         jQuery.validator.messages.required = '*Este campo es obligatorio.';
         $.validator.setDefaults({ ignore: ":hidden:not(select)" });
         if ($("#row_id").val() != null && $("#row_id").val() != 0) {
@@ -351,6 +354,22 @@
 </script>
 
 <script>
+    $(document).ready(function () {
+        debugger;
+        $("#printButton").click(function () {
+            debugger;
+
+            var mode = 'iframe'; //popup
+            var close = mode == "popup";
+            var options = { mode: mode, popClose: close };
+            $(".printableArea").printArea(options);
+        });
+    });
+</script>
+
+
+
+<script>
 
     $(document).ready(function () {
         $("#rowidTeatro").chosen({ width: '100%' });
@@ -425,7 +444,7 @@
                 <li class="active" id="tabEncabezado"><a data-toggle="tab" href="#VentaEmpresarial">Venta Empresarial</a></li>
                 <li><a data-toggle="tab" href="#RelacionEmpresa" onclick="RefrescarTabla(@Model.RowID)">Teatros</a></li>
                 <li><a data-toggle="tab" href="#Items">Items</a></li>
-                @*<li><a data-toggle="tab" href="#Ticket">Tickets</a></li>*@
+                <li><a data-toggle="tab" href="#Ticket">Tickets</a></li>
 
 
             </ul>
@@ -710,18 +729,86 @@
             </div>
         </div>
         @*****************TAB TICKET******************@
-        @*<div id="Ticket" class="tab-pane fade">
+        <div id="Ticket" class="tab-pane fade">
             <div id="page-content" class="Ocultar">
                 <div class="panel">
-                    <div class="panel-body">                      
+                    @*<div class="panel-body">                      
                         <form name="formulario_Convenio_Ticket" id="formulario_Convenio_Ticket" onsubmit="return false">
                            @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)
                         </form>
+                    </div>*@
+
+                    <a href="javascript:void(0);" id="printButton" style="background: #74a838; color:white">  IMPRIMIR  </a><br />
+
+                    <div class="panel" style="height: 542px">
+                        <head>
+                            <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+                            <script src="~/Content/js/jquery.PrintArea.js"></script>
+                        </head>
+
+                        @*<div class="panel-body">
+                <div>
+                    <input type="button" id="Print" class="btn btn-success" value="Imprimir" style="background: #74a838; color:white" />
+                </div>
+                <form name="formulario_Convenio_Ticket" id="formulario_Convenio_Ticket" onsubmit="return false">
+
+
+                    @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)
+
+
+                </form>
+            </div>*@
+                        <body>
+                            <div class="printableArea" style="width:400px;height:300px;">
+                                <div class="encabezadoConvenio" style="float:left;width:100%;height:100%;">
+                                    <p style="color: rgba(0, 61, 177, 0.67); font-family: fantasy; font-size: 30px; "><b><u>ROYAL FILMS</u></b></p>
+
+                                    <svg class="barcode"
+                                         jsbarcode-width="2"
+                                         jsbarcode-fontSize="12"
+                                         jsbarcode-value="@ViewBag.codigo"
+                                         jsbarcode-height="30"
+                                         jsbarcode-textMargin="0"
+                                         jsbarcode-margin="0"></svg>
+
+
+                                    <p class="text-left pad-no mar-no"><strong>@ViewBag.Nombre</strong></p>
+                                    <div class="detalleConvenio1" style="float:left;width:50%;height:40%;">
+                                        <p><strong>FECHA INICIO:</strong><br /> @ViewBag.FechaI</p>
+                                        <p><strong>MULTICINE-SALA: </strong><br />Todos</p>
+                                        <p><strong>FORMATO: </strong><br />2D</p>
+                                    </div>
+                                    <div class="detalleConvenio2" style="float:left;width:50%;height:40%;">
+                                        <p><strong>FECHA VENCIMIENTO:</strong><br />@ViewBag.FechaF</p>
+                                        <p><strong>CIUDAD: </strong><br />BOGOTÁ</p>
+                                        <p><strong>VALOR: </strong><br />@ViewBag.porcentaje</p>
+                                    </div><br /><br />
+                                    <p><strong>CONDICIONES:</strong><br />@ViewBag.condiciones</p>
+                                    <p>_____________________________________________________________<br /></p>
+
+                                    <p class="pad-no mar-no"><strong>@ViewBag.Nombre</strong><br /></p>
+
+                                    <div class="detalleConvenio1" style="float:left;width:50%;height:40%;">
+                                        <p><strong>FECHA INICIO:</strong><br />@ViewBag.FechaI</p>
+                                        <p><strong>MULTICINE-SALA: </strong><br />Todos</p>
+                                        <p><strong>FORMATO: </strong><br />2D</p>
+                                    </div>
+                                    <div class="detalleConvenio2" style="float:left;width:50%;height:40%;">
+                                        <p><strong>FECHA VENCIMIENTO:</strong><br />@ViewBag.FechaF</p>
+                                        <p><strong>CIUDAD: </strong><br />BOGOTÁ</p>
+                                        <p><strong>VALOR: </strong><br />@ViewBag.porcentaje</p>
+                                    </div><br />
+                                    <p><strong>CONDICIONES:</strong><br />@ViewBag.condiciones</p>
+                                    @*<p class="text-right">_____________________________________<br /></p>*@
+                                </div>
+                            </div>
+                        </body>
                     </div>
+
                 </div>
             </div>
 
-        </div>*@
+        </div>
 
     </div>
 
