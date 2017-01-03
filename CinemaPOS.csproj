@@ -381,6 +381,7 @@
     <Content Include="Content\css\demo\nifty-demo.min.css" />
     <Content Include="Content\css\demo\premium-icon-screenshot.css" />
     <Content Include="Content\css\Forms.css" />
+    <Content Include="Content\css\Global.min.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\nifty.css" />
     <Content Include="Content\css\nifty.min.css" />
@@ -2338,6 +2339,9 @@
     <Content Include="Views\CRM\NuevoClienteRoyal.cshtml" />
     <Content Include="Views\CRM\RegistroClienteTarjeta.cshtml" />
     <Content Include="Views\POS\ValidaCupones.cshtml" />
+    <Content Include="Views\Programacion\ModalEliminarFuncionMasivo.cshtml" />
+    <Content Include="Views\Programacion\ModalReplicarFuncionxDia.cshtml" />
+    <Content Include="Views\Programacion\ModalReplicarFuncionxSala.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

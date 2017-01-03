@@ -205,12 +205,9 @@
                 </div>
             </div>
             @*<a href="javascript:guardar_sala()" class="btn btn-success"><i class="icon-plus">&nbsp;&nbsp;Guardar</i></a>*@
-
-            @if (Model.Estado != null) { 
-                @if (Model.Estado.Nombre != "EnFuncionamiento")
-                {
-                    <a href="@Url.Action("MapaSala", "Maestro", new { @RowID_Sala =Model.RowID})" style="display:none;" class="btn btn-success editar_mapa"><i class="icon-plus">&nbsp;&nbsp;Editar Mapa</i></a>
-                }
+            @if (Model.Estado.Codigo != "ENFUNCIONAMIENTO")
+            {
+                <a href="@Url.Action("MapaSala", "Maestro", new { @RowID_Sala =Model.RowID})" style="display:none;" class="btn btn-success editar_mapa"><i class="icon-plus">&nbsp;&nbsp;Editar Mapa</i></a>
             }
         </div>
         <div class="panel-footer text-right">
