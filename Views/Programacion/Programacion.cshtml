@@ -213,23 +213,7 @@
             }
         });
     }
-
-    //function CargarFunciones(IdEncabezado) {
-    //    $(".listaFunciones").empty();
-    //    $.ajax({
-    //        type: "POST",
-    //        url: "/Programacion/CargarFunciones",
-    //        data: {
-    //            IdEncabezado: IdEncabezado,
-    //        },
-    //        success: function (data) {
-    //            $(".listaFunciones").empty()
-    //            data.forEach(function (Funcion) {
-    //                $(".listaFunciones").append("<option value='" + Funcion.RowId + "' >" + salas.Nombre + "</option>").trigger("chosen:updated");
-    //            });
-    //        }
-    //    });
-    //}
+  
     function CargarDuracion(IdPeliculaDetalle) {
         $("#Duracion").empty();
         $.ajax({
@@ -283,7 +267,6 @@
     }
 
 
-
     function Guardar_DetalleProgramacion() {
         debugger;
         var validator = $("#formulario_Programacion_Detalle").validate();
@@ -300,32 +283,21 @@
                     RowID_EncabezadoProgramacion: $("#row_id").val(),
                 },
                 success: function (data) {
-                    debugger
+                    debugger;
                     ModalProcesandoHiden();
-                    if (data.includes("Error")) {
-                        Alerts(data ,"warning");
+                    if (data.tipoRespuesta == "warning") {
+                        Alerts(data.respuesta ,data.tipoRespuesta);
                         return;
-                    }else if(data == ""){
-                        $('#HorasFunciones').tagsinput('removeAll');
-                        Alerts("Función agregada con exito !!! ","success");
-
+                    }else{
+                        Alerts("Funciones agregadas con exito!!! ",data.tipoRespuesta );
                         cargarFunciones();
                         CargarFuncionesGraficas();
                     }
-                    else{
-                        Alerts(data ,"warning");
-                        cargarFunciones();
-                        CargarFuncionesGraficas();
-                    }
-                    ModalProcesandoHiden();
-
                 },
                 error: function (data) {
                     debugger
                     ModalProcesandoHiden();
-                    Alerts(data ,"warning");
-                    ModalProcesandoHiden();
-
+                    Alerts(data.respuesta ,"warning");
                 }
 
             });
@@ -385,9 +357,11 @@
                 DiasACorrer: 0
             },
             success: function (data) {
+                debugger
+                $("#Table").empty();
                 ModalProcesandoHiden();
                 $("#Cant_Dias").val("0");
-                jQuery("#Table").empty().append(data);
+                $("#Table").append(data);
             },
             error: function (data) {
                 ModalProcesandoHiden();
@@ -516,8 +490,13 @@
         jQuery.validator.messages.required = '*Este campo es obligatorio.';
         $.validator.setDefaults({ ignore: ":hidden:not(select)" });
 
-
-       
+        $('.input-daterange').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+        
 
         jQuery(".chosen").chosen({ width: " 100%;" });
         jQuery(".TeatroChosen").chosen({ width: " 100%;" });
@@ -759,7 +738,10 @@
                             <div class="input-daterange input-group" id="datepicker">
                                 @if (Model.RowID != 0)
                                 {
-                                    <input type="text" class="form-control" name="FechaInicial" id="FechaInicial" value="@Model.FechaInicial.Value.ToString("dd/MM/yyyy")" required>
+                                    if (Model.FechaInicial != null)
+                                    {
+                                        <input type="text" class="form-control" name="FechaInicial" id="FechaInicial" value="@Model.FechaInicial.Value.ToString("dd/MM/yyyy")" required>
+                                    }
                                 }
                                 else
                                 {
@@ -768,7 +750,10 @@
                                 <span class="input-group-addon">a:</span>
                                 @if (Model.RowID != 0)
                                 {
-                                    <input type="text" class="form-control" name="FechaFinal" id="FechaFinal" value="@Model.FechaFinal.Value.ToString("dd/MM/yyyy")" required>
+                                    if (Model.FechaFinal != null)
+                                    {
+                                        <input type="text" class="form-control" name="FechaFinal" id="FechaFinal" value="@Model.FechaFinal.Value.ToString("dd/MM/yyyy")" required>
+                                    }
                                 }
                                 else
                                 {
@@ -1044,7 +1029,7 @@
                     <a class="btn btn-success btn-icon add-tooltip" href="javascript:MoverFuncionesGraficas(5)" data-toggle="tooltip" data-placement="bottom" data-original-title="5 días adelante"><i class="ion-arrow-right-a icon-lg"></i> </a>
                 </div>
                 <div class="col-sm-1">
-                    <a class="btn btn-dark btn-icon add-tooltip" href="javascript:EliminarMasivamente()" data-toggle="tooltip" data-placement="bottom" data-original-title="Eliminar Funciones Masivamente"><i class="ion-trash-a icon-lg"></i> </a>
+                    <a class="btn btn-dark btn-icon add-tooltip" href="javascript:ModalEliminarFunMasivo()" data-toggle="tooltip" data-placement="bottom" data-original-title="Eliminar Funciones Masivamente"><i class="ion-trash-a icon-lg"></i> </a>
                 </div>
 
                     <div id="FuncionesGraficas">
@@ -1059,9 +1044,13 @@
                                         @for (int i = 0; i < 5; i++)
                                         {
                                             System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
-
+                                            String fechaEncabezado = Model.FechaInicial.Value.AddDays(i).ToShortDateString();
                                             <td class="day Bordes" id="table-header-days">
-                                                <p>@ci.DateTimeFormat.GetDayName(@Model.FechaInicial.Value.AddDays(i).DayOfWeek).ToUpper()  @Model.FechaInicial.Value.AddDays(i).ToString("dd/MM/yyyy")</p>
+                                                <p>
+                                                    @{fechaEncabezado = "'" + fechaEncabezado + "'";}
+                                                    <a class="ion-clipboard" href="javascript:ModalReplicarFuncionxDia(@fechaEncabezado)" title="Replicar Funciones por Día"></a>
+                                                    @ci.DateTimeFormat.GetDayName(@Model.FechaInicial.Value.AddDays(i).DayOfWeek).ToUpper()  @Model.FechaInicial.Value.AddDays(i).ToString("dd/MM/yyyy")
+                                                </p>
                                             </td>
                                         }
                                     </tr>
@@ -1073,7 +1062,10 @@
                                         {
                                             <tr>
                                                 <td class="Sala Bordes" id="SalaTitle">
-                                                    <p>@itemSala.Nombre </p>
+                                                    <p>
+                                                        <a class="ion-clipboard" href="javascript:ModalEliminarFunMasivo()" title="Replicar Funciones por Sala"></a>
+                                                        @itemSala.Nombre 
+                                                    </p>
                                                 </td>
                                                 @for (int i = 0; i < 5; i++)
                                                 {
@@ -1089,7 +1081,15 @@
                                                                         @funcion.DetallePelicula.Opcion.Codigo
                                                                         @funcion.DetallePelicula.Opcion1.Codigo2
                                                                         <br />
-                                                                        @funcion.HoraInicial.Value  @funcion.HoraFinal.Value @*@funcion.Fecha.Value.ToString("dd/MM/yyyy")*@
+                                                                        @if(funcion.HoraInicial.Value != null){
+                                                                            @funcion.HoraInicial.Value.ToString().Substring(0, 5);
+                                                                        }
+                                                                            
+                                                                        @if (funcion.HoraFinal.Value != null)
+                                                                        {
+                                                                            @funcion.HoraFinal.Value.ToString().Substring(0, 5);
+                                                                        }
+                                                                        
                                                                         <br />
                                                                         @if (funcion.ListaPrecioFuncion.Count > 0)
                                                                         {
@@ -1174,6 +1174,16 @@
         var urlWithCont = '../Programacion/ModalEditarFuncion?rowid=' + rowID;
         $("#Dialog")
         .load(urlWithCont.trim())
-        //.dialog('open');
+    }
+    function ModalEliminarFunMasivo(rowID){
+        ModalProcesandoShow();
+        var urlWithCont = '../Programacion/ModalEliminarFuncionMasivo?rowid=' +  $("#row_id").val();
+        $("#Dialog").load(urlWithCont.trim())
+    }
+    function ModalReplicarFuncionxDia(FechaFuncion){
+        debugger
+        ModalProcesandoShow();
+        var urlWithCont = '../Programacion/ModalReplicarFuncionxDia?rowid=' +  $("#row_id").val()+ '&FechaFuncion='+FechaFuncion;
+        $("#Dialog").load(urlWithCont.trim())
     }
 </script>

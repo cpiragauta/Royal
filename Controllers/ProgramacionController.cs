@@ -33,7 +33,7 @@ namespace CinemaPOS.Controllers
                 EncabezadoProgramacion programacion = db.EncabezadoProgramacion.FirstOrDefault(t => t.RowID == RowID_EncabezadoProgramacion);
                 if (programacion != null)
                 {
-                    ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Nombre == "EnFuncionamiento");
+                    ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Nombre == "EnFuncionamiento").OrderBy(f=> f.RowID);
                     ViewBag.ListaPeliculas = db.TeatroPelicula.Where(f => f.TeatroID == programacion.TeatroID);
                     ViewBag.ListasPrecios = db.ListaEncabezado.Where(f => f.TeatroID == programacion.TeatroID);
                 }
@@ -199,7 +199,7 @@ namespace CinemaPOS.Controllers
         [CheckSessionOutAttribute]
         public JsonResult Guardar_Funciones(FormCollection formulario, int RowID_EncabezadoProgramacion)
         {
-            String respuesta = "";
+            String respuesta = "", tipoRespuesta = "success";
             Funcion ObjFuncion = new Funcion();
             formulario = DeSerialize(formulario);
             var HorasFunciones = formulario["HorasFunciones"].Split(',');
@@ -270,10 +270,11 @@ namespace CinemaPOS.Controllers
             }
             if (!String.IsNullOrEmpty(respuesta))
             {
+                tipoRespuesta = "warning";
                 respuesta = "No se puede crear " + respuesta + " Porque entra en conflicto con otra función.";
             }
 
-            return Json(respuesta);
+            return Json(new { respuesta = respuesta, tipoRespuesta = tipoRespuesta });
         }
 
         public Funcion CargarDatosFuncion(Funcion ObjFuncion, FormCollection formulario, int RowID_EncabezadoProgramacion, TimeSpan horaInicial, TimeSpan HoraFinal, DateTime FechaProgramacion)
@@ -474,27 +475,31 @@ namespace CinemaPOS.Controllers
             if (programacion == null)
             {
                 programacion = db.EncabezadoProgramacion.FirstOrDefault(f => f.RowID == ListaFunciones.First().EncabezadoProgramacionID);
-                listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID).ToList();
+                listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID).OrderBy(f => f.RowID).ToList();
             }
             else
             {
-                listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID).ToList();
+                listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID).OrderBy(f => f.RowID).ToList();
             }
             System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
             int cantDias = DiasACorrer + 5;
 
             tabla += "  <thead>";
             tabla += "<tr>";
-            tabla += "   <td class=\"day Bordes\" id=\"table-header-days\">";
-            tabla += "       <p>Sala/Día</p>";
-            tabla += "   </td>";
+            tabla += "<td class=\"day Bordes\" id=\"table-header-days\">";
+            tabla += "<p>Sala/Día</p>";
+            tabla += "</td>";
             for (int i = DiasACorrer; i < cantDias; i++)
             {
                 if ((programacion.FechaInicial.Value.AddDays(i)) <= programacion.FechaFinal.Value)
                 {
-                    tabla += "         <td class=\"day Bordes\" id=\"table-header-days\">";
-                    tabla += "              <p>" + ci.DateTimeFormat.GetDayName(programacion.FechaInicial.Value.AddDays(i).DayOfWeek).ToUpper() + "  " + programacion.FechaInicial.Value.AddDays(i).ToString("dd/MM/yyyy") + "</p>";
-                    tabla += "         </td>";
+                   String fechaEncabezado = programacion.FechaInicial.Value.AddDays(i).ToShortDateString();
+
+                    tabla += "<td class=\"day Bordes\" id=\"table-header-days\">";
+                    tabla += "<p>";
+                    tabla += "<a class=\"ion-clipboard\"  href=\"javascript:ModalReplicarFuncionxDia('"+fechaEncabezado+"')\" title=\"Replicar Funciones por Día\"></a>";
+                    tabla += ci.DateTimeFormat.GetDayName(programacion.FechaInicial.Value.AddDays(i).DayOfWeek).ToUpper() + "  " + programacion.FechaInicial.Value.AddDays(i).ToString("dd/MM/yyyy") + "</p>";
+                    tabla += "</td>";
                 }
             }
             tabla += "      </tr>";
@@ -505,7 +510,9 @@ namespace CinemaPOS.Controllers
             {
                 tabla += "<tr>";
                 tabla += "<td class=\"Sala Bordes\" id=\"SalaTitle\">";
-                tabla += "<p>" + itemSala.Nombre + "</p>";
+                tabla += "<p>";
+                tabla += "<a class=\"ion-clipboard\" href=\"javascript:ModalEliminarFunMasivo()\" title=\"Replicar Funciones por Sala\"></a>";
+                tabla += itemSala.Nombre + "</p>";
                 tabla += "</td>";
                 for (int i = DiasACorrer; i < cantDias; i++)
                 {
@@ -523,7 +530,16 @@ namespace CinemaPOS.Controllers
                                     tabla += funcion.DetallePelicula.Opcion.Codigo + " ";
                                     tabla += funcion.DetallePelicula.Opcion1.Codigo2;
                                     tabla += "<br /> ";
-                                    tabla += funcion.HoraInicial.Value + "  " + funcion.HoraFinal.Value;// @*@funcion.Fecha.Value.ToString("dd/MM/yyyy")*@
+                                    if (funcion.HoraInicial.Value != null)
+                                    {
+                                        tabla += funcion.HoraInicial.Value.ToString().Substring(0, 5) + "  ";
+                                    } 
+
+                                    if (funcion.HoraFinal.Value != null)
+                                    {
+                                        tabla += funcion.HoraFinal.Value.ToString().Substring(0, 5);
+                                    }
+
                                     tabla += "<br />";
                                     if (funcion.ListaPrecioFuncion.Count > 0)
                                     {
@@ -792,6 +808,8 @@ namespace CinemaPOS.Controllers
             return collection;
         }
 
+#region modal editarFuncion
+
         public ActionResult ModalEditarFuncion(int? rowid)
         {
             Funcion funcion = db.Funcion.FirstOrDefault(f => f.RowID == rowid);
@@ -881,5 +899,207 @@ namespace CinemaPOS.Controllers
             return Json(new { respuesta = respuesta, tipoRespuesta = tipoRespuesta });
         }
 
+
+
+
+        #region ModalEliminarFuncion Masivo
+
+        public ActionResult ModalEliminarFuncionMasivo(int rowid)
+        {
+            EncabezadoProgramacion programacion = db.EncabezadoProgramacion.FirstOrDefault(f => f.RowID == rowid);
+            if (programacion == null)
+            {
+                return View(new EncabezadoProgramacion { });
+            }
+            else
+            {
+                ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Nombre == "EnFuncionamiento");
+                ViewBag.ListaPeliculas = db.TeatroPelicula.Where(f => f.TeatroID == programacion.TeatroID);
+                return View(programacion);
+            }
+        }
+
+        public JsonResult EliminarTodasFunciones(int RowID_Programacion)
+        {
+            String tipoMensaje = "", Respuesta = "";
+            int contFunciones = 0;
+            List<Funcion> ListaFunciones = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_Programacion).ToList();
+            foreach (var funcion in ListaFunciones)
+            {
+                //Valido si esta funcion tiene boletas Vendidas
+                List<BoletaVendida> BoletasVendidas = db.BoletaVendida.Where(f => f.FuncionID == funcion.RowID).ToList();
+                if (BoletasVendidas.Count > 0)
+                {
+                    Respuesta += " Funcion "+funcion.Fecha+" "+funcion.HoraInicial+" \n\n";
+                }
+                else
+                {
+                    List<ListaPrecioFuncion> PreciosFuncion = db.ListaPrecioFuncion.Where(f => f.FuncionID == funcion.RowID).ToList();
+                    foreach (ListaPrecioFuncion item in PreciosFuncion)
+                    {
+                        db.ListaPrecioFuncion.Remove(item);
+                        db.SaveChanges();
+                    }
+                    db.Funcion.Remove(db.Funcion.Where(lt => lt.RowID == funcion.RowID).First());
+                    db.SaveChanges();
+                    contFunciones++;
+                }
+            }
+            Respuesta = String.IsNullOrEmpty(Respuesta) ? "" : " Menos: "+Respuesta;
+            Respuesta = contFunciones+ " Funciones eliminadas correctamente "+ Respuesta;
+            tipoMensaje = "success";
+            return Json(new { tipoMensaje = tipoMensaje, Respuesta = Respuesta });
+        }
+
+        public JsonResult EliminarFuncionesMasivo(int RowID_Programacion, FormCollection formulario)
+        {
+            formulario = DeSerialize(formulario);
+
+            String tipoMensaje = "", Respuesta = "";
+
+            int contFunciones = 0;
+            List<Funcion> ListaFunciones = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_Programacion).ToList();
+
+            ListaFunciones = formulario["DetallePelicula"] == null ? ListaFunciones : ListaFunciones.Where(f => f.DetallePeliculaID == Convert.ToInt32(formulario["DetallePelicula"].ToString())).ToList();
+            ListaFunciones = formulario["Sala"] == null ? ListaFunciones : ListaFunciones.Where(f => f.SalaID == Convert.ToInt32(formulario["Sala"].ToString())).ToList();
+            ListaFunciones = String.IsNullOrEmpty(formulario["fechaEliminar"].ToString()) ? ListaFunciones: ListaFunciones.Where(f =>  f.Fecha == Convert.ToDateTime(formulario["fechaEliminar"].ToString())).ToList();
+
+            TimeSpan Horainicial = formulario["hora_inicial"] != null ? TimeSpan.Parse(formulario["hora_inicial"].ToString()) : new TimeSpan();
+            TimeSpan HoraFinal = formulario["hora_final"] != null ? TimeSpan.Parse(formulario["hora_final"].ToString()) : new TimeSpan();
+
+            if (Horainicial != TimeSpan.Zero && HoraFinal != TimeSpan.Zero)
+            {
+                
+            }
+            else if (Horainicial != TimeSpan.Zero)
+            {
+                
+            }
+            else if (HoraFinal != TimeSpan.Zero)
+            {
+
+            }
+
+            foreach (var funcion in ListaFunciones)
+            {
+                //Valido si esta funcion tiene boletas Vendidas
+                List<BoletaVendida> BoletasVendidas = db.BoletaVendida.Where(f => f.FuncionID == funcion.RowID).ToList();
+                if (BoletasVendidas.Count > 0)
+                {
+                    Respuesta += " Funcion " + funcion.Fecha + " " + funcion.HoraInicial + " \n\n";
+                }
+                else
+                {
+                    List<ListaPrecioFuncion> PreciosFuncion = db.ListaPrecioFuncion.Where(f => f.FuncionID == funcion.RowID).ToList();
+                    foreach (ListaPrecioFuncion item in PreciosFuncion)
+                    {
+                        db.ListaPrecioFuncion.Remove(item);
+                        db.SaveChanges();
+                    }
+                    db.Funcion.Remove(db.Funcion.Where(lt => lt.RowID == funcion.RowID).First());
+                    db.SaveChanges();
+                    contFunciones++;
+                }
+            }
+            Respuesta = String.IsNullOrEmpty(Respuesta) ? "" : " Menos: " + Respuesta;
+            Respuesta = contFunciones + " Funciones eliminadas correctamente " + Respuesta;
+            tipoMensaje = "success";
+            return Json(new { tipoMensaje = tipoMensaje, Respuesta = Respuesta });
+        }
+        
+
+        #endregion
+
+
+        #region ReplicarFuncionPorDia
+
+        public ActionResult ModalReplicarFuncionxDia(int rowid, DateTime FechaFuncion)
+        {
+            EncabezadoProgramacion programacion = db.EncabezadoProgramacion.FirstOrDefault(f => f.RowID == rowid);
+            if (programacion == null)
+            {
+                return View(new EncabezadoProgramacion { });
+            }
+            else
+            {
+                List<DateTime> FechasFunciones = new List<DateTime>();
+                DateTime FechaReferencia = programacion.FechaInicial.Value;
+                while (FechaReferencia <= programacion.FechaFinal)
+                {
+                    FechasFunciones.Add(FechaReferencia);
+                    FechaReferencia = FechaReferencia.AddDays(1);
+                }
+                ViewBag.FechasFunciones = FechasFunciones;
+                ViewBag.FechaReplicar = FechaFuncion;
+                return View(programacion);
+            }
+        }
+
+        public JsonResult ReplicarFuncionesxDia(int RowID_Programacion, DateTime FechaReplicar, FormCollection formulario)
+        {
+            String tipoMensaje = "", respuesta = "";
+            formulario = DeSerialize(formulario);
+            int contFunciones = 0;
+            List<Funcion> ListaFuncionesAInsertar = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_Programacion).ToList();
+            //Recorro las fechas seleccionadas e intento insertar las funciones del dia que selecciono
+            List<Funcion> FuncionesExistentes = db.Funcion.Where(f => f.EncabezadoProgramacionID == RowID_Programacion).ToList();
+            foreach (var NuevaFecha in formulario)
+            {
+                foreach (var funcion in ListaFuncionesAInsertar)
+                {
+
+                    try
+                    {
+                        DateTime FechaFuncion = Convert.ToDateTime(NuevaFecha.ToString());
+                        Funcion ObjFuncion = new Funcion();
+                        ObjFuncion.DetallePeliculaID = funcion.DetallePeliculaID;
+                        ObjFuncion.EncabezadoProgramacionID = funcion.EncabezadoProgramacionID;
+                        ObjFuncion.SalaID = funcion.SalaID;
+                        ObjFuncion.Fecha = FechaFuncion;
+                        ObjFuncion.HoraInicial = funcion.HoraInicial;
+                        ObjFuncion.HoraFinal = funcion.HoraFinal;
+                        ObjFuncion.TiempoAseo = funcion.TiempoAseo;
+                        ObjFuncion.TiempoCorto = funcion.TiempoCorto;
+                        ObjFuncion.Sincronizado = false;
+                        ObjFuncion.CreadoPor = Session["usuario_creacion"].ToString();
+                        ObjFuncion.FechaCreacion = DateTime.Now;
+                        ObjFuncion.EstadoID = funcion.EstadoID;
+
+                        String validacion = ValidarFuncion(ObjFuncion, FuncionesExistentes);
+                        if (String.IsNullOrEmpty(validacion))
+                        {
+                            db.Funcion.Add(ObjFuncion);
+                            db.SaveChanges();
+                            FuncionesExistentes.Add(ObjFuncion);
+                            ObjFuncion = new Funcion();//Limpio el Objeto
+                            contFunciones++;
+                        }
+                        else
+                        {
+                            respuesta += validacion;
+                            ObjFuncion = new Funcion();//Limpio el Objeto
+                        }
+                    }
+                    catch (Exception ex)
+                    { return Json(new { respuesta = "Error " + ex.Message }); }
+                }
+            }
+            respuesta = contFunciones + " Funciones Replicadas correctamente " + respuesta;
+            tipoMensaje = "success";
+            return Json(new { tipoMensaje = tipoMensaje, Respuesta = respuesta });
+        }
+
+        
+
+        #endregion
+
+
     }
+
+
+
+#endregion
+
+   
+
 }
