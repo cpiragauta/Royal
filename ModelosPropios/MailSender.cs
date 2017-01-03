@@ -119,7 +119,7 @@ namespace CinemaPOS.ModelosPropios
 
         }
 
-        public static void Enviar_Actividad(object Actividad,string CodPlantilla,string usuario,string adjunto)
+        public static void Enviar_Actividad(object Actividad,string CodPlantilla,string usuario,string adjunto,string Copiacorreo)
         {
             if (db == null)
                 db = new CinemaPOSEntities();

@@ -57,11 +57,13 @@ namespace CinemaPOS.Controllers.Inicio
         }
         public ActionResult ModalTercero()
         {
-            
+
+            var TipoAreas = db.Tipo.Where(f => f.Codigo == Util.Constantes.TIPO_AREA).FirstOrDefault();
+            var TipoEstados = db.TipoEstado.Where(f => f.Codigo == Util.Constantes.TIPO_ESTADO_PQRS).FirstOrDefault();
             ViewBag.Teatros = db.Teatro.ToList();
             ViewBag.TipoPQRS = db.TipoSolicitud.Where(ts => ts.Estado == true).ToList();
-            ViewBag.CambioArea = db.Opcion.Where(f => f.TipoID == Util.Constantes.TIPO_AREA).ToList();
-            ViewBag.Estados = db.Estado.Where(f => f.TipoEstadoID == Util.Constantes.TIPO_ESTADO_PQRS).ToList();
+            ViewBag.CambioArea = db.Opcion.Where(f => f.TipoID == TipoAreas.RowID).ToList();
+            ViewBag.Estados = db.Estado.Where(f => f.TipoEstadoID == TipoEstados.RowID).ToList();
             return View();
         }
         public JsonResult Guardar_PQRS(FormCollection formulario,int? RowIDTercero)

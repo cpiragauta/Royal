@@ -5,10 +5,9 @@
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
 
-
+<link href="~/Content/plugins/select2/css/select2.min.css" rel="stylesheet" />
+<script src="~/Content/plugins/select2/js/select2.full.min.js"></script>
 <script>
-
-
     function validarFechaMenorActual(date) {
         var x = new Date();
         var fecha = date.split("-");
@@ -20,7 +19,6 @@
         else
             return true;
     }
-
     function guardar_tercero() {
         var validator = $("#formulario_tercero").validate();
         debugger
@@ -39,19 +37,17 @@
                 },
                 success: function (data) {
                     debugger;
-                    if (data.respuesta.includes("Error")) {
-                        swal("ERROR", data.respuesta, "error");
-                        return;
-                    } else {
-                        swal("OK", data.respuesta, "success")
+                        swal("OK", data, "success")
                         window.location = "/Maestro/VistaTercero"
-                    }
 
                 },
                 error: function (data) {
-                    swal("ERROR", data.respuesta, "error");
+                    swal("Advertencia", data, "warning");
                 }
             });
+        }
+        else{
+            alert(validator);
         }
     }
 
@@ -113,22 +109,41 @@
     function OcultarCampos() {
         if ($("#tipo_tercero option:selected").val() == "")
         { return; }
-        if ($("#tipo_tercero option:selected").html() != "Natural") {
+        if ($("#tipo_tercero option:selected").html() != "Natural" && $("#tipo_tercero option:selected").html() != "Distribuidor") {
             $("#PanelApellido").hide();
             $("#tipoID").hide();
             $("#PanelSexo").hide();
             $("#lblNombre").empty().append("Razón Social:*");
             $("#lblIdentificacion").empty().append("NIT:*")
             $("#lblFechaNacimiento").empty().append("Fecha Creación:*");
-            $("#tipo_identificacion").prop('required', false);
-            $("#sexo").prop('required', false);
-            $("#Apellido").prop('required', false);
+            $("#Apellido").removeAttr('required');
+            $("#tipo_identificacion").removeAttr('required');
+            $("#Sexo").removeAttr('required');
             $(".Ocultar").addClass("CorrerIzquierda");
             $(".Descripcion1").addClass("Descripcion");
 
 
-        } else {
-            $("#PanelApellido").show();
+        }else if ($("#tipo_tercero option:selected").html() == "Distribuidor") {
+            debugger
+            $("#PanelApellido").hide();
+            $("#tipoID").hide();
+            $("#PanelSexo").hide();
+            $("#lblNombre").empty().append("Razón Social:*");
+            $("#Apellido").removeAttr('required');
+            $("#tipo_identificacion").removeAttr('required');
+            $("#Sexo").removeAttr('required');
+            $("#nombreTercero").removeAttr('required');
+            $("#oculto").hide();
+            $("#PanelIdentificacion").hide();
+            $("#tipo_se").slideDown('fast');
+            $("#Correr").addClass("CorrerIzquierda");
+            $(".Ocultar").addClass("CorrerIzquierda");
+
+        }
+
+        else {
+            $("#tipo_se").removeAttr("style").hide();
+            $("#PanelApellido").show(); 
             $("#tipoID").show();
             $("#PanelSexo").show();
             $("#lblNombre").empty().append("Nombre:*");
@@ -137,6 +152,7 @@
             $("#tipo_identificacion").prop('required', true);
             $("#sexo").prop('required', true);
             $("#Apellido").prop('required', true);
+            $("#nombreTercero").prop('required',true);
             $(".Ocultar").removeClass("CorrerIzquierda");
             $(".Descripcion1").removeClass("Descripcion");
 
@@ -162,8 +178,8 @@
             todayBtn: "linked",
             autoclose: true,
             todayHighlight: false,
-            endDate:"-1d",
-
+            minDate: 0, // 0 days offset = today
+            maxDate: 'today',
         });
 
         OcultarCampos();
@@ -286,6 +302,7 @@
         margin: 7% 0% 0% -67%;
     }
 </style>
+<div id="Dialog"></div>
 <div>
     <p>
         <a class="btn btn-success" href='@Url.Action("VistaTercero", "Maestro")'>Vista Terceros</a>
@@ -298,7 +315,7 @@
             <!--Nav tabs-->
             <ul class="nav nav-tabs">
                 <li class="active" id="tabEncabezado"><a data-toggle="tab" href="#TabTercero">Tercero</a></li>
-                <li><a data-toggle="tab" href="#Contactos" @*onclick="RefrescarTabla(@Model.RowID)"*@>Contactos</a></li>
+                <li><a data-toggle="tab" href="#Contactos" @*onclick="RefrescarTabla(@Model.RowID)" *@>Contactos</a></li>
             </ul>
 
         </div>
@@ -331,6 +348,19 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-sm-4" id="tipo_se">
+                            <input type="hidden" name="sello_query" value="" id="sello_query"/>
+                            <div class="form-group">
+                                <label class="control-label">Tipo Sello:*</label>
+                                <div class="input-group">
+                                    <select name="tipo_sello" id="tipo_sello" class="js-example-basic-multiple form-control" multiple="multiple">
+                                        <option value="" disabled>Seleccione una opción</option>
+                                    </select>
+                                    <span class="ion-plus-round input-group-addon btn btn-default" id="modal_sello" style="cursor:grab" disabled data-toggle="tooltip" data-placement="bottom" title="Crear Sello"></span>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-sm-4">
                             <div class="form-group" name="TipoID" id="tipoID">
                                 <label class="control-label">Tipo Identificación:*</label>
@@ -355,7 +385,7 @@
                         <div class="col-sm-4">
                             <div class="form-group Ocultar" id="PanelIdentificacion">
                                 <label class="control-label" id="lblIdentificacion">Identificacion:*</label>
-                                <input value="@Model.Identificacion" name="Identificacion" id="Identificacion" class="form-control solo-numero" required>
+                                <input value="@Model.Identificacion" name="Identificacion" id="Identificacion" class="form-control solo-numero">
                             </div>
                         </div>
 
@@ -366,7 +396,7 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label" id="lblNombre">Nombre:*</label>
-                                <input type="text" name="nombre" value="@Model.Nombre" class="form-control" required>
+                                <input type="text" name="nombre" value="@Model.Nombre" class="form-control" id="nombreTercero">
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -382,12 +412,12 @@
                                     <label class="control-label" id="lblFechaNacimiento">Fecha Nacimiento:*</label>
                                     <div class="input-daterange ">
                                         @if (Model.FechaNacimiento != null)
-{
-    <input type="text" class="form-control" name="FechaNacimiento" id="FechaNacimiento" value="@Model.FechaNacimiento.Value.ToString("dd/MM/yyyy")" style=" text-align: left" required>
-}
+                                        {
+                                            <input type="text" class="form-control" name="FechaNacimiento" id="FechaNacimiento" value="@Model.FechaNacimiento.Value.ToString("dd/MM/yyyy")">
+                                        }
                                         else
                                         {
-                                            <input type="text" class="form-control" name="FechaNacimiento" id="FechaNacimiento" style=" text-align: left" value="@Model.FechaNacimiento" required>
+                                            <input type="text" class="form-control" name="FechaNacimiento" id="FechaNacimiento" value="@Model.FechaNacimiento">
                                         }
                                     </div>
 
@@ -418,16 +448,16 @@
                         </div>
 
                         <div class="col-sm-4">
-                            <div class="form-group Ocultar">
+                            <div class="form-group Ocultar" id="oculto">
                                 <label class="control-label">Telefono:*</label>
-                                <input type="text" name="telefono" value="@Model.Telefono" class="form-control" required>
+                                <input type="text" name="telefono" value="@Model.Telefono" class="form-control">
                             </div>
                         </div>
 
                         <div class="col-sm-4 ">
-                            <div class="form-group Ocultar">
+                            <div class="form-group " id="Correr ">
                                 <label class="control-label">Ciudad:*</label>
-                                <select name="ciudad" class="form-control chosen" required>
+                                <select name="ciudad" class="form-control chosen">
                                     <option value="" disabled selected>Seleccione una opción</option>
                                     @foreach (CinemaPOS.Models.Ciudad Ciudades in ViewBag.CiudadID)
                                     {
@@ -449,13 +479,13 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">Dirección:*</label>
-                                <input type="text" name="direccion" value="@Model.Direccion" class="form-control" required>
+                                <input type="text" name="direccion" value="@Model.Direccion" class="form-control">
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">Correo:*</label>
-                                <input type="email" value="@Model.Correo" name="correo" class="form-control" required>
+                                <input type="email" value="@Model.Correo" name="correo" class="form-control">
                             </div>
                         </div>
                         <div class="col-sm-4 Descripcion1">
@@ -567,9 +597,75 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
-
 </div>
+<script>
+    $(document).ready(function(){
+        $("#tipo_se").slideUp('fast');
+        $("#tipo_tercero").change(function(){
+            if ($("#tipo_tercero").val() == "19") {
+                debugger
+                RefrescarSellos();
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+$(".js-example-basic-multiple").select2();
+</script>
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+
+<script>
+    function CrearSello(){
+        ModalProcesandoShow();
+        var urlWithCont = '../CRM/ModalSello';
+        $("#Dialog").load(urlWithCont.trim()).dialog('open');
+    }
+</script>
+<script>
+    function RefrescarSellos(){
+        ModalProcesandoShow();
+        $("#tipo_sello").empty();
+        $.ajax({
+            type: "POST",
+            url: "/Maestro/CargarSellosV2",
+            data: {
+                rowID:"@Model.RowID",
+            },
+            success: function (data) {
+                $("#tipo_sello").empty()
+                $("#tipo_sello").append(data).trigger("chosen:updated");
+                $("#tipo_sello").trigger("chosen:updated");
+                debugger
+                //if (data.length >=56) {
+                $("#modal_sello").removeAttr("disabled");
+                $("#modal_sello").css("cursor","pointer");
+                $("#modal_sello").attr("onclick","javascript:CrearSello()");
+                //}
+                ModalProcesandoHiden();
+            },
+            error: function (request) {
+                ModalProcesandoHiden();
+                hasChangue = true;
+            }
+        });
+        $("#sello_query").val("");
+        $("#tipo_se").slideDown('fast');
+    }
+    debugger
+$(document).ready(function(){
+    $("#sello_query").change(function(){
+        debugger
+
+        if ($(this).val() == "ok") {
+            RefrescarSellos();
+        }
+    });
+});
+</script>

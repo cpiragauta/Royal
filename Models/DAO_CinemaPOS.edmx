@@ -61,6 +61,7 @@
           <Property Name="fechaMod" Type="datetime" />
           <Property Name="usuarioMod" Type="varchar" MaxLength="50" />
           <Property Name="Adjunto" Type="text" />
+          <Property Name="CopiaCorreo" Type="nvarchar" MaxLength="80" />
         </EntityType>
         <EntityType Name="ClienteRoyal">
           <Key>
@@ -82,6 +83,7 @@
           <Property Name="UsuarioMod" Type="varchar" MaxLength="50" />
           <Property Name="FechaMod" Type="datetime" />
           <Property Name="preferenciasID" Type="int" />
+          <Property Name="TipoIdentificacionID" Type="int" />
         </EntityType>
         <EntityType Name="OportunidadVenta">
           <Key>
@@ -417,6 +419,10 @@
           <Property Name="FechaModificacion" Type="datetime" />
           <Property Name="Sincronizado" Type="bit" />
           <Property Name="RowIDCentral" Type="int" />
+          <Property Name="Afiche" Type="nvarchar" MaxLength="300" />
+          <Property Name="Thumbnail" Type="nvarchar" MaxLength="300" />
+          <Property Name="Trailer" Type="nvarchar" MaxLength="300" />
+          <Property Name="Teaser" Type="nvarchar" MaxLength="300" />
         </EntityType>
         <EntityType Name="GeneroPelicula">
           <Key>
@@ -718,7 +724,7 @@
           <Property Name="ModificadoPor" Type="varchar" MaxLength="50" />
           <Property Name="FechaModificacion" Type="datetime" />
           <Property Name="Sincronizado" Type="bit" />
-          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Nombre" Type="varchar" MaxLength="200" />
           <Property Name="TipoServicioID" Type="int" />
           <Property Name="TipoListaDetalle" Type="int" />
         </EntityType>
@@ -2430,6 +2436,18 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_TipoIdentificacion">
+          <End Role="Opcion" Type="Self.Opcion" Multiplicity="0..1" />
+          <End Role="ClienteRoyal" Type="Self.ClienteRoyal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Opcion">
+              <PropertyRef Name="RowID" />
+            </Principal>
+            <Dependent Role="ClienteRoyal">
+              <PropertyRef Name="TipoIdentificacionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FKEC4991158B6B12E">
           <End Role="Tipo" Type="Self.Tipo" Multiplicity="1" />
           <End Role="Opcion" Type="Self.Opcion" Multiplicity="*" />
@@ -3068,6 +3086,10 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
             <End Role="TipoEstado" EntitySet="TipoEstado" />
             <End Role="Estado" EntitySet="Estado" />
           </AssociationSet>
+          <AssociationSet Name="fk_TipoIdentificacion" Association="Self.fk_TipoIdentificacion">
+            <End Role="Opcion" EntitySet="Opcion" />
+            <End Role="ClienteRoyal" EntitySet="ClienteRoyal" />
+          </AssociationSet>
           <AssociationSet Name="FKEC4991158B6B12E" Association="Self.FKEC4991158B6B12E">
             <End Role="Tipo" EntitySet="Tipo" />
             <End Role="Opcion" EntitySet="Opcion" />
@@ -3678,6 +3700,10 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
             <End Role="Rol" EntitySet="Rol" />
             <End Role="UsuarioSistema" EntitySet="UsuarioSistema" />
           </AssociationSet>
+          <AssociationSet Name="fk_TipoIdentificacion" Association="CinemaPOSModel.fk_TipoIdentificacion">
+            <End Role="Opcion" EntitySet="Opcion" />
+            <End Role="ClienteRoyal" EntitySet="ClienteRoyal" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -3759,6 +3785,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <NavigationProperty Name="Opcion1" Relationship="CinemaPOSModel.fk_tipo_Actividad" FromRole="Actividades" ToRole="Opcion" />
           <NavigationProperty Name="Opcion2" Relationship="CinemaPOSModel.fk_tipo_Referencia" FromRole="Actividades" ToRole="Opcion" />
           <Property Name="Adjunto" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CopiaCorreo" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ClienteRoyal">
           <Key>
@@ -3785,6 +3812,8 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <NavigationProperty Name="Opcion1" Relationship="CinemaPOSModel.FK__ClienteRo__Gener__0ABD916C" FromRole="ClienteRoyal" ToRole="Opcion" />
           <NavigationProperty Name="TarjetaMembresiaClienteRoyal" Relationship="CinemaPOSModel.FK__TarjetaMe__Clien__162F4418" FromRole="ClienteRoyal" ToRole="TarjetaMembresiaClienteRoyal" />
           <NavigationProperty Name="Opcion2" Relationship="CinemaPOSModel.fk_preferencias" FromRole="ClienteRoyal" ToRole="Opcion" />
+          <Property Name="TipoIdentificacionID" Type="Int32" />
+          <NavigationProperty Name="Opcion3" Relationship="CinemaPOSModel.fk_TipoIdentificacion" FromRole="ClienteRoyal" ToRole="Opcion" />
         </EntityType>
         <EntityType Name="TarjetaMembresia">
           <Key>
@@ -3992,6 +4021,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <NavigationProperty Name="Taquilla" Relationship="CinemaPOSModel.FK__Taquilla__TipoTa__4944D3CA" FromRole="Opcion" ToRole="Taquilla" />
           <NavigationProperty Name="Seguimiento" Relationship="CinemaPOSModel.FK__Seguimien__AreaA__595B4002" FromRole="Opcion" ToRole="Seguimiento" />
           <NavigationProperty Name="Seguimiento1" Relationship="CinemaPOSModel.FK__Seguimien__AreaA__5A4F643B" FromRole="Opcion" ToRole="Seguimiento" />
+          <NavigationProperty Name="ClienteRoyal3" Relationship="CinemaPOSModel.fk_TipoIdentificacion" FromRole="Opcion" ToRole="ClienteRoyal" />
         </EntityType>
         <EntityType Name="Pais">
           <Key>
@@ -4230,6 +4260,10 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <NavigationProperty Name="PorcentajeParticipacion" Relationship="CinemaPOSModel.FK__Porcentaj__Encab__6754599E" FromRole="EncabezadoPelicula" ToRole="PorcentajeParticipacion" />
           <NavigationProperty Name="TeatroPelicula" Relationship="CinemaPOSModel.FK__TeatroPel__Encab__673F4B05" FromRole="EncabezadoPelicula" ToRole="TeatroPelicula" />
           <Property Name="RowIDCentral" Type="Int32" />
+          <Property Name="Afiche" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Thumbnail" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Trailer" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Teaser" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="GeneroPelicula">
           <Key>
@@ -4546,7 +4580,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <Property Name="ModificadoPor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="FechaModificacion" Type="DateTime" Precision="3" />
           <Property Name="Sincronizado" Type="Boolean" />
-          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="TipoServicioID" Type="Int32" />
           <Property Name="TipoListaDetalle" Type="Int32" />
           <NavigationProperty Name="Estado" Relationship="CinemaPOSModel.FK__ListaDeta__Estad__71D1E811" FromRole="ListaDetalle" ToRole="Estado" />
@@ -6377,6 +6411,18 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_TipoIdentificacion">
+          <End Type="CinemaPOSModel.Opcion" Role="Opcion" Multiplicity="0..1" />
+          <End Type="CinemaPOSModel.ClienteRoyal" Role="ClienteRoyal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Opcion">
+              <PropertyRef Name="RowID" />
+            </Principal>
+            <Dependent Role="ClienteRoyal">
+              <PropertyRef Name="TipoIdentificacionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6451,6 +6497,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <EntitySetMapping Name="Actividades">
             <EntityTypeMapping TypeName="CinemaPOSModel.Actividades">
               <MappingFragment StoreEntitySet="Actividades">
+                <ScalarProperty Name="CopiaCorreo" ColumnName="CopiaCorreo" />
                 <ScalarProperty Name="Adjunto" ColumnName="Adjunto" />
                 <ScalarProperty Name="usuarioMod" ColumnName="usuarioMod" />
                 <ScalarProperty Name="fechaMod" ColumnName="fechaMod" />
@@ -6472,6 +6519,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <EntitySetMapping Name="ClienteRoyal">
             <EntityTypeMapping TypeName="CinemaPOSModel.ClienteRoyal">
               <MappingFragment StoreEntitySet="ClienteRoyal">
+                <ScalarProperty Name="TipoIdentificacionID" ColumnName="TipoIdentificacionID" />
                 <ScalarProperty Name="preferenciasID" ColumnName="preferenciasID" />
                 <ScalarProperty Name="FechaMod" ColumnName="FechaMod" />
                 <ScalarProperty Name="UsuarioMod" ColumnName="UsuarioMod" />
@@ -6805,6 +6853,10 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <EntitySetMapping Name="EncabezadoPelicula">
             <EntityTypeMapping TypeName="CinemaPOSModel.EncabezadoPelicula">
               <MappingFragment StoreEntitySet="EncabezadoPelicula">
+                <ScalarProperty Name="Teaser" ColumnName="Teaser" />
+                <ScalarProperty Name="Trailer" ColumnName="Trailer" />
+                <ScalarProperty Name="Thumbnail" ColumnName="Thumbnail" />
+                <ScalarProperty Name="Afiche" ColumnName="Afiche" />
                 <ScalarProperty Name="RowIDCentral" ColumnName="RowIDCentral" />
                 <ScalarProperty Name="Sincronizado" ColumnName="Sincronizado" />
                 <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />

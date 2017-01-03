@@ -50,6 +50,7 @@ namespace CinemaPOS.Models
             this.Taquilla = new HashSet<Taquilla>();
             this.Seguimiento = new HashSet<Seguimiento>();
             this.Seguimiento1 = new HashSet<Seguimiento>();
+            this.ClienteRoyal3 = new HashSet<ClienteRoyal>();
         }
     
         public int RowID { get; set; }
@@ -97,5 +98,6 @@ namespace CinemaPOS.Models
         public virtual ICollection<Taquilla> Taquilla { get; set; }
         public virtual ICollection<Seguimiento> Seguimiento { get; set; }
         public virtual ICollection<Seguimiento> Seguimiento1 { get; set; }
+        public virtual ICollection<ClienteRoyal> ClienteRoyal3 { get; set; }
     }
 }
