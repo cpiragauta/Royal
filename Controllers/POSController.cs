@@ -8,6 +8,7 @@ using System.Drawing.Printing;
 using System.Drawing;
 using System.Globalization;
 using System.Security.Cryptography;
+using CinemaPOS.ModelosPropios;
 
 namespace CinemaPOS.Controllers
 {
@@ -232,7 +233,7 @@ namespace CinemaPOS.Controllers
                         }
                         else { carrusel = false; }
                         html += "<div class='col-sm-3 funcion mar-hor' onclick='javascrip:get_tarifas(" + funciones.RowID_Funcion + ")'>";
-                        html += "<h5 class='text-main'>" + funciones.HoraInicial + "</h5>";
+                        html += "<h5 class='text-main hora_funcion'>" + funciones.HoraInicial + "</h5>";
                         html += "<p>" + funciones.NombreSala + "<br />Disponible: 120</p>";
                         html += "</div>";
                         if (contador_funciones_pelicula == 3)
@@ -387,7 +388,7 @@ namespace CinemaPOS.Controllers
                             {
                                 if (objBoleta != null)
                                 {
-                                    Data_Table = Data_Table + " <td id='" + objmapa_sala.RowID + "'  class=" + clase + " style='background: #B0BEC5;' ><input type='hidden' name='" + clase_posicionX + "' value=" + i + " /><input type = 'hidden' name='" + clase_posicionY + "' value=" + j + "  />";
+                                    Data_Table = Data_Table + " <td id='" + objmapa_sala.RowID + "'  class='" + clase + " disabled' style='background: #B0BEC5;' ><input type='hidden' name='" + clase_posicionX + "' value=" + i + " /><input type = 'hidden' name='" + clase_posicionY + "' value=" + j + "  />";
                                 }
                                 else
                                 {
@@ -476,7 +477,7 @@ namespace CinemaPOS.Controllers
                     objBoletaVenta.FechaVenta = DateTime.Now;
                     objBoletaVenta.MedioPago = "Efectivo";
                     objBoletaVenta.TaquillaID = int.Parse(Session["RowID_Taquilla"].ToString());
-                    objBoletaVenta.TaquillaID = ((UsuarioSistema)(Session["usuario"])).RowID;
+                    objBoletaVenta.UsuarioID = ((UsuarioSistema)(Session["usuario"])).RowID;
                     db.BoletaVendida.Add(objBoletaVenta);
                     db.SaveChanges();
                     Boletas += "";
@@ -492,22 +493,44 @@ namespace CinemaPOS.Controllers
         [CheckSessionOutAttribute]
         public ActionResult ValidaCupones()
         {
+            /**/
             return View();
         }
         public string valida_estado_cupon(string codigo_barras)
         {
-            String des = "";
-
+            String des = "65B7A47635";
+            string respuesta = "";
             Encriptacion encrip = new Encriptacion(System.Text.Encoding.UTF8);
             RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
-            byte[] key = new byte[32];
+            byte[] key = new byte[32]; 
             byte[] iv = new byte[32];
-
             rngCsp.GetBytes(key);
             rngCsp.GetBytes(iv);
-            des = encrip.Decrypt(codigo_barras, key, iv);
-           
-            return des;
+            des = encrip.Decrypt(des, key, iv);
+            
+            DetalleConvenio cupon_valida = db.DetalleConvenio.Where(dc => dc.Codigo == codigo_barras).FirstOrDefault();
+            if (cupon_valida!=null)
+            {
+                db.Database.Connection.ConnectionString = (db.Parametros.Where(p => p.cod_parametro == "CONNCENTRAL").FirstOrDefault().valor_parametros); //db.DetalleConvenio.Where(dc => dc.Codigo == "65B7A47636").FirstOrDefault();
+                string con=db.Database.Connection.DataSource.ToString();
+                cupon_valida = db.DetalleConvenio.Where(dc => dc.Codigo == codigo_barras).FirstOrDefault();
+                db.Database.Connection.Close();
+                if (cupon_valida.Estado.Codigo.ToUpper()== "REDIMIDO")
+                {
+                    respuesta = "EL convenio " + cupon_valida.EncabezadoConvenio.Nombre + " ya ha sido redimido ";
+                }
+                else
+                {
+                    cupon_valida.EstadoID = db.Estado.Where(es => es.TipoEstado.Codigo == ModelosPropios.Util.Constantes.TIPO_ESTADO_CONVENIO && es.Codigo == ModelosPropios.Util.Constantes.ESTADO_CONVENIO_REDIMIDO).FirstOrDefault().RowID;
+                    db.SaveChanges();
+                    respuesta = "Convenio redimido";
+                }
+            }
+            else
+            {
+                respuesta = "EL convenio no existe";
+            }
+            return respuesta;
         }
     }
 }

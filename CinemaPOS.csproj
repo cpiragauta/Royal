@@ -381,6 +381,7 @@
     <Content Include="Content\css\demo\nifty-demo.min.css" />
     <Content Include="Content\css\demo\premium-icon-screenshot.css" />
     <Content Include="Content\css\Forms.css" />
+    <Content Include="Content\css\Global.min.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\nifty.css" />
     <Content Include="Content\css\nifty.min.css" />
