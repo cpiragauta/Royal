@@ -517,6 +517,8 @@
         $.validator.setDefaults({ ignore: ":hidden:not(select)" });
 
 
+       
+
         jQuery(".chosen").chosen({ width: " 100%;" });
         jQuery(".TeatroChosen").chosen({ width: " 100%;" });
         jQuery(".SalaChosen").chosen({ width: " 100%;" });
@@ -642,115 +644,6 @@
         });
 
 
-
-
-
-
-        @*debugger
-        $('#calendar').fullCalendar({
-            header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month,agendaWeek,agendaDay'
-            },
-            editable: true,
-            droppable: true, // this allows things to be dropped onto the calendar
-            drop: function () {
-                // is the "remove after drop" checkbox checked?
-                if ($('#drop-remove').is(':checked')) {
-                    // if so, remove the element from the "Draggable Events" list
-                    $(this).remove();
-                }
-            },
-            defaultDate: Date.now(),
-            eventLimit: true, // allow "more" link when too many events
-
-            events: [
-
-                    @if (ViewBag.listaFunciones != null)
-                            {
-                                System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
-                                foreach (CinemaPOS.Models.Funcion funcion in ViewBag.listaFunciones)
-                                {
-                                    @:{title: '@funcion.DetallePelicula.EncabezadoPelicula.TituloLocal',
-                                                @:start: '@funcion.Fecha T @funcion.HoraInicial:00',
-                                                @:end: '@funcion.Fecha T  @funcion.HoraFinal:00',
-                                                @:className: 'purple'
-                                                @:},
-                                        }
-                    }
-
-
-                    ]
-                    });*@
-
-
-
-        //$('#calendar').fullCalendar({
-        //    header: {
-        //        left: 'prev,next today',
-        //        center: 'title',
-        //        right: 'month,agendaWeek'
-        //    },
-        //    editable: true,
-        //    droppable: true, // this allows things to be dropped onto the calendar
-        //    drop: function () {
-        //        // is the "remove after drop" checkbox checked?
-        //        if ($('#drop-remove').is(':checked')) {
-        //            // if so, remove the element from the "Draggable Events" list
-        //            $(this).remove();
-        //        }
-        //    },
-        //    defaultDate: Date.now(),
-        //    eventLimit: true, // allow "more" link when too many events
-
-
-        //    events: function (start, end, timezone, callback) {
-        //        $.ajax({
-        //            type: "POST",
-        //            url: '/Programacion/TraerFunciones',
-        //            data: {
-        //                RowID_Encabezado: $("#row_id").val(),
-        //            },
-        //            success: function (doc) {
-        //                debugger;
-        //                var events = [];
-        //                doc.forEach(function (funcion) {
-        //                    if (funcion.FechaInicialMes < 10) {
-        //                        funcion.FechaInicialMes = "0" + funcion.FechaInicialMes;
-        //                    }
-        //                    if (funcion.FechaInicialDia < 10) {
-        //                        funcion.FechaInicialDia = "0" + funcion.FechaInicialDia;
-        //                    }
-        //                    if (funcion.FechaInicialHora < 10) {
-        //                        funcion.FechaInicialHora = "0" + funcion.FechaInicialHora;
-        //                    }
-        //                    if (funcion.FechaInicialMinuto < 10) {
-        //                        funcion.FechaInicialMinuto = "0" + funcion.FechaInicialMinuto;
-        //                    }
-        //                    if (funcion.FechaFinalHora < 10) {
-        //                        funcion.FechaFinalHora = "0" + funcion.FechaFinalHora;
-        //                    }
-        //                    if (funcion.FechaFinalMinuto < 10) {
-        //                        funcion.FechaFinalMinuto = "0" + funcion.FechaFinalMinuto;
-        //                    }
-        //                    var inicial = funcion.FechaInicialAno + "-" + funcion.FechaInicialMes + "-" + funcion.FechaInicialDia + "T" + funcion.FechaInicialHora + ":" + funcion.FechaInicialMinuto + ":00";
-        //                    var final = funcion.FechaInicialAno + "-" + funcion.FechaInicialMes + "-" + funcion.FechaInicialDia + "T" + funcion.FechaFinalHora + ":" + funcion.FechaFinalMinuto + ":00";
-
-        //                    events.push({
-        //                        title: funcion.titulo + funcion.version,
-        //                        start: inicial,
-        //                        end: final,
-        //                    });
-        //                });
-        //                callback(events);
-        //            }
-        //        });
-        //    }
-        //});
-
-
-
     });
 
 
@@ -788,6 +681,8 @@
 
     $(document).ready(function () {
         $('#Table').DataTable();
+        $("#Table_info").hide();
+        $("#Table_paginate").hide();
     });
 
 </script>
@@ -1143,102 +1038,111 @@
 
             <div id="Tabla" class="tab-pane fade">
                 <input type="hidden" id="Cant_Dias" name="Cant_Dias" value="0" />
-                <div class="">
+                <div class="col-sm-11">
                     <a class="btn btn-success btn-icon add-tooltip" href="javascript:MoverFuncionesGraficas(-5)" data-toggle="tooltip" data-placement="bottom" data-original-title="5 días atras"><i class="ion-arrow-left-a icon-lg"></i> </a>
                     <a class="btn btn-success btn-icon add-tooltip" href="javascript:CargarFuncionesGraficas()" data-toggle="tooltip" data-placement="bottom" data-original-title="Refrescar Funciones"><i class="glyphicon glyphicon-refresh icon-lg"></i></a>
                     <a class="btn btn-success btn-icon add-tooltip" href="javascript:MoverFuncionesGraficas(5)" data-toggle="tooltip" data-placement="bottom" data-original-title="5 días adelante"><i class="ion-arrow-right-a icon-lg"></i> </a>
                 </div>
+                <div class="col-sm-1">
+                    <a class="btn btn-dark btn-icon add-tooltip" href="javascript:EliminarMasivamente()" data-toggle="tooltip" data-placement="bottom" data-original-title="Eliminar Funciones Masivamente"><i class="ion-trash-a icon-lg"></i> </a>
+                </div>
 
-                <div id="FuncionesGraficas">
-                    @if (ViewBag.listaFunciones != null)
-                    {
-                        <table class="table table-responsive table-condensed table-hover table table-striped table-bordered" id="Table">
-                            <thead>
-                                <tr>
-                                    <td class="day Bordes" id="table-header-days">
-                                        <p>Sala/Día</p>
-                                    </td>
-                                    @for (int i = 0; i < 5; i++)
-                                    {
-                                        System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
-
+                    <div id="FuncionesGraficas">
+                        @if (ViewBag.listaFunciones != null)
+                        {
+                            <table class="table table-responsive table-condensed table-hover table table-striped table-bordered" id="Table">
+                                <thead>
+                                    <tr>
                                         <td class="day Bordes" id="table-header-days">
-                                            <p>@ci.DateTimeFormat.GetDayName(@Model.FechaInicial.Value.AddDays(i).DayOfWeek).ToUpper()  @Model.FechaInicial.Value.AddDays(i).ToString("dd/MM/yyyy")</p>
+                                            <p>Sala/Día</p>
                                         </td>
-                                    }
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (ViewBag.listaSalas != null)
-                                {
-                                    foreach (CinemaPOS.Models.Sala itemSala in ViewBag.listaSalas)
-                                    {
-                                        <tr>
-                                            <td class="Sala Bordes" id="SalaTitle">
-                                                <p>@itemSala.Nombre </p>
-                                            </td>
-                                            @for (int i = 0; i < 5; i++)
-                                            {
-                                                <td class="Bordes">
-                                                    @foreach (CinemaPOS.Models.Funcion funcion in ViewBag.listaFunciones)
-                                                    {
-                                                        if (funcion.SalaID == itemSala.RowID)
-                                                        {
-                                                            if (Model.FechaInicial.Value.AddDays(i) == funcion.Fecha.Value)//Mismo dia
-                                                            {
-                                                                <p class="Funcion @funcion.Estado.Nombre" onclick="javascript:ModalEditarFun(@funcion.RowID)" style="cursor:pointer">
-                                                                    @funcion.DetallePelicula.EncabezadoPelicula.TituloLocal
-                                                                    @funcion.DetallePelicula.Opcion.Codigo
-                                                                    @funcion.DetallePelicula.Opcion1.Codigo2
-                                                                    <br />
-                                                                    @funcion.HoraInicial.Value  @funcion.HoraFinal.Value @*@funcion.Fecha.Value.ToString("dd/MM/yyyy")*@
-                                                                    <br />
-                                                                    @if(funcion.ListaPrecioFuncion.Count >0){
-                                                                        <i class="ion-cash icon-identificador" style="font-size: x-large;">&nbsp;</i>
-                                                                    }
-                                                                    @if (funcion.Estado != null)
-                                                                    {
-                                                                        if (funcion.Estado.Nombre == "Abierta")
-                                                                        {
-                                                                            <i class="ion-unlocked " style="font-size: large;"></i>
-                                                                        }
-                                                                        else if (funcion.Estado.Nombre == "Cerrada")
-                                                                        {
-                                                                            <i class="ion-locked" style="font-size: large;"></i>
-                                                                        }
-                                                                        else if (funcion.Estado.Nombre == "Planeada")
-                                                                        {
-                                                                            <i class="ion-calendar" style="font-size: large;"></i>
-                                                                        }
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <i class="ion-alert-circled" style="font-size: large;"></i>
-                                                                    }
-                                                                </p>
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
 
+                                            <td class="day Bordes" id="table-header-days">
+                                                <p>@ci.DateTimeFormat.GetDayName(@Model.FechaInicial.Value.AddDays(i).DayOfWeek).ToUpper()  @Model.FechaInicial.Value.AddDays(i).ToString("dd/MM/yyyy")</p>
+                                            </td>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.listaSalas != null)
+                                    {
+                                        foreach (CinemaPOS.Models.Sala itemSala in ViewBag.listaSalas)
+                                        {
+                                            <tr>
+                                                <td class="Sala Bordes" id="SalaTitle">
+                                                    <p>@itemSala.Nombre </p>
+                                                </td>
+                                                @for (int i = 0; i < 5; i++)
+                                                {
+                                                    <td class="Bordes">
+                                                        @foreach (CinemaPOS.Models.Funcion funcion in ViewBag.listaFunciones)
+                                                        {
+                                                            if (funcion.SalaID == itemSala.RowID)
+                                                            {
+                                                                if (Model.FechaInicial.Value.AddDays(i) == funcion.Fecha.Value)//Mismo dia
+                                                                {
+                                                                    <p class="Funcion @funcion.Estado.Nombre" onclick="javascript:ModalEditarFun(@funcion.RowID)" style="cursor:pointer">
+                                                                        @funcion.DetallePelicula.EncabezadoPelicula.TituloLocal
+                                                                        @funcion.DetallePelicula.Opcion.Codigo
+                                                                        @funcion.DetallePelicula.Opcion1.Codigo2
+                                                                        <br />
+                                                                        @funcion.HoraInicial.Value  @funcion.HoraFinal.Value @*@funcion.Fecha.Value.ToString("dd/MM/yyyy")*@
+                                                                        <br />
+                                                                        @if (funcion.ListaPrecioFuncion.Count > 0)
+                                                                        {
+                                                                            <i class="ion-cash icon-identificador" style="font-size: x-large;">&nbsp;</i>
+                                                                        }
+                                                                        @if (funcion.BoletaVendida.Count > 0)
+                                                                        {
+                                                                            <i class="ion-ios-film-outline icon-identificador" style="font-size: x-large;">&nbsp;</i>
+                                                                        }
+                                                                        @if (funcion.Estado != null)
+                                                                        {
+                                                                            if (funcion.Estado.Nombre == "Abierta")
+                                                                            {
+                                                                                <i class="ion-unlocked " style="font-size: large;"></i>
+                                                                            }
+                                                                            else if (funcion.Estado.Nombre == "Cerrada")
+                                                                            {
+                                                                                <i class="ion-locked" style="font-size: large;"></i>
+                                                                            }
+                                                                            else if (funcion.Estado.Nombre == "Planeada")
+                                                                            {
+                                                                                <i class="ion-calendar" style="font-size: large;"></i>
+                                                                            }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <i class="ion-alert-circled" style="font-size: large;"></i>
+                                                                        }
+                                                                    </p>
+
+                                                                }
                                                             }
                                                         }
-                                                    }
-                                                </td>
-                                            }
-                                        </tr>
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
                                     }
-                                }
-                            </tbody>
-                        </table>
-                    }
-                </div>
+                                </tbody>
+                            </table>
+                        }
+                    </div>
 
-                <div class="clearfix demo-icon-list" style="font-size: 14px;">
+                    <div class="clearfix demo-icon-list" style="font-size: 14px;">
                         <div class="demo-icon col-sm-4"><i class="ion-cash"></i><span>La función tiene asignada una o más tarifas</span></div>
-                    <div class="demo-icon col-sm-4"><i class="ion-unlocked"></i><span>La función se encuentra en estado Abierta</span></div>
-                    <div class="demo-icon col-sm-4"><i class="ion-locked"></i><span>La función se encuentra en estado Cerrada</span></div>
-                    <div class="demo-icon col-sm-4"><i class="ion-calendar"></i><span>La función se encuentra en estado Planeada</span></div>
-                    <div class="demo-icon col-sm-4"><i class="ion-alert-circled"></i><span>La función NO tiene estado</span></div>
+                        <div class="demo-icon col-sm-4"><i class="ion-unlocked"></i><span>La función se encuentra en estado Abierta</span></div>
+                        <div class="demo-icon col-sm-4"><i class="ion-locked"></i><span>La función se encuentra en estado Cerrada</span></div>
+                        <div class="demo-icon col-sm-4"><i class="ion-calendar"></i><span>La función se encuentra en estado Planeada</span></div>
+                        <div class="demo-icon col-sm-4"><i class="ion-alert-circled"></i><span>La función NO tiene estado</span></div>
+                        <div class="demo-icon col-sm-4"><i class="ion-ios-film-outline"></i><span>La función tiene una o más boletas vendidas</span></div>
 
+                    </div>
                 </div>
-            </div>
 
             <div id="ListaPrecio" class="tab-pane fade">
                 <div class="panel">
@@ -1266,6 +1170,7 @@
 </div>
 <script>
     function ModalEditarFun(rowID){
+        ModalProcesandoShow();
         var urlWithCont = '../Programacion/ModalEditarFuncion?rowid=' + rowID;
         $("#Dialog")
         .load(urlWithCont.trim())
