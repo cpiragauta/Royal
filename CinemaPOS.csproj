@@ -2337,6 +2337,8 @@
     <Content Include="Views\CRM\NuevoClienteRoyal.cshtml" />
     <Content Include="Views\CRM\RegistroClienteTarjeta.cshtml" />
     <Content Include="Views\POS\ValidaCupones.cshtml" />
+    <Content Include="Views\Programacion\ModalEliminarFuncionMasivo.cshtml" />
+    <Content Include="Views\Programacion\ModalReplicarFuncionxDia.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
