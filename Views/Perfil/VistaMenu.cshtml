@@ -15,6 +15,7 @@
     <script src="~/Content/js/demo/tables-datatables.js"></script>
 </head>
 <p>
+    <a class="btn btn-success" href="@Url.Action("VistaTipoMenu","Perfil")">Vista TipoMenu</a>
     <a class="btn btn-success" href='@Url.Action("Menu", "Perfil")'>+ Adicionar Menu</a>
 </p>
 
@@ -30,8 +31,9 @@
                     <th>Nombre</th>
                     <th>Tipo Menu</th>
                     <th>Url</th>
+                    <th>Imagen</th>
                     <th>Activo</th>
-                    <th>Descripción </th>
+                    <th>Descripción</th>
                     <th></th>
                 </tr>
             </thead>
@@ -43,6 +45,14 @@
                         <td>@lista_Menu.Nombre</td>
                         <td>@lista_Menu.Tipo.Nombre</td>
                         <td>@lista_Menu.URL</td>
+                        @if (lista_Menu.Imagen != "")
+                        {
+                            <td class="td-imagenes"><img src="/@lista_Menu.Imagen" style="width:36px;height:36px;" /></td>
+                        }
+                        else
+                        {
+                            <td class="td-imagenes"><img src="~/Repositorio_Imagenes/Imagenes_Generales/nodisponible.png" style="width:36px;height:36px;" /></td>
+                        }
                         @if (@lista_Menu.Activo == true)
                         {
                             <td>SI</td>
@@ -60,4 +70,3 @@
         </table>
     </div>
 </div>
-

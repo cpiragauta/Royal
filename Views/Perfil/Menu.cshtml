@@ -15,7 +15,6 @@
 <script>
     $(document).ready(function () {
         new Switchery(document.getElementById("demo-sw-checked"));
-        new Switchery(document.getElementById("demo-sw-checked1"));
     });
 </script>
 
@@ -77,11 +76,7 @@
     }
 </script>
 
-
-
 <script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.js"></script>
-
-
 
 <!--Masked Input [ OPTIONAL ]-->
 
@@ -104,7 +99,7 @@
         <input type="hidden" class="RowID_Detalle" name="RowID_Detalle" />
         <div class="panel-body">
             <div class="row">
-                <div class="col-sm-offset-2 col-sm-3">
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label">Nombre:</label>
                         <input name="nombre" id="nombre" class="form-control" value="@Model.Nombre" maxlength="30">
@@ -123,45 +118,78 @@
                             <option value="" disabled selected>Seleccione una opcion</option>
                             @foreach (CinemaPOS.Models.TipoMenu tipo in ViewBag.Tipo)
                             {
-                                <option value="@tipo.RowID">@tipo.Nombre</option>
+                                if (Model.RowID != 0)
+                                {
+                                    <option value="@tipo.RowID" selected>@tipo.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@tipo.RowID">@tipo.Nombre</option>
+                                }
+
                             }
                         </select>
                     </div>
                 </div>
+                <div class="col-sm-3">
+                    <div class="form-control">
+                        <label class="control-label">Orden</label>
+                        <input name="orden" id="orden" class="form-control" required/>
+                    </div>
+                </div>
             </div>
             <div class="row">
-                <div class="col-sm-offset-2 col-sm-6 ">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Icono:</label>
+                        <div class="fileupload fileupload-new" data-provides="fileupload">
+                            <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
+                                @if (Model.RowID != 0)
+                                {
+                                    <img src="/@Model.Imagen" alt="">
+                                }
+                                else
+                                {
+                                    <img src="/Repositorio_Imagenes/Imagenes_Generales/thumbnail-default.png" />
+                                }
+                            </div>
+                            <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
+                            </div>
+                            <div>
+                                <span class="btn btn-file">
+                                    <span class="fileupload-new btn btn-success">Seleccione imagen</span>
+                                    <span class="fileupload-exists">Cambiar</span>
+                                    <input type="hidden" value="@Model.Imagen" name="imagen_actualiza" class="imagen_actualiza" />
+                                    <input type="file" accept="image/jpeg,image/png,image/gif" name="documento" class="documento form-control">
+                                </span>
+                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remover</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 ">
                     <div class="form-group">
                         <label class="control-label">Descripción:</label>
                         <textarea name="descripcion" class="form-control" cols="40" rows="3" style="resize:none" maxlength="50">@Model.Descripcion</textarea>
                     </div>
-                </div><br />
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="control-label">Sincronizado:</label> &nbsp; &nbsp;
-                        @if (@Model.Sincronizado.Equals(true))
-                        {
-                            <input id="demo-sw-checked" type="checkbox" name="sincronizado" checked>
-                        }
-                        else
-                        {
-                            <input id="demo-sw-checked" type="checkbox" name="sincronizado">
-                        }
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Activo:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        @if (@Model.Activo.Equals(true))
-                        {
-                            <input id="demo-sw-checked1" type="checkbox" name="activo" checked>
-                        }
-                        else
-                        {
-                            <input id="demo-sw-checked1" type="checkbox" name="activo">
-                        }
-                    </div>
+
+                    
+                        <div class="form-group">
+                            <label class="control-label">Activo:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            @if (@Model.Activo.Equals(true))
+                            {
+                                <input id="demo-sw-checked" type="checkbox" name="activo" checked>
+                            }
+                            else
+                            {
+                                <input id="demo-sw-checked" type="checkbox" name="activo">
+                            }
+                        </div>
                 </div>
+                <br />
             </div>
-            <div class="panel-footer text-right">
+            </div>
+            <div class="pull-right text-right">
                 @if (Model.RowID == 0)
                 {
                     <input class="btn btn-success" value="Guardar" onclick="javascript:valida_formulario()">
@@ -171,6 +199,8 @@
                     <input class="btn btn-success" value="Actualizar" onclick="javascript:valida_formulario()">
                 }
             </div>
-    </form>
+        
+        </form>
+    
+        </div>
 
-</div>

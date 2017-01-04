@@ -63,17 +63,13 @@ namespace CinemaPOS.Controllers
                 return View(new Menu());
             }
         }
-
-        [CheckSessionOutAttribute]
         public ActionResult VistaMenu()
         {
             ViewBag.Menu = db.Menu.ToList();
             return View();
         }
-
-
         [CheckSessionOutAttribute]
-        public Boolean Guardar_Menu(FormCollection formulario, int? RowID_Encabezado)
+        public Boolean Guardar_Menu(FormCollection formulario, HttpPostedFileBase Imagen, int? RowID_Encabezado)
         {
             Boolean tipoAlert = true;
             try
@@ -81,12 +77,15 @@ namespace CinemaPOS.Controllers
                 Menu objMenu = new Menu();
                 if (RowID_Encabezado == 0)
                 {
+                    string adjunto = formulario["nombre"] + Path.GetExtension(Imagen.FileName);
+                    Imagen.SaveAs(Server.MapPath(adjunto));
                     formulario = DeSerialize(formulario);
                     objMenu.Nombre = formulario["nombre"];
                     objMenu.Descripcion = formulario["descripcion"];
                     objMenu.URL = formulario["url"];
                     objMenu.TipoMenuID = Convert.ToInt32(formulario["menu"]);
                     objMenu.CreadoPor = Session["usuario_creacion"].ToString();
+                    objMenu.Imagen = Server.MapPath(adjunto);
                     objMenu.FechaCreacion = DateTime.Now;
                     if (formulario["activo"] == null)
                     {
@@ -149,8 +148,21 @@ namespace CinemaPOS.Controllers
             }
             return tipoAlert;
         }
+        #endregion
 
+        #region TipoMenu
 
+        [CheckSessionOutAttribute]
+        public ActionResult VistaTipoMenu()
+        {
+            ViewBag.TipoMenu = db.TipoMenu.ToList();
+            return View();
+        }
+
+        public ActionResult TipoMenu(int? RowID_TipoMenu)
+        {
+            return View();
+        }
         #endregion
 
     }
