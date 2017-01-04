@@ -49,7 +49,6 @@
         <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoProgramacion" Width="1.5" PointX="24.75" PointY="83.125" />
         <EntityTypeShape EntityType="CinemaPOSModel.Funcion" Width="1.5" PointX="18.75" PointY="65.875" />
         <EntityTypeShape EntityType="CinemaPOSModel.ListaPrecioFuncion" Width="1.5" PointX="25" PointY="72.375" />
-        <EntityTypeShape EntityType="CinemaPOSModel.SincronizacionMaestros" Width="1.5" PointX="4.75" PointY="4.75" />
         <EntityTypeShape EntityType="CinemaPOSModel.ListaDetalle" Width="1.5" PointX="13.5" PointY="70.75" />
         <EntityTypeShape EntityType="CinemaPOSModel.ListaEncabezado" Width="1.5" PointX="8.25" PointY="71.875" />
         <EntityTypeShape EntityType="CinemaPOSModel.BoletaVendida" Width="1.5" PointX="24" PointY="68.5" />
@@ -192,6 +191,7 @@
         <AssociationConnector Association="CinemaPOSModel.FK__RolMenu__RolID__19AACF41" />
         <AssociationConnector Association="CinemaPOSModel.FK__UsuarioSi__RolID__7BE56230" />
         <AssociationConnector Association="CinemaPOSModel.fk_TipoIdentificacion" />
+        <EntityTypeShape EntityType="CinemaPOSModel.HistoricolLog" Width="1.5" PointX="3.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
