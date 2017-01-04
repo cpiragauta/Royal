@@ -1185,6 +1185,7 @@ namespace CinemaPOS.Controllers.Master
         }   
 
         #endregion
+
         #region Opcion
         [CheckSessionOutAttribute]
         public ActionResult Opcion(int? RowID_Lista)

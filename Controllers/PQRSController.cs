@@ -51,8 +51,12 @@ namespace CinemaPOS.Controllers.Inicio
             }
             else
             {
+
                 ModelosPropios.Model.Modelos_Pqrs ObjModelos = new ModelosPropios.Model.Modelos_Pqrs();
-                return View(db.Pqrs.Where(p=>p.RowID==RowID_pqrs).FirstOrDefault());
+                ObjModelos.Pqrs_Terceros = db.Pqrs.Where(p => p.RowID == RowID_pqrs).ToList();
+                ObjModelos.Pqrs_Seguimiento = db.Seguimiento.Where(p => p.PQRS_ID == RowID_pqrs).ToList();
+                return View(ObjModelos);
+
             }
         }
         public ActionResult ModalTercero()

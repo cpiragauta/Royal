@@ -1,5 +1,4 @@
 ﻿@model CinemaPOS.Models.EncabezadoPelicula
-
 @{
     ViewBag.Title = "VistaPelicula";
     Layout = "~/Views/Inicio/Diseño.cshtml";
@@ -66,13 +65,13 @@
                                 </table>
                             </td>
                             <td>
-                                @if (peliculas.MedioPelicula.Count() != 0)
+                                @if (peliculas.MedioPelicula.Count != 0)
                                 {
-                                  if(@peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().Afiche != "") { 
+                                    if(@peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().Afiche != "" || @peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().AficheMiniatura != "") {
                                     <img style="width:50px;" src="/@peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().Afiche">
                                   }
                                   else { 
-                                    <img style="width:50px;" src="~/Repositorio_Imagenes/Imagenes_Generales/imagen_nodisponible.png">
+                                    <img style="width:50px;" src="~/Repositorio_Imagenes/Imagenes_Generales/nodisponible.png">
                                   }
                                 }
                             </td>
