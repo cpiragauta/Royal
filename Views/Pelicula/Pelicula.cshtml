@@ -1,4 +1,5 @@
 ﻿@model CinemaPOS.Models.EncabezadoPelicula
+
 @{
     ViewBag.Title = "Formulario";
     Layout = "~/Views/Inicio/Diseño.cshtml";
@@ -14,13 +15,12 @@
 <script>
     function valida_formulario() {
         hasChangue = false;
+        debugger;
         var validator = $("#formulario_pelicula").validate();
         if (validator.form()) {
-            debugger
             enviar_formulario();
         }
     }
-
     function enviar_formulario() {
         $("#formulario_pelicula").on("submit", function (e) {
             e.preventDefault();
@@ -28,9 +28,7 @@
             var formData = new FormData(document.getElementById("formulario_pelicula"));
             var RowID_Pelicula = $(".RowID_Pelicula").val();
             //formData.append(f.attr("name"), $(this)[0].files[0]);
-            debugger
             $.ajax({
-                
                 url: "/Pelicula/GuardarPelicula?RowID_Pelicula=" + RowID_Pelicula,
                 type: "post",
                 dataType: "html",
@@ -41,15 +39,16 @@
                 success: function (data) {
                     swal("","Informacion Guardada");
                     window.location = "/Pelicula/VistaPelicula/"
+
                 },
                 error: function () {
                     swal("","Verifica la informacion que estas guardando","warning")
                 }
+
             })
         });
     }
 </script>
-
 <script>
     var cantidadcontrol = 0;
     $(document).ready(function () {
@@ -60,7 +59,6 @@
             autoclose: true,
             todayHighlight: false,
             startDate: '1d'
-
         });
         function clonar_config_film() {
 
@@ -124,34 +122,20 @@
             });
         }
 
-        debugger
-        
-        var cont = @Model.PorcentajeParticipacion.Count;
-        for(var i= 0; i < cont ; i++){
-            var fecha_inicial = $("#fecha_inicial_porce").val();
-            var fecha_final = $("#fecha_final_porce").val();
-
-            $('.fecha_inicial_porcentaje ').datepicker({
-                format: "dd/mm/yyyy",
-                todayBtn: "linked",
-                autoclose: true,
-                todayHighlight: false,
-                startDate: fecha_final
-            });
-            $('.fecha_final_porcentaje ').datepicker({
-                format: "dd/mm/yyyy",
-                todayBtn: "linked",
-                autoclose: true,
-                todayHighlight: false,
-                startDate: fecha_final
-            });
-        }
-      
-        $('#demo-dp-range .input-daterange').datepicker({
+        $('.fecha_inicial_porcentaje ').datepicker({
             format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
-            todayHighlight: false
+            todayHighlight: false,
+            startDate: '1d'
+        });
+
+        $('.fecha_final_porcentaje ').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false,
+            startDate: '1d'
         });
 
         $(".duracion").timepicker({
@@ -170,10 +154,15 @@
         //jQuery(".listaversion").chosen({ width: "95%;" });
 
     });
+
+
+
+
     //GUARDAR TEATRO
     function GuardarTeatro() {
         debugger;
         ModalProcesandoShow();
+        @*if(@Model.RowID==0){}*@
         $.ajax({
             type: "POST",
             url: "/Pelicula/GuardarTeatro",
@@ -189,18 +178,22 @@
                     CargarTeatro();
                 }else{
                     swal(
-                        'El teatro ya se encuentra asociado a la venta empresarial',
-                        '',
+                            'El teatro ya se encuentra asociado a la venta empresarial',
+                            '',
                             'error'
                             )
                 }
                 RefrescarTabla();
+
             },
             error: function (request) {
                 hasChangue = true;
             }
         });
     }
+
+
+
     //GUARDAR TEATRO
     function GuardarTodos() {
         debugger;
@@ -211,12 +204,15 @@
             data: {
                 rowidPelicula: $(".RowID_Pelicula").val(),
                 rowidTeatro: $("#rowidTeatro").val(),
+
             },
             success: function (data) {
                 debugger;
                 if(data=="ok"){
                     Alerts("Teatros agregados con exito!", "success")
+
                     CargarTeatro();
+
                 }else{
                     swal(
                             'El teatro ya se encuentra asociado a la venta empresarial',
@@ -225,12 +221,14 @@
                             )
                 }
                 RefrescarTabla();
+
             },
             error: function (request) {
                 hasChangue = true;
             }
         });
     }
+
 
     function CargarTeatro() {
         debugger;
@@ -261,6 +259,7 @@
         color: red;
         font-size: 20px;
     }
+
         .close:hover {
             color: red;
             font-size: 20px;
@@ -317,6 +316,7 @@
                 <div class="progress-bar progress-bar-dark"></div>
             </div>
 
+
             <!--Form-->
 
             <form id="formulario_pelicula" enctype="multipart/form-data">
@@ -328,8 +328,8 @@
                             <div class="row">
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label class="control-label">Distribuidor:</label>
-                                        <select name="distribuidor" id="select-distribuidor" class="form-control">
+                                        <label class="control-label">Distribuidor:*</label>
+                                        <select name="distribuidor" id="select-distribuidor" class="form-control" required>
                                             <option value="" disabled selected>Seleccione una opcion</option>
                                             @foreach (CinemaPOS.Models.Tercero terceros in ViewBag.Distribuidor)
                                             {
@@ -369,6 +369,7 @@
                                     <div class="form-group">
                                         <label class="control-label">Género Película:</label>
                                         <select name="genero_pelicula" multiple id="genero_pelicula" class="form-control">
+                                            <option value="" disabled selected>Seleccione una opcion</option>
                                             @foreach (CinemaPOS.Models.Opcion genero_pelicula in ViewBag.GeneroPelicula)
                                             {
                                                 var genero = Model.GeneroPelicula.Where(gp => gp.EncabezadoPeliculaID == Model.RowID && gp.TipoGeneroID == genero_pelicula.RowID).ToList();
@@ -396,14 +397,14 @@
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="control-label">Titulo Original:</label>
-                                        <input type="text" name="titulo_original" class="form-control Mayus" value="@Model.TituloOriginal">
+                                        <label class="control-label">Titulo Original:*</label>
+                                        <input type="text" name="titulo_original" class="form-control Mayus" value="@Model.TituloOriginal" required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="control-label">Título Local:</label>
-                                        <input type="text" name="titulo_local" class="form-control Mayus" value="@Model.TituloLocal">
+                                        <label class="control-label">Título Local:*</label>
+                                        <input type="text" name="titulo_local" class="form-control Mayus" value="@Model.TituloLocal" required>
                                     </div>
                                 </div>
                             </div>
@@ -460,11 +461,11 @@
                                             int? Hora = Model.Duracion / 60;
                                             int? Minutos = (Model.Duracion - (Hora * 60));
                                             string val = Hora + ":" + Minutos;
-                                            <input type="text" name="duracion" class="form-control solo-numero" value="@Model.Duracion">
+                                            <input type="text" placeholder="mm" name="duracion" class="form-control solo-numero add-tooltip" data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Duración en minutos" value="@Model.Duracion">
                                         }
                                         else
                                         {
-                                            <input type="text" name="duracion" class="solo-numero form-control">
+                                            <input type="text" name="duracion" placeholder="mm" class="solo-numero form-control add-tooltip" data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Duración en minutos">
                                         }
 
                                     </div>
@@ -472,7 +473,14 @@
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label class="control-label">Fecha Estreno:</label>
-                                        <input type="text" name="fecha_estreno" class="fecha_estreno form-control" value="@Model.FechaEstreno">
+                                        @if (Model.FechaEstreno == null)
+                                        {
+                                            <input type="text" name="fecha_estreno" class="fecha_estreno form-control" value="">
+                                        }
+                                        else
+                                        {
+                                            <input type="text" name="fecha_estreno" class="fecha_estreno form-control" value="@Model.FechaEstreno.Value.ToShortDateString()">
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -488,11 +496,11 @@
                                             {
                                                 elenco = elenco + elencopelicula.Nombre + ",";
                                             }
-                                            <input type="text" class="form-control" placeholder="Add a tag" name="directores" data-role="tagsinput" value="@elenco">
+                                            <input type="text" class="form-control" placeholder="Agregar directores" name="directores" data-role="tagsinput" value="@elenco">
                                         }
                                         else
                                         {
-                                            <input type="text" class="form-control" placeholder="Add a tag" name="directores" data-role="tagsinput">
+                                            <input type="text" class="form-control" placeholder="Agregar directores" name="directores" data-role="tagsinput">
                                         }
 
                                     </div>
@@ -508,11 +516,11 @@
                                             {
                                                 elenco = elenco + elencopelicula.Nombre + ",";
                                             }
-                                            <input type="text" class="form-control" placeholder="Add a tag" name="actores" data-role="tagsinput" value="@elenco">
+                                            <input type="text" class="form-control" placeholder="Agregar actor" name="actores" data-role="tagsinput" value="@elenco">
                                         }
                                         else
                                         {
-                                            <input type="text" class="form-control" placeholder="Add a tag" name="actores" data-role="tagsinput">
+                                            <input type="text" class="form-control" placeholder="Agregar actor" name="actores" data-role="tagsinput">
                                         }
 
                                     </div>
@@ -526,27 +534,42 @@
 
                             </div>
                             <div class="row">
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <label class="control-label">Derecho a Corto:</label>
                                         <div class="form-control">
-                                            <input id="demo-sw-checked" type="checkbox" name="derecho_corto" checked>
+                                            @{ string class_activo = "";}
+                                            @if (Model.DerechoCorto == true)
+                                            {
+                                                class_activo = "checked";
+                                            }
+                                            else
+                                            {
+                                                class_activo = "";
+                                            }
+                                            <input id="demo-sw-checked" type="checkbox" name="derecho_corto" @class_activo>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label class="control-label"> Estado:*</label>
-                                        <select class="form-control" name="estado" id="estado" required>
+                                        <label class="control-label">Estado:*</label>
+                                        <select name="estado" id="estado" class="form-control" required>
+                                            <option value="" disabled selected>Seleccione una opcion</option>
                                             @foreach (CinemaPOS.Models.Estado estado in ViewBag.Estado)
                                             {
-                                                <option value="@estado.RowID">@estado.Nombre</option>
+                                                if (Model.RowID != 0 && estado.RowID == Model.Estado.RowID)
+                                                {
+                                                    <option value="@estado.RowID" selected>@estado.Nombre</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@estado.RowID">@estado.Nombre</option>
+                                                }
                                             }
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label">Sinopsis:</label>
@@ -567,7 +590,7 @@
                                             <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label class="control-label">Formato:</label>
-                                                    <select name="formato[]" class="form-control listaformato">
+                                                    <select name="formato[]" class="form-control listaformato" disabled>
                                                         <option value="" disabled selected>Seleccione una opción</option>
                                                         @foreach (CinemaPOS.Models.Opcion formato in ViewBag.Formato)
                                                         {
@@ -586,13 +609,13 @@
                                             <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label class="control-label">Versión:</label>
-                                                    <select name="version[]" class="form-control listaversion">
+                                                    <select name="version[]" class="form-control listaversion" disabled>
                                                         <option value="" disabled>Seleccione una opción</option>
                                                         @foreach (CinemaPOS.Models.Opcion version in ViewBag.Version)
                                                         {
                                                             if (DetallesPeliculas.Opcion1.RowID == version.RowID)
                                                             {
-                                                                <option value="@version.RowID" selected>@version.Nombre</option>
+                                                                <option value="@version.RowID" selected> @version.Nombre</option>
                                                             }
                                                             else
                                                             {
@@ -663,18 +686,17 @@
                                                 }
                                                 else
                                                 {
-                                                    <img src="fdsadsa/Repositorio_Imagenes/Imagenes_Generales/thumbnail-default.png" />
+                                                    <img src="/Repositorio_Imagenes/Imagenes_Generales/thumbnail-default.png" />
                                                 }
                                             </div>
                                             <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
                                             </div>
                                             <div>
                                                 <span class="btn btn-file">
-                                                    <span class="fileupload-new">Select image</span>
-                                                    <span class="fileupload-exists">Change</span>
+                                                    <span class="fileupload-new">Seleccionar imagen</span>
+                                                    <span class="fileupload-exists">Cambiar</span>
                                                     <input type="file" accept="image/jpeg,image/png,image/gif" class="default image_invoice_clone" name="afiche">
                                                 </span>
-                                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
                                             </div>
                                         </div>
                                     </div>
@@ -699,11 +721,11 @@
                                             </div>
                                             <div>
                                                 <span class="btn btn-file">
-                                                    <span class="fileupload-new">Select image</span>
-                                                    <span class="fileupload-exists">Change</span>
+                                                    <span class="fileupload-new">Seleccionar imagen</span>
+                                                    <span class="fileupload-exists">Cambiar</span>
                                                     <input type="file" accept="image/jpeg,image/png,image/gif" class="default image_invoice_clone" name="thumbnail">
                                                 </span>
-                                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                                @*<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>*@
                                             </div>
                                         </div>
                                     </div>
@@ -752,25 +774,29 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-6">
+
+
                                                 <div class="form-group">
-                                                    <label class="control-label">Porcentaje %:</label>
-                                                    <input type="text" value="@porcentajespeliculas.Porcentaje" name="porcentaje[]" class="porcentaje form-control" />
+                                                    <label class="control-label">Porcentaje distribuidor</label>
+                                                    <input type="text" value="@porcentajespeliculas.Porcentaje" name="porcentaje[]" class="porcentaje form-control">
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4">
-                                                <div class="form-group" id="demo-dp-range">
-                                                    <label class="control-label">Fecha vigencia :</label>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Fecha vigencia</label>
                                                     <div class="input-daterange input-group">
-                                                        <input type="text" value="@porcentajespeliculas.FechaInicial.Value.ToString("dd/MM/yyyy")" name="fecha_inicial_porcentaje[]" id="fecha_inicial_porce"class="fecha_inicial_porcentaje form-control" />
-                                                        <span class="input-group-addon">a</span>
-                                                        <input type="text" value="@porcentajespeliculas.FechaFinal.Value.ToString("dd/MM/yyyy")" name="fecha_final_porcentaje[]" id="fecha_final_porce" class="fecha_final_porcentaje form-control" />
+                                                        <input type="text" value="@porcentajespeliculas.FechaInicial.Value.ToString("dd/MM/yyyy")" name="fecha_inicial_porcentaje[]" class="fecha_inicial_porcentaje form-control" />
+                                                        <span class="input-group-addon">to</span>
+                                                        <input type="text" value="@porcentajespeliculas.FechaFinal.Value.ToString("dd/MM/yyyy")" name="fecha_final_porcentaje[]" class="fecha_final_porcentaje form-control" />
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4">
+                                        </div>
+                                        <div class="row ultimo-control ">
+                                            <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label class="control-label">Nombre: </label>
+                                                    <label class="control-label">Nombre </label>
                                                     <input type="text" value="@porcentajespeliculas.Nombre" name="nombre_porcentaje[]" class="nombre_porcentaje form-control">
                                                 </div>
                                             </div>
@@ -826,36 +852,72 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label class="control-label">Porcentaje %:</label>
+                                                <label class="control-label">Porcentaje</label>
                                                 <input type="text" class="porcentaje form-control">
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group" id="demo-dp-range">
-                                                <label class="control-label">Fecha vigencia :</label>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Fecha vigencia</label>
                                                 <div class="input-daterange input-group">
-                                                    <input type="text" value="" name="fecha_inicial" class="fecha_inicial_porcentaje form-control" />
-                                                    <span class="input-group-addon">a:</span>
-                                                    <input type="text" value="" name="fecha_final" class="fecha_final_porcentaje form-control" />
+                                                    <input type="text" class="fecha_inicial_porcentaje form-control" />
+                                                    <span class="input-group-addon">to</span>
+                                                    <input type="text" class="fecha_final_porcentaje form-control" />
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                    </div>
+                                    <div class="row ultimo-control ">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label class="control-label">Nombre:</label>
+                                                <label class="control-label">Nombre</label>
                                                 <input type="text" class="nombre_porcentaje form-control">
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                             <a href="javascript:;" class="btn btn-success btn-hover-warning add-panel-porcentaje"><i class="icon-plus">&nbsp;&nbsp;Agregar Porcentaje</i></a>
+
+
+                            <!--Fourth tab-->
+                            @*<div id="demo-cls-tab4" class="tab-pane mar-btm">
+                                <div class="row">
+                                <div class="col-sm-6">
+                                <div class="form-group">
+                                <label class="control-label">Porcentaje</label>
+                                <input type="text" class="form-control">
+                                </div>
+                                </div>
+                                <div class="col-sm-6">
+                                <div class="form-group">
+                                <label class="control-label">Fecha vigencia</label>
+                                <div class="input-daterange input-group" id="datepicker">
+                                <input type="text" class="form-control" name="start" />
+                                <span class="input-group-addon">to</span>
+                                <input type="text" class="form-control" name="end" />
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                <div class="row">
+                                <div class="col-sm-6">
+                                <div class="form-group">
+                                <label class="control-label">Nombre </label>
+                                <input type="text" class="form-control">
+                                </div>
+                                </div>
+                                </div>
+                                </div>*@
                         </div>
 
                         <!--TAB ASIGNAR TEATROS-->
                         <div id="demo-cls-tab4" class="tab-pane">
+
+
                             <div class="row">
                                 <div class="col-sm-3">
                                     <input type="hidden" name="rowidEmpresarial" value="@ViewBag.RowEmpresa" id="rowidEmpresarial" />
@@ -899,12 +961,14 @@
                                     }
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                     <div class="panel-footer text-right">
                         <div class="box-inline">
                             <button type="button" class="previous btn btn-mint">Anterior</button>
                             <button type="button" class="next btn btn-mint">Siguiente</button>
+
                         </div>
                     </div>
                     @*<button type="submit" class="btn btn btn-danger" onclick="javascript:valida_formulario()">Crear Pelicula</button>*@
@@ -959,59 +1023,61 @@
 <script>
     function eliminarTeatro(teatro) {
         if ($(teatro).is(':checked')) {
-            } else {
-                swal({
-                    title: '¿Esta seguro?',
-                    text: "¿Desea remover este teatro de la pelicula?",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Si',
-                    cancelButtonText: 'No',
-                    confirmButtonClass: 'btn btn-success',
-                    cancelButtonClass: 'btn btn-danger',
-                    buttonsStyling: false
-                },
-                function (isConfirm) {
-                    debugger
-                    if (isConfirm) {
-                        $.ajax({
-                            type: "POST",
-                            url: "/Pelicula/EliminarTeatroPelicula",
-                            data: {
-                                rowID: $(teatro).val()
-                            },
-                            success: function (data) {
-                                debugger
-                                if (data == "ok") {
-                                    swal(
-                                        'Teatro Eliminado!',
-                                        '',
-                                        'success'
-                                        );
-                                    CargarTeatro();
-                                    RefrescarTabla();
-                                    $(teatro).css("display", "none");
-                                    $(teatro).parents("tr").find("td").each(function () {
-                                        $(this).css("background", "#F44336");
-                                        $(this).css("color", "#fff");
-                                    });
-                                } else {
-                                    'Error al eliminar el teatro',
+        } else {
+            swal({
+                title: '¿Esta seguro?',
+                text: "¿Desea remover este teatro de la pelicula?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si',
+                cancelButtonText: 'No',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false
+            },
+            function (isConfirm) {
+                debugger
+                if (isConfirm) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Pelicula/EliminarTeatroPelicula",
+                        data: {
+                            rowID: $(teatro).val()
+                        },
+                        success: function (data) {
+                            debugger
+                            if (data == "ok") {
+                                swal(
+                                    'Teatro Eliminado!',
                                     '',
-                                    'error'
-                                }
-                            },
-                            error: function (request) {
-                                hasChangue = true;
+                                    'success'
+                                    );
+                                CargarTeatro();
+                                RefrescarTabla();
+                                $(teatro).css("display", "none");
+                                $(teatro).parents("tr").find("td").each(function () {
+                                    $(this).css("background", "#F44336");
+                                    $(this).css("color", "#fff");
+                                });
+                            } else {
+                                'Error al eliminar el teatro',
+                                '',
+                                'error'
                             }
-                        });
-                    } else {
-                        RefrescarTabla();
-                    }
-                });
-            }
+
+                        },
+                        error: function (request) {
+                            hasChangue = true;
+                        }
+                    });
+                } else {
+                    RefrescarTabla();
+                }
+            });
+        }
+
     }
     function ModalTeatroPelicula(rowid) {
         ModalProcesandoShow();

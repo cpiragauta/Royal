@@ -16,7 +16,7 @@
             </div>
             <div class="modal-body" style="overflow-x: hidden; overflow-y: hidden; height: 350px">
                 <form method="post" id="FormTeatro" name="FormTeatro">
-                    <input type="hidden" name="rowidPelicula" value="@ViewBag.PeliculaV2" id="rowidPelicula"/>
+                    <input type="hidden" name="rowidPelicula" value="@ViewBag.PeliculaV2" id="rowidPelicula" />
                     <label for="TEATRO">Teatros</label>
                     <select class="form-control" id="rowidTeatro" name="rowidTeatro">
                         @foreach (var item in (List<CinemaPOS.Models.Teatro>)ViewBag.TeatrosDisp)

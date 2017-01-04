@@ -243,8 +243,8 @@
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
-                    <label class="control-label">Clasificacion</label>
-                    <select name="clasificacion" id="select-clasificacion" class="form-control">
+                    <label class="control-label">Clasificación:*</label>
+                    <select name="clasificacion" id="select-clasificacion" class="form-control" required>
                         <option value="" disabled selected>Seleccione una opcion</option>
                         @foreach (CinemaPOS.Models.Opcion clasificacion in ViewBag.Clasificacion)
                         {
@@ -628,8 +628,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
+                        <div class="col-sm-1">
+                            <div class="form-group add-tooltip" data-toggle="tooltip" data-original-title="Porcentaje del distribuidor">
                                 <label class="control-label">Porcentaje</label>
                                 <input type="text" value="@porcentajespeliculas.Porcentaje" name="porcentaje[]" class="porcentaje form-control">
                             </div>
