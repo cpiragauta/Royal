@@ -126,10 +126,10 @@
 
         debugger
         
-        @*var cont = @Model.PorcentajeParticipacion.Count;
+        var cont = @Model.PorcentajeParticipacion.Count;
         for(var i= 0; i < cont ; i++){
             var fecha_inicial = $("#fecha_inicial_porce").val();
-            var fecha_final = $("#fecha_final_porce").val();*@
+            var fecha_final = $("#fecha_final_porce").val();
 
             $('.fecha_inicial_porcentaje ').datepicker({
                 format: "dd/mm/yyyy",
@@ -145,7 +145,7 @@
                 todayHighlight: false,
                 startDate: fecha_final
             });
-       // }
+        }
       
         $('#demo-dp-range .input-daterange').datepicker({
             format: "dd/mm/yyyy",
@@ -534,7 +534,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-8">
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label"> Estado:*</label>
+                                        <select class="form-control" name="estado" id="estado" required>
+                                            @foreach (CinemaPOS.Models.Estado estado in ViewBag.Estado)
+                                            {
+                                                <option value="@estado.RowID">@estado.Nombre</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label">Sinopsis:</label>
                                         <textarea name="sinopsis" class="form-control" cols="80" rows="3">@Model.Sinopsis</textarea>
@@ -570,18 +583,6 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
-                                                <div class="form-group">
-                                                    <label class="control-label"> Estado:</label>
-                                                    <select>
-                                                        @foreach (CinemaPOS.Models.Estado estado in ViewBag.Estado)
-                                                        {
-                                                            <option value="@estado.RowID">@estado.Nombre</option>
-                                                        }
-                                                    </select>
-                                                </div>
-                                            </div>
-
                                             <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label class="control-label">Versión:</label>
@@ -1023,34 +1024,3 @@
         this.value = (this.value + '').replace(/[^0-9]/g, '');
     });
 </script>
-
-@*<script>
-    var fechaInicial =$("#fecha_inicial_porce").val();
-    var fechaFinal = $("#fecha_final_porce").val();
-
-    function validate_fecha_MayorQue(fechaInicial,fechaFinal)
-    {   debugger
-        valuesStart=fechaInicial.split("/");
-        valuesEnd=fechaFinal.split("/");
-
-        var dateStart=new Date(valuesStart[2],(valuesStart[1]-1),valuesStart[0]);
-        var dateEnd=new Date(valuesEnd[2],(valuesEnd[1]-1),valuesEnd[0]);
-        if(dateStart<dateEnd)
-        {
-            return 0;
-        }
-        return 1;
-    }
-
-    function validacion_de_fechas(){
-        debugger
-       
-            if(validate_fecha_MayorQue(fechaInicial,fechaFinal))
-            {
-                alert("La fecha inicial, no puede ser Mayor a la Final");
-            }else{
-                enviar_formulario();
-            }
-    }
-</script>*@
-
