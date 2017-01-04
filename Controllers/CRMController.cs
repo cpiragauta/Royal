@@ -255,15 +255,20 @@ namespace CinemaPOS.Controllers
 
                 venta.ProspectoID = Convert.ToInt32(formulario["ProspectoIDx"]);
                 venta.TeatroID = Convert.ToInt32(formulario["TeatroID"]);
-                venta.ContactoID = Convert.ToInt32(formulario["ContactoHiden"]);
+                if ( !String.IsNullOrEmpty(formulario["ContactoHiden"]))
+                {
+                    venta.ContactoID = Convert.ToInt32(formulario["ContactoHiden"]);
+                }
                 venta.Titulo = formulario["Titulo"];
                 venta.Valor = formulario["Valor"];
-                venta.FechaApertura = Convert.ToDateTime(formulario["FechaApertura"]);
-                venta.FechaCierra = Convert.ToDateTime(formulario["FechaCierra"]);
-                venta.FechaEntrega = Convert.ToDateTime(formulario["FechaEntrega"]);
+                venta.FechaApertura = CinemaPOS.ModelosPropios.Util.FechaInsertar(formulario["FechaApertura"]);
+                venta.FechaCierra = CinemaPOS.ModelosPropios.Util.FechaInsertar(formulario["FechaCierra"]);
+                venta.FechaEntrega = CinemaPOS.ModelosPropios.Util.FechaInsertar(formulario["FechaEntrega"]);
                 venta.ListaPrecioID = Convert.ToInt32(formulario["ListaPrecioID"]);
                 venta.Descripcion = formulario["Descripcion"];
                 venta.EstadoID = Convert.ToInt32(formulario["EstadoID"]);
+                venta.fechaCreacion = DateTime.Now;
+                venta.CreadoPor = Session["usuario_creacion"].ToString();
                 if (rowID == 0 || rowID == null)
                 { db.OportunidadVenta.Add(venta); }
                 db.SaveChanges();

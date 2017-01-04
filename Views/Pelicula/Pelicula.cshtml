@@ -13,6 +13,13 @@
 <script src="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
 <link href="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
 <script>
+    function detener(){
+        $("#ytplayer").attr("src","");
+        $("#modal-video").modal("hide");
+    }
+    $(document).ready(function(){
+        
+    })
     function valida_formulario() {
         hasChangue = false;
         debugger;
@@ -695,7 +702,7 @@
                                                 <span class="btn btn-file">
                                                     <span class="fileupload-new">Seleccionar imagen</span>
                                                     <span class="fileupload-exists">Cambiar</span>
-                                                    <input type="file" accept="image/jpeg,image/png,image/gif" class="default image_invoice_clone" name="afiche">
+                                                    <input type="file" accept="image/jpeg,image/png,image/gif" onchange="ValidarImagen(this,720,1200,140000000)" class="default image_invoice_clone" name="afiche">
                                                 </span>
                                             </div>
                                         </div>
@@ -723,7 +730,7 @@
                                                 <span class="btn btn-file">
                                                     <span class="fileupload-new">Seleccionar imagen</span>
                                                     <span class="fileupload-exists">Cambiar</span>
-                                                    <input type="file" accept="image/jpeg,image/png,image/gif" class="default image_invoice_clone" name="thumbnail">
+                                                    <input type="file" accept="image/jpeg,image/png,image/gif" onchange="ValidarImagen(this,400,400,10000000)" class="default image_invoice_clone" name="thumbnail">
                                                 </span>
                                                 @*<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>*@
                                             </div>
@@ -735,27 +742,37 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label">Teaser</label>
-                                        @if (Model.RowID != 0 && Model.MedioPelicula.Count() != 0)
-                                        {
-                                            <input type="text" name="teaser" class="form-control" value="@Model.MedioPelicula.Where(mp => mp.EncabezadoPeliculaID == Model.RowID).OrderByDescending(mp=>mp.RowID).FirstOrDefault().Teaser">
-                                        }
-                                        else
-                                        {
-                                            <input type="text" name="teaser" class="form-control">
-                                        }
+                                        <div class="input-group mar-btm">
+                                            @if (Model.RowID != 0 && Model.MedioPelicula.Count() != 0)
+                                            {
+                                                <input type="text" name="teaser" id="teaser"  class="form-control add-tooltip" data-toggle="tooltip" data-original-title="Id del video en youtube" value="@Model.MedioPelicula.Where(mp => mp.EncabezadoPeliculaID == Model.RowID).OrderByDescending(mp=>mp.RowID).FirstOrDefault().Teaser">
+                                            }
+                                            else
+                                            {
+                                                <input type="text" name="teaser" id="teaser" class="form-control add-tooltip" data-toggle="tooltip" data-original-title="Id del video en youtube" />
+                                            }
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-mint" onclick="ver_video('teaser')">Ver</a>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label">Trailer</label>
-                                        @if (Model.RowID != 0 && Model.MedioPelicula.Count() != 0)
-                                        {
-                                            <input type="text" name="trailer" class="form-control" value="@Model.MedioPelicula.Where(mp => mp.EncabezadoPeliculaID == Model.RowID).OrderByDescending(mp=>mp.RowID).FirstOrDefault().Trailer">
-                                        }
-                                        else
-                                        {
-                                            <input type="text" name="trailer" class="form-control">
-                                        }
+                                        <div class="input-group mar-btm">
+                                            @if (Model.RowID != 0 && Model.MedioPelicula.Count() != 0)
+                                            {
+                                                <input type="text" name="trailer" id="trailer" class="form-control add-tooltip" data-toggle="tooltip" data-original-title="Id del video en youtube" value="@Model.MedioPelicula.Where(mp => mp.EncabezadoPeliculaID == Model.RowID).OrderByDescending(mp => mp.RowID).FirstOrDefault().Trailer">
+                                            }
+                                            else
+                                            {
+                                                <input type="text" name="trailer" id="trailer" class="form-control add-tooltip" data-toggle="tooltip" data-original-title="Id del video en youtube">
+                                            }
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-mint"onclick="ver_video('trailer')">Ver</a>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -990,8 +1007,17 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-video" data-backdrop="static" data-keyboard="false" style="overflow: hidden;">
+    <div class="modal-dialog" role="document">
+        <iframe id="ytplayer" type="text/html" width="640" height="360" src="" frameborder="0"></iframe>
+        <button class="btn btn-danger" onclick="detener()">Cerrar</button>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!--REFRESCAR TABLA-->
+
 <script>
+
+    
     function RefrescarTabla() {
         ModalProcesandoShow();
         $.ajax({
@@ -1079,6 +1105,11 @@
         }
 
     }
+    function ver_video(id){
+        var url='https://www.youtube.com/embed/'+$("#"+id+"").val();
+        $("#ytplayer").attr('src',""+url+"");
+        $("#modal-video").modal("show");
+    }
     function ModalTeatroPelicula(rowid) {
         ModalProcesandoShow();
         var urlWithCont = '../Pelicula/ModalTeatroPelicula?rowid=' + rowid;
@@ -1089,4 +1120,5 @@
     $('.solo-numero').keyup(function () {
         this.value = (this.value + '').replace(/[^0-9]/g, '');
     });
+    
 </script>

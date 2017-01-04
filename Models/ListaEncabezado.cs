@@ -16,8 +16,8 @@ namespace CinemaPOS.Models
     {
         public ListaEncabezado()
         {
-            this.OportunidadVenta = new HashSet<OportunidadVenta>();
             this.ListaDetalle = new HashSet<ListaDetalle>();
+            this.OportunidadVenta = new HashSet<OportunidadVenta>();
         }
     
         public int RowID { get; set; }
@@ -33,9 +33,9 @@ namespace CinemaPOS.Models
         public Nullable<System.DateTime> FechaInicial { get; set; }
         public Nullable<System.DateTime> FechaFinal { get; set; }
     
-        public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }
         public virtual Opcion Opcion { get; set; }
         public virtual Teatro Teatro { get; set; }
         public virtual ICollection<ListaDetalle> ListaDetalle { get; set; }
+        public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }
     }
 }

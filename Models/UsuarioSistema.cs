@@ -38,7 +38,7 @@ namespace CinemaPOS.Models
         public string Foto_Empleado { get; set; }
     
         public virtual Teatro Teatro { get; set; }
-        public virtual Rol Rol { get; set; }
         public virtual ICollection<BoletaVendida> BoletaVendida { get; set; }
+        public virtual Rol Rol { get; set; }
     }
 }
