@@ -5,7 +5,7 @@
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
 <p>
-    <a class="btn btn-success" href='@Url.Action("Pelicula", "Pelicula")'>Nueva PQRS</a>
+    <a class="btn btn-success" href='@Url.Action("CreacionPQRS", "PQRS")'>Nueva PQRS</a>
 </p>
 <div class="panel">
     <div class="panel-heading">
@@ -36,7 +36,7 @@
                         <td>@pqrs.FechaSuceso.Value.ToString("dd/MM/yyyy")</td>
                         <td>@pqrs.FechaCreacion.Value.ToString("dd/MM/yyyy")</td>
                         <td>@pqrs.CreadoPor</td>
-                        <td><a href="@Url.Action("Seguimiento","PQRS",new { Rowid_Pqrs=pqrs.RowID})"><i class="ion-filing"></i></a></td>
+                        <td><a href="@Url.Action("CreacionPQRS", "PQRS", new { RowID_pqrs = pqrs.RowID, RowIdTercero = pqrs.TerceroID})"><i class="glyphicon glyphicon-pencil"></i></a></td>
                     </tr>
                 }
 
