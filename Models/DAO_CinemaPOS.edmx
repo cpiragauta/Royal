@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CinemaPOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CinemaPOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DetalleConvenio">
           <Key>
             <PropertyRef Name="RowID" />
@@ -93,7 +93,7 @@
           <Property Name="ProspectoID" Type="int" />
           <Property Name="TeatroID" Type="int" />
           <Property Name="ContactoID" Type="int" />
-          <Property Name="Titulo" Type="varchar" MaxLength="10" />
+          <Property Name="Titulo" Type="varchar" MaxLength="50" />
           <Property Name="Valor" Type="varchar" MaxLength="100" />
           <Property Name="FechaApertura" Type="datetime" />
           <Property Name="FechaCierra" Type="datetime" />
@@ -3678,27 +3678,6 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
             <End Role="Taquilla" EntitySet="Taquilla" />
             <End Role="BoletaVendida" EntitySet="BoletaVendida" />
           </AssociationSet>
-          <EntitySet Name="OportunidadVenta" EntityType="CinemaPOSModel.OportunidadVenta" />
-          <AssociationSet Name="FK__Oportunid__Conta__4C564A9F" Association="CinemaPOSModel.FK__Oportunid__Conta__4C564A9F">
-            <End Role="Contacto" EntitySet="Contacto" />
-            <End Role="OportunidadVenta" EntitySet="OportunidadVenta" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Oportunid__Lista__4979DDF4" Association="CinemaPOSModel.FK__Oportunid__Lista__4979DDF4">
-            <End Role="ListaEncabezado" EntitySet="ListaEncabezado" />
-            <End Role="OportunidadVenta" EntitySet="OportunidadVenta" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Oportunid__Prosp__4A6E022D" Association="CinemaPOSModel.FK__Oportunid__Prosp__4A6E022D">
-            <End Role="Tercero" EntitySet="Tercero" />
-            <End Role="OportunidadVenta" EntitySet="OportunidadVenta" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Oportunid__Teatr__4B622666" Association="CinemaPOSModel.FK__Oportunid__Teatr__4B622666">
-            <End Role="Teatro" EntitySet="Teatro" />
-            <End Role="OportunidadVenta" EntitySet="OportunidadVenta" />
-          </AssociationSet>
-          <AssociationSet Name="fk_estado_cotizacion" Association="CinemaPOSModel.fk_estado_cotizacion">
-            <End Role="Estado" EntitySet="Estado" />
-            <End Role="OportunidadVenta" EntitySet="OportunidadVenta" />
-          </AssociationSet>
           <EntitySet Name="Seguimiento" EntityType="CinemaPOSModel.Seguimiento" />
           <AssociationSet Name="FK__Seguimien__Estad__5B438874" Association="CinemaPOSModel.FK__Seguimien__Estad__5B438874">
             <End Role="Estado" EntitySet="Estado" />
@@ -3734,6 +3713,27 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
             <End Role="ClienteRoyal" EntitySet="ClienteRoyal" />
           </AssociationSet>
           <EntitySet Name="HistoricolLog" EntityType="CinemaPOSModel.HistoricolLog" />
+          <EntitySet Name="OportunidadVenta" EntityType="CinemaPOSModel.OportunidadVenta" />
+          <AssociationSet Name="FK__Oportunid__Conta__4C564A9F" Association="CinemaPOSModel.FK__Oportunid__Conta__4C564A9F">
+            <End Role="Contacto" EntitySet="Contacto" />
+            <End Role="OportunidadVenta" EntitySet="OportunidadVenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Oportunid__Lista__4979DDF4" Association="CinemaPOSModel.FK__Oportunid__Lista__4979DDF4">
+            <End Role="ListaEncabezado" EntitySet="ListaEncabezado" />
+            <End Role="OportunidadVenta" EntitySet="OportunidadVenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Oportunid__Prosp__4A6E022D" Association="CinemaPOSModel.FK__Oportunid__Prosp__4A6E022D">
+            <End Role="Tercero" EntitySet="Tercero" />
+            <End Role="OportunidadVenta" EntitySet="OportunidadVenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Oportunid__Teatr__4B622666" Association="CinemaPOSModel.FK__Oportunid__Teatr__4B622666">
+            <End Role="Teatro" EntitySet="Teatro" />
+            <End Role="OportunidadVenta" EntitySet="OportunidadVenta" />
+          </AssociationSet>
+          <AssociationSet Name="fk_estado_cotizacion" Association="CinemaPOSModel.fk_estado_cotizacion">
+            <End Role="Estado" EntitySet="Estado" />
+            <End Role="OportunidadVenta" EntitySet="OportunidadVenta" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -3987,13 +3987,13 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <NavigationProperty Name="Teatro" Relationship="CinemaPOSModel.FK__Teatro__EstadoID__76818E95" FromRole="Estado" ToRole="Teatro" />
           <NavigationProperty Name="TipoEstado" Relationship="CinemaPOSModel.FK_TipoEstado" FromRole="Estado" ToRole="TipoEstado" />
           <NavigationProperty Name="Taquilla" Relationship="CinemaPOSModel.FK__Taquilla__Estado__01142BA1" FromRole="Estado" ToRole="Taquilla" />
-          <NavigationProperty Name="OportunidadVenta" Relationship="CinemaPOSModel.fk_estado_cotizacion" FromRole="Estado" ToRole="OportunidadVenta" />
           <Property Name="Codigo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Seguimiento" Relationship="CinemaPOSModel.FK__Seguimien__Estad__5B438874" FromRole="Estado" ToRole="Seguimiento" />
           <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="FechaModificacion" Type="DateTime" Precision="3" />
           <Property Name="RowIDCreacion" Type="Int32" />
           <Property Name="TeatroCreacion" Type="Int32" />
+          <NavigationProperty Name="OportunidadVenta" Relationship="CinemaPOSModel.fk_estado_cotizacion" FromRole="Estado" ToRole="OportunidadVenta" />
         </EntityType>
         <EntityType Name="Impuesto">
           <Key>
@@ -4165,9 +4165,9 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <NavigationProperty Name="UsuarioSistema" Relationship="CinemaPOSModel.FK__UsuarioSi__Teatr__353DDB1D" FromRole="Teatro" ToRole="UsuarioSistema" />
           <Property Name="CadenaBD" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Taquilla" Relationship="CinemaPOSModel.FK__Taquilla__Teatro__02084FDA" FromRole="Teatro" ToRole="Taquilla" />
-          <NavigationProperty Name="OportunidadVenta" Relationship="CinemaPOSModel.FK__Oportunid__Teatr__4B622666" FromRole="Teatro" ToRole="OportunidadVenta" />
           <Property Name="RowIDCreacion" Type="Int32" />
           <Property Name="TeatroCreacion" Type="Int32" />
+          <NavigationProperty Name="OportunidadVenta" Relationship="CinemaPOSModel.FK__Oportunid__Teatr__4B622666" FromRole="Teatro" ToRole="OportunidadVenta" />
         </EntityType>
         <EntityType Name="Tercero">
           <Key>
@@ -4205,9 +4205,9 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <NavigationProperty Name="EncabezadoPelicula" Relationship="CinemaPOSModel.FK__Encabezad__Distr__5BE2A6F2" FromRole="Tercero" ToRole="EncabezadoPelicula" />
           <NavigationProperty Name="EncabezadoVentaEmpresarial" Relationship="CinemaPOSModel.FK__Encabezad__Terce__43F60EC8" FromRole="Tercero" ToRole="EncabezadoVentaEmpresarial" />
           <NavigationProperty Name="Pqrs" Relationship="CinemaPOSModel.FK__Pqrs__TerceroID__4FD1D5C8" FromRole="Tercero" ToRole="Pqrs" />
-          <NavigationProperty Name="OportunidadVenta" Relationship="CinemaPOSModel.FK__Oportunid__Prosp__4A6E022D" FromRole="Tercero" ToRole="OportunidadVenta" />
           <Property Name="RowIDCreacion" Type="Int32" />
           <Property Name="TeatroCreacion" Type="Int32" />
+          <NavigationProperty Name="OportunidadVenta" Relationship="CinemaPOSModel.FK__Oportunid__Prosp__4A6E022D" FromRole="Tercero" ToRole="OportunidadVenta" />
         </EntityType>
         <EntityType Name="Tipo">
           <Key>
@@ -6255,93 +6255,6 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="OportunidadVenta">
-          <Key>
-            <PropertyRef Name="RowID" />
-          </Key>
-          <Property Name="RowID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProspectoID" Type="Int32" />
-          <Property Name="TeatroID" Type="Int32" />
-          <Property Name="ContactoID" Type="Int32" />
-          <Property Name="Titulo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Valor" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="FechaApertura" Type="DateTime" Precision="3" />
-          <Property Name="FechaCierra" Type="DateTime" Precision="3" />
-          <Property Name="FechaEntrega" Type="DateTime" Precision="3" />
-          <Property Name="ListaPrecioID" Type="Int32" />
-          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="EstadoID" Type="Int32" Nullable="false" />
-          <Property Name="vendedor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="fechaCreacion" Type="DateTime" Precision="3" />
-          <Property Name="CreadoPor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="UsuarioMod" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="fechaMod" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Contacto" Relationship="CinemaPOSModel.FK__Oportunid__Conta__4C564A9F" FromRole="OportunidadVenta" ToRole="Contacto" />
-          <NavigationProperty Name="ListaEncabezado" Relationship="CinemaPOSModel.FK__Oportunid__Lista__4979DDF4" FromRole="OportunidadVenta" ToRole="ListaEncabezado" />
-          <NavigationProperty Name="Tercero" Relationship="CinemaPOSModel.FK__Oportunid__Prosp__4A6E022D" FromRole="OportunidadVenta" ToRole="Tercero" />
-          <NavigationProperty Name="Teatro" Relationship="CinemaPOSModel.FK__Oportunid__Teatr__4B622666" FromRole="OportunidadVenta" ToRole="Teatro" />
-          <NavigationProperty Name="Estado" Relationship="CinemaPOSModel.fk_estado_cotizacion" FromRole="OportunidadVenta" ToRole="Estado" />
-        </EntityType>
-        <Association Name="FK__Oportunid__Conta__4C564A9F">
-          <End Type="CinemaPOSModel.Contacto" Role="Contacto" Multiplicity="0..1" />
-          <End Type="CinemaPOSModel.OportunidadVenta" Role="OportunidadVenta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Contacto">
-              <PropertyRef Name="RowID" />
-            </Principal>
-            <Dependent Role="OportunidadVenta">
-              <PropertyRef Name="ContactoID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Oportunid__Lista__4979DDF4">
-          <End Type="CinemaPOSModel.ListaEncabezado" Role="ListaEncabezado" Multiplicity="0..1" />
-          <End Type="CinemaPOSModel.OportunidadVenta" Role="OportunidadVenta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ListaEncabezado">
-              <PropertyRef Name="RowID" />
-            </Principal>
-            <Dependent Role="OportunidadVenta">
-              <PropertyRef Name="ListaPrecioID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Oportunid__Prosp__4A6E022D">
-          <End Type="CinemaPOSModel.Tercero" Role="Tercero" Multiplicity="0..1" />
-          <End Type="CinemaPOSModel.OportunidadVenta" Role="OportunidadVenta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tercero">
-              <PropertyRef Name="RowID" />
-            </Principal>
-            <Dependent Role="OportunidadVenta">
-              <PropertyRef Name="ProspectoID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Oportunid__Teatr__4B622666">
-          <End Type="CinemaPOSModel.Teatro" Role="Teatro" Multiplicity="0..1" />
-          <End Type="CinemaPOSModel.OportunidadVenta" Role="OportunidadVenta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Teatro">
-              <PropertyRef Name="RowID" />
-            </Principal>
-            <Dependent Role="OportunidadVenta">
-              <PropertyRef Name="TeatroID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_estado_cotizacion">
-          <End Type="CinemaPOSModel.Estado" Role="Estado" Multiplicity="1" />
-          <End Type="CinemaPOSModel.OportunidadVenta" Role="OportunidadVenta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Estado">
-              <PropertyRef Name="RowID" />
-            </Principal>
-            <Dependent Role="OportunidadVenta">
-              <PropertyRef Name="EstadoID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Seguimiento">
           <Key>
             <PropertyRef Name="RowID" />
@@ -6483,6 +6396,93 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <Property Name="Respuesta" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Registros" Type="Int32" />
         </EntityType>
+        <EntityType Name="OportunidadVenta">
+          <Key>
+            <PropertyRef Name="RowID" />
+          </Key>
+          <Property Name="RowID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProspectoID" Type="Int32" />
+          <Property Name="TeatroID" Type="Int32" />
+          <Property Name="ContactoID" Type="Int32" />
+          <Property Name="Titulo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Valor" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FechaApertura" Type="DateTime" Precision="3" />
+          <Property Name="FechaCierra" Type="DateTime" Precision="3" />
+          <Property Name="FechaEntrega" Type="DateTime" Precision="3" />
+          <Property Name="ListaPrecioID" Type="Int32" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="EstadoID" Type="Int32" Nullable="false" />
+          <Property Name="vendedor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fechaCreacion" Type="DateTime" Precision="3" />
+          <Property Name="CreadoPor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UsuarioMod" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fechaMod" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Contacto" Relationship="CinemaPOSModel.FK__Oportunid__Conta__4C564A9F" FromRole="OportunidadVenta" ToRole="Contacto" />
+          <NavigationProperty Name="ListaEncabezado" Relationship="CinemaPOSModel.FK__Oportunid__Lista__4979DDF4" FromRole="OportunidadVenta" ToRole="ListaEncabezado" />
+          <NavigationProperty Name="Tercero" Relationship="CinemaPOSModel.FK__Oportunid__Prosp__4A6E022D" FromRole="OportunidadVenta" ToRole="Tercero" />
+          <NavigationProperty Name="Teatro" Relationship="CinemaPOSModel.FK__Oportunid__Teatr__4B622666" FromRole="OportunidadVenta" ToRole="Teatro" />
+          <NavigationProperty Name="Estado" Relationship="CinemaPOSModel.fk_estado_cotizacion" FromRole="OportunidadVenta" ToRole="Estado" />
+        </EntityType>
+        <Association Name="FK__Oportunid__Conta__4C564A9F">
+          <End Type="CinemaPOSModel.Contacto" Role="Contacto" Multiplicity="0..1" />
+          <End Type="CinemaPOSModel.OportunidadVenta" Role="OportunidadVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contacto">
+              <PropertyRef Name="RowID" />
+            </Principal>
+            <Dependent Role="OportunidadVenta">
+              <PropertyRef Name="ContactoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Oportunid__Lista__4979DDF4">
+          <End Type="CinemaPOSModel.ListaEncabezado" Role="ListaEncabezado" Multiplicity="0..1" />
+          <End Type="CinemaPOSModel.OportunidadVenta" Role="OportunidadVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ListaEncabezado">
+              <PropertyRef Name="RowID" />
+            </Principal>
+            <Dependent Role="OportunidadVenta">
+              <PropertyRef Name="ListaPrecioID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Oportunid__Prosp__4A6E022D">
+          <End Type="CinemaPOSModel.Tercero" Role="Tercero" Multiplicity="0..1" />
+          <End Type="CinemaPOSModel.OportunidadVenta" Role="OportunidadVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tercero">
+              <PropertyRef Name="RowID" />
+            </Principal>
+            <Dependent Role="OportunidadVenta">
+              <PropertyRef Name="ProspectoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Oportunid__Teatr__4B622666">
+          <End Type="CinemaPOSModel.Teatro" Role="Teatro" Multiplicity="0..1" />
+          <End Type="CinemaPOSModel.OportunidadVenta" Role="OportunidadVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teatro">
+              <PropertyRef Name="RowID" />
+            </Principal>
+            <Dependent Role="OportunidadVenta">
+              <PropertyRef Name="TeatroID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_estado_cotizacion">
+          <End Type="CinemaPOSModel.Estado" Role="Estado" Multiplicity="1" />
+          <End Type="CinemaPOSModel.OportunidadVenta" Role="OportunidadVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estado">
+              <PropertyRef Name="RowID" />
+            </Principal>
+            <Dependent Role="OportunidadVenta">
+              <PropertyRef Name="EstadoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7458,29 +7458,6 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OportunidadVenta">
-            <EntityTypeMapping TypeName="CinemaPOSModel.OportunidadVenta">
-              <MappingFragment StoreEntitySet="OportunidadVenta">
-                <ScalarProperty Name="fechaMod" ColumnName="fechaMod" />
-                <ScalarProperty Name="UsuarioMod" ColumnName="UsuarioMod" />
-                <ScalarProperty Name="CreadoPor" ColumnName="CreadoPor" />
-                <ScalarProperty Name="fechaCreacion" ColumnName="fechaCreacion" />
-                <ScalarProperty Name="vendedor" ColumnName="vendedor" />
-                <ScalarProperty Name="EstadoID" ColumnName="EstadoID" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-                <ScalarProperty Name="ListaPrecioID" ColumnName="ListaPrecioID" />
-                <ScalarProperty Name="FechaEntrega" ColumnName="FechaEntrega" />
-                <ScalarProperty Name="FechaCierra" ColumnName="FechaCierra" />
-                <ScalarProperty Name="FechaApertura" ColumnName="FechaApertura" />
-                <ScalarProperty Name="Valor" ColumnName="Valor" />
-                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
-                <ScalarProperty Name="ContactoID" ColumnName="ContactoID" />
-                <ScalarProperty Name="TeatroID" ColumnName="TeatroID" />
-                <ScalarProperty Name="ProspectoID" ColumnName="ProspectoID" />
-                <ScalarProperty Name="RowID" ColumnName="RowID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Seguimiento">
             <EntityTypeMapping TypeName="CinemaPOSModel.Seguimiento">
               <MappingFragment StoreEntitySet="Seguimiento">
@@ -7518,6 +7495,29 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
                 <ScalarProperty Name="Sincronizo" ColumnName="Sincronizo" />
                 <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
                 <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="RowID" ColumnName="RowID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OportunidadVenta">
+            <EntityTypeMapping TypeName="CinemaPOSModel.OportunidadVenta">
+              <MappingFragment StoreEntitySet="OportunidadVenta">
+                <ScalarProperty Name="fechaMod" ColumnName="fechaMod" />
+                <ScalarProperty Name="UsuarioMod" ColumnName="UsuarioMod" />
+                <ScalarProperty Name="CreadoPor" ColumnName="CreadoPor" />
+                <ScalarProperty Name="fechaCreacion" ColumnName="fechaCreacion" />
+                <ScalarProperty Name="vendedor" ColumnName="vendedor" />
+                <ScalarProperty Name="EstadoID" ColumnName="EstadoID" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="ListaPrecioID" ColumnName="ListaPrecioID" />
+                <ScalarProperty Name="FechaEntrega" ColumnName="FechaEntrega" />
+                <ScalarProperty Name="FechaCierra" ColumnName="FechaCierra" />
+                <ScalarProperty Name="FechaApertura" ColumnName="FechaApertura" />
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="ContactoID" ColumnName="ContactoID" />
+                <ScalarProperty Name="TeatroID" ColumnName="TeatroID" />
+                <ScalarProperty Name="ProspectoID" ColumnName="ProspectoID" />
                 <ScalarProperty Name="RowID" ColumnName="RowID" />
               </MappingFragment>
             </EntityTypeMapping>

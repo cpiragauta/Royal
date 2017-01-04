@@ -175,12 +175,6 @@
         <AssociationConnector Association="CinemaPOSModel.FK__Taquilla__TipoTa__4944D3CA" />
         <AssociationConnector Association="CinemaPOSModel.FK__Taquilla__Teatro__02084FDA" />
         <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Taqui__520F23F5" />
-        <EntityTypeShape EntityType="CinemaPOSModel.OportunidadVenta" Width="1.5" PointX="27.75" PointY="71.5" />
-        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Conta__4C564A9F" />
-        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Lista__4979DDF4" />
-        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Prosp__4A6E022D" />
-        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Teatr__4B622666" />
-        <AssociationConnector Association="CinemaPOSModel.fk_estado_cotizacion" />
         <EntityTypeShape EntityType="CinemaPOSModel.Seguimiento" Width="1.5" PointX="30" PointY="82.875" />
         <AssociationConnector Association="CinemaPOSModel.FK__Seguimien__Estad__5B438874" />
         <AssociationConnector Association="CinemaPOSModel.FK__Seguimien__AreaA__595B4002" />
@@ -192,7 +186,13 @@
         <AssociationConnector Association="CinemaPOSModel.FK__UsuarioSi__RolID__7BE56230" />
         <AssociationConnector Association="CinemaPOSModel.fk_TipoIdentificacion" />
         <EntityTypeShape EntityType="CinemaPOSModel.HistoricolLog" Width="1.5" PointX="3.375" PointY="8.75" />
-      </Diagram>
+        <EntityTypeShape EntityType="CinemaPOSModel.OportunidadVenta" Width="1.5" PointX="27.75" PointY="71.75" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Conta__4C564A9F" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Lista__4979DDF4" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Prosp__4A6E022D" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Teatr__4B622666" />
+        <AssociationConnector Association="CinemaPOSModel.fk_estado_cotizacion" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

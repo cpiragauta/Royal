@@ -43,14 +43,12 @@
                     <th>Telefono</th>
                     <th>Correo</th>
                     <th>Ciudad</th>
-                    <th class="ion-ios-loop-strong center"></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (CinemaPOS.Models.Tercero Terceros in ViewBag.Tercero)
                 {
-                    String Color = Terceros.Sincronizado == true ? "Verde" : "Rojo";
                     <tr>
                         <td>@Terceros.RowID</td>
                         <td>@Terceros.Nombre @Terceros.Apellidos</td>
@@ -66,7 +64,6 @@
                         <td>@Terceros.Telefono</td>
                         <td>@Terceros.Correo</td>
                         <td>@Terceros.Ciudad.Nombre</td>
-                        <td class="@Color"></td>
                         <td>
                             <a href="@Url.Action("Tercero", "Maestro", new { @RowID_Tercero = Terceros.RowID })"><i class="glyphicon glyphicon-pencil"> </i></a>
                         </td>
