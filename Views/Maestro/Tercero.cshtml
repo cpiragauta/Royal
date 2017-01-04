@@ -37,7 +37,7 @@
                 },
                 success: function (data) {
                     debugger;
-                        swal("OK", data, "success")
+                        swal("OK", data.respuesta, "success")
                         window.location = "/Maestro/VistaTercero"
 
                 },
@@ -140,7 +140,7 @@
             $(".Ocultar").addClass("CorrerIzquierda");
 
         }
-
+        
         else {
             $("#tipo_se").removeAttr("style").hide();
             $("#PanelApellido").show(); 
@@ -158,6 +158,9 @@
 
 
         }
+        if ($("#tipo_tercero option:selected").html() == "Natural") {
+            $("#PanelFechaNacimiento").show();
+        }
     }
 
 
@@ -173,13 +176,12 @@
             $(".Ocultar").slideUp();
         }
 
-        $('#demo-dp-range .input-daterange').datepicker({
+        $('#FechaNacimiento').datepicker({
             format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
             todayHighlight: false,
-            minDate: 0, // 0 days offset = today
-            maxDate: 'today',
+            endDate: '-8d',
         });
 
         OcultarCampos();

@@ -141,5 +141,12 @@ namespace CinemaPOS.Controllers.Inicio
                 return Json("error");
             }
         }
+
+       //public ActionResult VistaPQRS()
+       //{
+       //     ViewBag.ListaPQRS = db.Pqrs.OrderBy(Pqrs => Pqrs.RowID).ToList();
+       //     return View();
+
+       //}
     }
 }

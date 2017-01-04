@@ -16,8 +16,18 @@
 <script>
     $(document).ready(function () {
         new Switchery(document.getElementById("demo-sw-checked"));
-        $("#fechainicial").datepicker();
-        $("#fechafinal").datepicker();
+        $("#fechainicial").datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+        $("#fechafinal").datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
         $("#iptaquilla").mask("999.999.999.999");
     });
     function getipteatro() {
