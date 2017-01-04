@@ -1,0 +1,65 @@
+﻿@model CinemaPOS.Models.Parametros
+@{
+    ViewBag.Title = "ModalHabeasData";
+    Layout = null;
+}
+<script>
+    ModalProcesandoHiden();
+    $("#myModal1").modal('show')
+</script>
+<div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="false" style="overflow: hidden; border-radius:2px;">
+    <div class="modal-dialog" style="width:600px ;margin-top:-25px;">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 5px;">
+                @*<button type="button" class="close salir" data-dismiss="modal" aria-hidden="true">&times;</button>*@
+                <h4 class="modal-title" style="padding:1px;color:#455A64"><b>Terminos & Condiciones</b></h4>
+            </div>
+            <div class="modal-body">
+                <br />
+                <div class="Habeas">
+                    <p class="lead" style="overflow-y: scroll;height:440px" id="Politicas">
+                        
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div style="float:right">
+                        <a onclick="javascript:Terminos(0);" class="btn btn-default">No Acepto</a>
+                        <a onclick="javascript:Terminos(1);" class="btn btn-info">Acepto</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function Terminos(valor) {
+        //0 - No Acepto || 1 - Acepto
+        if (valor == 0) {
+            $("#HabeasValidate").val("NoAcepto");
+            $('.switchery').trigger('click');
+            $("#myModal1").modal('hide');
+        } else {
+            $("#HabeasValidate").val("Acepto");
+            $('.switchery').trigger('');
+            $("#myModal1").modal('hide');
+        }
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            url: "/Maestro/CargarHabeasData",
+            data: {
+            },
+            success: function (data) {
+                ModalProcesandoHiden();
+                $("#Politicas").prepend(data);
+            },
+            error: function (data) {
+                ModalProcesandoHiden();
+                Alerts("Error al cargar la información.", "danger");
+            }
+        });
+    });
+</script>

@@ -62,10 +62,6 @@ namespace CinemaPOS.Models
         public string ValorDefecto { get; set; }
         public Nullable<short> NumOrden { get; set; }
         public Nullable<bool> Activo { get; set; }
-        public System.DateTime FechaCreacion { get; set; }
-        public Nullable<System.DateTime> FechaModificacion { get; set; }
-        public Nullable<int> RowIDCreacion { get; set; }
-        public Nullable<int> TeatroCreacion { get; set; }
     
         public virtual ICollection<EncabezadoConvenio> EncabezadoConvenio { get; set; }
         public virtual ICollection<EncabezadoConvenio> EncabezadoConvenio1 { get; set; }
