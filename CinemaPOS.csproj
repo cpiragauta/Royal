@@ -240,6 +240,9 @@
     <Compile Include="Models\GeneroPelicula.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\HistoricolLog.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Impuesto.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -307,9 +310,6 @@
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ServicioSala.cs">
-      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SincronizacionMaestros.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
@@ -2342,6 +2342,7 @@
     <Content Include="Views\Programacion\ModalEliminarFuncionMasivo.cshtml" />
     <Content Include="Views\Programacion\ModalReplicarFuncionxDia.cshtml" />
     <Content Include="Views\Programacion\ModalReplicarFuncionxSala.cshtml" />
+    <Content Include="Views\Cuenta\AccesoDenegado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

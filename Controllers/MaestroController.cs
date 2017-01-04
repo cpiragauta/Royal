@@ -1167,6 +1167,7 @@ namespace CinemaPOS.Controllers.Master
             ViewBag.Opcion = db.Opcion.ToList();
             return View();
         }
+
         [CheckSessionOutAttribute]
         public Boolean Guardar_Opcion(FormCollection formulario, int RowID_Encabezado)
         {
@@ -1185,6 +1186,7 @@ namespace CinemaPOS.Controllers.Master
                     ObjOpcion.Descripcion = formulario["descripcion"];
                     ObjOpcion.ValorDefecto = formulario["valorDefecto"];
                     ObjOpcion.NumOrden = Convert.ToInt16(formulario["numOrden"]);
+                    ObjOpcion.FechaCreacion = DateTime.Now;
                     if (formulario["activo"] == null)
                     {
                         ObjOpcion.Activo = false;
@@ -1208,6 +1210,7 @@ namespace CinemaPOS.Controllers.Master
                     ObjOpcion.Descripcion = formulario["descripcion"];
                     ObjOpcion.ValorDefecto = formulario["valorDefecto"];
                     ObjOpcion.NumOrden = Convert.ToInt16(formulario["numOrden"]);
+                    ObjOpcion.FechaModificacion = DateTime.Now;
                     if (formulario["activo"] == null)
                     {
                         ObjOpcion.Activo = false;
@@ -1265,6 +1268,7 @@ namespace CinemaPOS.Controllers.Master
                     formulario = DeSerialize(formulario);
                     objPais.Nombre = formulario["nombre"];
                     objPais.Descripcion = formulario["descripcion"];
+                    objPais.FechaCreacion = DateTime.Now;
                     db.Pais.Add(objPais);
                     db.SaveChanges();
 
@@ -1275,6 +1279,7 @@ namespace CinemaPOS.Controllers.Master
                     formulario = DeSerialize(formulario);
                     objPais.Nombre = formulario["nombre"];
                     objPais.Descripcion = formulario["descripcion"];
+                    objPais.FechaModificacion = DateTime.Now;
                     db.SaveChanges();
                 }
                 int codigo_encabezado = objPais.RowID;
@@ -1497,6 +1502,7 @@ namespace CinemaPOS.Controllers.Master
                     objCiudad.Nombre = formulario["nombre"];
                     objCiudad.Descripcion = formulario["descripcion"];
                     objCiudad.DepartamentoID = Convert.ToInt32(formulario["departamento"]);
+                    objCiudad.FechaCreacion = DateTime.Now;
                     db.Ciudad.Add(objCiudad);
                     db.SaveChanges();
 
@@ -1508,6 +1514,7 @@ namespace CinemaPOS.Controllers.Master
                     objCiudad.Nombre = formulario["nombre"];
                     objCiudad.Descripcion = formulario["descripcion"];
                     objCiudad.DepartamentoID = Convert.ToInt32(formulario["departamento"]);
+                    objCiudad.FechaModificacion = DateTime.Now;
                     db.SaveChanges();
 
                 }

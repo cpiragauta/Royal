@@ -71,7 +71,6 @@ namespace CinemaPOS.Models
         public virtual DbSet<EncabezadoProgramacion> EncabezadoProgramacion { get; set; }
         public virtual DbSet<Funcion> Funcion { get; set; }
         public virtual DbSet<ListaPrecioFuncion> ListaPrecioFuncion { get; set; }
-        public virtual DbSet<SincronizacionMaestros> SincronizacionMaestros { get; set; }
         public virtual DbSet<ListaDetalle> ListaDetalle { get; set; }
         public virtual DbSet<ListaEncabezado> ListaEncabezado { get; set; }
         public virtual DbSet<BoletaVendida> BoletaVendida { get; set; }
@@ -87,6 +86,7 @@ namespace CinemaPOS.Models
         public virtual DbSet<OportunidadVenta> OportunidadVenta { get; set; }
         public virtual DbSet<Seguimiento> Seguimiento { get; set; }
         public virtual DbSet<Rol> Rol { get; set; }
+        public virtual DbSet<HistoricolLog> HistoricolLog { get; set; }
     
         public virtual int Eliminar_sillas_sala(Nullable<int> rowIDSala)
         {

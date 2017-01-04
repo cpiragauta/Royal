@@ -112,6 +112,10 @@ namespace CinemaPOS.ModelosPropios
             public const string ESTADO_CONVENIO_REDIMIDO = "REDIMIDO";
             public const string TIPO_ESTADO_CONVENIO = "TIPOCONVENIO";
 
+            /*PARA PERMISOS DE GUARDAR Y ACTUALIZAR */
+            public const string NOMBRE_TEATRO_CENTRAL= "CENTRAL";
+
+
         }
         public class Actividades
         {

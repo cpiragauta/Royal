@@ -30,6 +30,8 @@
             return false;
         }
         if ($(".RowID_Encabezado").val() == 0) {
+            debugger
+
             $.ajax({
                 type: "POST",
                 url: "/Maestro/Guardar_Opcion",
@@ -39,6 +41,7 @@
                 },
 
                 success: function (data) {
+                    debugger
                     if (data != false) {
                         swal("OK", "Almacenado exitosamente", "success")
                         window.location = "/Maestro/VistaOpcion"
@@ -50,6 +53,7 @@
 
                 },
                 error: function (data) {
+                    debugger
                     swal("ERROR", data, "error");
                 }
 
@@ -58,6 +62,7 @@
 
 
         if ($(".RowID_Encabezado").val() != 0) {
+            debugger
             $.ajax({
                 type: "POST",
                 url: "/Maestro/Guardar_Opcion",
@@ -66,6 +71,7 @@
                     formulario: $("#formulario_lista_opciones").serialize(),
                 },
                 success: function (data) {
+                    debugger
                     if (data != false) {
                         swal("OK", "Actualización exitosa", "success")
                         window.location = "/Maestro/VistaOpcion"
@@ -77,6 +83,7 @@
 
                 },
                 error: function (data) {
+                    debugger
                     swal("ERROR", data, "error");
                 }
 
@@ -84,7 +91,7 @@
         }
     }
     function actualizaestado(tipo) {
-        if(tipo==1){
+        if (tipo == 1) {
             $.ajax({
                 url: "/Maestro/CodigoEstado",
                 success: function (data) {
@@ -95,7 +102,7 @@
                 }
             })
         }
-        if (tipo==2) {
+        if (tipo == 2) {
             $.ajax({
                 url: "/Maestro/CodigoEstado",
                 success: function (data) {
@@ -106,8 +113,8 @@
                 }
             })
         }
-        
-        
+
+
     }
 </script>
 <script>
@@ -136,7 +143,7 @@
     <div class="panel-heading">
         <h3 class="panel-title">Opción</h3>
     </div>
-   @*<a href="javascript:actualizaestado(2)" class="btn btn-success">estado</a>*@
+    @*<a href="javascript:actualizaestado(2)" class="btn btn-success">estado</a>*@
     <form id="formulario_lista_opciones" data-toggle="validator" role="form">
         <input type="hidden" class="RowID_Encabezado" name="RowID_Encabezado" value="@Model.RowID" />
         <div class="panel-body">
@@ -223,26 +230,43 @@
                         <label class="control-label">Activo:</label>
                         @if (@Model.Activo.Equals(true))
                         {
-                        <input id="demo-sw-checked" type="checkbox" name="activo" checked>
+                            <input id="demo-sw-checked" type="checkbox" name="activo" checked>
                         }
                         else
                         {
-                        <input id="demo-sw-checked" type="checkbox" name="activo">
+                            <input id="demo-sw-checked" type="checkbox" name="activo">
                         }
 
                     </div>
                 </div>
             </div>
             <div class="panel-footer text-right">
-                @if (Model.RowID == 0)
+
+                @if (Session["Usuario"] != null)
                 {
-                    <input class="btn btn-success" value="Guardar" onclick="javascript:valida_formulario()">
+                    CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                    if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                    {
+                        if (Model.RowID == 0)
+                        {
+                            <input class="btn btn-success" value="Guardar" onclick="javascript:valida_formulario()">
+                        }
+                        else
+                        {
+                            <input class="btn btn-success" value="Actualizar" onclick="javascript:valida_formulario()">
+                        }
+                    }
+                    else
+                    {
+                        <input class="btn btn-success" value="Guardar" disabled>
+                    }
                 }
-                else
-                {
-                    <input class="btn btn-success" value="Actualizar" onclick="javascript:valida_formulario()">
-                }
+
+
             </div>
+
+
+
 
         </div>
     </form>

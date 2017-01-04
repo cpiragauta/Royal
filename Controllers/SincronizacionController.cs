@@ -13,7 +13,8 @@ namespace CinemaPOS.Controllers
 
         public ActionResult VistaPrincipal()
         {
-            return View(db.SincronizacionMaestros.ToList());
+            //return View(db.SincronizacionMaestros.ToList());
+            return View();
         }
 
         [CheckSessionOutAttribute]

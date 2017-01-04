@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Acceso Denegado";
+}
+
+<!--Demo script [ DEMONSTRATION ]-->
+<script src="~/Content/js/demo/nifty-demo.min.js"></script>
+<!--Bootbox Modals [ OPTIONAL ]-->
+<script src="~/Content/plugins/bootbox/bootbox.min.js"></script>
+<!--Modals [ SAMPLE ]-->
+<script src="~/Content/js/demo/ui-modals.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#myModal1").modal(); //Para Mostrar el modal
+    });
+
+</script>
+
+
+<div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="false" style="overflow: hidden;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <i class="pci-cross pci-circle"></i>
+                </button>
+
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <h1>NO TIENE PERMISOS PARA REALIZAR ESTE PROCESO, FDP</h1>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

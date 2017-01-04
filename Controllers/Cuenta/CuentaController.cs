@@ -28,6 +28,11 @@ namespace CinemaPOS.Controllers.Cuenta
             return View();
         }
 
+        public ActionResult AccesoDenegado()
+        {
+            return View();
+        }
+
         public string get_ip_local(string ip)
         {
             string ip_return = "";

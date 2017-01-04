@@ -50,6 +50,7 @@ namespace CinemaPOS.Models
             this.Taquilla = new HashSet<Taquilla>();
             this.Seguimiento = new HashSet<Seguimiento>();
             this.Seguimiento1 = new HashSet<Seguimiento>();
+            this.ClienteRoyal3 = new HashSet<ClienteRoyal>();
         }
     
         public int RowID { get; set; }
@@ -61,6 +62,10 @@ namespace CinemaPOS.Models
         public string ValorDefecto { get; set; }
         public Nullable<short> NumOrden { get; set; }
         public Nullable<bool> Activo { get; set; }
+        public System.DateTime FechaCreacion { get; set; }
+        public Nullable<System.DateTime> FechaModificacion { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
         public virtual ICollection<EncabezadoConvenio> EncabezadoConvenio { get; set; }
         public virtual ICollection<EncabezadoConvenio> EncabezadoConvenio1 { get; set; }
@@ -97,5 +102,6 @@ namespace CinemaPOS.Models
         public virtual ICollection<Taquilla> Taquilla { get; set; }
         public virtual ICollection<Seguimiento> Seguimiento { get; set; }
         public virtual ICollection<Seguimiento> Seguimiento1 { get; set; }
+        public virtual ICollection<ClienteRoyal> ClienteRoyal3 { get; set; }
     }
 }

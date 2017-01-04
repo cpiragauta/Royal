@@ -42,6 +42,8 @@ namespace CinemaPOS.Models
         public Nullable<bool> Sincronizado { get; set; }
         public Nullable<int> RowIDCentral { get; set; }
         public string CadenaBD { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
         public virtual ICollection<DetalleConvenio> DetalleConvenio { get; set; }
         public virtual Ciudad Ciudad { get; set; }

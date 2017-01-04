@@ -35,11 +35,13 @@ namespace CinemaPOS.Models
         public string UsuarioMod { get; set; }
         public Nullable<System.DateTime> FechaMod { get; set; }
         public Nullable<int> preferenciasID { get; set; }
+        public Nullable<int> TipoIdentificacionID { get; set; }
     
         public virtual Ciudad Ciudad { get; set; }
         public virtual Opcion Opcion { get; set; }
         public virtual Opcion Opcion1 { get; set; }
         public virtual ICollection<TarjetaMembresiaClienteRoyal> TarjetaMembresiaClienteRoyal { get; set; }
         public virtual Opcion Opcion2 { get; set; }
+        public virtual Opcion Opcion3 { get; set; }
     }
 }
