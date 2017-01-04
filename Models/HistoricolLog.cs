@@ -12,15 +12,13 @@ namespace CinemaPOS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class SincronizacionMaestros
+    public partial class HistoricolLog
     {
         public int RowID { get; set; }
-        public int RowIDCentral { get; set; }
-        public string EntidadCentral { get; set; }
-        public int RowIDLocal { get; set; }
-        public string EntidadLocal { get; set; }
-        public string SincronizadoPor { get; set; }
-        public System.DateTime FechaSincronizacion { get; set; }
-        public string Descripcion { get; set; }
+        public Nullable<System.DateTime> FechaInicio { get; set; }
+        public Nullable<System.DateTime> FechaFin { get; set; }
+        public string Sincronizo { get; set; }
+        public string Respuesta { get; set; }
+        public Nullable<int> Registros { get; set; }
     }
 }

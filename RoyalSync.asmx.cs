@@ -445,17 +445,17 @@ namespace CinemaPOS
 
         public void GuardarHistorico(int RowIDCentral, String EntidadCentral, int RowIDLocal, String EntidadLocal, String Descripcion)
         {
-            SincronizacionMaestros Historico = new SincronizacionMaestros();
-            Historico.RowIDCentral = RowIDCentral;
-            Historico.EntidadCentral = EntidadCentral;
-            Historico.RowIDLocal = RowIDLocal;
-            Historico.EntidadLocal = EntidadLocal;
-            Historico.SincronizadoPor = Session["usuario_creacion"].ToString();
-            Historico.FechaSincronizacion = DateTime.Now;
-            dbLocal.SincronizacionMaestros.Add(Historico);
-            dbLocal.SaveChanges();
-            dbCentral.SincronizacionMaestros.Add(Historico);
-            dbCentral.SaveChanges();
+            //SincronizacionMaestros Historico = new SincronizacionMaestros();
+            //Historico.RowIDCentral = RowIDCentral;
+            //Historico.EntidadCentral = EntidadCentral;
+            //Historico.RowIDLocal = RowIDLocal;
+            //Historico.EntidadLocal = EntidadLocal;
+            //Historico.SincronizadoPor = Session["usuario_creacion"].ToString();
+            //Historico.FechaSincronizacion = DateTime.Now;
+            //dbLocal.SincronizacionMaestros.Add(Historico);
+            //dbLocal.SaveChanges();
+            //dbCentral.SincronizacionMaestros.Add(Historico);
+            //dbCentral.SaveChanges();
         }
     }
 

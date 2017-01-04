@@ -28,7 +28,6 @@
 
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Tipo</th>
                     <th>Nombre</th>
                     <th>Código</th>
@@ -44,12 +43,11 @@
                 @foreach (CinemaPOS.Models.Opcion listas_opcion in ViewBag.Opcion)
                 {
                     <tr>
-                        <td>@listas_opcion.RowID</td>
-                        <td>@listas_opcion.Tipo.Nombre</td>
+                        <td style="width:auto">@listas_opcion.Tipo.Nombre</td>
                         <td>@listas_opcion.Nombre</td>
                         <td>@listas_opcion.Codigo</td>
                         <td>@listas_opcion.Codigo2</td>
-                        <td>@listas_opcion.Descripcion</td>
+                        <td style="width:auto">@listas_opcion.Descripcion</td>
                         <td>@listas_opcion.ValorDefecto</td>
                         <td>@listas_opcion.NumOrden</td>
                         <td>@listas_opcion.Activo</td>

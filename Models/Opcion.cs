@@ -25,7 +25,6 @@ namespace CinemaPOS.Models
             this.ClienteRoyal = new HashSet<ClienteRoyal>();
             this.ClienteRoyal1 = new HashSet<ClienteRoyal>();
             this.ClienteRoyal2 = new HashSet<ClienteRoyal>();
-            this.ClienteRoyal3 = new HashSet<ClienteRoyal>();
             this.Impuesto = new HashSet<Impuesto>();
             this.DetallePelicula = new HashSet<DetallePelicula>();
             this.DetallePelicula1 = new HashSet<DetallePelicula>();
@@ -43,14 +42,15 @@ namespace CinemaPOS.Models
             this.Sala = new HashSet<Sala>();
             this.SalaObjeto = new HashSet<SalaObjeto>();
             this.SalaObjeto1 = new HashSet<SalaObjeto>();
-            this.Seguimiento = new HashSet<Seguimiento>();
-            this.Seguimiento1 = new HashSet<Seguimiento>();
             this.ServicioSala = new HashSet<ServicioSala>();
-            this.Taquilla = new HashSet<Taquilla>();
             this.Tercero = new HashSet<Tercero>();
             this.Tercero1 = new HashSet<Tercero>();
             this.Tercero2 = new HashSet<Tercero>();
             this.TipoSolicitud = new HashSet<TipoSolicitud>();
+            this.Taquilla = new HashSet<Taquilla>();
+            this.Seguimiento = new HashSet<Seguimiento>();
+            this.Seguimiento1 = new HashSet<Seguimiento>();
+            this.ClienteRoyal3 = new HashSet<ClienteRoyal>();
         }
     
         public int RowID { get; set; }
@@ -62,6 +62,10 @@ namespace CinemaPOS.Models
         public string ValorDefecto { get; set; }
         public Nullable<short> NumOrden { get; set; }
         public Nullable<bool> Activo { get; set; }
+        public System.DateTime FechaCreacion { get; set; }
+        public Nullable<System.DateTime> FechaModificacion { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
         public virtual ICollection<EncabezadoConvenio> EncabezadoConvenio { get; set; }
         public virtual ICollection<EncabezadoConvenio> EncabezadoConvenio1 { get; set; }
@@ -72,7 +76,6 @@ namespace CinemaPOS.Models
         public virtual ICollection<ClienteRoyal> ClienteRoyal { get; set; }
         public virtual ICollection<ClienteRoyal> ClienteRoyal1 { get; set; }
         public virtual ICollection<ClienteRoyal> ClienteRoyal2 { get; set; }
-        public virtual ICollection<ClienteRoyal> ClienteRoyal3 { get; set; }
         public virtual ICollection<Impuesto> Impuesto { get; set; }
         public virtual ICollection<DetallePelicula> DetallePelicula { get; set; }
         public virtual ICollection<DetallePelicula> DetallePelicula1 { get; set; }
@@ -90,14 +93,15 @@ namespace CinemaPOS.Models
         public virtual ICollection<Sala> Sala { get; set; }
         public virtual ICollection<SalaObjeto> SalaObjeto { get; set; }
         public virtual ICollection<SalaObjeto> SalaObjeto1 { get; set; }
-        public virtual ICollection<Seguimiento> Seguimiento { get; set; }
-        public virtual ICollection<Seguimiento> Seguimiento1 { get; set; }
         public virtual ICollection<ServicioSala> ServicioSala { get; set; }
-        public virtual ICollection<Taquilla> Taquilla { get; set; }
         public virtual ICollection<Tercero> Tercero { get; set; }
         public virtual ICollection<Tercero> Tercero1 { get; set; }
         public virtual ICollection<Tercero> Tercero2 { get; set; }
         public virtual ICollection<TipoSolicitud> TipoSolicitud { get; set; }
         public virtual Tipo Tipo { get; set; }
+        public virtual ICollection<Taquilla> Taquilla { get; set; }
+        public virtual ICollection<Seguimiento> Seguimiento { get; set; }
+        public virtual ICollection<Seguimiento> Seguimiento1 { get; set; }
+        public virtual ICollection<ClienteRoyal> ClienteRoyal3 { get; set; }
     }
 }

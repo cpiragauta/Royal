@@ -47,6 +47,8 @@ namespace CinemaPOS.Models
         public Nullable<System.DateTime> FechaNacimiento { get; set; }
         public Nullable<int> SexoID { get; set; }
         public Nullable<int> RowIDCentral { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
         public virtual ICollection<EncabezadoConvenio> EncabezadoConvenio { get; set; }
         public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }

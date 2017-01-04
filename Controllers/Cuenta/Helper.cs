@@ -74,4 +74,5 @@ namespace CinemaPOS.Controllers
 
         }
     }
+
 }

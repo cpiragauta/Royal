@@ -240,6 +240,9 @@
     <Compile Include="Models\GeneroPelicula.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\HistoricolLog.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Impuesto.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -307,9 +310,6 @@
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ServicioSala.cs">
-      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SincronizacionMaestros.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
@@ -1832,10 +1832,29 @@
       <DependentUpon>DAO_CinemaPOS.edmx</DependentUpon>
       <LastGenOutput>DAO_CinemaPOS.cs</LastGenOutput>
     </Content>
+    <Content Include="Repositorio_Imagenes\Fotos_Empleados\BrayanGetzamha.png" />
+    <Content Include="Repositorio_Imagenes\Fotos_Empleados\Brian Camilo  Piragauta.png" />
+    <Content Include="Repositorio_Imagenes\Fotos_Empleados\JamesBernal.jpg" />
+    <Content Include="Repositorio_Imagenes\Fotos_Empleados\JamesBernal.png" />
+    <Content Include="Repositorio_Imagenes\Fotos_Empleados\Royal-Filmslol.jpg" />
+    <Content Include="Repositorio_Imagenes\Fotos_Empleados\Royal-FilmsRoyal.jpg" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Cargando.gif" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\modal-loading.gif" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\SillaDiscapacitados.png" />
     <Content Include="Properties\DataSources\System.Data.DataSet.datasource" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\CIGÜEÑAS.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\CIGÜEÑAS_thumbnail.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\dsafsdaf_thumbnail.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\imagennodisponible.png" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\JUEGOS SATANICOS.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\LA LEYENDA DE TARZAN.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\LA VIDA SECRETA DE LAS MASCOTAS.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\LA VIDA SECRETA DE LAS MASCOTAS_thumbnail.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\LOS ILUCIONISTAS.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\PELICULA 1.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\PELICULA 1_thumbnail.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\Silla General.png" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\UN ESPIA Y MEDIO .jpg" />
     <Content Include="RoyalSync.asmx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1852,8 +1871,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\plugins\flot-charts\examples\gauge\" />
-    <Folder Include="Repositorio_Imagenes\Fotos_Empleados\" />
-    <Folder Include="Repositorio_Imagenes\Poster_Peliculas\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -2342,6 +2359,7 @@
     <Content Include="Views\Programacion\ModalEliminarFuncionMasivo.cshtml" />
     <Content Include="Views\Programacion\ModalReplicarFuncionxDia.cshtml" />
     <Content Include="Views\Programacion\ModalReplicarFuncionxSala.cshtml" />
+    <Content Include="Views\Cuenta\AccesoDenegado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

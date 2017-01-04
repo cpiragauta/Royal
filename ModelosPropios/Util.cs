@@ -5,9 +5,6 @@ using System.Web;
 using CinemaPOS.Models;
 using CinemaPOS.Controllers;
 using System.Globalization;
-using System.Drawing;
-using System.IO;
-
 namespace CinemaPOS.ModelosPropios
 {
     public class Util
@@ -60,58 +57,64 @@ namespace CinemaPOS.ModelosPropios
         {
             /* ESTADOS TARJETA MEMBRESIA*/
 
-            public const int ESTADO_ASIGNADA = 36;
-            public const int ESTADO_CANCELADA = 37;
-            public const int ESTADO_ACTIVO = 9;
-            public const int ESTADO_INACTIVO = 10;
+            public const string ESTADO_ASIGNADA = "ASIGNADO";
+            public const string ESTADO_CANCELADA = "CANCELADA";
+            public const string ESTADO_ACTIVO = "ACTIVO";
+            public const string ESTADO_INACTIVO = "INACTIVO";
 
             /*VALOR POR DEFFECTO NO. REDENCIONES*/
             public const int REDENCIONES_No4 = 4;
 
             /*ESTADOS COTIZACIONES*/
-            public const int TIPO_ESTADO_COTIZACION = 13;
-            public const int ESTADO_NUEVA = 38;
-            public const int ESTADO_EN_INVESTIGACION = 39;
-            public const int ESTADO_COTIZADO = 40;
-            public const int ESTADO_EN_CIERRE = 41;
-            public const int ESTADO_GANADA = 42;
-            public const int ESTADO_PEDIDA = 43;
+            public const string TIPO_ESTADO_COTIZACION = "TIPOCOTIZACION";
+            public const string ESTADO_NUEVA = "NUEVA";
+            public const string ESTADO_EN_INVESTIGACION = "ENINVESTIGACIÓN";
+            public const string ESTADO_COTIZADO = "COTIZADO";
+            public const string ESTADO_EN_CIERRE = "ENCIERRE";
+            public const string ESTADO_GANADA = "GANADA";
+            public const string ESTADO_PEDIDA = "PEDIDA";
 
             /* TIPO DE ACTIVIDADES*/
-            public const int TIPO_ACTIVIDAD = 20;
+            public const string TIPO_ACTIVIDAD = "TIPOACTIVIDAD";
             /* TIPO REFERENCIA*/
-            public const int TIPO_REFERENCIA = 21;
+            public const string TIPO_REFERENCIA = "TIPOREFERENCIA";
             /*PRIORIDAD*/
-            public const int PRIORIDAD = 22;
+            public const string PRIORIDAD = "PRIORIDAD";
 
             /*TIPO DE ESTADOS ACTIVIDADES*/
-            public const int ESTADOS_ACTIVIDAD = 14;
+            public const string ESTADOS_ACTIVIDAD = "TIPOACTIVIDAD";
             /*ESTADOS DE ACTIVIDADES*/
-            public const int ACTIVIDAD_CERRADA = 49;
-            public const int ACTIVIDAD_EN_CURSO = 45;
-            public const int ACTIVIDAD_EN_ESPERA = 46;
-            public const int ACTIVIDAD_PROGRAMADA = 44;
+            public const string ACTIVIDAD_CERRADA = "CERRADA";
+            public const string ACTIVIDAD_EN_CURSO = "ENCURSO";
+            public const string ACTIVIDAD_EN_ESPERA = "ENESPERA";
+            public const string ACTIVIDAD_PROGRAMADA = "PROGRAMADA";
             /*REFERENCIAS*/
-            public const int ACTIVIDAD_TIPO_RELACION_Cliente = 104;
-            public const int ACTIVIDAD_TIPO_RELACION_Oportunidad = 105;
-            public const int ACTIVIDAD_TIPO_RELACION_Contacto = 106;
-            public const int ACTIVIDAD_TIPO_RELACION_pqrs = 108;
+            public const string ACTIVIDAD_TIPO_RELACION_Cliente = "CLIENTE";
+            public const string ACTIVIDAD_TIPO_RELACION_Oportunidad = "PROSPECTO";
+            public const string ACTIVIDAD_TIPO_RELACION_Contacto = "CONTACTO";
+            public const string ACTIVIDAD_TIPO_RELACION_pqrs = "PQRS";
 
             /*ESTADOS DE OPORTUNIDAD DE VENTA*/
-            public const int OPORTUNIDAD_VENTA = 43;
+            public const string OPORTUNIDAD_VENTA = "PEDIDA";
             /*TIPO SELLO*/
-            public const int TIPO_SELLO = 99;
+            public const string TIPO_SELLO = "SELLO";
             /*TIPO DE USUARIOS*/
-            public const int ROL_ADMINISTRADOR = 1;
+            public const string ROL_ADMINISTRADOR = "ADMINISTRADOR";
 
             /*TIPO DE AREA*/
-            public const int TIPO_AREA = 14;
+            public const string TIPO_AREA = "TIPOAREAPQRS";
 
             /*TIPO ESTADO SEGUIMIENTO PQRS*/
-            public const int TIPO_ESTADO_PQRS = 14;
+            public const string TIPO_ESTADO_PQRS = "TIPOACTIVIDAD";
+
             public const string ESTADO_CONVENIO_REDIMIDO = "REDIMIDO";
             public const string TIPO_ESTADO_CONVENIO = "TIPOCONVENIO";
 
+            /*Para validar los permisos de los usuarios*/
+            public const string NOMBRE_TEATRO_CENTRAL = "CENTRAL";
+
+
+            
         }
         public class Actividades
         {
@@ -160,44 +163,6 @@ namespace CinemaPOS.ModelosPropios
                 return DateTime.MinValue;
             }
 
-        }
-
-        public String Redimensionar(Image Imagen_Original, string nombre)
-        {
-            //RUTA DEL DIRECTORIO TEMPORAL 
-            String DirTemp = Path.GetTempPath() + @"\" + nombre + ".jpg"; ;
-            //IMAGEN ORIGINAL A REDIMENSIONAR 
-            Bitmap imagen = new Bitmap(Imagen_Original);
-            //CREAMOS UN MAPA DE BIT CON LAS DIMENSIONES QUE QUEREMOS PARA LA NUEVA IMAGEN 
-            Bitmap nuevaImagen = new Bitmap(Imagen_Original.Width, Imagen_Original.Height);
-            //CREAMOS UN NUEVO GRAFICO 
-            Graphics gr = Graphics.FromImage(nuevaImagen);
-            //DIBUJAMOS LA NUEVA IMAGEN 
-            gr.DrawImage(imagen, 0, 0, nuevaImagen.Width, nuevaImagen.Height);
-            //LIBERAMOS RECURSOS 
-            gr.Dispose();
-            //GUARDAMOS LA NUEVA IMAGEN ESPECIFICAMOS LA RUTA Y EL FORMATO 
-            nuevaImagen.Save(DirTemp, System.Drawing.Imaging.ImageFormat.Jpeg);
-            //LIBERAMOS RECURSOS 
-            nuevaImagen.Dispose();
-            imagen.Dispose();
-            return DirTemp;
-        }
-        public Byte[] Imagen_A_Bytes(String ruta)
-        {
-            FileStream foto = new FileStream(ruta, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            Byte[] arreglo = new Byte[foto.Length];
-            BinaryReader reader = new BinaryReader(foto);
-            arreglo = reader.ReadBytes(Convert.ToInt32(foto.Length));
-            return arreglo;
-        }
-        public Image Bytes_A_Imagen(Byte[] ImgBytes)
-        {
-            Bitmap imagen = null;
-            Byte[] bytes = (Byte[])(ImgBytes);
-            MemoryStream ms = new MemoryStream(bytes);
-            imagen = new Bitmap(ms);
-            return imagen;
         }
     }
 }
