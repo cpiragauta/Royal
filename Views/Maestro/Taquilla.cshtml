@@ -15,7 +15,8 @@
 </script>
 <script>
     $(document).ready(function () {
-        new Switchery(document.getElementById("demo-sw-checked"));
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
         $("#fechainicial").datepicker({
             format: "dd/mm/yyyy",
             todayBtn: "linked",
@@ -131,36 +132,36 @@
             <div class="row">
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="control-label">Nombre:</label>
-                        <input name="nombre" id="nombre" class="form-control" value="@Model.Nombre">
+                        <label class="control-label">Nombre:*</label>
+                        <input name="nombre" id="nombre" class="form-control" value="@Model.Nombre" required>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="control-label">Rango de consecutivos:</label>
+                        <label class="control-label">Rango de consecutivos:*</label>
                         <div class="input-daterange input-group">
 
-                            <input type="number" class="form-control" name="consecutivoinicial" value="@Model.ConsecutivoInicial">
+                            <input type="number" class="form-control" name="consecutivoinicial" value="@Model.ConsecutivoInicial" required>
                             <span class="input-group-addon">a</span>
-                            <input type="number" class="form-control" name="consecutivofinal" value="@Model.ConsecutivoFinal">
+                            <input type="number" class="form-control" name="consecutivofinal" value="@Model.ConsecutivoFinal" required>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="control-label">Vigencia:</label>
+                        <label class="control-label">Vigencia:*</label>
                         <div id="demo-dp-range">
                             <div class="input-daterange input-group" id="datepicker">
-                                <input type="text" class="form-control" name="fechainicial" id="fechainicial" value="@Model.FechaInicial">
+                                <input type="text" class="form-control" name="fechainicial" id="fechainicial" value="@Model.FechaInicial" required>
                                 <span class="input-group-addon">a</span>
-                                <input type="text" class="form-control" name="fechafinal" id="fechafinal" value="@Model.FechaFinal">
+                                <input type="text" class="form-control" name="fechafinal" id="fechafinal" value="@Model.FechaFinal" required>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="control-label">*Teatro:</label>
+                        <label class="control-label">Teatro:*</label>
                         <select name="teatro" class="chosen  form-control" id="select-teatro" onchange="getipteatro()" required>
                             <option value="" disabled selected>Elija una opcion</option>
                             @foreach (CinemaPOS.Models.Teatro teatros in ViewBag.Teatros)
@@ -182,13 +183,13 @@
             <div class="row">
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="control-label">IP:</label>
+                        <label class="control-label">IP:*</label>
                         <input name="ip" id="iptaquilla" value="@Model.IP" class="form-control" placeholder="999.999.999.999" required />
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="control-label">Estado:</label>
+                        <label class="control-label">Estado:*</label>
                         <select name="estado" class="chosen form-control" required>
                             <option value="" disabled selected>Seleccione una opcion</option>
                             @foreach (CinemaPOS.Models.Estado estado in ViewBag.Estado)
@@ -206,30 +207,31 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="control-label">Sincronizado:</label> &nbsp; &nbsp;
-                        @if (@Model.Sincronizado.Equals(true))
-                        {
-                            <input id="demo-sw-checked" type="checkbox" name="sincronizado" checked>
-                        }
-                        else
-                        {
-                            <input id="demo-sw-checked" type="checkbox" name="sincronizado">
-                        }
-                    </div>
-                </div>
             </div>
         </div>
         <div class="panel-footer text-right">
-            @if (Model.RowID == 0)
+
+            @if (Session["Usuario"] != null)
             {
-                <input class="btn btn-success" value="Guardar" onclick="javascript:valida_formulario()">
+                CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                {
+                    if (Model.RowID == 0)
+                    {
+                        <input class="btn btn-success" value="Guardar" onclick="javascript:valida_formulario()">
+                    }
+                    else
+                    {
+                        <input class="btn btn-success" value="Actualizar" onclick="javascript:valida_formulario()">
+                    }
+                }
+                else
+                {
+                    <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Guardar">
+                }
             }
-            else
-            {
-                <input class="btn btn-success" value="Actualizar" onclick="javascript:valida_formulario()">
-            }
+
+
         </div>
     </form>
 

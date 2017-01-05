@@ -1,6 +1,6 @@
-﻿@model CinemaPOS.Models.Menu
+﻿@model IEnumerable<CinemaPOS.Models.TipoMenu>
 @{
-    ViewBag.Title = "VistaMenu";
+    ViewBag.Title = "Vista TipoMenu";
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
 
@@ -15,13 +15,13 @@
     <script src="~/Content/js/demo/tables-datatables.js"></script>
 </head>
 <p>
-    <a class="btn btn-success" href="@Url.Action("VistaTipoMenu","Perfil")">Vista TipoMenu</a>
-    <a class="btn btn-success" href='@Url.Action("Menu", "Perfil")'>+ Adicionar Menu</a>
+    <a class="btn btn-success" href="@Url.Action("TipoMenu","Perfil")">+ Adicionar TipoMenu</a>
+    <a class="btn btn-success" href='@Url.Action("VistaMenu", "Perfil")'>Vista Menu</a>
 </p>
 
 <div class="panel">
     <div class="panel-heading">
-        <h3 class="panel-title">Menu</h3>
+        <h3 class="panel-title">Tipo Menu</h3>
     </div>
     <div class="panel-body">
         <table id="demo-dt-basic" class="table table-striped table-bordered table-funcion">
@@ -29,24 +29,22 @@
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
-                    <th>Tipo Menu</th>
-                    <th>Url</th>
-                    <th>Icono</th>
-                    <th>Activo</th>
+                    <th>Creado por</th>
                     <th>Orden</th>
+                    <th>Activo</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (CinemaPOS.Models.Menu lista_Menu in ViewBag.Menu)
+                @foreach (CinemaPOS.Models.TipoMenu TipoMenu in ViewBag.TipoMenu)
                 {
                     <tr>
-                        <td>@lista_Menu.RowID</td>
-                        <td>@lista_Menu.Nombre</td>
-                        <td>@lista_Menu.TipoMenu.Nombre</td>
-                        <td>@lista_Menu.URL</td>
-                        <td>@lista_Menu.Imagen</td>
-                        @if (@lista_Menu.Activo == true)
+                        <td>@TipoMenu.RowID</td>
+                        <td>@TipoMenu.Nombre</td>
+                        <td>@TipoMenu.CreadoPor</td>
+                        <td>@TipoMenu.Orden</td>
+                       
+                        @if (TipoMenu.Activo == true)
                         {
                             <td>SI</td>
                         }
@@ -55,8 +53,7 @@
                             <td>NO</td>
 
                         }
-                        <td>@lista_Menu.Orden</td>
-                        <td><a href="@Url.Action("Menu", "Perfil", new { RowID_Lista = lista_Menu.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
+                        <td><a href="@Url.Action("TipoMenu", "Perfil", new { RowID_TipoMenu = TipoMenu.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
                     </tr>
                 }
             </tbody>

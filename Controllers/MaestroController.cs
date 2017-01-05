@@ -57,9 +57,9 @@ namespace CinemaPOS.Controllers.Master
         public ActionResult Precio(int? RowID_Lista)
         {
             ViewBag.Teatros = db.Teatro.ToList();
-            ViewBag.Servicios = db.Opcion.Where(s => s.Tipo.Codigo == "TIPOSERVICIO").ToList();
-            ViewBag.Formatos = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOFORMATO").ToList();
-            ViewBag.TipoTarifa = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOLISTADETALLE").ToList();
+            ViewBag.Servicios = db.Opcion.Where(s => s.Tipo.Codigo == "TIPOSERVICIO" && s.Activo == true).ToList();
+            ViewBag.Formatos = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOFORMATO" && f.Activo == true).ToList();
+            ViewBag.TipoTarifa = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOLISTADETALLE" && f.Activo == true).ToList();
             ViewBag.ListaEstados = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOLISTAPRECIO").ToList();
             if (RowID_Lista != null)
             {
@@ -529,10 +529,10 @@ namespace CinemaPOS.Controllers.Master
         [CheckSessionOutAttribute]
         public ActionResult Sala(int? RowId_Sala)
         {
-            ViewBag.Formatos = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOFORMATO").ToList();
-            ViewBag.Servicios = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOSERVICIO").ToList();
+            ViewBag.Formatos = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOFORMATO" && f.Activo == true).ToList();
+            ViewBag.Servicios = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOSERVICIO" && f.Activo == true).ToList();
             ViewBag.Estados = db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOSALA").ToList();
-            ViewBag.Audios = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOAUDIO").ToList();
+            ViewBag.Audios = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOAUDIO" && f.Activo == true).ToList();
             ViewBag.Teatros = db.Teatro.ToList();
             if (RowId_Sala != null && RowId_Sala != 0)
             {
@@ -912,11 +912,12 @@ namespace CinemaPOS.Controllers.Master
         public ActionResult Tercero(int? RowID_Tercero)
         {
             ViewBag.TipoTerceroID = new List<Opcion>();
-            ViewBag.TipoTerceroID = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOTERCERO").ToList();
-            ViewBag.SexoID = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOSEXO").ToList();
+            ViewBag.TipoTerceroID = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOTERCERO" && f.Activo == true).ToList();
+            ViewBag.SexoID = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOSEXO" && f.Activo == true).ToList();
             ViewBag.CiudadID = db.Ciudad.ToList().OrderBy(f => f.Nombre);
-            ViewBag.TipoIdentificacion = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOIDENTIFICACION").ToList();
+            ViewBag.TipoIdentificacion = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOIDENTIFICACION" && f.Activo == true).ToList();
             ViewBag.listaContactos = db.Contacto.Where(f => f.EmpresaID == RowID_Tercero).OrderBy(f => f.RowID).ToList();
+            ViewBag.TipoIdentificacionDistribuidor = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOIDENTIFICACIONDISTRIBUIDOR" && f.Activo == true).ToList();
             var selloT = (from sellos in db.Sello_Distribuidor.Where(f => f.DistribuidorID == RowID_Tercero)
                           select new
                           {
@@ -1293,7 +1294,7 @@ namespace CinemaPOS.Controllers.Master
         [CheckSessionOutAttribute]
         public ActionResult VistaPais()
         {
-            ViewBag.Pais = db.Pais.ToList();
+            ViewBag.Pais = db.Pais.OrderByDescending(f => f.RowID).ToList();
             return View();
         }
 
@@ -1460,16 +1461,6 @@ namespace CinemaPOS.Controllers.Master
                     objTaq.EstadoID = Convert.ToInt32(formulario["estado"]);
                     objTaq.CreadoPor = Session["usuario_creacion"].ToString();
                     objTaq.FechaCreacion = DateTime.Now;
-                    if (formulario["sincronizado"] == null)
-                    {
-                        objTaq.Sincronizado = false;
-
-                    }
-                    else
-                    {
-                        objTaq.Sincronizado = true;
-
-                    }
 
                     db.Taquilla.Add(objTaq);
                     db.SaveChanges();
@@ -1490,16 +1481,7 @@ namespace CinemaPOS.Controllers.Master
                     objTaq.EstadoID = Convert.ToInt32(formulario["estado"]);
                     objTaq.ModificadoPor = Session["usuario_creacion"].ToString();
                     objTaq.FechaModificacion = DateTime.Now;
-                    if (formulario["sincronizado"] == null)
-                    {
-                        objTaq.Sincronizado = false;
-
-                    }
-                    else
-                    {
-                        objTaq.Sincronizado = true;
-
-                    }
+                    
                     db.SaveChanges();
                 }
                 int codigo_encabezado = objTaq.RowID;
@@ -1738,11 +1720,11 @@ namespace CinemaPOS.Controllers.Master
         [CheckSessionOutAttribute]
         public ActionResult NuevoClienteRoyal(int? rowID)
         {
-            ViewBag.TipoIdentificacion = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOIDENTIFICACION").ToList();
+            ViewBag.TipoIdentificacion = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOIDENTIFICACION" && f.Activo == true).ToList();
             ViewBag.Ciudades = db.Ciudad.ToList();
-            ViewBag.SexoID = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOSEXO").ToList();
-            ViewBag.Clasificacion = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOCLIENTE").ToList();
-            ViewBag.preferencias = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOGENEROPELICULA").ToList();
+            ViewBag.SexoID = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOSEXO" && f.Activo == true).ToList();
+            ViewBag.Clasificacion = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOCLIENTE" && f.Activo == true).ToList();
+            ViewBag.preferencias = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOGENEROPELICULA" && f.Activo == true).ToList();
             TarjetaMembresiaClienteRoyal tmembresia = new TarjetaMembresiaClienteRoyal();
             try
             { tmembresia = db.TarjetaMembresiaClienteRoyal.Where(f => f.ClienteRoyalID == rowID).FirstOrDefault(); }

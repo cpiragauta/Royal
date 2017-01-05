@@ -65,6 +65,11 @@
             });
         }
     }
+
+    $(document).ready(function () {
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+    });
 </script>
 
 
@@ -109,18 +114,33 @@
                     </div>
                 </div>
             </div>
-            <div class="panel-footer text-right">
-                @if (Model.RowID == 0)
-                {
-                    <input class="btn btn-success" value="Guardar" onclick="javascript:valida_formulario()">
-                }
-                else
-                {
-                    <input class="btn btn-success" value="Actualizar" onclick="javascript:valida_formulario()">
-                }
             </div>
 
-        </div>
+            <div class="panel-footer text-right">
+
+                @if (Session["Usuario"] != null)
+                {
+                    CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                    if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                    {
+                         if (Model.RowID == 0)
+                            {
+                                <input class="btn btn-success" value="Guardar" onclick="javascript:valida_formulario()">
+                            }
+                            else
+                            {
+                                <input class="btn btn-success" value="Actualizar" onclick="javascript:valida_formulario()">
+                            }
+                    }
+                    else
+                    {
+                        <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Guardar">
+                    }
+                }
+
+
+            </div>
+
     </form>
 
 </div>

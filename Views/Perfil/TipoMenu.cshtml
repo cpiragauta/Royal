@@ -1,0 +1,137 @@
+﻿@model CinemaPOS.Models.TipoMenu
+
+@{
+    ViewBag.Title = "AdicionarTipoMenu";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<script>
+    function valida_formulario() {
+        debugger;
+        hasChangue = false;
+        var validator = $("#formulario_TipoMenu").validate();
+        if (validator.form()) {
+            guardar_Tipomenu();
+        }
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        new Switchery(document.getElementById("demo-sw-checked"));
+
+        $('.solo-numero').keyup(function () {
+            this.value = (this.value + '').replace(/[^0-9]/g, '');
+        });
+    });
+</script>
+
+<script>
+    function guardar_Tipomenu(encabezado) {
+        if (!$("#formulario_TipoMenu").validate().form()) {
+            return false;
+        }
+        debugger
+        if ($("#rowid_tipomenu").val() == 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Perfil/Guardar_TipoMenu",
+                data: {
+                    RowID_TipoMenu: $("#rowid_tipomenu").val(),
+                    formulario: $("#formulario_TipoMenu").serialize(),
+                },
+                success: function (data) {
+                    debugger;
+                    if (data) {
+                        swal("OK", "Creado...", "success");
+                        window.location = "/Perfil/VistaTipoMenu"
+                    } else {
+                        swal("ERROR", "Error al guardar...", "ERROR");
+                    }
+                },
+                error: function () {
+                    swal("Error al guardar la informacion de Menu", "");
+                }
+            });
+        }
+
+
+        if ($("#rowid_tipomenu").val() != 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Perfil/Guardar_TipoMenu",
+                data: {
+                    RowID_TipoMenu: jQuery("#rowid_tipomenu").val(),
+                    formulario: $("#formulario_TipoMenu").serialize(),
+                },
+                success: function (data) {
+                    debugger;
+
+                    if (data) {
+                        swal("OK", "ACTUALIZADO...", "success");
+                        window.location = "/Perfil/VistaTipoMenu"
+                    } else {
+                        sweetAlert("ERROR", "ERROR ACTUALIZANDO", "error");
+                    }
+                },
+                error: function (data) {
+                    sweetAlert("", data.respuesta, "error");
+                }
+
+            });
+        }
+    }
+</script>
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaTipoMenu", "Perfil")'>Volver</a>
+    </p>
+</div>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">TipoMenu</h3>
+    </div>
+
+    <form id="formulario_TipoMenu" data-toggle="validator" role="form">
+        <input type="hidden" class="" name="rowid_tipomenu" id="rowid_tipomenu" value="@Model.RowID" />
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Nombre:</label>
+                        <input name="nombre" id="nombre" class="form-control" maxlength="30" required value="@Model.Nombre"/>
+                    </div>
+                </div>
+                <div class="col-lg-offset-1 col-sm-2">
+                    <div class="form-group">
+                        <label class="control-label">Orden:</label>
+                        <input name="Orden" id="Orden" class="form-control solo-numero" maxlength="10" required @Model.Orden/>
+                    </div>
+                </div>
+                <div class="col-sm-offset-1 col-sm-1">
+                    <div class="form-group">
+                        <label class="control-label">Activo:</label>
+                        @if (@Model.Activo.Equals(true))
+                        {
+                            <input class="form-control" id="demo-sw-checked" type="checkbox" name="activo" checked>
+                        }
+                        else
+                        {
+                            <input class="form-control" id="demo-sw-checked" type="checkbox" name="activo">
+                        }
+                    </div>
+                </div>
+            </div>   
+            <div class="pull-right text-right">
+                @if (Model.RowID == 0)
+                {
+                    <input class="btn btn-success" value="Crear" onclick="javascript:valida_formulario()">
+                }
+                else
+                {
+                    <input class="btn btn-success" value="Actualizar" onclick="javascript:valida_formulario()">
+                }
+            </div>
+        </div>
+    </form>
+</div>

@@ -18,7 +18,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="TITULO">T&iacute;tulo</label>
-                        <input type="text" name="Titulo" value="@Model.Titulo" id="Titulo" class="form-control" required/>
+                        <input type="text" name="Titulo" value="@Model.Titulo" id="Titulo" class="form-control" maxlength="50" required/>
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -97,7 +97,15 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="FECHAAPERTURA">*Fecha Apertura:</label>
-                        <input type="text" name="FechaApertura" value="@Model.FechaApertura" id="FechaApertura" class="form-control"/>
+
+                        @if (Model.FechaApertura != null)
+                        {
+                            <input type="text" name="FechaApertura" value="@Model.FechaApertura.Value.ToString("dd/MM/yyyy")" id="FechaApertura" class="form-control"/>
+                        }
+                        else
+                        {
+                            <input type="text" name="FechaApertura" value="" id="FechaApertura" class="form-control" />
+                        }
                     </div>
                 </div>
             </div>
@@ -120,7 +128,14 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="FECHAENTREGA">*Fecha Entrega:</label>
-                        <input type="text" name="FechaEntrega" value="@Model.FechaEntrega" id="FechaEntrega" class="form-control" />
+                        @if (Model.FechaEntrega != null)
+                        {
+                             <input type="text" name="FechaEntrega" value="@Model.FechaEntrega.Value.ToString("dd/MM/yyyy")" id="FechaEntrega" class="form-control" />
+                        }
+                        else
+                        {
+                             <input type="text" name="FechaEntrega" value="" id="FechaEntrega" class="form-control" />
+                        }
                     </div>
                 </div>
             </div>
@@ -133,8 +148,16 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="FECHACIERRE">*Fecha Cirre:</label>
-                        <input type="text" name="FechaCierra" value="@Model.FechaCierra" id="FechaCierra" class="form-control" />
+                        <label for="FECHACIERRE">*Fecha Cierre:</label>
+
+                        @if (Model.FechaCierra != null)
+                        {
+                            <input type="text" name="FechaCierra" value="@Model.FechaCierra.Value.ToString("dd/MM/yyyy")" id="FechaCierra" class="form-control" />
+                        }
+                        else
+                        {
+                            <input type="text" name="FechaCierra" value="" id="FechaCierra" class="form-control" />
+                        }
                     </div>
                 </div>
             </div>
@@ -214,7 +237,7 @@
     $('#FechaApertura').change(function () {
         $('#FechaCierra').datepicker("destroy");
         $('#FechaCierra').datepicker({
-            format: "dd-mm-yyyy",
+            format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
             todayHighlight: false,

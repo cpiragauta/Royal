@@ -2362,7 +2362,10 @@
     <Content Include="Views\Programacion\ModalReplicarFuncionxSala.cshtml" />
     <Content Include="Views\Cuenta\AccesoDenegado.cshtml" />
     <Content Include="Views\Perfil\Menu.cshtml" />
+    <Content Include="Views\Perfil\VistaTipoMenu.cshtml" />
     <Content Include="Views\Perfil\VistaMenu.cshtml" />
+    <Content Include="Views\Perfil\TipoMenu.cshtml" />
+    <Content Include="Views\Maestro\HabeasData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

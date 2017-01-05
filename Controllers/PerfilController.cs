@@ -63,15 +63,11 @@ namespace CinemaPOS.Controllers
                 return View(new Menu());
             }
         }
-
-        [CheckSessionOutAttribute]
         public ActionResult VistaMenu()
         {
             ViewBag.Menu = db.Menu.ToList();
             return View();
         }
-
-
         [CheckSessionOutAttribute]
         public Boolean Guardar_Menu(FormCollection formulario, int? RowID_Encabezado)
         {
@@ -81,6 +77,7 @@ namespace CinemaPOS.Controllers
                 Menu objMenu = new Menu();
                 if (RowID_Encabezado == 0)
                 {
+                    
                     formulario = DeSerialize(formulario);
                     objMenu.Nombre = formulario["nombre"];
                     objMenu.Descripcion = formulario["descripcion"];
@@ -88,6 +85,8 @@ namespace CinemaPOS.Controllers
                     objMenu.TipoMenuID = Convert.ToInt32(formulario["menu"]);
                     objMenu.CreadoPor = Session["usuario_creacion"].ToString();
                     objMenu.FechaCreacion = DateTime.Now;
+                    objMenu.Orden =Convert.ToInt32(formulario["orden"]);
+                    objMenu.Imagen = formulario["icono"];
                     if (formulario["activo"] == null)
                     {
                         objMenu.Activo = false;
@@ -120,6 +119,8 @@ namespace CinemaPOS.Controllers
                     objMenu.TipoMenuID = Convert.ToInt32(formulario["menu"]);
                     objMenu.ModificadoPor = Session["usuario_creacion"].ToString();
                     objMenu.FechaModificacion = DateTime.Now;
+                    objMenu.Orden = Convert.ToInt32(formulario["orden"]);
+                    objMenu.Imagen = formulario["icono"];
                     if (formulario["activo"] == null)
                     {
                         objMenu.Activo = false;
@@ -149,9 +150,102 @@ namespace CinemaPOS.Controllers
             }
             return tipoAlert;
         }
-
-
         #endregion
 
+        #region TipoMenu
+
+        [CheckSessionOutAttribute]
+        public ActionResult VistaTipoMenu()
+        {
+            ViewBag.TipoMenu = db.TipoMenu.ToList();
+            return View();
+        }
+        public ActionResult TipoMenu(int? RowID_TipoMenu)
+        {
+            if (RowID_TipoMenu != null && RowID_TipoMenu != 0)//existe
+            {
+                return View(db.TipoMenu.Where(t => t.RowID == RowID_TipoMenu).FirstOrDefault());
+            }
+            else
+            {
+                return View(new TipoMenu());
+            }
+        }
+        public Boolean Guardar_TipoMenu(FormCollection formulario, int? RowID_TipoMenu)
+        {
+            Boolean tipoAlert = true;
+            try
+            {
+                TipoMenu objTipoMenu = new TipoMenu();
+                if (RowID_TipoMenu == 0)
+                {
+
+                    formulario = DeSerialize(formulario);
+                    objTipoMenu.Nombre = formulario["nombre"];
+                    objTipoMenu.CreadoPor = Session["usuario_creacion"].ToString();
+                    objTipoMenu.FechaCreacion = DateTime.Now;
+                    objTipoMenu.Orden = Convert.ToInt32(formulario["orden"]);
+                    if (formulario["activo"] == null)
+                    {
+                        objTipoMenu.Activo = false;
+                    }
+                    else
+                    {
+                        objTipoMenu.Activo = true;
+                    }
+
+                    if (formulario["sincronizado"] == null)
+                    {
+                        objTipoMenu.Sincronizado = false;
+
+                    }
+                    else
+                    {
+                        objTipoMenu.Sincronizado = true;
+
+                    }
+                    db.TipoMenu.Add(objTipoMenu);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    objTipoMenu = db.TipoMenu.Where(le => le.RowID == RowID_TipoMenu).FirstOrDefault();
+                    formulario = DeSerialize(formulario);
+                    objTipoMenu.Nombre = formulario["nombre"];
+                    objTipoMenu.ModificadoPor = Session["usuario_creacion"].ToString();
+                    objTipoMenu.FechaModificacion = DateTime.Now;
+                    objTipoMenu.Orden = Convert.ToInt32(formulario["orden"]);
+                    if (formulario["activo"] == null)
+                    {
+                        objTipoMenu.Activo = false;
+                    }
+                    else
+                    {
+                        objTipoMenu.Activo = true;
+                    }
+
+                    if (formulario["sincronizado"] == null)
+                    {
+                        objTipoMenu.Sincronizado = false;
+
+                    }
+                    else
+                    {
+                        objTipoMenu.Sincronizado = true;
+
+                    }
+                    db.SaveChanges();
+                }
+                int codigo_encabezado = objTipoMenu.RowID;
+            }
+            catch (Exception e)
+            {
+                tipoAlert = false;
+            }
+            return tipoAlert;
+        }
+        #endregion
+
+        
     }
 }

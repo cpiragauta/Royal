@@ -162,7 +162,11 @@ namespace CinemaPOS.Controllers
             ObjUsuarioSistema.Telefono = formulario["telefono"];
             ObjUsuarioSistema.Sincronizado = false;
             ObjUsuarioSistema.RolID = int.Parse(formulario["rol"].ToString());
-            ObjUsuarioSistema.TeatroID = int.Parse(formulario["teatro"].ToString());
+            if (!String.IsNullOrEmpty(formulario["teatro"] ))
+            {
+                ObjUsuarioSistema.TeatroID = int.Parse(formulario["teatro"].ToString());
+
+            }
             if (formulario["activo"] == null)
             {
                 ObjUsuarioSistema.Activo = false;

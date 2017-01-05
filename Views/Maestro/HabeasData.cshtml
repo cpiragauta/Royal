@@ -1,0 +1,92 @@
+﻿@model CinemaPOS.Models.Parametros
+@{
+    ViewBag.Title = "HabeasData";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+<link href="~/Content/plugins/summernote/summernote.min.css" rel="stylesheet">
+<script src="~/Content/js/demo/nifty-demo.min.js"></script>
+<script src="~/Content/plugins/summernote/summernote.min.js"></script>
+<script src="~/Content/js/demo/mail.js"></script>
+<script src="~/Content/js/demo/form-text-editor.js"></script>
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Habeas Data</h3>
+    </div>
+    <form name="formHabeas" id="formHabeas" onsubmit="return false">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        @*<textarea name="HabeasData" id="HabeasData" class="demo-mail-compose" style="resize:vertical;height">@Model.valor_parametros</textarea>*@
+
+                        <div id="demo-mail-compose" class="demo-mail-compose"></div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <a onclick="javascript:GuardarHabeasData();" class="btn btn-success" style="cursor:pointer">Guardar Habeas Data</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--GUARDAR HABEAS DATA-->
+<script>
+    function GuardarHabeasData() {
+        var habeas = $(".note-editable").text();
+        if (habeas == null || habeas == "") {
+            Alerts("Campo requerido.", "warning");
+            $(".note-editable").css("border", "1px solid #B71C1C");
+        } else {
+            debugger
+            ModalProcesandoShow();
+            var htmlHabeas = $(".note-editable").html();
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/GuardarHabeasData",
+                data: {
+                    habeas: htmlHabeas,
+                },
+                success: function (data) {
+                    ModalProcesandoHiden();
+
+                    if (data == "ok") {
+                        Alerts("Datos almacenados correctamente.", "success");
+                        return;
+                    } else {
+                        Alerts("Error al guardar los datos.", "danger");
+                    }
+
+                },
+                error: function (data) {
+                    ModalProcesandoHiden();
+                    Alerts("Error al guardar los datos.", "danger");
+                }
+            });
+        }
+    }
+
+$(document).ready(function(){
+    $("#HabeasData").on('keyup', function () {
+        $("#HabeasData").css("border", "");
+    });
+});
+</script>
+<script>
+    $(document).ready(function () {
+        ModalProcesandoShow();
+        $.ajax({
+            type: "POST",
+            url: "/Maestro/CargarHabeasData",
+            data: {
+            },
+            success: function (data) {
+                ModalProcesandoHiden();
+                $(".note-editable").prepend(data);
+            },
+            error: function (data) {
+                ModalProcesandoHiden();
+                Alerts("Error al cargar la información.", "danger");
+            }
+        });
+    });
+</script>

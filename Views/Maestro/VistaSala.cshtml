@@ -45,22 +45,36 @@
                         <td>@salas.Opcion.Nombre</td>
                         <td>@salas.Estado.Descripcion</td>
                         <td><a href="@Url.Action("Sala", "Maestro", new { @RowID_Sala = salas.RowID })"><i class="ion-edit"></i></a></td>
-                        @{string EstadaEditarMapa;}
-                        @if (salas.Estado.Nombre == "EnFuncionamiento")
+                        @{string EstadaEditarMapa = "";}
+
+                        @if (Session["Usuario"] != null)
                         {
-                            EstadaEditarMapa = "Disabled";
+                            CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                            if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                            {
+                                if (salas.Estado.Nombre == "EnFuncionamiento")
+                                {
+                                    EstadaEditarMapa = "Disabled";
+                                }
+                                else { EstadaEditarMapa = "enabled"; }
+                            }
+                            else { EstadaEditarMapa = "Disabled"; }
+
                         }
-                        else { EstadaEditarMapa = "enabled"; }
+                        
+                       
+                            
+                       
 
                         <td><a title="Editar Mapa Sala" href="@Url.Action("MapaSala", "Maestro", new { @RowID_Sala =salas.RowID})" class="ion-grid editar_mapa @EstadaEditarMapa"></a></td>
                     </tr>
-                            }
+                }
             </tbody>
         </table>
     </div>
 </div>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $(".Disabled").attr("style", "pointer-events: none;cursor: default;opacity: 0.6;");
     })
 </script>
