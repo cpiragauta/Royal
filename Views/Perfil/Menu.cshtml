@@ -150,10 +150,11 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label">Icono:</label>
-                        <select class="chosen form-control" id="icono" name="icono" value="@Model.Imagen">
+                        <select class="chosen form-control" id="icono" name="icono" style="font-size:x-large" value="@Model.Imagen">
                             @if (Model.RowID == 0)
                             {
-                                <option>ion-ios-film</option>
+                                <option value=" " disabled selected>Seleccione una opción</option>
+                                <option class="ion-ios-film">&nbsp; ion-ios-film</option>
                                 <option>ion-ios-calendar-outline</option>
                                 <option>ion-ios-gear-outline</option>
                                 <option>ion-ios-basketball-outline</option>
@@ -173,8 +174,8 @@
                             }
                             else
                             {
-                                <option selected>@Model.Imagen</option>
-                                <option>ion-ios-film</option>
+                                <option selected class="@Model.Imagen">&nbsp;@Model.Imagen</option>
+                                <option class="ion-ios-film demo-icon">&nbsp;ion-ios-film</option>
                                 <option>ion-ios-calendar-outline</option>
                                 <option>ion-ios-gear-outline</option>
                                 <option>ion-ios-basketball-outline</option>
