@@ -65,6 +65,8 @@
 <script>
     var cantidadcontrol = 0;
     $(document).ready(function () {
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
         $("#genero_pelicula").chosen();
         $('.fecha_estreno').datepicker({
             format: "dd/mm/yyyy",
@@ -365,14 +367,19 @@
                                             <option value="" disabled selected>Seleccione una opcion</option>
                                             @foreach (CinemaPOS.Models.Opcion clasificacion in ViewBag.Clasificacion)
                                             {
-                                                if (Model.RowID != 0 && Model.Opcion.RowID == clasificacion.RowID)
+                                                if (Model.TipoClasificacionID != null)
                                                 {
-                                                    <option value="@clasificacion.RowID" selected>@clasificacion.Nombre</option>
+                                                    if (Model.RowID != 0 && Model.Opcion.RowID == clasificacion.RowID)
+                                                    {
+                                                        <option value="@clasificacion.RowID" selected>@clasificacion.Nombre</option>
+                                                    }
+
                                                 }
                                                 else
                                                 {
                                                     <option value="@clasificacion.RowID">@clasificacion.Nombre</option>
                                                 }
+
 
                                             }
                                         </select>
@@ -425,7 +432,7 @@
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label class="control-label">País Origen:</label>
-                                        <select name="pais" id="select-pais" class="form-control">
+                                        <select name="pais" id="select-pais" class="form-control" required>
                                             <option value="" disabled selected>Seleccione una opcion</option>
                                             @foreach (CinemaPOS.Models.Pais pais in ViewBag.Pais)
                                             {
@@ -444,7 +451,7 @@
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label class="control-label">Idioma Original:</label>
-                                        <select name="idioma" id="select-idioma" class="form-control">
+                                        <select name="idioma" id="select-idioma" class="form-control" required>
                                             <option value="" disabled selected>Seleccione una opcion</option>
                                             @foreach (CinemaPOS.Models.Opcion idioma in ViewBag.Idioma)
                                             {

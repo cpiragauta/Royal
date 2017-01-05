@@ -93,7 +93,7 @@ namespace CinemaPOS.Controllers.Pelicula
                 ObjPelicula.WebOficial = formulario["web_oficial"];
                 ObjPelicula.EstadoID = int.Parse(formulario["estado"]);
                 var CodigoEstado = db.Estado.Where(e => e.RowID == ObjPelicula.EstadoID).FirstOrDefault().Codigo;
-                if (CodigoEstado != "ENELABORACIÓNLOCAL" || CodigoEstado != "DESACTIVADA")
+                if (CodigoEstado != "ENELABORACIÓNLOCAL" && CodigoEstado != "DESACTIVADA")
                  {
                     if (!string.IsNullOrEmpty(formulario["fecha_estreno"]))
                     {
@@ -154,32 +154,35 @@ namespace CinemaPOS.Controllers.Pelicula
                 ObjPelicula.WebOficial = formulario["web_oficial"];
                 ObjPelicula.EstadoID = int.Parse(formulario["estado"]);
                 var CodigoEstado = db.Estado.Where(e => e.RowID == ObjPelicula.EstadoID).FirstOrDefault().Codigo;
-                if (CodigoEstado != "ENELABORACIÓNLOCAL" || CodigoEstado!= "DESACTIVADA")
+                if (CodigoEstado != "ENELABORACIÓNLOCAL" && CodigoEstado!= "DESACTIVADA")
                 {
                     if (formulario["fecha_estreno"] != "")
                     {
                         ObjPelicula.FechaEstreno = ModelosPropios.Util.FechaInsertar(formulario["fecha_estreno"]);
                     }
-                    if (ObjPelicula.Duracion==0||ObjPelicula.Duracion==null)
-                    {
-                        var data = new
+                    else {
+                        if (ObjPelicula.Duracion == 0 || ObjPelicula.Duracion == null)
                         {
-                            tipo_respuesta = "warning",
-                            respuesta = "Ingrese la duracion de la película."
-                        };
+                            var data = new
+                            {
+                                tipo_respuesta = "warning",
+                                respuesta = "Ingrese la duracion de la película."
+                            };
 
-                        return Json(data, JsonRequestBehavior.AllowGet);
-                    }
-                    else
-                    {
-                        var data = new
+                            return Json(data, JsonRequestBehavior.AllowGet);
+                        }
+                        else
                         {
-                            tipo_respuesta = "warning",
-                            respuesta = "La película no cuenta con fecha de estreno."
-                        };
+                            var data = new
+                            {
+                                tipo_respuesta = "warning",
+                                respuesta = "La película no cuenta con fecha de estreno."
+                            };
 
-                        return Json(data, JsonRequestBehavior.AllowGet);
+                            return Json(data, JsonRequestBehavior.AllowGet);
+                        }
                     }
+                    
                 }
 
                 ObjPelicula.CreadoPor = Session["usuario_creacion"].ToString();
@@ -565,8 +568,7 @@ namespace CinemaPOS.Controllers.Pelicula
             var Minutos = int.Parse(Hora.Split(':')[0]) * 60 + int.Parse(Hora.Split(':')[1]);
             return int.Parse(Minutos.ToString());
         }
-
-        [CheckSessionOutAttribute]
+         
         private FormCollection DeSerialize(FormCollection formulario)
         {
             FormCollection collection = new FormCollection();
@@ -592,7 +594,7 @@ namespace CinemaPOS.Controllers.Pelicula
         }
         public ActionResult VistaPelicula()
         {
-            ViewBag.Peliculas = db.EncabezadoPelicula.ToList();
+            lViewBag.Peliculas = db.EncabezadoPelicula.ToList();
             return View();
         }
 
