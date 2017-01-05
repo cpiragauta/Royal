@@ -43,7 +43,14 @@
                         <td>@peliculas.TituloLocal</td>
                         <td>@peliculas.Tercero.Nombre</td>
                         <td>@peliculas.Estado.Nombre</td>
-                        <td>@peliculas.FechaEstreno.Value.ToString("dd/MM/yyyy")</td>
+                        @if (peliculas.FechaEstreno!=null)
+                        {
+                            <td>@peliculas.FechaEstreno.Value.ToString("dd/MM/yyyy")</td>
+                        }
+                        else
+                        {
+                            <td>Sin fecha de estreno</td>
+                        }
                         <td>
                             <table>
                                 @foreach (CinemaPOS.Models.DetallePelicula detalle_pelicula in peliculas.DetallePelicula)
@@ -66,17 +73,7 @@
                             </table>
                         </td>
                         <td>
-                            @if (peliculas.MedioPelicula.Count() != 0)
-                            {
-                                if (@peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().Afiche != "")
-                                {
-                                    <img style="width:50px;" src="/@peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().Afiche">
-                                }
-                                else
-                                {
-                                    <img style="width:50px;" src="~/Repositorio_Imagenes/Imagenes_Generales/imagen_nodisponible.png">
-                                }
-                            }
+                            <img style="width:50px;" src="/@peliculas.Afiche">
                         </td>
                         <td><a href="@Url.Action("Pelicula", "Pelicula", new { @RowID_Pelicula =peliculas.RowID})"><i class="glyphicon glyphicon-pencil"></i></a></td>
                     </tr>

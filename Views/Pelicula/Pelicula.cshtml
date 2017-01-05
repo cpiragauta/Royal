@@ -44,8 +44,14 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
-                    swal("","Informacion Guardada");
-                    window.location = "/Pelicula/VistaPelicula/"
+                    data= JSON.parse(data);
+                    if (data.tipo_respuesta=="success") {
+                        swal(data.tipo_respuesta,data.respuesta);
+                        window.location = "/Pelicula/VistaPelicula/"
+                    }
+                    if (data.tipo_respuesta=="warning") {
+                        swal("Advertencia",data.respuesta,data.tipo_respuesta);
+                    }
 
                 },
                 error: function () {
@@ -686,10 +692,10 @@
                                         <label class="control-label">Afiche</label>
                                         <div class="fileupload fileupload-new" data-provides="fileupload">
                                             <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
-                                                @if (Model.RowID != 0 && Model.MedioPelicula.Count() != 0)
+                                                @if (Model.RowID != 0 && Model.Trailer!=null)
                                                 {
 
-                                                    <img src="/@Model.MedioPelicula.Where(mp => mp.EncabezadoPeliculaID == Model.RowID).OrderByDescending(mp=>mp.RowID).FirstOrDefault().Afiche" alt="">
+                                                    <img src="/@Model.Afiche" alt="@Model.TituloLocal">
                                                 }
                                                 else
                                                 {
@@ -714,10 +720,10 @@
                                         <div class="fileupload fileupload-new" data-provides="fileupload">
                                             <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
 
-                                                @if (Model.RowID != 0 && Model.MedioPelicula.Count() != 0)
+                                                @if (Model.RowID != 0 && Model.Thumbnail!=null)
                                                 {
 
-                                                    <img src="/@Model.MedioPelicula.Where(mp => mp.EncabezadoPeliculaID == Model.RowID).OrderByDescending(mp=>mp.RowID).FirstOrDefault().AficheMiniatura" alt="">
+                                                    <img src="/@Model.Thumbnail" alt="">
                                                 }
                                                 else
                                                 {
