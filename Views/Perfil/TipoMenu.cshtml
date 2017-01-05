@@ -102,15 +102,15 @@
                         <input name="nombre" id="nombre" class="form-control" maxlength="30" required value="@Model.Nombre"/>
                     </div>
                 </div>
-                <div class="col-lg-offset-1 col-sm-2">
+                <div class="col-sm-2" style="margin-left:50px">
                     <div class="form-group">
-                        <label class="control-label">Orden:</label>
-                        <input name="Orden" id="Orden" class="form-control solo-numero" maxlength="10" required @Model.Orden/>
+                        <label class="control-label">Orden</label>
+                        <input name="orden" id="orden" class="form-control solo-numero" value="@Model.Orden" required />
                     </div>
                 </div>
-                <div class="col-sm-offset-1 col-sm-1">
+                <div class="col-sm-1" style="margin-left:50px">
                     <div class="form-group">
-                        <label class="control-label">Activo:</label>
+                        <label class="control-label">Activo:</label> <br/>
                         @if (@Model.Activo.Equals(true))
                         {
                             <input class="form-control" id="demo-sw-checked" type="checkbox" name="activo" checked>
