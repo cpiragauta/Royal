@@ -121,13 +121,13 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label">*Tipo menu:</label>
-                        <select name="menu" class="chosen form-control" required>
+                            <select name="menu" value="@Model.TipoMenuID" class="form-control chosen"  required>
                             <option value="" disabled selected>Seleccione una opcion</option>
                             @foreach (CinemaPOS.Models.TipoMenu tipo in ViewBag.Tipo)
                             {
-                                if (Model.RowID != 0)
+                                if (Model.Tipo.RowID == tipo.RowID)
                                 {
-                                    <option value="@tipo.RowID" selected>@tipo.Nombre</option>
+                                    <option value="@tipo.RowID" selected="selected">@tipo.Nombre</option>
                                 }
                                 else
                                 {
@@ -141,7 +141,6 @@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label class="control-label">Orden</label>
-
                         <input name="orden" id="orden" class="form-control solo-numero" value="@Model.Orden" required />
                     </div>
                 </div>
@@ -155,43 +154,43 @@
                             {
                                 <option value=" " disabled selected>Seleccione una opción</option>
                                 <option class="ion-ios-film">&nbsp; ion-ios-film</option>
-                                <option>ion-ios-calendar-outline</option>
-                                <option>ion-ios-gear-outline</option>
-                                <option>ion-ios-basketball-outline</option>
-                                <option>ion-ios-americanfootball</option>
-                                <option>ion-ios-monitor-outline</option>
-                                <option>ion-ios-volume-high</option>
-                                <option>ion-ios-cart-outline</option>
-                                <option>ion-ios-list-outline</option>
-                                <option>ion-link</option>
-                                <option>ion-ios-people-outline</option>
-                                <option>ion-flag</option>
-                                <option>ion-film-marker</option>
-                                <option>ion-clipboard</option>
-                                <option>ion-flag</option>
-                                <option>ion-clipboard</option>
-                                <option>ion-ios-plus-outline</option>
+                                <option class="ion-ios-calendar-outline">&nbsp; ion-ios-calendar-outline</option>
+                                <option class="ion-ios-gear-outline">&nbsp; ion-ios-gear-outline</option>
+                                <option class="ion-ios-basketball-outline">&nbsp; ion-ios-basketball-outline</option>
+                                <option class="ion-ios-americanfootball">&nbsp; ion-ios-americanfootball</option>
+                                <option class="ion-ios-monitor-outline">&nbsp; ion-ios-monitor-outline</option>
+                                <option class="ion-ios-volume-high">&nbsp; ion-ios-volume-high</option>
+                                <option class="ion-ios-cart-outline">&nbsp; ion-ios-cart-outline</option>
+                                <option class="ion-ios-list-outline">&nbsp; ion-ios-list-outline</option>
+                                <option class="ion-link">&nbsp; ion-link</option>
+                                <option class="ion-ios-people-outline">&nbsp; ion-ios-people-outline</option>
+                                <option class="ion-flag">&nbsp; ion-flag</option>
+                                <option class="ion-film-marker">&nbsp; ion-film-marker</option>
+                                <option class="ion-clipboard">&nbsp; ion-clipboard</option>
+                                <option class="ion-flag">&nbsp; ion-flag</option>
+                                <option class="ion-clipboard">&nbsp; ion-clipboard</option>
+                                <option class="ion-ios-plus-outline">&nbsp; ion-ios-plus-outline</option>
                             }
                             else
                             {
                                 <option selected class="@Model.Imagen">&nbsp;@Model.Imagen</option>
                                 <option class="ion-ios-film demo-icon">&nbsp;ion-ios-film</option>
-                                <option>ion-ios-calendar-outline</option>
-                                <option>ion-ios-gear-outline</option>
-                                <option>ion-ios-basketball-outline</option>
-                                <option>ion-ios-americanfootball</option>
-                                <option>ion-ios-monitor-outline</option>
-                                <option>ion-ios-volume-high</option>
-                                <option>ion-ios-cart-outline</option>
-                                <option>ion-ios-list-outline</option>
-                                <option>ion-link</option>
-                                <option>ion-ios-people-outline</option>
-                                <option>ion-flag</option>
-                                <option>ion-film-marker</option>
-                                <option>ion-clipboard</option>
-                                <option>ion-flag</option>
-                                <option>ion-clipboard</option>
-                                <option>ion-ios-plus-outline</option>
+                                <option class="ion-ios-calendar-outline">&nbsp; ion-ios-calendar-outline</option>
+                                <option class="ion-ios-gear-outline">&nbsp; ion-ios-gear-outline</option>
+                                <option class="ion-ios-basketball-outline">&nbsp; ion-ios-basketball-outline</option>
+                                <option class="ion-ios-americanfootball">&nbsp; ion-ios-americanfootball</option>
+                                <option class="ion-ios-monitor-outline">&nbsp; ion-ios-monitor-outline</option>
+                                <option class="ion-ios-volume-high">&nbsp; ion-ios-volume-high</option>
+                                <option class="ion-ios-cart-outline">&nbsp; ion-ios-cart-outline</option>
+                                <option class="ion-ios-list-outline">&nbsp; ion-ios-list-outline</option>
+                                <option class="ion-link">&nbsp; ion-link</option>
+                                <option class="ion-ios-people-outline">&nbsp; ion-ios-people-outline</option>
+                                <option class="ion-flag">&nbsp; ion-flag</option>
+                                <option class="ion-film-marker">&nbsp; ion-film-marker</option>
+                                <option class="ion-clipboard">&nbsp; ion-clipboard</option>
+                                <option class="ion-flag">&nbsp; ion-flag</option>
+                                <option class="ion-clipboard">&nbsp; ion-clipboard</option>
+                                <option class="ion-ios-plus-outline">&nbsp; ion-ios-plus-outline</option>
                             }
                         </select>
                     </div>

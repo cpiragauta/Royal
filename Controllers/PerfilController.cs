@@ -47,7 +47,7 @@ namespace CinemaPOS.Controllers
         #endregion
          
         #region Menu
-
+        
         [CheckSessionOutAttribute]
         public ActionResult Menu(int? RowID_Lista)
         {
