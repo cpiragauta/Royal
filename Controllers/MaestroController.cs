@@ -1294,7 +1294,7 @@ namespace CinemaPOS.Controllers.Master
         [CheckSessionOutAttribute]
         public ActionResult VistaPais()
         {
-            ViewBag.Pais = db.Pais.ToList();
+            ViewBag.Pais = db.Pais.OrderByDescending(f => f.RowID).ToList();
             return View();
         }
 
@@ -1461,16 +1461,6 @@ namespace CinemaPOS.Controllers.Master
                     objTaq.EstadoID = Convert.ToInt32(formulario["estado"]);
                     objTaq.CreadoPor = Session["usuario_creacion"].ToString();
                     objTaq.FechaCreacion = DateTime.Now;
-                    if (formulario["sincronizado"] == null)
-                    {
-                        objTaq.Sincronizado = false;
-
-                    }
-                    else
-                    {
-                        objTaq.Sincronizado = true;
-
-                    }
 
                     db.Taquilla.Add(objTaq);
                     db.SaveChanges();
@@ -1491,16 +1481,7 @@ namespace CinemaPOS.Controllers.Master
                     objTaq.EstadoID = Convert.ToInt32(formulario["estado"]);
                     objTaq.ModificadoPor = Session["usuario_creacion"].ToString();
                     objTaq.FechaModificacion = DateTime.Now;
-                    if (formulario["sincronizado"] == null)
-                    {
-                        objTaq.Sincronizado = false;
-
-                    }
-                    else
-                    {
-                        objTaq.Sincronizado = true;
-
-                    }
+                    
                     db.SaveChanges();
                 }
                 int codigo_encabezado = objTaq.RowID;

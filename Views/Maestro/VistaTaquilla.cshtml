@@ -41,21 +41,20 @@
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Teatro</th>
+                    <th>IP</th>
                     <th>Estado</th>
-                    <th class="ion-ios-loop-strong center"></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (CinemaPOS.Models.Taquilla lista_Taquilla in ViewBag.Taquilla)
                 {
-                    String Color = lista_Taquilla.Sincronizado == true ? "Verde" : "Rojo";
                     <tr>
                         <td>@lista_Taquilla.RowID</td>
                         <td>@lista_Taquilla.Nombre</td>
                         <td>@lista_Taquilla.Teatro.Nombre</td>
+                        <td>@lista_Taquilla.IP</td>
                         <td>@lista_Taquilla.Estado.Nombre</td>
-                        <td class="@Color"></td>
                         <td><a href="@Url.Action("Taquilla", "Maestro", new { RowID_Lista = lista_Taquilla.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
                     </tr>
                 }

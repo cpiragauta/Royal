@@ -205,20 +205,49 @@
                 </div>
             </div>
             @*<a href="javascript:guardar_sala()" class="btn btn-success"><i class="icon-plus">&nbsp;&nbsp;Guardar</i></a>*@
-            @if (Model.Estado.Codigo != "ENFUNCIONAMIENTO")
+            @if (Session["Usuario"] != null)
             {
-                <a href="@Url.Action("MapaSala", "Maestro", new { @RowID_Sala =Model.RowID})" style="display:none;" class="btn btn-success editar_mapa"><i class="icon-plus">&nbsp;&nbsp;Editar Mapa</i></a>
+                CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                {
+                    if (Model.Estado != null)
+                    {
+                        if (Model.Estado.Codigo != "ENFUNCIONAMIENTO")
+                        {
+                            <a href="@Url.Action("MapaSala", "Maestro", new { @RowID_Sala =Model.RowID})" style="display:none;" class="btn btn-success editar_mapa"><i class="icon-plus">&nbsp;&nbsp;Editar Mapa</i></a>
+                        }
+                    }
+                }
+                else
+                {
+                    <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Editar Mapa">
+                }
             }
+
+
         </div>
         <div class="panel-footer text-right">
-            @if (Model.RowID == 0)
+
+            @if (Session["Usuario"] != null)
             {
-                <input class="btn btn-success" type="submit" value="Crear Sala" onclick="guardar_sala()">
+                CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                {
+                    if (Model.RowID == 0)
+                    {
+                        <input class="btn btn-success" type="submit" value="Crear Sala" onclick="guardar_sala()">
+                    }
+                    else
+                    {
+                        <input class="btn btn-success" type="submit" value="Actualizar Sala" onclick="guardar_sala()">
+                    }
+                }
+                else
+                {
+                    <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Guardar">
+                }
             }
-            else
-            {
-                <input class="btn btn-success" type="submit" value="Actualizar Sala" onclick="guardar_sala()">
-            }
+            
         </div>
 
     </form>

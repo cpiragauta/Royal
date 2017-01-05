@@ -501,14 +501,25 @@
                     <div class="row">
                         <div class="col-sm-6">
 
-                            @if (Model.RowID == 0)
+                            @if (Session["Usuario"] != null)
                             {
-                                <input class="btn btn-success" type="submit" value="Crear Tercero" onclick="guardar_tercero()">
-                            }
-                            else
-                            {
-                                <input class="btn btn-success" type="submit" value="Actualizar Tercero" onclick="guardar_tercero()">
-                            }
+                                CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                                if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                                {
+                                     if (Model.RowID == 0)
+                                        {
+                                            <input class="btn btn-success" type="submit" value="Crear Tercero" onclick="guardar_tercero()">
+                                        }
+                                        else
+                                        {
+                                            <input class="btn btn-success" type="submit" value="Actualizar Tercero" onclick="guardar_tercero()">
+                                        }
+                                }
+                                else
+                                {
+                                    <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Guardar">
+                                }
+                            }                                                                                   
                         </div><br />
                     </div>
 
@@ -559,9 +570,22 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <input class="btn btn-success crearC" type="submit" value="Crear Contacto" id="crearC" onclick="guardar_Contacto()">
-                                        <input class="btn btn-success actualizarC" type="submit" value="Actualizar Contacto" id="actualizarC" style="display:none" onclick="ActualizarContacto()">
-                                        <input class="btn btn-success cancelarC" type="submit" value="Cancelar" id="cancelarC" style="display:none" onclick="cancelarContacto()">
+                                        @if (Session["Usuario"] != null)
+                                        {
+                                            CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                                            if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                                            {
+                                                    <input class="btn btn-success crearC" type="submit" value="Crear Contacto" id="crearC" onclick="guardar_Contacto()">
+                                                    <input class="btn btn-success actualizarC" type="submit" value="Actualizar Contacto" id="actualizarC" style="display:none" onclick="ActualizarContacto()">
+                                                    <input class="btn btn-success cancelarC" type="submit" value="Cancelar" id="cancelarC" style="display:none" onclick="cancelarContacto()">
+
+                                            }
+                                            else
+                                            {
+                                                <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Crear Contacto">
+                                            }
+                                        } 
+                                        
 
                                     </div>
                                 </div><br />

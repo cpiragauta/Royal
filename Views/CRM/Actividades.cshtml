@@ -53,7 +53,7 @@
                             <div class="form-group">
                                 <label for="TIPOACT">*Tipo Actividad:</label>
                                 <select name="tipoActividadID" required id="tipoActividadID">
-                                    <option value="">Seleccione una Opci&oacute;n</option>
+                                    <option value="" selected disabled>Seleccione una Opci&oacute;n</option>
                                     @foreach (var item in (List<CinemaPOS.Models.Opcion>)ViewBag.TipoAct)
                                     {
                                         if (Model.tipoActividadID == item.RowID)
@@ -88,7 +88,7 @@
                             <div class="form-group">
                                 <label for="TIPOACT">*Tipo Referencia:</label>
                                 <select name="tipoReferenciaID" required id="tipoReferenciaID" class="form-control">
-                                    <option value="">Seleccione una Opci&oacute;n</option>
+                                    <option value="" selected disabled>Seleccione una Opci&oacute;n</option>
                                     @foreach (var item in (List<CinemaPOS.Models.Opcion>)ViewBag.tipoRef)
                                     {
                                         if (Model.tipoReferenciaID == item.RowID)
@@ -120,7 +120,7 @@
                             <div class="form-group">
                                 <label for="PRIORIDAD">*Prioridad:</label>
                                 <select name="prioridadID" id="prioridadID" required>
-                                    <option value="">Seleccione una Opci&oacute;n</option>
+                                    <option value="" selected disabled>Seleccione una Opci&oacute;n</option>
                                     @foreach (var item in (List<CinemaPOS.Models.Opcion>)ViewBag.Prioridad)
                                     {
                                         if (Model.prioridadID == item.RowID)
@@ -137,7 +137,7 @@
                             <div class="form-group">
                                 <label for="ESTADOS">*Estados:</label>
                                 <select name="estadoID" id="estadoID" required>
-                                    <option value="">Seleccione una Opci&oacute;n</option>
+                                    <option value="" selected disabled>Seleccione una Opci&oacute;n</option>
                                     @foreach (var item in (List<CinemaPOS.Models.Estado>)ViewBag.Estados)
                                     {
                                         if (Model.estadoID == item.RowID)
@@ -222,7 +222,7 @@
         jQuery("#estadoID").chosen({ width: "100%;" });
 
         $('#fechaInicio').datepicker({
-            format: "dd-mm-yyyy",
+            format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
             todayHighlight: false
@@ -236,7 +236,7 @@
         //         startDate:0
         //     });
         $('#fechaFin').datepicker({
-            format: "dd-mm-yyyy",
+            format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
             todayHighlight: false
@@ -245,7 +245,6 @@
     });
 
     function Modal_Referenciado_A() {
-        debugger
         if ($("#tipoReferenciaID").val() == null || $("#tipoReferenciaID").val() == undefined || $("#tipoReferenciaID").val() == "") {
             Alerts("Seleccione el tipo de referencia.", "warning");
         }
@@ -253,7 +252,9 @@
             //ModalProcesandoShow();
             var ur = $("#tipoReferenciaID").val();
             var urlWithCont = '../CRM/ModalReferenciado?t_referencia=' + $("#tipoReferenciaID").val() + '';
-            $("#Dialog").load(urlWithCont.trim()).dialog('open');
+           // $("#Dialog").load(urlWithCont.trim()).dialog('open');
+            $("#Dialog").load(urlWithCont.trim())
+            ModalProcesandoShow();
         }
     }
 

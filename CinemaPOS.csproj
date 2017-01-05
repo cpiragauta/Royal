@@ -2365,6 +2365,7 @@
     <Content Include="Views\Perfil\VistaTipoMenu.cshtml" />
     <Content Include="Views\Perfil\VistaMenu.cshtml" />
     <Content Include="Views\Perfil\TipoMenu.cshtml" />
+    <Content Include="Views\Maestro\HabeasData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

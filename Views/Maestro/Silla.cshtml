@@ -131,8 +131,21 @@
                     </div>
                 </div>
             </div>
+
+
             <div class="panel-footer text-right">
-                <button class="btn btn-success btncrearoactualizar">Crear Objeto</button>
+                @if (Session["Usuario"] != null)
+                {
+                    CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                    if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                    {
+                        <button class="btn btn-success btncrearoactualizar">Crear Objeto</button>
+                    }
+                    else
+                    {
+                        <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Guardar">
+                    }
+                }
             </div>
         </form>
         <!--===================================================-->
