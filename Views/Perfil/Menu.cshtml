@@ -15,7 +15,13 @@
 <script>
     $(document).ready(function () {
         new Switchery(document.getElementById("demo-sw-checked"));
+
+        $('.solo-numero').keyup(function () {
+            this.value = (this.value + '').replace(/[^0-9]/g, '');
+        });
     });
+
+    
 </script>
 
 <script>
@@ -23,6 +29,7 @@
         if (!$("#formulario_Menu").validate().form()) {
             return false;
         }
+        debugger
         if ($(".RowID_Encabezado").val() == 0) {
             $.ajax({
                 type: "POST",
@@ -131,10 +138,11 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <div class="form-control">
+                <div class="col-sm-2">
+                    <div class="form-group">
                         <label class="control-label">Orden</label>
-                        <input name="orden" id="orden" class="form-control" required/>
+
+                        <input name="orden" id="orden" class="form-control solo-numero" value="@Model.Orden" required />
                     </div>
                 </div>
             </div>
@@ -142,53 +150,75 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label">Icono:</label>
-                        <div class="fileupload fileupload-new" data-provides="fileupload">
-                            <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
-                                @if (Model.RowID != 0)
-                                {
-                                    <img src="/@Model.Imagen" alt="">
-                                }
-                                else
-                                {
-                                    <img src="/Repositorio_Imagenes/Imagenes_Generales/thumbnail-default.png" />
-                                }
-                            </div>
-                            <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
-                            </div>
-                            <div>
-                                <span class="btn btn-file">
-                                    <span class="fileupload-new btn btn-success">Seleccione imagen</span>
-                                    <span class="fileupload-exists">Cambiar</span>
-                                    <input type="hidden" value="@Model.Imagen" name="imagen_actualiza" class="imagen_actualiza" />
-                                    <input type="file" accept="image/jpeg,image/png,image/gif" name="documento" class="documento form-control">
-                                </span>
-                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remover</a>
-                            </div>
-                        </div>
+                        <select class="chosen form-control" id="icono" name="icono" value="@Model.Imagen">
+                            @if (Model.RowID == 0)
+                            {
+                                <option>ion-ios-film</option>
+                                <option>ion-ios-calendar-outline</option>
+                                <option>ion-ios-gear-outline</option>
+                                <option>ion-ios-basketball-outline</option>
+                                <option>ion-ios-americanfootball</option>
+                                <option>ion-ios-monitor-outline</option>
+                                <option>ion-ios-volume-high</option>
+                                <option>ion-ios-cart-outline</option>
+                                <option>ion-ios-list-outline</option>
+                                <option>ion-link</option>
+                                <option>ion-ios-people-outline</option>
+                                <option>ion-flag</option>
+                                <option>ion-film-marker</option>
+                                <option>ion-clipboard</option>
+                                <option>ion-flag</option>
+                                <option>ion-clipboard</option>
+                                <option>ion-ios-plus-outline</option>
+                            }
+                            else
+                            {
+                                <option selected>@Model.Imagen</option>
+                                <option>ion-ios-film</option>
+                                <option>ion-ios-calendar-outline</option>
+                                <option>ion-ios-gear-outline</option>
+                                <option>ion-ios-basketball-outline</option>
+                                <option>ion-ios-americanfootball</option>
+                                <option>ion-ios-monitor-outline</option>
+                                <option>ion-ios-volume-high</option>
+                                <option>ion-ios-cart-outline</option>
+                                <option>ion-ios-list-outline</option>
+                                <option>ion-link</option>
+                                <option>ion-ios-people-outline</option>
+                                <option>ion-flag</option>
+                                <option>ion-film-marker</option>
+                                <option>ion-clipboard</option>
+                                <option>ion-flag</option>
+                                <option>ion-clipboard</option>
+                                <option>ion-ios-plus-outline</option>
+                            }
+                        </select>
                     </div>
                 </div>
-                <div class="col-sm-6 ">
+                <div class="col-sm-1" style="height:10px">
+                    <div class="form-group">
+                        <label class="control-label">Activo:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        @if (@Model.Activo.Equals(true))
+                        {
+                            <input id="demo-sw-checked" type="checkbox" name="activo" checked>
+                        }
+                        else
+                        {
+                            <input id="demo-sw-checked" type="checkbox" name="activo">
+                        }
+                    </div>
+                </div>
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label class="control-label">Descripción:</label>
                         <textarea name="descripcion" class="form-control" cols="40" rows="3" style="resize:none" maxlength="50">@Model.Descripcion</textarea>
                     </div>
 
-                    
-                        <div class="form-group">
-                            <label class="control-label">Activo:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            @if (@Model.Activo.Equals(true))
-                            {
-                                <input id="demo-sw-checked" type="checkbox" name="activo" checked>
-                            }
-                            else
-                            {
-                                <input id="demo-sw-checked" type="checkbox" name="activo">
-                            }
-                        </div>
                 </div>
+
                 <br />
             </div>
-            </div>
+
             <div class="pull-right text-right">
                 @if (Model.RowID == 0)
                 {
@@ -199,8 +229,7 @@
                     <input class="btn btn-success" value="Actualizar" onclick="javascript:valida_formulario()">
                 }
             </div>
-        
-        </form>
-    
         </div>
+        </form>
+</div>
 

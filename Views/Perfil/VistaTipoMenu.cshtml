@@ -4,8 +4,6 @@
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
 
-
-
 <head>
     <!--jQuery [ REQUIRED ]-->
     <script src="~/Content/js/jquery-2.2.4.min.js"></script>
@@ -17,7 +15,7 @@
     <script src="~/Content/js/demo/tables-datatables.js"></script>
 </head>
 <p>
-    <a class="btn btn-success" href="@Url.Action("TipoMenu","Perfil")">Adicionar TipoMenu</a>
+    <a class="btn btn-success" href="@Url.Action("TipoMenu","Perfil")">+ Adicionar TipoMenu</a>
     <a class="btn btn-success" href='@Url.Action("VistaMenu", "Perfil")'>Vista Menu</a>
 </p>
 
@@ -33,7 +31,6 @@
                     <th>Nombre</th>
                     <th>Creado por</th>
                     <th>Orden</th>
-                    
                     <th>Activo</th>
                     <th></th>
                 </tr>
@@ -56,8 +53,7 @@
                             <td>NO</td>
 
                         }
-                        
-                        <td><a href="@Url.Action("Menu", "Perfil", new { RowID_Lista = TipoMenu.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
+                        <td><a href="@Url.Action("TipoMenu", "Perfil", new { RowID_TipoMenu = TipoMenu.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
                     </tr>
                 }
             </tbody>
