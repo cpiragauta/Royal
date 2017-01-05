@@ -31,9 +31,9 @@
                     <th>Nombre</th>
                     <th>Tipo Menu</th>
                     <th>Url</th>
-                    <th>Imagen</th>
+                    <th>Icono</th>
                     <th>Activo</th>
-                    <th>Descripción</th>
+                    <th>Orden</th>
                     <th></th>
                 </tr>
             </thead>
@@ -43,16 +43,9 @@
                     <tr>
                         <td>@lista_Menu.RowID</td>
                         <td>@lista_Menu.Nombre</td>
-                        <td>@lista_Menu.Tipo.Nombre</td>
+                        <td>@lista_Menu.TipoMenu.Nombre</td>
                         <td>@lista_Menu.URL</td>
-                        @if (lista_Menu.Imagen != "")
-                        {
-                            <td class="td-imagenes"><img src="/@lista_Menu.Imagen" style="width:36px;height:36px;" /></td>
-                        }
-                        else
-                        {
-                            <td class="td-imagenes"><img src="~/Repositorio_Imagenes/Imagenes_Generales/nodisponible.png" style="width:36px;height:36px;" /></td>
-                        }
+                        <td>@lista_Menu.Imagen</td>
                         @if (@lista_Menu.Activo == true)
                         {
                             <td>SI</td>
@@ -62,7 +55,7 @@
                             <td>NO</td>
 
                         }
-                        <td>@lista_Menu.Descripcion</td>
+                        <td>@lista_Menu.Orden</td>
                         <td><a href="@Url.Action("Menu", "Perfil", new { RowID_Lista = lista_Menu.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
                     </tr>
                 }
