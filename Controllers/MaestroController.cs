@@ -873,7 +873,7 @@ namespace CinemaPOS.Controllers.Master
         {
 
             // ObjTeatro.CompaniaID = int.Parse(formulario["empresa"]);
-            ObjTeatro.CentroOperacion = formulario["centro_costo"];
+            ObjTeatro.CentroOperacionID = int.Parse(formulario["centro_costo"]);
             ObjTeatro.IP = formulario["ip"];
             ObjTeatro.Nombre = formulario["nombre"].ToUpper();
             ObjTeatro.CiudadID = int.Parse(formulario["ciudad"]);

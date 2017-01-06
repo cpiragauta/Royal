@@ -35,7 +35,7 @@ namespace CinemaPOS.Models
         public virtual Contacto Contacto { get; set; }
         public virtual ListaEncabezado ListaEncabezado { get; set; }
         public virtual Tercero Tercero { get; set; }
-        public virtual Teatro Teatro { get; set; }
         public virtual Estado Estado { get; set; }
+        public virtual Teatro Teatro { get; set; }
     }
 }

@@ -29,14 +29,14 @@
         }
     }
     function enviar_formulario() {
-        $("#formulario_pelicula").on("submit", function (e) {
-            e.preventDefault();
+        //$("#formulario_pelicula").on("submit", function (e) {
+            //e.preventDefault();
             var f = $(this);
             var formData = new FormData(document.getElementById("formulario_pelicula"));
             var RowID_Pelicula = $(".RowID_Pelicula").val();
             //formData.append(f.attr("name"), $(this)[0].files[0]);
             $.ajax({
-                url: "/Pelicula/GuardarPelicula?RowID_Pelicula=" + RowID_Pelicula,
+                url: "/Pelicula/GuardarPelicula?RowID_Pelicula=",
                 type: "post",
                 dataType: "html",
                 data: formData,
@@ -59,7 +59,7 @@
                 }
 
             })
-        });
+        //});
     }
 </script>
 <script>
@@ -516,7 +516,7 @@
                                             {
                                                 elenco = elenco + elencopelicula.Nombre + ",";
                                             }
-                                            <input type="text" class="form-control" placeholder="Agregar directores" name="directores" data-role="tagsinput" value="@elenco">
+                                            <input type="text"  class="form-control" placeholder="Agregar directores" name="directores" data-role="tagsinput" value="@elenco">
                                         }
                                         else
                                         {
@@ -756,9 +756,9 @@
                                     <div class="form-group">
                                         <label class="control-label">Teaser</label>
                                         <div class="input-group mar-btm">
-                                            @if (Model.RowID != 0 && Model.MedioPelicula.Count() != 0)
+                                            @if (Model.RowID != 0)
                                             {
-                                                <input type="text" name="teaser" id="teaser"  class="form-control add-tooltip" data-toggle="tooltip" data-original-title="Id del video en youtube" value="@Model.MedioPelicula.Where(mp => mp.EncabezadoPeliculaID == Model.RowID).OrderByDescending(mp=>mp.RowID).FirstOrDefault().Teaser">
+                                                <input type="text" name="teaser" id="teaser"  class="form-control add-tooltip" data-toggle="tooltip" data-original-title="Id del video en youtube" value="@Model.Teaser">
                                             }
                                             else
                                             {
@@ -774,9 +774,9 @@
                                     <div class="form-group">
                                         <label class="control-label">Trailer</label>
                                         <div class="input-group mar-btm">
-                                            @if (Model.RowID != 0 && Model.MedioPelicula.Count() != 0)
+                                            @if (Model.RowID != 0)
                                             {
-                                                <input type="text" name="trailer" id="trailer" class="form-control add-tooltip" data-toggle="tooltip" data-original-title="Id del video en youtube" value="@Model.MedioPelicula.Where(mp => mp.EncabezadoPeliculaID == Model.RowID).OrderByDescending(mp => mp.RowID).FirstOrDefault().Trailer">
+                                                <input type="text" name="trailer" id="trailer" class="form-control add-tooltip" data-toggle="tooltip" data-original-title="Id del video en youtube" value="@Model.Trailer">
                                             }
                                             else
                                             {
@@ -1006,11 +1006,11 @@
                     <div class="panel-footer text-right">
                         @if (Model.RowID == 0)
                         {
-                            <input class="btn btn-success" type="submit" value="Crear Película" onclick="javascript:valida_formulario()">
+                            <input class="btn btn-success" type="button" value="Crear Película" onclick="javascript:valida_formulario()">
                         }
                         else
                         {
-                            <input class="btn btn-success" type="submit" value="Actualizar Película" onclick="javascript:valida_formulario()">
+                            <input class="btn btn-success" type="button" value="Actualizar Película" onclick="javascript:valida_formulario()">
                         }
 
                     </div>

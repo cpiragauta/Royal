@@ -17,8 +17,8 @@ namespace CinemaPOS.Models
         public Ciudad()
         {
             this.ClienteRoyal = new HashSet<ClienteRoyal>();
-            this.Teatro = new HashSet<Teatro>();
             this.Tercero = new HashSet<Tercero>();
+            this.Teatro = new HashSet<Teatro>();
         }
     
         public int RowID { get; set; }
@@ -29,10 +29,12 @@ namespace CinemaPOS.Models
         public Nullable<System.DateTime> FechaModificacion { get; set; }
         public Nullable<int> RowIDCreacion { get; set; }
         public Nullable<int> TeatroCreacion { get; set; }
+        public string CreadoPor { get; set; }
+        public string ModificadoPor { get; set; }
     
         public virtual ICollection<ClienteRoyal> ClienteRoyal { get; set; }
         public virtual Departamento Departamento { get; set; }
-        public virtual ICollection<Teatro> Teatro { get; set; }
         public virtual ICollection<Tercero> Tercero { get; set; }
+        public virtual ICollection<Teatro> Teatro { get; set; }
     }
 }

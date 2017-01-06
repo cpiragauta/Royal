@@ -35,6 +35,8 @@ namespace CinemaPOS.Models
         public Nullable<bool> Sincronizado { get; set; }
         public Nullable<System.TimeSpan> HoraInicial { get; set; }
         public Nullable<System.TimeSpan> HoraFinal { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
         public virtual Estado Estado { get; set; }
         public virtual DetallePelicula DetallePelicula { get; set; }

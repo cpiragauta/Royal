@@ -32,10 +32,10 @@ namespace CinemaPOS.Models
         public string CreadoPor { get; set; }
     
         public virtual Estado Estado { get; set; }
-        public virtual Teatro Teatro { get; set; }
         public virtual Tercero Tercero { get; set; }
         public virtual ICollection<EvidenciaPqrs> EvidenciaPqrs { get; set; }
         public virtual TipoSolicitud TipoSolicitud { get; set; }
         public virtual ICollection<Seguimiento> Seguimiento { get; set; }
+        public virtual Teatro Teatro { get; set; }
     }
 }
