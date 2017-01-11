@@ -1,10 +1,8 @@
 ﻿@model CinemaPOS.Models.SalaObjeto
-
 @{
     ViewBag.Title = "Formulario";
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
-
 <script>
     $(function () {
         $("#tipo_silla").on("submit", function (e) {
@@ -12,12 +10,11 @@
             var f = $(this);
             var formData = new FormData(document.getElementById("tipo_silla"));
             var RowID_TipoSilla = $(".RowID_TipoSilla").val();
+            debugger;
             var documento = $(".imagen_actualiza").val();
             if ($(".documento").val()==null) {
                 documento = $(".imagen_actualiza").val();
             }
-
-            debugger;
             //formData.append(f.attr("name"), $(this)[0].files[0]);
             $.ajax({
                 url: "/Maestro/GuardarSilla",
@@ -39,9 +36,11 @@
     });
     $(document).ready(function () {
         if (@Model.RowID!=0) {
-            $(".btncrearoactualizar").empty().append('Actualizar Objeto @Model.Nombre');
+            $(".crearobjeto").empty().append('Actualizar Objeto @Model.Nombre');
         }
         new Switchery(document.getElementById('demo-sw-checked'));
+        new Switchery(document.getElementById('estado-checked'));
+       
     })
 </script>
 <div>
@@ -49,61 +48,57 @@
         <a class="btn btn-success" href="@Url.Action("VistaSilla", "Maestro")">Vista objeto sala</a>
     </p>
 </div>
-    <div class="panel">
-        <!--Block Styled Form -->
-        <!--===================================================-->
-        <form name="tipo_silla" id="tipo_silla" enctype="multipart/form-data">
-            <input type="hidden" name="RowID_TipoSilla" value="@Model.RowID" class="RowID_TipoSilla" />
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label class="control-label">Nombre</label>
-                            <input type="text" name="nombre" value="@Model.Nombre" class="form-control" required>
-                        </div>
+<div class="panel">
+    <form name="tipo_silla" id="tipo_silla" enctype="multipart/form-data" onsubmit="return false">
+        <input type="hidden" name="RowID_TipoSilla" value="@Model.RowID" class="RowID_TipoSilla" />
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">*Nombre:</label>
+                        <input type="text" name="nombre" value="@Model.Nombre" class="form-control" maxlength="20" required>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label class="control-label">Tipo Objeto</label>
-                            <select class="form-control" name="tipo_objeto" required>
-
-                                @foreach (CinemaPOS.Models.Opcion tipos_objetos in ViewBag.TipoObjeto)
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">*Tipo Objeto:</label>
+                        <select class="form-control" name="tipo_objeto" required>
+                            @foreach (CinemaPOS.Models.Opcion tipos_objetos in ViewBag.TipoObjeto)
+                            {
+                                if (Model.TipoObjetoID == tipos_objetos.RowID)
                                 {
-                                    if (Model.TipoObjetoID == tipos_objetos.RowID)
-                                    {
-                                        <option value="@tipos_objetos.RowID" selected>@tipos_objetos.Nombre</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@tipos_objetos.RowID">@tipos_objetos.Nombre</option>
-                                    }
-                                }
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label class="control-label">Numeración</label>
-                            <div class="">
-                                @if (Model.Numeracion == true)
-                                {
-                                    <input id="demo-sw-checked" type="checkbox" name="numeracion" checked>
+                                    <option value="@tipos_objetos.RowID" selected>@tipos_objetos.Nombre</option>
                                 }
                                 else
                                 {
-                                    <input id="demo-sw-checked" type="checkbox" name="numeracion">
+                                    <option value="@tipos_objetos.RowID">@tipos_objetos.Nombre</option>
                                 }
-
-                            </div>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Numeración:</label>
+                        <div class="">
+                            @if (Model.Numeracion == true)
+                            {
+                                <input id="demo-sw-checked" type="checkbox" name="numeracion" checked>
+                            }
+                            else
+                            {
+                                <input id="demo-sw-checked" type="checkbox" name="numeracion">
+                            }
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group">
-                    </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    @*</div>*@
                     <div class="col-sm-4">
                         <div class="form-group">
-                            <label class="control-label">Imagen</label>
+                            <label class="control-label">*Imagen:</label>
                             <div class="fileupload fileupload-new" data-provides="fileupload">
                                 <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
                                     @if (Model.RowID != 0)
@@ -119,36 +114,63 @@
                                 </div>
                                 <div>
                                     <span class="btn btn-file">
-                                        <span class="fileupload-new">Seleccione imagen</span>
+                                        <span class="fileupload-new btn btn-success" style="100%">
+                                            Seleccione imagen
+                                        </span>
                                         <span class="fileupload-exists">Cambiar</span>
                                         <input type="hidden" value="@Model.Imagen" name="imagen_actualiza" class="imagen_actualiza" />
-                                        <input type="file" accept="image/jpeg,image/png,image/gif" name="documento" class="documento form-control">
+                                        <input type="file" accept="image/png,image/" name="documento" class="documento form-control">
                                     </span>
                                     <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remover</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">*Servicio:</label>
+                            <select class="form-control" name="servicio" id="servicio" required>
+                                @foreach (CinemaPOS.Models.Opcion servicios in ViewBag.servicios)
+                                {
+                                    if (Model.ServicioID == servicios.RowID)
+                                    {
+                                        <option value="@servicios.RowID" selected>@servicios.Nombre</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@servicios.RowID">@servicios.Nombre</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Estado:</label>
+                            <div class="">
+                                @if (Model.Estado == true)
+                                {
+                                    <input id="estado-checked" type="checkbox" name="estado" checked>
+                                }
+                                else
+                                {
+                                    <input id="estado-checked" type="checkbox" name="estado">
+                                }
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-
-            <div class="panel-footer text-right">
-                @if (Session["Usuario"] != null)
-                {
-                    CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
-                    if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
-                    {
-                        <button class="btn btn-success btncrearoactualizar">Crear Objeto</button>
-                    }
-                    else
-                    {
-                        <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Guardar">
-                    }
-                }
-            </div>
-        </form>
-        <!--===================================================-->
-        <!--End Block Styled Form -->
-    </div>
-
+        </div>
+        <div class="panel-footer text-right">
+            @if (Model.RowID == 0)
+            {
+                <input class="btn btn-success" type="submit" value="Crear objeto" onclick="guardar_objeto()">
+            }
+            else
+            {
+                <input class="btn btn-success" type="submit" value="Actualizar objeto" onclick="guardar_objeto()">
+            }
+        </div>
+    </form>
+</div>

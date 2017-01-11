@@ -34,6 +34,7 @@
                             <th>Nombre</th>
                             <th>Tipo objeto</th>
                             <th>Numeración</th>
+                            <th>Estado</th>
                             <th>Imagen</th>
                             <th></th>
                         </tr>
@@ -44,7 +45,8 @@
                             <tr>
                                 <td>@silla.Nombre</td>
                                 <td>@silla.Opcion1.Nombre</td>
-                                <td>@silla.Numeracion</td>
+                                <td>@silla.Numeracion</td>  
+                                <td>@silla.Estado</td>
                                 @if (silla.Imagen != "")
                                 {
                                     <td class="td-imagenes"><img src="/@silla.Imagen" style="width:36px;height:36px;" /></td>
