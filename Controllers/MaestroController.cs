@@ -376,9 +376,17 @@ namespace CinemaPOS.Controllers.Master
         [CheckSessionOutAttribute]
         public JsonResult EliminarItem(int RowID_Detalle, int RowID_Encabezado)
         {
-            db.ListaDetalle.Where(lt => lt.RowID == RowID_Detalle);
-            db.ListaDetalle.Remove(db.ListaDetalle.Where(lt => lt.RowID == RowID_Detalle).First());
-            db.SaveChanges();
+            ListaDetalle objdetalle = db.ListaDetalle.Where(lt => lt.RowID == RowID_Detalle).FirstOrDefault();
+            if (objdetalle.ListaPrecioFuncion.Count()==0)
+            {
+                return Json(new { RowID_Encabezado = RowID_Encabezado, tipo_respuesta = "warning", respuesta = "La tarifa se encuentra asociada a una función" });
+            }
+            else
+            {
+                db.ListaDetalle.Remove(db.ListaDetalle.Where(lt => lt.RowID == RowID_Detalle).First());
+                db.SaveChanges();
+            }
+            
             return Json(RowID_Encabezado);
         }
 
@@ -555,9 +563,12 @@ namespace CinemaPOS.Controllers.Master
             if (RowID_Sala == 0)
             {
                 Estado objestado = db.Estado.Where(es => es.RowID == estadoid).FirstOrDefault();
-                if (objestado.Codigo!="")
+                if (objestado.Codigo== "ENFUNCIONAMIENTO")
                 {
-
+                    if (objestado.MapaSala.Count()==0)
+                    {
+                        return Json(new { tipo_respuesta = "warning",respuesta= "La sala no cuenta con mapa" });
+                    }
                 }
                 ObjSala.Nombre = formulario["nombre"];
                 ObjSala.TipoAudioID = int.Parse(formulario["tipo_audio"]);
@@ -584,6 +595,14 @@ namespace CinemaPOS.Controllers.Master
             }
             else if (RowID_Sala != null)
             {
+                Estado objestado = db.Estado.Where(es => es.RowID == estadoid).FirstOrDefault();
+                if (objestado.Codigo == "ENFUNCIONAMIENTO")
+                {
+                    if (objestado.MapaSala.Count() == 0)
+                    {
+                        return Json(new { tipo_respuesta = "warning", respuesta = "La sala no cuenta con mapa" });
+                    }
+                }
                 int cantidad = db.FormatoSala.Where(fs => fs.SalaID == RowID_Sala).Count();
                 for (int i = 0; i < cantidad; i++)
                 {
@@ -618,9 +637,8 @@ namespace CinemaPOS.Controllers.Master
                     guardar_servicio_sala(formulario["servicio"], int.Parse(RowID_Sala.ToString()));
                 }
                 respuesta = "Actualizado Correctamente";
-
             }
-            return Json(respuesta);
+            return Json(new {tipo_respuesta="success", respuesta = respuesta });
         }
 
         [CheckSessionOutAttribute]

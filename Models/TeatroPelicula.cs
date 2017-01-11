@@ -27,7 +27,7 @@ namespace CinemaPOS.Models
         public Nullable<int> EstadoID { get; set; }
     
         public virtual EncabezadoPelicula EncabezadoPelicula { get; set; }
-        public virtual Teatro Teatro { get; set; }
         public virtual Estado Estado { get; set; }
+        public virtual Teatro Teatro { get; set; }
     }
 }

@@ -19,9 +19,15 @@
                     formulario: $("#formulario_sala").serialize(),
                 },
                 success: function (data) {
-                    swal("OK", data, "success")
-                    window.location = "/Maestro/VistaSala/";
-
+                    debugger
+                   
+                    if (data.tipo_respuesta!="warning") {
+                        window.location = "/Maestro/VistaSala/";
+                        swal("OK", data.respuesta, data.tipo_respuesta);
+                    }
+                    else {
+                        swal("Advertencia", data.respuesta, data.tipo_respuesta);
+                    }
                 },
                 error: function (data) {
                     swal("ERROR", data, "error");
