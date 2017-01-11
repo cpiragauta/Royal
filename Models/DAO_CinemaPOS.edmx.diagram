@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="ae8727279e94475199cbe851b869d483" Name="Diagram1" ZoomLevel="75">
+      <Diagram DiagramId="ae8727279e94475199cbe851b869d483" Name="Diagram1" ZoomLevel="52">
         <EntityTypeShape EntityType="CinemaPOSModel.DetalleConvenio" Width="1.5" PointX="10.5" PointY="83.125" />
         <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoConvenio" Width="1.5" PointX="5.25" PointY="71.375" />
         <EntityTypeShape EntityType="CinemaPOSModel.Actividades" Width="1.5" PointX="8.25" PointY="77.75" />
@@ -12,6 +12,7 @@
         <EntityTypeShape EntityType="CinemaPOSModel.TarjetaMembresia" Width="1.5" PointX="14.25" PointY="57.625" />
         <EntityTypeShape EntityType="CinemaPOSModel.TarjetaMembresiaClienteRoyal" Width="1.5" PointX="16.5" PointY="65.5" />
         <EntityTypeShape EntityType="CinemaPOSModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.CentroOperacion" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="CinemaPOSModel.Ciudad" Width="1.5" PointX="20.25" PointY="92.625" />
         <EntityTypeShape EntityType="CinemaPOSModel.Contacto" Width="1.5" PointX="16.5" PointY="81.25" />
         <EntityTypeShape EntityType="CinemaPOSModel.Departamento" Width="1.5" PointX="18" PointY="92.875" />
@@ -177,8 +178,7 @@
         <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Lista__4979DDF4" />
         <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Prosp__4A6E022D" />
         <AssociationConnector Association="CinemaPOSModel.fk_estado_cotizacion" />
-        <EntityTypeShape EntityType="CinemaPOSModel.CentroOperacion" Width="1.5" PointX="5.375" PointY="9" />
-        <EntityTypeShape EntityType="CinemaPOSModel.Teatro" Width="1.5" PointX="22.5" PointY="49.25" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Teatro" Width="1.5" PointX="22.5" PointY="45.125" />
         <AssociationConnector Association="CinemaPOSModel.FK__DetalleCo__Teatr__52793849" />
         <AssociationConnector Association="CinemaPOSModel.FK__Oportunid__Teatr__4B622666" />
         <AssociationConnector Association="CinemaPOSModel.FK__Teatro__CentroOp__1590259A" />
