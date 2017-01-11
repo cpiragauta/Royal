@@ -14,6 +14,11 @@ namespace CinemaPOS.Models
     
     public partial class CentroOperacion
     {
+        public CentroOperacion()
+        {
+            this.Teatro = new HashSet<Teatro>();
+        }
+    
         public int RowID { get; set; }
         public Nullable<int> CompaniaID { get; set; }
         public string CentroOperacionID { get; set; }
@@ -22,5 +27,13 @@ namespace CinemaPOS.Models
         public Nullable<bool> Sincronizado { get; set; }
         public Nullable<System.DateTime> FechaSincronizacion { get; set; }
         public Nullable<System.DateTime> FechaUltimaSincronizacion { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
+        public string CreadoPor { get; set; }
+        public Nullable<System.DateTime> FechaCreacion { get; set; }
+        public string ModificadoPor { get; set; }
+        public Nullable<System.DateTime> FechaModificacion { get; set; }
+    
+        public virtual ICollection<Teatro> Teatro { get; set; }
     }
 }

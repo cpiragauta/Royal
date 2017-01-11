@@ -157,18 +157,52 @@
     })
     function vender_silla(element){
         debugger
-        if ($(element).hasClass('Seleccionada') == true) {
-            $(element).removeAttr("class");
-            $(element).removeAttr("style");
+        if ($('#multiple-seleccion').is(":checked"))
+        {
+            var id=$(element).attr("id");
+            var cantidad_venta=$("#cantidad-ventas").val();
+            var seleccionadas=0;
+            if ($('.Seleccionada').length==$("#cantidad-ventas").val()) {
+                $('.Seleccionada').each(function(element){
+                    $(element).removeAttr("class");
+                    $(element).removeAttr("style");
+                })
+                    
+                }
+            
+            else{
+            while(seleccionadas<=cantidad_venta){
+                var id_busqueda=parseInt(id)+seleccionadas;
+                if ($('.Seleccionada').length<$("#cantidad-ventas").val()) {
+                    debugger
+                    var silla=$("#"+id_busqueda).attr('onclick');
+                    if (silla!=null) {
+                        if ($("#"+id_busqueda).hasClass('Seleccionada') == false) {
+                            $("#"+id_busqueda).attr('style','background: #4DB6AC;').addClass("Seleccionada");
+                           
+                        }
+                    }
+                    
+                }
+                seleccionadas++;
+            }
+            }
         }
         else{
-            if ($('.Seleccionada').length==$("#cantidad-ventas").val()) {
-                alert("Maximo seleccionado");
+            if ($(element).hasClass('Seleccionada') == true) {
+                $(element).removeAttr("class");
+                $(element).removeAttr("style");
             }
             else{
-                $(element).attr('style','background: #4DB6AC;').addClass("Seleccionada");
+                if ($('.Seleccionada').length==$("#cantidad-ventas").val()) {
+                    alert("Maximo seleccionado");
+                }
+                else{
+                    $(element).attr('style','background: #4DB6AC;').addClass("Seleccionada");
+                }
             }
         }
+        
     }
 
     function TerminarVenta(){
@@ -259,16 +293,27 @@
 </style>
 
 <div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="true">
-    <div class="modal-dialog" style="width:(@Model.Cantidad_Columnas*50)px;margin-top: 20px;">
+    <div class="modal-dialog" style="width:(@Model.Cantidad_Columnas*50)px;height:(@Model.Cantidad_Filas*50);margin-top: 20px;">
         <div class="modal-content">
             <div class="modal-header" style="padding: 10px; ">
-                <button type="button" class="close salir" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <p>Cantidad sillas a vender <h3 id="cantidad_selecionadas"> @ViewBag.CantidadSillasVenta</h3></p>
-                <p>Tarifa de venta <h3 id="tarifa_venta"> @ViewBag.Tarifa.Nombre</h3></p>
+                <button type="button" class="ion-close-circled close salir" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <p class="pad-no mar-no">Cantidad sillas a vender <h3 id="cantidad_selecionadas" class="mar-no pad-no">@ViewBag.CantidadSillasVenta</h3></p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p>Tarifa de venta <h3 id="tarifa_venta"> @ViewBag.Tarifa.Nombre</h3></p>
+                    </div>
+                    <div class="col-sm-4">
+                        <h4 class="modal-title"><b>@Model.Nombre</b></h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="checkbox" id="multiple-seleccion" /><strong>&nbsp; Elección multiple</strong>
+                </div>
                 <input type="hidden" value="@ViewBag.Tarifa.RowID" id="tarifaID" />
                 <input type="hidden" id="cantidad-ventas" value="@ViewBag.CantidadSillasVenta" />
                 <input type="hidden" id="RowIDFuncion" value="@ViewBag.Funcion.RowID" />
-                <h4 class="modal-title"><b>@Model.Nombre</b></h4>
             </div>
             <div class="modal-body" style="height: auto;">
                 <div class="row" id="div_btns">
@@ -278,8 +323,7 @@
                             <div class="row">
                                 <input type="hidden" class="RowID_Sala" value="@Request.Params["RowID_Sala"].ToString()" />
 
-
-                                <table id="esquema_mapa" align="center" style="width:@(Model.Cantidad_Filas *50)px;margin:0 auto;"></table>
+                                <table id="esquema_mapa" align="center" style="height:@(Model.Cantidad_Columnas *50)px;width:@(Model.Cantidad_Filas *50)px;margin:0 auto;"></table>
                                 <h1 class="text-center">Pantalla</h1>
 
                             </div>

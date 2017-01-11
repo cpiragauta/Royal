@@ -34,7 +34,6 @@ namespace CinemaPOS.Models
         public virtual DbSet<TarjetaMembresia> TarjetaMembresia { get; set; }
         public virtual DbSet<TarjetaMembresiaClienteRoyal> TarjetaMembresiaClienteRoyal { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
-        public virtual DbSet<CentroOperacion> CentroOperacion { get; set; }
         public virtual DbSet<Ciudad> Ciudad { get; set; }
         public virtual DbSet<Contacto> Contacto { get; set; }
         public virtual DbSet<Departamento> Departamento { get; set; }
@@ -47,7 +46,6 @@ namespace CinemaPOS.Models
         public virtual DbSet<Plantillas> Plantillas { get; set; }
         public virtual DbSet<SalaObjeto> SalaObjeto { get; set; }
         public virtual DbSet<Sello_Distribuidor> Sello_Distribuidor { get; set; }
-        public virtual DbSet<Teatro> Teatro { get; set; }
         public virtual DbSet<Tercero> Tercero { get; set; }
         public virtual DbSet<Tipo> Tipo { get; set; }
         public virtual DbSet<TipoEstado> TipoEstado { get; set; }
@@ -87,6 +85,8 @@ namespace CinemaPOS.Models
         public virtual DbSet<Rol> Rol { get; set; }
         public virtual DbSet<HistoricolLog> HistoricolLog { get; set; }
         public virtual DbSet<OportunidadVenta> OportunidadVenta { get; set; }
+        public virtual DbSet<CentroOperacion> CentroOperacion { get; set; }
+        public virtual DbSet<Teatro> Teatro { get; set; }
     
         public virtual int Eliminar_sillas_sala(Nullable<int> rowIDSala)
         {

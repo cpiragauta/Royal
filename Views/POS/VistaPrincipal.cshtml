@@ -335,12 +335,22 @@
 
                 </div>
             </a>
+            
             <a class="col-sm-1" style="float:right;">
                 <div class="row text-center">
                     <div id="" onclick="validar_cupon()" data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Redención de convenios y venta empresarial" style="color:black;font-size:3em;cursor:pointer" class="ion-ios-barcode text-main icon-3x add-tooltip" disabled></div>
                 </div>
                 <div class="row text-center pad-no" style="margin-top:-10%;">
                     <h5>Cupones</h5>
+                </div>
+            </a>
+            <a class="col-sm-1" style="float:right;" href="/Cuenta/limpiarSession">
+                <div class="row text-center">
+                    <div data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Cerrar sesión" style="color:black;font-size:3em;cursor:pointer" class="ion-share text-main icon-3x add-tooltip" disabled></div>
+                </div>
+                <div class="row text-center pad-no" style="margin-top:-10%;">
+                    <h5>Salir</h5>
+
                 </div>
             </a>
         </div>
@@ -537,6 +547,7 @@
         }
     }
     $(document).ready(function () {
+        
         mueveReloj();
         buscar_funciones();
         getLocalIPs(function (ips) {
@@ -548,7 +559,9 @@
         $(".funcion ").each(function (index, element) {
             //var hora_funcion="15:15:00" $(this).find(".hora_funcion").text();
             var hora_funcion="15:15:00";
-           debugger
+            debugger
+            var hora_funcion_text = $(element).find(".hora_funcion").text();
+            var hora_funcion = parseInt(hora_funcion_text.split[0]) + parseInt(hora_funcion_textsplit[0]);
 
            if ((hora_funcion.replace(":", "")) > fechasistema.replace(":", "") && hora_funcion.replace(":", "") < (fechasistema.replace(":", "") + 20)) {
                 console.log("por iniciar");

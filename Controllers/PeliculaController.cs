@@ -594,7 +594,7 @@ namespace CinemaPOS.Controllers.Pelicula
         }
         public ActionResult VistaPelicula()
         {
-            lViewBag.Peliculas = db.EncabezadoPelicula.ToList();
+            ViewBag.Peliculas = db.EncabezadoPelicula.ToList();
             return View();
         }
 

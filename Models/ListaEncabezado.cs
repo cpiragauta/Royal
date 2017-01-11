@@ -32,10 +32,12 @@ namespace CinemaPOS.Models
         public Nullable<int> TeatroID { get; set; }
         public Nullable<System.DateTime> FechaInicial { get; set; }
         public Nullable<System.DateTime> FechaFinal { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
         public virtual Opcion Opcion { get; set; }
-        public virtual Teatro Teatro { get; set; }
         public virtual ICollection<ListaDetalle> ListaDetalle { get; set; }
         public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }
+        public virtual Teatro Teatro { get; set; }
     }
 }

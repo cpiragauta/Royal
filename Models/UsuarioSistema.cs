@@ -36,9 +36,11 @@ namespace CinemaPOS.Models
         public Nullable<int> TeatroID { get; set; }
         public Nullable<int> RowIDCentral { get; set; }
         public string Foto_Empleado { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
-        public virtual Teatro Teatro { get; set; }
         public virtual ICollection<BoletaVendida> BoletaVendida { get; set; }
         public virtual Rol Rol { get; set; }
+        public virtual Teatro Teatro { get; set; }
     }
 }

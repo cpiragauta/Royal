@@ -202,7 +202,7 @@ namespace CinemaPOS.Controllers
                     int contador_funciones_pelicula = 1;
                     html += "<tr>";
                     html += "<td>";
-                    html += "<img class='poster-peliculas' src='/" + peliculas_vista.Detalle_Pelicula.EncabezadoPelicula.MedioPelicula.Where(m => m.EncabezadoPeliculaID == peliculas_vista.Detalle_Pelicula.EncabezadoPeliculaID).OrderByDescending(mp => mp.RowID).FirstOrDefault().Afiche + "' > ";
+                    html += "<img class='poster-peliculas' src='/" + peliculas_vista.Detalle_Pelicula.EncabezadoPelicula.Afiche+"' > ";
                     html += "</td>";
                     html += "<td  nombre-peliculas'>";
                     html += "<h5>" + peliculas_vista.Detalle_Pelicula.EncabezadoPelicula.TituloLocal + "</h5>";
@@ -233,7 +233,9 @@ namespace CinemaPOS.Controllers
                         }
                         else { carrusel = false; }
                         html += "<div class='col-sm-3 funcion mar-hor' onclick='javascrip:get_tarifas(" + funciones.RowID_Funcion + ")'>";
-                        html += "<h5 class='text-main hora_funcion'>" + funciones.HoraInicial + "</h5>";
+                        string Hora_Funcion = DateTime.Parse(funciones.HoraInicial.ToString()).ToString("hh:mm tt", CultureInfo.InvariantCulture);
+                        //string lol = funciones.HoraInicial;
+                        html += "<h5 class='text-main hora_funcion'>" + Hora_Funcion + "</h5>";
                         html += "<p>" + funciones.NombreSala + "<br />Disponible: 120</p>";
                         html += "</div>";
                         if (contador_funciones_pelicula == 3)
@@ -287,11 +289,11 @@ namespace CinemaPOS.Controllers
 
             foreach (ListaPrecioFuncion tarifafuncion in Tarifas_de_funcion)
             {
-                string clase = "panel-mint";
-                if (tarifafuncion.ListaDetalle.Opcion2 != null)
-                {
-                    clase = "" + tarifafuncion.ListaDetalle.Opcion2.Codigo2 + "";
-                }
+                string clase = tarifafuncion.ListaDetalle.Opcion1.Codigo2;
+                //if (tarifafuncion.ListaDetalle.Opcion1 != null)
+                //{
+                //    clase = "" + tarifafuncion.ListaDetalle.Opcion2.Codigo2 + "";
+                //}
                 if (contador_row == 1)
                 {
                     html_tarifas += "<div class='row'>";

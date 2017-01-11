@@ -49,6 +49,8 @@ namespace CinemaPOS.Models
         public string Thumbnail { get; set; }
         public string Trailer { get; set; }
         public string Teaser { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
         public virtual Estado Estado { get; set; }
         public virtual Opcion Opcion { get; set; }

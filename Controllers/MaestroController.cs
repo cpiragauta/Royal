@@ -551,8 +551,14 @@ namespace CinemaPOS.Controllers.Master
             string respuesta = "";
             formulario = DeSerialize(formulario);
             Sala ObjSala = new Sala();
+            int estadoid= int.Parse(formulario["estado"]);
             if (RowID_Sala == 0)
             {
+                Estado objestado = db.Estado.Where(es => es.RowID == estadoid).FirstOrDefault();
+                if (objestado.Codigo!="")
+                {
+
+                }
                 ObjSala.Nombre = formulario["nombre"];
                 ObjSala.TipoAudioID = int.Parse(formulario["tipo_audio"]);
                 //db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOSALA" && e.Nombre == "EnFuncionamiento").Select(e => e.RowID).First().ToString()
@@ -726,6 +732,7 @@ namespace CinemaPOS.Controllers.Master
         {
 
             Boolean numeracion;
+            Boolean estado;
             if (RowID_TipoSilla == 0)
             {
                 SalaObjeto ObjSillaTipo = new SalaObjeto();
@@ -740,6 +747,15 @@ namespace CinemaPOS.Controllers.Master
                     {
                         numeracion = false;
                     }
+                    if (formulario["estado"] == "on")
+                    {
+                        estado = true;
+                    }
+                    else
+                    {
+                        estado = false;
+                    }
+                    
 
                     string adjunto = formulario["nombre"] + Path.GetExtension(documento.FileName);
                     documento.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales/" + adjunto));
@@ -750,6 +766,7 @@ namespace CinemaPOS.Controllers.Master
                     ObjSillaTipo.Numeracion = numeracion;
                     ObjSillaTipo.ServicioID = int.Parse(formulario["servicio"]);
                     ObjSillaTipo.TipoObjetoID = int.Parse(formulario["tipo_objeto"]);
+                    ObjSillaTipo.Estado = estado;
                     db.SalaObjeto.Add(ObjSillaTipo);
                     db.SaveChanges();
                 }
@@ -794,7 +811,16 @@ namespace CinemaPOS.Controllers.Master
                 {
                     numeracion = false;
                 }
+                if (formulario["estado"] == "on")
+                {
+                    estado = true;
+                }
+                else
+                {
+                    estado = false;
+                }
                 Silla_actualiza.Nombre = formulario["nombre"];
+                Silla_actualiza.Estado = estado;
                 Silla_actualiza.Imagen = adjunto;
                 Silla_actualiza.ModificadoPor = Session["usuario_creacion"].ToString();
                 Silla_actualiza.FechaModificacion = DateTime.Now;
@@ -873,7 +899,7 @@ namespace CinemaPOS.Controllers.Master
         {
 
             // ObjTeatro.CompaniaID = int.Parse(formulario["empresa"]);
-            ObjTeatro.CentroOperacion = formulario["centro_costo"];
+            ObjTeatro.CentroOperacionID = int.Parse(formulario["centro_costo"]);
             ObjTeatro.IP = formulario["ip"];
             ObjTeatro.Nombre = formulario["nombre"].ToUpper();
             ObjTeatro.CiudadID = int.Parse(formulario["ciudad"]);

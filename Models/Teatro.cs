@@ -17,20 +17,20 @@ namespace CinemaPOS.Models
         public Teatro()
         {
             this.DetalleConvenio = new HashSet<DetalleConvenio>();
+            this.OportunidadVenta = new HashSet<OportunidadVenta>();
             this.EncabezadoProgramacion = new HashSet<EncabezadoProgramacion>();
             this.ListaEncabezado = new HashSet<ListaEncabezado>();
             this.Pqrs = new HashSet<Pqrs>();
             this.Sala = new HashSet<Sala>();
+            this.Taquilla = new HashSet<Taquilla>();
             this.TeatroPelicula = new HashSet<TeatroPelicula>();
             this.TeatroVentaEmpresarial = new HashSet<TeatroVentaEmpresarial>();
             this.UsuarioSistema = new HashSet<UsuarioSistema>();
-            this.Taquilla = new HashSet<Taquilla>();
-            this.OportunidadVenta = new HashSet<OportunidadVenta>();
         }
     
         public int RowID { get; set; }
         public Nullable<int> CompaniaID { get; set; }
-        public string CentroOperacion { get; set; }
+        public Nullable<int> CentroOperacionID { get; set; }
         public string IP { get; set; }
         public string Nombre { get; set; }
         public Nullable<int> CiudadID { get; set; }
@@ -39,24 +39,25 @@ namespace CinemaPOS.Models
         public string ModificadoPor { get; set; }
         public Nullable<System.DateTime> FechaModificacion { get; set; }
         public Nullable<int> EstadoID { get; set; }
-        public Nullable<bool> Sincronizado { get; set; }
-        public Nullable<int> RowIDCentral { get; set; }
         public string CadenaBD { get; set; }
         public Nullable<int> RowIDCreacion { get; set; }
         public Nullable<int> TeatroCreacion { get; set; }
+        public Nullable<int> RowIDCentral { get; set; }
+        public Nullable<bool> Sincronizado { get; set; }
     
         public virtual ICollection<DetalleConvenio> DetalleConvenio { get; set; }
+        public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }
+        public virtual CentroOperacion CentroOperacion { get; set; }
         public virtual Ciudad Ciudad { get; set; }
         public virtual Estado Estado { get; set; }
         public virtual ICollection<EncabezadoProgramacion> EncabezadoProgramacion { get; set; }
         public virtual ICollection<ListaEncabezado> ListaEncabezado { get; set; }
         public virtual ICollection<Pqrs> Pqrs { get; set; }
         public virtual ICollection<Sala> Sala { get; set; }
+        public virtual ICollection<Taquilla> Taquilla { get; set; }
         public virtual Tercero Tercero { get; set; }
         public virtual ICollection<TeatroPelicula> TeatroPelicula { get; set; }
         public virtual ICollection<TeatroVentaEmpresarial> TeatroVentaEmpresarial { get; set; }
         public virtual ICollection<UsuarioSistema> UsuarioSistema { get; set; }
-        public virtual ICollection<Taquilla> Taquilla { get; set; }
-        public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }
     }
 }
