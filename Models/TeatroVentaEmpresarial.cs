@@ -19,8 +19,12 @@ namespace CinemaPOS.Models
         public int TeatroID { get; set; }
         public string CreadoPor { get; set; }
         public System.DateTime FechaCreacion { get; set; }
+        public string ModificadoPor { get; set; }
+        public Nullable<System.DateTime> FechaModificacion { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
-        public virtual Teatro Teatro { get; set; }
         public virtual EncabezadoVentaEmpresarial EncabezadoVentaEmpresarial { get; set; }
+        public virtual Teatro Teatro { get; set; }
     }
 }

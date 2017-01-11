@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using CinemaPOS.Models;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.Reporting.WebForms;
 using System.Web.UI.WebControls;
 
 namespace CinemaPOS.Controllers
@@ -44,26 +43,7 @@ namespace CinemaPOS.Controllers
 
             if (detalle.Count != 0)
             {
-                ReportViewer reportViewer = new ReportViewer();
-                reportViewer.ProcessingMode = ProcessingMode.Local;
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Content/Reportes/Report1.rdlc";
-
-                //////Parametros del reporte
-                //ReportParameter p1 = new ReportParameter("NombreConvenio", detalle.FirstOrDefault().EncabezadoVentaEmpresarial.Nombre);
-                //ReportParameter p2 = new ReportParameter("FechaInicio", detalle.FirstOrDefault().EncabezadoVentaEmpresarial.FechaInicio.Value.ToShortDateString());
-                //ReportParameter p3 = new ReportParameter("FechaFinal", detalle.FirstOrDefault().EncabezadoVentaEmpresarial.FechaFinal.Value.ToShortDateString());
-                //ReportParameter p4 = new ReportParameter("Formato", detalle.FirstOrDefault().EncabezadoVentaEmpresarial.Opcion1.Nombre);
-                ////ReportParameter p5 = new ReportParameter("condiciones", detalle.FirstOrDefault().EncabezadoVentaEmpresarial.Descripcion);
-                //ReportParameter p6 = new ReportParameter("porcentaje",""+detalle.FirstOrDefault().Valor);
-                //ReportParameter p7 = new ReportParameter("codigo", detalle.FirstOrDefault().Codigo);
-
-
-                //reportViewer.LocalReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p6, p7 });
-                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
-                reportViewer.SizeToReportContent = true;
-                reportViewer.Width = Unit.Percentage(100);
-                reportViewer.Height = Unit.Percentage(100);
-                ViewBag.ReportViewer = reportViewer;
+               
                 ViewBag.detalle = detalle;
                 ViewBag.Nombre = detalle.FirstOrDefault().EncabezadoVentaEmpresarial.Nombre;
                 ViewBag.FechaI = detalle.FirstOrDefault().EncabezadoVentaEmpresarial.FechaInicio.Value.ToShortDateString();
@@ -74,11 +54,7 @@ namespace CinemaPOS.Controllers
             }
             else
             {
-                ReportViewer reportViewer = new ReportViewer();
-                reportViewer.ProcessingMode = ProcessingMode.Local;
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Content/Reportes/Report1.rdlc";
-                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
-                ViewBag.ReportViewer = reportViewer;
+               
             }
             ///***********FIN reporte de convenio *************//
 

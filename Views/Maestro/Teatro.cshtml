@@ -106,14 +106,28 @@
                 </div>
             </div>
 
-            
 
-            <div class="col-sm-2">
+            <div class="col-sm-4">
                 <div class="form-group">
                     <label class="control-label">Centro de costo:</label>
-                    <input type="text" class="form-control" value="@Model.CentroOperacion" name="centro_costo" maxlength="50">
+                    <select name="centro_costo" class="chosen form-control" required>
+                        <option disabled selected>Seleccione una opcion</option>
+                        @foreach (CinemaPOS.Models.CentroOperacion item in ViewBag.ListaCentrosOperacion)
+                        {
+                            if (Model.RowID != 0 && item.RowID == Model.CentroOperacionID)
+                            {
+                                <option value="@item.RowID" selected>@item.Nombre - @item.Region"</option>
+                            }
+                            else
+                            {
+                                <option value="@item.RowID">@item.Nombre - @item.Region</option>
+                            }
+
+                        }
+                    </select>
                 </div>
             </div>
+
 
             <div class="col-sm-2">
                 <div class="form-group">

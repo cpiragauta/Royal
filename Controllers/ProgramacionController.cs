@@ -33,7 +33,7 @@ namespace CinemaPOS.Controllers
                 EncabezadoProgramacion programacion = db.EncabezadoProgramacion.FirstOrDefault(t => t.RowID == RowID_EncabezadoProgramacion);
                 if (programacion != null)
                 {
-                    ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Nombre == "EnFuncionamiento").OrderBy(f=> f.RowID);
+                    ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Codigo == "ENFUNCIONAMIENTO").OrderBy(f => f.RowID);
                     ViewBag.ListaPeliculas = db.TeatroPelicula.Where(f => f.TeatroID == programacion.TeatroID);
                     ViewBag.ListasPrecios = db.ListaEncabezado.Where(f => f.TeatroID == programacion.TeatroID);
                 }
@@ -301,7 +301,7 @@ namespace CinemaPOS.Controllers
         public JsonResult CargarSalas(Int32 IdTeatro)
         {
             var query = (from salas in db.Sala
-                         where salas.TeatroID == IdTeatro && salas.Estado.Nombre == "EnFuncionamiento"
+                         where salas.TeatroID == IdTeatro && salas.Estado.Codigo == "ENFUNCIONAMIENTO"
                          select new
                          {
                              rowid = salas.RowID,
@@ -475,11 +475,11 @@ namespace CinemaPOS.Controllers
             if (programacion == null)
             {
                 programacion = db.EncabezadoProgramacion.FirstOrDefault(f => f.RowID == ListaFunciones.First().EncabezadoProgramacionID);
-                listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID).OrderBy(f => f.RowID).ToList();
+                listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Codigo == "ENFUNCIONAMIENTO").OrderBy(f => f.RowID).ToList();
             }
             else
             {
-                listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID).OrderBy(f => f.RowID).ToList();
+                listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Codigo == "ENFUNCIONAMIENTO").OrderBy(f => f.RowID).ToList();
             }
             System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
             int cantDias = DiasACorrer + 5;
@@ -861,7 +861,7 @@ namespace CinemaPOS.Controllers
             Funcion programacion = db.Funcion.FirstOrDefault(t => t.RowID == rowid);
             if (programacion != null)
             {
-                ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.Sala.TeatroID);
+                ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.Sala.TeatroID && f.Estado.Codigo == "ENFUNCIONAMIENTO");
                 ViewBag.ListaPeliculas = db.TeatroPelicula.Where(f => f.TeatroID == programacion.Sala.TeatroID);
             }
 
@@ -917,7 +917,7 @@ namespace CinemaPOS.Controllers
             }
             else
             {
-                ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Nombre == "EnFuncionamiento");
+                ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Codigo == "ENFUNCIONAMIENTO");
                 ViewBag.ListaPeliculas = db.TeatroPelicula.Where(f => f.TeatroID == programacion.TeatroID);
                 return View(programacion);
             }
@@ -1121,7 +1121,7 @@ namespace CinemaPOS.Controllers
             }
             else
             {
-                ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Nombre == "EnFuncionamiento").OrderBy(f => f.RowID);
+                ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Codigo == "ENFUNCIONAMIENTO").OrderBy(f => f.RowID);
                 ViewBag.SalaReplicar = db.Sala.FirstOrDefault(f=>f.RowID == RowIdSala);
                 return View(programacion);
             }

@@ -41,6 +41,8 @@ namespace CinemaPOS.Models
         public string Nombre { get; set; }
         public Nullable<int> TipoServicioID { get; set; }
         public Nullable<int> TipoListaDetalle { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
         public virtual Estado Estado { get; set; }
         public virtual Opcion Opcion { get; set; }

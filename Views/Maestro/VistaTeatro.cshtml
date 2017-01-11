@@ -38,9 +38,9 @@
             <thead>
                 <tr>
                     <th>Nombre</th>
+                    <th class="min-tablet">Ciudad</th>
                     <th>Centro de Costo</th>
                     <th class="min-tablet">IP</th>
-                    <th class="min-tablet">Ciudad</th>
                     <th class="min-desktop">Estado</th>
                     <th class="min-desktop">Creado Por</th>
                     <th class="min-desktop">Fecha Creación</th>
@@ -52,8 +52,6 @@
                 {
                     <tr>
                         <td>@teatro.Nombre</td>
-                        <td>@teatro.CentroOperacion</td>
-                        <td>@teatro.IP</td>
                         @if (teatro.Ciudad != null)
                         {
                             <td> @teatro.Ciudad.Departamento.Nombre - @teatro.Ciudad.Nombre</td>
@@ -62,6 +60,8 @@
                         {
                             <td></td>
                         }
+                        <td>@teatro.CentroOperacion.Nombre - @teatro.CentroOperacion.Region</td>
+                        <td>@teatro.IP</td>                       
                         <td>@teatro.Estado.Nombre</td>
                         <td>@teatro.CreadoPor</td>
                         <td>@teatro.FechaCreacion.ToString("dd/MM/yyyy")</td>

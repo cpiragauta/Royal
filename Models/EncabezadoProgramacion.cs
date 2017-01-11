@@ -30,9 +30,11 @@ namespace CinemaPOS.Models
         public Nullable<System.DateTime> FechaModificacion { get; set; }
         public Nullable<bool> Sincronizado { get; set; }
         public Nullable<int> TeatroID { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
         public virtual Estado Estado { get; set; }
-        public virtual Teatro Teatro { get; set; }
         public virtual ICollection<Funcion> Funcion { get; set; }
+        public virtual Teatro Teatro { get; set; }
     }
 }

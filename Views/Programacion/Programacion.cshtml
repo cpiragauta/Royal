@@ -359,9 +359,13 @@
             success: function (data) {
                 debugger
                 $("#Table").empty();
+                $("#Table").DataTable().destroy();
                 ModalProcesandoHiden();
                 $("#Cant_Dias").val("0");
+                $("#Table").DataTable();
+                $("#Table").empty();
                 $("#Table").append(data);
+                //$("#Table").append(data);
             },
             error: function (data) {
                 ModalProcesandoHiden();
@@ -614,12 +618,13 @@
 
 
         $('#HorasFunciones').on('itemAdded', function(event) {
+            debugger
             var tag = event.item;
             if(!/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(tag)){
                 $('#HorasFunciones').tagsinput('remove', tag, {preventPost: true});
-            }
-            var arregloAOrdenar=$('#HorasFunciones').tagsinput('items');
-            var arregloOrdenado =ValidarRangoFunciones(arregloAOrdenar);
+            }            
+            //var arregloAOrdenar=$('#HorasFunciones').tagsinput('items');
+            //var arregloOrdenado =ValidarRangoFunciones(arregloAOrdenar);
         });
 
 

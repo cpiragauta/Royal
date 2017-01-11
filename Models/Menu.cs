@@ -33,6 +33,8 @@ namespace CinemaPOS.Models
         public Nullable<bool> Sincronizado { get; set; }
         public Nullable<int> RowIDCentral { get; set; }
         public Nullable<int> Orden { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
         public virtual Tipo Tipo { get; set; }
         public virtual Tipo Tipo1 { get; set; }

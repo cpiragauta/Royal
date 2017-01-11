@@ -60,7 +60,7 @@ namespace CinemaPOS.Controllers.Master
             ViewBag.Servicios = db.Opcion.Where(s => s.Tipo.Codigo == "TIPOSERVICIO" && s.Activo == true).ToList();
             ViewBag.Formatos = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOFORMATO" && f.Activo == true).ToList();
             ViewBag.TipoTarifa = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOLISTADETALLE" && f.Activo == true).ToList();
-            ViewBag.ListaEstados = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOLISTAPRECIO").ToList();
+            ViewBag.ListaEstados = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOLISTAPRECIO").ToList();            
             if (RowID_Lista != null)
             {
                 return View(db.ListaEncabezado.Where(le => le.RowID == RowID_Lista).FirstOrDefault());
@@ -824,6 +824,7 @@ namespace CinemaPOS.Controllers.Master
             ViewBag.Companias = db.Tercero.Where(t => t.Opcion2.Codigo == "EMPRESA").ToList();
             ViewBag.Ciudades = db.Ciudad.ToList().OrderBy(f => f.Nombre);
             ViewBag.ListaEstados = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOTEATRO");
+            ViewBag.ListaCentrosOperacion = db.CentroOperacion.ToList();
             if (RowId_Teatro != null && RowId_Teatro != 0)
             {
                 RowId_Teatro = int.Parse(Request.Params["RowId_Teatro"].ToString());
@@ -872,8 +873,7 @@ namespace CinemaPOS.Controllers.Master
         public Teatro CargarDatosTeatro(Teatro ObjTeatro, FormCollection formulario)
         {
 
-            // ObjTeatro.CompaniaID = int.Parse(formulario["empresa"]);
-            ObjTeatro.CentroOperacion = formulario["centro_costo"];
+            ObjTeatro.CentroOperacionID = int.Parse(formulario["centro_costo"]);
             ObjTeatro.IP = formulario["ip"];
             ObjTeatro.Nombre = formulario["nombre"].ToUpper();
             ObjTeatro.CiudadID = int.Parse(formulario["ciudad"]);
