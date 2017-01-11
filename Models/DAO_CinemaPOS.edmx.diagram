@@ -193,6 +193,7 @@
         <AssociationConnector Association="CinemaPOSModel.FK__TeatroPel__Teatr__68336F3E" />
         <AssociationConnector Association="CinemaPOSModel.FK__TeatroVen__Teatr__4D7F7902" />
         <AssociationConnector Association="CinemaPOSModel.FK__UsuarioSi__Teatr__353DDB1D" />
+        <AssociationConnector Association="CinemaPOSModel.FK__TeatroPel__Estad__27AED5D5" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -39,6 +39,7 @@ namespace CinemaPOS.Models
             this.Seguimiento = new HashSet<Seguimiento>();
             this.OportunidadVenta = new HashSet<OportunidadVenta>();
             this.Teatro = new HashSet<Teatro>();
+            this.TeatroPelicula = new HashSet<TeatroPelicula>();
         }
     
         public int RowID { get; set; }
@@ -77,5 +78,6 @@ namespace CinemaPOS.Models
         public virtual ICollection<Seguimiento> Seguimiento { get; set; }
         public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }
         public virtual ICollection<Teatro> Teatro { get; set; }
+        public virtual ICollection<TeatroPelicula> TeatroPelicula { get; set; }
     }
 }
