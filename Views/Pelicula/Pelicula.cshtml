@@ -18,7 +18,6 @@
         $("#modal-video").modal("hide");
     }
     $(document).ready(function(){
-        
     })
     function valida_formulario() {
         hasChangue = false;
@@ -45,14 +44,16 @@
                 processData: false,
                 success: function (data) {
                     data= JSON.parse(data);
+                    debugger
                     if (data.tipo_respuesta=="success") {
                         swal(data.tipo_respuesta,data.respuesta);
+                        return false;
                         window.location = "/Pelicula/VistaPelicula/"
+                        
                     }
                     if (data.tipo_respuesta=="warning") {
                         swal("Advertencia",data.respuesta,data.tipo_respuesta);
                     }
-
                 },
                 error: function () {
                     swal("","Verifica la informacion que estas guardando","warning")
@@ -121,7 +122,16 @@
             quantitybox++;
         }
         $('.add-panel-porcentaje').click(function () {
-            clone_panel_porcentaje();
+            if(@Model.RowID != 0){
+                clone_panel_porcentaje();
+            }else{
+                swal(
+                        'Se debe crear primero la pelicula',
+                        '',
+                        'error'
+                        )
+            }
+           
         });
         $('.contenido .close').click(function () {
 
@@ -171,8 +181,6 @@
     });
 
 
-
-
     //GUARDAR TEATRO
     function GuardarTeatro() {
         debugger;
@@ -184,10 +192,12 @@
             data: {
                 rowidPelicula: $(".RowID_Pelicula").val(),
                 rowidTeatro: $("#rowidTeatro").val(),
-
+                rowidestado : $("#rowidestadoteatro").val()
             },
             success: function (data) {
                 debugger;
+                if(@Model.RowID!=0){
+
                 if(data=="ok"){
                     Alerts("Teatro agregado!", "success")
                     CargarTeatro();
@@ -197,6 +207,13 @@
                             '',
                             'error'
                             )
+                }
+                }else{
+                    swal(
+                           'Se debe crear primero la pelicula',
+                           '',
+                           'error'
+                           )
                 }
                 RefrescarTabla();
 
@@ -223,6 +240,8 @@
             },
             success: function (data) {
                 debugger;
+                if(@Model.RowID != 0){
+
                 if(data=="ok"){
                     Alerts("Teatros agregados con exito!", "success")
 
@@ -231,6 +250,14 @@
                 }else{
                     swal(
                             'El teatro ya se encuentra asociado a la venta empresarial',
+                            '',
+                            'error'
+                            )
+                }
+                }else{
+
+                    swal(
+                            'Se debe crear primero la pelicula',
                             '',
                             'error'
                             )
@@ -334,7 +361,7 @@
 
             <!--Form-->
 
-            <form id="formulario_pelicula" enctype="multipart/form-data">
+            <form id="formulario_pelicula" enctype="multipart/form-data" onsubmit="return false">
                 <input type="hidden" class="RowID_Pelicula" name="RowID_Pelicula" value="@Model.RowID" />
                 <div class="panel-body">
                     <div class="tab-content">
@@ -699,10 +726,10 @@
                                         <label class="control-label">Afiche</label>
                                         <div class="fileupload fileupload-new" data-provides="fileupload">
                                             <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
-                                                @if (Model.RowID != 0 && Model.Trailer!=null)
+                                                @if (Model.RowID != 0)
                                                 {
 
-                                                    <img src="/@Model.Afiche" alt="@Model.TituloLocal">
+                                                    <img src="/@Model.Afiche" alt="">
                                                 }
                                                 else
                                                 {
@@ -727,7 +754,7 @@
                                         <div class="fileupload fileupload-new" data-provides="fileupload">
                                             <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
 
-                                                @if (Model.RowID != 0 && Model.Thumbnail!=null)
+                                                @if (Model.RowID != 0)
                                                 {
 
                                                     <img src="/@Model.Thumbnail" alt="">
@@ -912,7 +939,7 @@
                             </div>
                             <a href="javascript:;" class="btn btn-success btn-hover-warning add-panel-porcentaje"><i class="icon-plus">&nbsp;&nbsp;Agregar Porcentaje</i></a>
 
-
+                            
                             <!--Fourth tab-->
                             @*<div id="demo-cls-tab4" class="tab-pane mar-btm">
                                 <div class="row">
@@ -951,11 +978,20 @@
                             <div class="row">
                                 <div class="col-sm-3">
                                     <input type="hidden" name="rowidEmpresarial" value="@ViewBag.RowEmpresa" id="rowidEmpresarial" />
-                                    <label for="TEATRO">Teatros</label>
+                                    <label for="TEATRO">Teatros:</label>
                                     <select class="form-control" id="rowidTeatro" name="rowidTeatro">
                                         @foreach (var item in (List<CinemaPOS.Models.Teatro>)ViewBag.TeatrosDisp)
                                         {
                                             <option value="@item.RowID">@item.Nombre - @item.Ciudad.Nombre</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label>Estado:</label>
+                                    <select class="form-control" id="rowidestadoteatro" name="rowidestadoteatro">
+                                        @foreach (CinemaPOS.Models.Estado item in ViewBag.EstadoTeatro)
+                                        {
+                                            <option value="@item.RowID">@item.Nombre</option>
                                         }
                                     </select>
                                 </div>
@@ -978,6 +1014,8 @@
                                         <th></th>
                                         <th>Teatro</th>
                                         <th>Ubicaci&oacute;n</th>
+                                        <th>Estado</th>
+                                       
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -987,11 +1025,18 @@
                                             <td><input type="checkbox" name="check[]" value="@item.RowID" id="@item.RowID" checked onclick="javascript:eliminarTeatro(this)" /></td>
                                             <td>@item.Teatro.Nombre</td>
                                             <td>@item.Teatro.Ciudad.Nombre</td>
+                                            @if (item.EstadoID != null)
+                                            {
+                                                <td>@item.Teatro.Estado.Nombre</td>
+                                            }else
+                                            {
+                                                <td></td>
+                                            }
+
                                         </tr>
                                     }
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                     <div class="panel-footer text-right">
@@ -1047,6 +1092,7 @@
                                     "<td><input type='checkbox' name='check[]' value=" + tabla.rowid + " id=" + tabla.rowid + " checked onclick='eliminarTeatro(this)'/></td>" +
                                     "<td>"+tabla.teatro+"</td>"+
                                     "<td>"+tabla.ubicacion+"</td>"+
+                                    "<td>"+tabla.estado+"</td>"+
                                 "</tr>"
                         );
                 })

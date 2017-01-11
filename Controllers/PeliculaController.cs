@@ -24,6 +24,7 @@ namespace CinemaPOS.Controllers.Pelicula
             ViewBag.GeneroPelicula = db.Opcion.Where(i => i.Tipo.Codigo == "TIPOGENEROPELICULA" && i.Activo == true).ToList();
             ViewBag.Teatros = db.TeatroPelicula.Where(f => f.EncabezadoPeliculaID == RowID_Pelicula).ToList();
             ViewBag.Estado = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOPELICULA");
+            ViewBag.EstadoTeatro = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOTEATRO");
             var TeatroNoDisp = db.TeatroPelicula.Where(f => f.EncabezadoPeliculaID == RowID_Pelicula).ToList();
             List<Teatro> Teatros = new List<Teatro>();
             List<Teatro> TeatrosV2 = db.Teatro.ToList();
@@ -48,7 +49,6 @@ namespace CinemaPOS.Controllers.Pelicula
             }
 
         }
-
         [CheckSessionOutAttribute]
         public JsonResult GuardarPelicula(FormCollection formulario, HttpPostedFileBase afiche, HttpPostedFileBase thumbnail, int? RowID_Pelicula)
         {
@@ -672,7 +672,6 @@ namespace CinemaPOS.Controllers.Pelicula
             #endregion
             return Json(new {tipo_respuesta="success",respuesta="La información ha sido guardada exitosamente" });
         }
-        
         public int ConvertirHoraMinutos(string Hora)
         {
             var Minutos = int.Parse(Hora.Split(':')[0]) * 60 + int.Parse(Hora.Split(':')[1]);
@@ -744,7 +743,7 @@ namespace CinemaPOS.Controllers.Pelicula
             ViewBag.PeliculaV2 = id.RowID;
             return View();
         }
-        public JsonResult GuardarTeatro(int rowidPelicula, int rowidTeatro)
+        public JsonResult GuardarTeatro(int rowidPelicula, int rowidTeatro, int rowidestado)
         {
             TeatroPelicula teatro_pelicula = new TeatroPelicula();
             string validate = "";
@@ -754,6 +753,7 @@ namespace CinemaPOS.Controllers.Pelicula
                 {
                     teatro_pelicula.TeatroID = rowidTeatro;
                     teatro_pelicula.EncabezadoPeliculaID = rowidPelicula;
+                    teatro_pelicula.EstadoID = rowidestado;
                     teatro_pelicula.CreadoPor = Session["usuario_creacion"].ToString();
                     teatro_pelicula.FechaCreacion = DateTime.Now;
                     db.TeatroPelicula.Add(teatro_pelicula);
@@ -838,7 +838,8 @@ namespace CinemaPOS.Controllers.Pelicula
                         {
                             rowid = teatroPelicula.RowID,
                             teatro = (teatroPelicula.TeatroID == 0) ? "" : teatroPelicula.Teatro.Nombre,
-                            ubicacion = (teatroPelicula.Teatro.CiudadID == null) ? "" : teatroPelicula.Teatro.Ciudad.Nombre
+                            ubicacion = (teatroPelicula.Teatro.CiudadID == null) ? "" : teatroPelicula.Teatro.Ciudad.Nombre,
+                            estado = (teatroPelicula.Estado.Nombre == null)? "": teatroPelicula.Estado.Nombre
                         }).ToList();
             return Json(data, JsonRequestBehavior.AllowGet);
         }
