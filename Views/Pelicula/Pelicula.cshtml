@@ -47,7 +47,6 @@
                     debugger
                     if (data.tipo_respuesta=="success") {
                         swal(data.tipo_respuesta,data.respuesta);
-                        return false;
                         window.location = "/Pelicula/VistaPelicula/"
                         
                     }
@@ -394,21 +393,13 @@
                                             <option value="" disabled selected>Seleccione una opcion</option>
                                             @foreach (CinemaPOS.Models.Opcion clasificacion in ViewBag.Clasificacion)
                                             {
-                                                if (Model.TipoClasificacionID != null)
+                                                if (Model.TipoClasificacionID == clasificacion.RowID)
                                                 {
-                                                    if (Model.RowID != 0 && Model.Opcion.RowID == clasificacion.RowID)
-                                                    {
-                                                        <option value="@clasificacion.RowID" selected>@clasificacion.Nombre</option>
-                                                    }
-
+                                                    <option value="@clasificacion.RowID" selected>@clasificacion.Nombre</option>
                                                 }
-                                                else
-                                                {
                                                     <option value="@clasificacion.RowID">@clasificacion.Nombre</option>
-                                                }
-
-
                                             }
+
                                         </select>
                                     </div>
                                 </div>
@@ -726,7 +717,7 @@
                                         <label class="control-label">Afiche</label>
                                         <div class="fileupload fileupload-new" data-provides="fileupload">
                                             <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
-                                                @if (Model.RowID != 0)
+                                                @if (Model.Afiche != null)
                                                 {
 
                                                     <img src="/@Model.Afiche" alt="">
@@ -740,7 +731,7 @@
                                             </div>
                                             <div>
                                                 <span class="btn btn-file">
-                                                    <span class="fileupload-new">Seleccionar imagen</span>
+                                                    <span class="fileupload-new">Seleccionar imagen</http://localhost:26496/Pelicula/VistaPelicula#span>
                                                     <span class="fileupload-exists">Cambiar</span>
                                                     <input type="file" accept="image/jpeg,image/png,image/gif" onchange="ValidarImagen(this,720,1200,140000000)" class="default image_invoice_clone" name="afiche">
                                                 </span>
@@ -754,7 +745,7 @@
                                         <div class="fileupload fileupload-new" data-provides="fileupload">
                                             <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
 
-                                                @if (Model.RowID != 0)
+                                                @if (Model.Afiche != null)
                                                 {
 
                                                     <img src="/@Model.Thumbnail" alt="">
