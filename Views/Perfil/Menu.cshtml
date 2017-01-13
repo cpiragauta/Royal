@@ -125,7 +125,7 @@
                             <option value="" disabled selected>Seleccione una opcion</option>
                             @foreach (CinemaPOS.Models.TipoMenu tipo in ViewBag.Tipo)
                             {
-                                if (Model.Tipo.RowID == tipo.RowID)
+                                if (Model.TipoMenuID== tipo.RowID)
                                 {
                                     <option value="@tipo.RowID" selected="selected">@tipo.Nombre</option>
                                 }
