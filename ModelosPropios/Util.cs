@@ -164,5 +164,23 @@ namespace CinemaPOS.ModelosPropios
             }
 
         }
+
+
+        public class funcionesUtil
+        {
+            public Funciones Funcion { get; set; }
+
+        }
+        public class FuncionEncabezado
+        {
+            public string titulo { get; set; }
+            public string version { get; set; }
+            public string Formato { get; set; }
+
+            public int pelicula { get; set; }
+            public int peliculaDetalleID { get; set; }
+            public string Poster { get; set; }
+            public List<Funciones> Lista { get; set; }
+        }
     }
 }

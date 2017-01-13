@@ -1,0 +1,48 @@
+﻿@font-face{
+    font-family:FuturaBold;
+    src: url('../Fuente Royal/Futura Extra Bold.ttf');
+}
+@font-face{
+    font-family:FuturaBoldItalic;
+    src: url('../Fuente Royal/FuturaExtraBoldIta.ttf');
+}
+@font-face{
+    font-family:FuturaLightV2;
+    src: url('../Fuente Royal/Futura (Light).ttf');
+}
+@font-face{
+    font-family:FuturaBeyasIta;
+    src: url('../Fuente Royal/Futura Beyaz Italic.ttf');
+}
+@font-face{
+    font-family:FuturaKoyuIta;
+    src: url('../Fuente Royal/Futura Koyu Italic.ttf');
+}
+@font-face{
+    font-family:FuturaKoyu;
+    src: url('../Fuente Royal/Futura Koyu.ttf');
+}
+@font-face{
+    font-family:FuturaLightOblique;
+    src: url('../Fuente Royal/Futura LightOblique.ttf');
+}
+@font-face{
+    font-family:FuturaLightOblique;
+    src: url('../Fuente Royal/Futura LightOblique.ttf');
+}
+@font-face{
+    font-family:FuturaOblique;
+    src: url('../Fuente Royal/Futura Oblique.ttf');
+}
+@font-face{
+    font-family:FuturaExtended;
+    src: url('../Fuente Royal/FuturaExtended.ttf');
+}
+@font-face{
+    font-family:FuturaLighItalic;
+    src: url('../Fuente Royal/FuturaLighItalic.ttf');
+}
+@font-face{
+    font-family:FuturaLight;
+    src: url('../Fuente Royal/FuturaLight.ttf');
+}
