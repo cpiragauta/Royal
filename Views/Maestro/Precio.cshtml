@@ -152,7 +152,15 @@
                 RowID_Detalle
                 },
             success: function (data) {
-                llenar_tabla(data);
+                if (data.tipo_respuesta=="warning") {
+                    swal("Advertencia",data.respuesta,data.tipo_repuesta);
+                    llenar_tabla(data.RowID_Encabezado);
+                }
+                else{
+                    swal("Ok",data.respuesta,data.tipo_repuesta);
+                    llenar_tabla(data.RowID_Encabezado);
+                }
+               
             },
             error: function () {
                 swal("Error al eliminar el registro " +RowID_Tarifa+" ", "");
@@ -297,7 +305,13 @@
     function crear_nombre(){
         //console.log($(".select-dia option:selected").removeAttr('selected'));
         var Nombre="";
-        Nombre+=$("#servicios option:selected").text()+" "+$("#formato option:selected").text()+" "+$("#tipo_tarifa option:selected").text()+" "+$(".select-dia").val();
+        var nombredias="";
+        var dias=$(".select-dia").val();
+        console.log(dias)
+        for (var i = 0; i < dias.length; i++) {
+            nombredias+=dias[i].substring(0,3)+",";
+        }
+        Nombre+=$("#servicios option:selected").text()+" "+$("#formato option:selected").text()+" "+$("#tipo_tarifa option:selected").text()+" "+nombredias;
         $("#nombre_detalle").val(Nombre);
     }
 

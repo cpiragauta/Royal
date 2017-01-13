@@ -171,9 +171,9 @@
                 }
             
             else{
-            while(seleccionadas<=cantidad_venta){
+                while($('.Seleccionada').length<cantidad_venta){
                 var id_busqueda=parseInt(id)+seleccionadas;
-                if ($('.Seleccionada').length<$("#cantidad-ventas").val()) {
+                if ($('.Seleccionada').length<= $("#cantidad-ventas").val()) {
                     debugger
                     var silla=$("#"+id_busqueda).attr('onclick');
                     if (silla!=null) {
@@ -293,7 +293,7 @@
 </style>
 
 <div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="true">
-    <div class="modal-dialog" style="width:(@Model.Cantidad_Columnas*50)px;height:(@Model.Cantidad_Filas*50);margin-top: 20px;">
+    <div class="modal-dialog" style="width:@((Model.Cantidad_Columnas*50)+100)px;height:@(Model.Cantidad_Filas*50);margin-top: 20px;">
         <div class="modal-content">
             <div class="modal-header" style="padding: 10px; ">
                 <button type="button" class="ion-close-circled close salir" data-dismiss="modal" aria-hidden="true">&times;</button>

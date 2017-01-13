@@ -375,6 +375,7 @@
     <Content Include="Content\css\bootstrap-fileupload.css" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\CinemaPOS.css" />
     <Content Include="Content\css\demo\fonts\nifty-demo-icons.svg" />
     <Content Include="Content\css\demo\nifty-demo-icons.css" />
     <Content Include="Content\css\demo\nifty-demo-icons.min.css" />
@@ -460,6 +461,8 @@
     <Content Include="Content\css\themes\type-c\theme-yellow.css" />
     <Content Include="Content\css\themes\type-c\theme-yellow.min.css" />
     <Content Include="Content\font-own\icomoon.svg" />
+    <Content Include="Content\fonts-pos\icomoon.svg" />
+    <Content Include="Content\fonts-pos\style.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\bg-img\1.jpg" />
     <Content Include="Content\img\bg-img\2.jpg" />
@@ -2329,6 +2332,9 @@
     <Content Include="Content\font-own\icomoon.eot" />
     <Content Include="Content\font-own\icomoon.ttf" />
     <Content Include="Content\font-own\icomoon.woff" />
+    <Content Include="Content\fonts-pos\icomoon.eot" />
+    <Content Include="Content\fonts-pos\icomoon.ttf" />
+    <Content Include="Content\fonts-pos\icomoon.woff" />
     <None Include="DB_9CAC35_cinemaposDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DB_9CAC35_cinemaposDataSet.Designer.cs</LastGenOutput>

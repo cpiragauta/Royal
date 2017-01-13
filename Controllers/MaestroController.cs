@@ -87,7 +87,8 @@ namespace CinemaPOS.Controllers.Master
         //    return View(encabezado);
         //}
         [CheckSessionOutAttribute]
-        public JsonResult Guardar_Lista_Precio(FormCollection formulario, int? RowID_Encabezado)
+        public JsonResult Guardar_Lista_Precio(FormCollection
+            formulario, int? RowID_Encabezado)
         {
 
             ListaEncabezado ObjEncabezado = new ListaEncabezado();
@@ -262,7 +263,7 @@ namespace CinemaPOS.Controllers.Master
                             {
                                 ObjDetalle.TipoListaDetalle = int.Parse(formulario["tipo_tarifa"]);
                             }
-                            ObjDetalle.DiasAsignados = formulario["dias"];
+                            ObjDetalle.DiasAsignados = formulario["dias"].TrimEnd(',');
                             ObjDetalle.Precio = int.Parse(formulario["precio"].Replace(".", ""));
                             ObjDetalle.PrecioDistribuidor = int.Parse(formulario["precio_distribuidor"].Replace(".", ""));
                             ObjDetalle.FechaInicial = ModelosPropios.Util.FechaInsertar(formulario["fecha_inicial"]);
@@ -377,17 +378,16 @@ namespace CinemaPOS.Controllers.Master
         public JsonResult EliminarItem(int RowID_Detalle, int RowID_Encabezado)
         {
             ListaDetalle objdetalle = db.ListaDetalle.Where(lt => lt.RowID == RowID_Detalle).FirstOrDefault();
-            if (objdetalle.ListaPrecioFuncion.Count()==0)
+            if (objdetalle.ListaPrecioFuncion.Count()!=0)
             {
-                return Json(new { RowID_Encabezado = RowID_Encabezado, tipo_respuesta = "warning", respuesta = "La tarifa se encuentra asociada a una función" });
+                return Json(new { RowID_Encabezado = RowID_Encabezado, tipo_respuesta = "warning", respuesta = "La tarifa no puede ser eliminada, ya se encuentra asociada a una función" });
             }
             else
             {
                 db.ListaDetalle.Remove(db.ListaDetalle.Where(lt => lt.RowID == RowID_Detalle).First());
                 db.SaveChanges();
             }
-            
-            return Json(RowID_Encabezado);
+            return Json(new { RowID_Encabezado = RowID_Encabezado, tipo_respuesta = "success", respuesta = "Tarifa eliminada correctamente" });
         }
 
         public TimeSpan Convertir_A_Hora_Militar(string hora)
@@ -866,6 +866,7 @@ namespace CinemaPOS.Controllers.Master
         public ActionResult Teatro(int? RowId_Teatro)
         {
             ViewBag.Companias = db.Tercero.Where(t => t.Opcion2.Codigo == "EMPRESA").ToList();
+            ViewBag.ListaCentrosOperacion = db.CentroOperacion.ToList();
             ViewBag.Ciudades = db.Ciudad.ToList().OrderBy(f => f.Nombre);
             ViewBag.ListaEstados = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOTEATRO");
             if (RowId_Teatro != null && RowId_Teatro != 0)

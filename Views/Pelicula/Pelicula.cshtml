@@ -742,7 +742,7 @@
                                                 <span class="btn btn-file">
                                                     <span class="fileupload-new">Seleccionar imagen</span>
                                                     <span class="fileupload-exists">Cambiar</span>
-                                                    <input type="file" accept="image/jpeg,image/png,image/gif" onchange="ValidarImagen(this,720,1200,140000000)" class="default image_invoice_clone" name="afiche">
+                                                    <input type="file" accept="image/jpeg,image/png,image/gif" onchange="ValidarAfiche(this,720,1200,4000000 )" class="default image_invoice_clone" name="afiche">
                                                 </span>
                                             </div>
                                         </div>
@@ -1179,5 +1179,54 @@
     $('.solo-numero').keyup(function () {
         this.value = (this.value + '').replace(/[^0-9]/g, '');
     });
+
+    function ValidarAfiche(obj,widht,height,size) {
+        var uploadFile = obj.files[0];
+        var ruta = $(".fileupload-new").find("img").attr("src");
+        if (ruta==null) {
+            ruta = $(".zoom").find("img").attr("src");
+        }
+        console.log(ruta);
+        if (!window.FileReader) {
+            alert('El navegador no soporta la lectura de archivos');
+            return;
+        }
+
+        if (!(/\.(jpg|png|gif)$/i).test(uploadFile.name)) {
+            alert('El archivo a adjuntar no es una imagen');
+        }
+        else {
+            var img = new Image();
+            img.onload = function () {
+                if (this.width.toFixed(0) >= widht && this.height.toFixed(0) >= height) {
+                    Alerts("Las medidas deben ser: " + widht + " * " + height + "", "warning")
+                    $(this).attr({ value: '' });
+                    $(".zoom").find("img").attr({ src: ruta });
+                }
+                else if (uploadFile.size > size) {
+                    Alerts('El peso de la imagen no puede exceder los ' + size + '')
+                    $(this).attr({ value: '' });
+                    $(".zoom").find("img").attr({ src: ruta });
+                }
+                if (uploadFile.size <100000) {
+                    Alerts('El peso para el afiche debe ser minimo de 100 KB ')
+                    $(this).attr({ value: '' });
+                    $(".zoom").find("img").attr({ src: ruta });
+                }else
+                    if (uploadFile.size > 3000000) {
+                    Alerts('El peso de la imagen no puede exceder los ' + size + '')
+                    $(this).attr({ value: '' });
+                    $(".zoom").find("img").attr({ src: ruta });
+                }
+
+                if (this.height.toFixed(0) <= 400) {
+                    Alerts("La altura del afiche debe ser minimo de 400px", "warning")
+                    $(this).attr({ value: '' });
+                    $(".zoom").find("img").attr({ src: ruta });
+                }
+            };
+            img.src = URL.createObjectURL(uploadFile);
+        }
+    }
     
 </script>
