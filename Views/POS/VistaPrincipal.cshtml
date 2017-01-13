@@ -12,6 +12,11 @@
     #floating-top-right {
         z-index: 999999999;
     }
+    .active{
+        width:100%!important;
+    }
+   
+}
 </style>
 
 <!--STYLESHEET-->
@@ -80,7 +85,7 @@
 <!--DataTables Sample [ SAMPLE ]-->
 <script src="~/Content/js/demo/tables-datatables.js"></script>
 <link href="~/Content/css/demo/nifty-demo-icons.css" rel="stylesheet" />
-
+<link href="~/Content/css/CinemaPOS.css" rel="stylesheet" />
 <style>
     /* Animación con keyframe llamada "latidos" */
     @@keyframes latidos {
@@ -440,27 +445,39 @@
             })
         
     }
-    function adicionar_item(rowid_funcion) {
-
-        $.ajax({
-            url: "/POS/AdicionarItemVenta",
-            async: false,
-            data: {
-                RowID_ListaFuncion: rowid_funcion,
-                cantidad: $('.' + rowid_funcion + '').length + 1,
-
-            },
-            success: function (data) {
-                console.log($("#boletas-comprar").find())
-                $('.item-elimina' + rowid_funcion + '').remove();
-                 $(".cantidad-boleta").remove()
-                $("#boletas-comprar").append(data);
-                ContarBoletasVender();
-            },
-            error: function () {
-                Console.log("Error");
-            }
-        })
+    function adicionar_item(rowid_tarifafuncion, cantidad) {
+        debugger
+        var cantidad_actual = $("#cantidad_boletas_tarifa_" + rowid_tarifafuncion + "").val();
+        $("#cantidad_boletas_tarifa_" + rowid_tarifafuncion + "").remove();
+        if (cantidad_actual==null) {
+            cantidad_actual = 0;
+        }
+        var cantidad_boletas = parseInt(cantidad_actual) + parseInt(cantidad);
+        if (cantidad_boletas<=0) {
+            $(".item-elimina "+rowid_tarifafuncion+"").remove()
+        }
+        else {
+            $.ajax({
+                url: "/POS/AdicionarItemVenta",
+                async: false,
+                data: {
+                    RowID_ListaFuncion: rowid_tarifafuncion,
+                    cantidadnueva: parseInt(cantidad_actual) + parseInt(cantidad),
+                },
+                success: function (data) {
+                    debugger
+                    console.log($("#boletas-comprar").find())
+                    $('.item-elimina' + rowid_tarifafuncion + '').remove();
+                    $(".cantidad-boleta").remove()
+                    $("#boletas-comprar").append(data);
+                    ContarBoletasVender();
+                },
+                error: function () {
+                    Console.log("Error");
+                }
+            })
+        }
+        
     }
     function ContarBoletasVender() {
         var boletas = 0;
@@ -472,28 +489,32 @@
         //    console.log(text.text);
         //})
         $(".suma-costo-pedido").each(function (index, element) {
-            precios+=parseInt( $(this).text().replace('$',''));
+            precios += parseInt($(this).text().replace('$', ''));
         });
         $("#precio-items").text("$" + precios);
         $("#precio-items").empty().append("<h4>Total $:" + precios + "</h4>");
         $("#cantidad_boletas").val(boletas);
-        $("#cantidad-items").empty().append("<h4>Total #:"+ boletas+"</h4>");
+        $("#cantidad-items").empty().append("<h4>Total #:" + $(".boletas_vender_").val() + "</h4>");
         $("#cantidad_sillas").val(boletas);
     }
     function eliminar_item(clase) {
-        if (parseInt($(".cantidad-boleta-" + clase + "").val()-1) <= 0) {
-            console.log(".item-elimina" + clase + "");
-            $(".item-elimina" + clase + "").remove();
-        }
-        var boletas=1;
-        $("." + clase + "").each(function () {
+        debugger
+        var cantidad_actual = $("#cantidad_boletas_tarifa_" + clase + "").val();
+        cantidad_actual = cantidad_actual - 1;
 
-            if (boletas==1) {
-               $(this).remove();
-            }
+        //if (parseInt($(".cantidad-boleta-" + clase + "").val()-1) <= 0) {
+        //    console.log(".item-elimina" + clase + "");
+        //    $(".item-elimina" + clase + "").remove();
+        //}
+        var boletas = cantidad_actual;
+        //$("." + clase + "").each(function () {
 
-            boletas++;
-        })
+        //    if (boletas==1) {
+        //       $(this).remove();
+        //    }
+
+        //    boletas++;
+        //})
 
         $(".cantidad-boleta-" + clase + "").val(($(".cantidad-boleta-" + clase + "").val() - 1));
         $("#total-costo" + clase + "").text("$"+parseFloat($(".precio-items-" + clase + "").val()) * parseFloat($(".cantidad-boleta-" + clase + "").val()));
@@ -532,7 +553,8 @@
 
         }
         else {
-            cantidad = $("#cantidad_sillas").val();
+            
+            cantidad = $(".boletas_vender_").val();
             //ModalProcesandoShow();
             var RowID_Tarifas = "";
             $(".tarifas_id").each(function (index, element) {
@@ -547,7 +569,7 @@
         }
     }
     $(document).ready(function () {
-        
+        alert($(window).width()+"wid"+ $(window).height()+'hei');
         mueveReloj();
         buscar_funciones();
         getLocalIPs(function (ips) {
@@ -561,7 +583,7 @@
             var hora_funcion="15:15:00";
             debugger
             var hora_funcion_text = $(element).find(".hora_funcion").text();
-            var hora_funcion = parseInt(hora_funcion_text.split[0]) + parseInt(hora_funcion_textsplit[0]);
+            var hora_funcion = parseInt(hora_funcion_text.split[0]) + parseInt(hora_funcion_text.split[0]);
 
            if ((hora_funcion.replace(":", "")) > fechasistema.replace(":", "") && hora_funcion.replace(":", "") < (fechasistema.replace(":", "") + 20)) {
                 console.log("por iniciar");

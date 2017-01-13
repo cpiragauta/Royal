@@ -14,7 +14,8 @@ namespace CinemaPOS.Controllers
 {
     public class POSController : Controller
     {
-        //
+        
+        
         // GET: /POS/
 
         CinemaPOSEntities db = new CinemaPOSEntities();
@@ -183,91 +184,179 @@ namespace CinemaPOS.Controllers
             string conversionfecha = hoy1.ToString("MM/dd/yyyy");
             var hora_actual = (DateTime.Now.ToString("HH:mm")).Split(':');
             int minutosactuales = int.Parse(hora_actual[0] + hora_actual[1]);
-            var datavista = from dt in db.DetallePelicula.ToList()
-                            select new ModelosPropios.Model.Funcion_Vista
-                            {
-                                Detalle_Pelicula = dt,
-                                Funciones = db.Funciones.Where(f => f.DetallePeliculaID == dt.RowID && f.FechaFuncion == conversionfecha && f.RowIDTeatro == RowID_Teatro && f.EstadoFuncion == "Abierta"/*multicineID*/).ToList()
-                            };
+            //var datavista = from dt in db.DetallePelicula.ToList()
+            //                select new ModelosPropios.Model.Funcion_Vista
+            //                {
+            //                    Detalle_Pelicula = dt,
+            //                    Funciones = db.Funciones.Where(f => f.DetallePeliculaID == dt.RowID && f.FechaFuncion == conversionfecha && f.RowIDTeatro == RowID_Teatro /*multicineID*/).ToList()
+            //                };
+            var datavista = db.Funciones.Where(f => f.FechaFuncion == conversionfecha && f.RowIDTeatro == RowID_Teatro /*multicineID*/).GroupBy(f => f.DetallePeliculaID).ToList();
+            var peliculas = datavista.ToList();
             string html = "";
             foreach (var peliculas_vista in datavista)
             {
-                if (peliculas_vista.Funciones.Count() != 0)
+                bool informacion_pelicula = false;
+
+                int cantidad_funciones_consulta = peliculas_vista.Count();
+                int cantidad_funciones_html = 0;
+                bool cerrar = true;
+                bool carrusel = true;
+                int contador_div = 1;
+                int contador_funciones_pelicula = 1;
+                int contador_funciones_div = 0;
+                int valida_cantidad_funciones = 0;
+                foreach (var funciones in peliculas_vista)
                 {
-
-
-                    bool cerrar = true;
-                    bool carrusel = true;
-                    int contador_div = 1;
-                    int contador_funciones_pelicula = 1;
-                    html += "<tr>";
-                    html += "<td>";
-                    html += "<img class='poster-peliculas' src='/" + peliculas_vista.Detalle_Pelicula.EncabezadoPelicula.Afiche+"' > ";
-                    html += "</td>";
-                    html += "<td  nombre-peliculas'>";
-                    html += "<h5>" + peliculas_vista.Detalle_Pelicula.EncabezadoPelicula.TituloLocal + "</h5>";
-                    html += "<h5>" + peliculas_vista.Detalle_Pelicula.Opcion.Nombre + peliculas_vista.Detalle_Pelicula.Opcion1.Nombre + "</h5>";
-                    html += "<h5>" + peliculas_vista.Detalle_Pelicula.EncabezadoPelicula.Opcion1.Nombre + "</h5>";
-                    html += "</td>";
-                    html += "<td>";
-                    html += "<div id = '" + peliculas_vista.Detalle_Pelicula.RowID + "' class='carousel slide' data-ride='carousel' data-interval='false'>";
-                    html += "<div class='carousel-inner text-center' style='margin-left:40px;'>";
-                    foreach (var funciones in peliculas_vista.Funciones)
+                    
+                    if (informacion_pelicula == false)
                     {
-                        if (peliculas_vista.Funciones.Count() > 3)
-                        {
 
-                            if (contador_div == 1)
+                        html += "<tr>";
+                        html += "<td>";
+                        html += "<img class='poster-peliculas' src='/" + funciones.Afiche + "' > ";
+                        html += "</td>";
+                        html += "<td  nombre-peliculas'>";
+                        html += "<h5>" + funciones.TituloLocal + "</h5>";
+                        html += "<h5>" + funciones.PeliculaVersion + funciones.PeliculaIdioma + "</h5>";
+                        html += "</td>";
+                        informacion_pelicula = true;
+                    }
+                    #region td funciones vista
+                    if (cantidad_funciones_html == 0)
+                    {
+                        html += "<td class='col-sm-8'>";
+
+                    }
+                            if (cantidad_funciones_consulta > 3 && carrusel==true)
                             {
-                                html += "<div class='item active'>";
-                                contador_div += 1;
+                                html += "<div id ='" + funciones.DetallePeliculaID + "' class='carousel slide' data-ride='carousel' data-interval='false'>";
+                                html += " <div class='carousel-inner text-center'>";
+                                
+                                carrusel = false;
+
                             }
-                            else
-                            {
-                                if (peliculas_vista.Funciones.Count() >= 3 && contador_funciones_pelicula == 1)
-                                {
-                                    html += "<div class='item'>";
-                                    contador_div += 1;
-                                }
-                            }
-                        }
-                        else { carrusel = false; }
-                        html += "<div class='col-sm-3 funcion mar-hor' onclick='javascrip:get_tarifas(" + funciones.RowID_Funcion + ")'>";
-                        string Hora_Funcion = DateTime.Parse(funciones.HoraInicial.ToString()).ToString("hh:mm tt", CultureInfo.InvariantCulture);
-                        //string lol = funciones.HoraInicial;
-                        html += "<h5 class='text-main hora_funcion'>" + Hora_Funcion + "</h5>";
-                        html += "<p>" + funciones.NombreSala + "<br />Disponible: 120</p>";
-                        html += "</div>";
-                        if (contador_funciones_pelicula == 3)
+                                    #region item-funcion
+                                    if (contador_funciones_div == 0 && cerrar==true)
+                                    {
+                                        html += "<div class='item active'>";
+                                        html += "<div class='contenedor-funciones'>";
+                                        cerrar = false;
+                                    }
+                                    else if (contador_funciones_div == 0 && cerrar == false)
+                                    {
+                                        html += "<div class='item'>";
+                                         html += "<div class='text-center'>";
+                                    }
+                                            html += "<div class='col-sm-3 funcion mar-hor' onclick='javascrip:get_tarifas(" + funciones.RowID_Funcion + ")'>";
+                                                string Hora_Funcion = DateTime.Parse(funciones.HoraInicial.ToString()).ToString("hh:mm tt", CultureInfo.InvariantCulture);
+                                                html += "<h5 class='text-main hora_funcion'>" + Hora_Funcion + "</h5>";
+                                                html += "<p>" + funciones.NombreSala + "<br />Disponible: 120</p>";
+                                            html += "</div>";
+                                            contador_funciones_div++;
+                                            cantidad_funciones_html++;
+                                            valida_cantidad_funciones++;
+                                    if (contador_funciones_div == 3)
+                                    {
+                                        html += "</div>";
+                                        html += "</div>";
+                                        contador_funciones_div = 0;
+                                    }
+                                    #endregion
+                    if (valida_cantidad_funciones == cantidad_funciones_consulta)
+                    {
+                        if (cantidad_funciones_consulta > 3)
                         {
                             html += "</div>";
-                            contador_funciones_pelicula = 0;
-                            cerrar = false;
+                            
+                            html += "</div>";
+                            html += "<a class='carousel-control left' data-slide='prev' href='#" + funciones.DetallePeliculaID + "' ><i class='demo-pli-arrow-left icon-3x'></i></a>";
+                            html += "<a class='carousel-control right' data-slide='next' href='#" + funciones.DetallePeliculaID + "' ><i class='demo-pli-arrow-right icon-3x'></i></a>";
                         }
-                        contador_funciones_pelicula++;
-
+                        html += "</td>";
                     }
-                    if (cerrar == false)
-                    {
-                        html += "</div>";
-                    }
-                    html += "</div>";
-                    if (carrusel == true)
-                    {
-                        html += "<a class='carousel-control left' data-slide='prev' href='#" + peliculas_vista.Detalle_Pelicula.RowID + "' style='margin-left:10px;'><i class='demo-pli-arrow-left icon-3x'></i></a>";
-                        html += "<a class='carousel-control right' data-slide='next' href='#" + peliculas_vista.Detalle_Pelicula.RowID + "' style='margin-right:-30px;'><i class='demo-pli-arrow-right icon-3x'></i></a>";
-                    }
-
-                    html += "</div>";
-
-                    html += "</div>";
-                    html += "</td>";
-                    html += "</tr>";
+                    #endregion
                 }
+                
             }
-
             return html;
         }
+
+                //if (peliculas_vista.Count()!= 0)
+                //{
+
+
+                //    bool cerrar = true;
+                //    bool carrusel = true;
+                //    int contador_div = 1;
+                //    int contador_funciones_pelicula = 1;
+                //    html += "<tr>";
+                //    html += "<td>";
+                //    html += "<img class='poster-peliculas' src='/" + peliculas_vista.Afiche+"' > ";
+                //    html += "</td>";
+                //    html += "<td  nombre-peliculas'>";
+                //    html += "<h5>" + peliculas_vista.TituloLocal + "</h5>";
+                //    html += "<h5>" + peliculas_vista.PeliculaVersion + peliculas_vista.PeliculaIdioma + "</h5>";
+                //    html += "</td>";
+                //    html += "<td>";
+                //    html += "<div id = '" + peliculas_vista.DetallePeliculaID+ "' class='carousel slide' data-ride='carousel' data-interval='false'>";
+                //    html += "<div class='carousel-inner text-center' style='margin-left:40px;'>";
+                //    var funciones=peliculas_vista
+                //    foreach (var funciones in peliculas_vista.Funciones)
+                //    {
+                //        if (peliculas_vista.Funciones.Count() > 3)
+                //        {
+
+                //            if (contador_div == 1)
+                //            {
+                //                html += "<div class='item active'>";
+                //                contador_div += 1;
+                //            }
+                //            else
+                //            {
+                //                if (peliculas_vista.Funciones.Count() >= 3 && contador_funciones_pelicula == 1)
+                //                {
+                //                    html += "<div class='item'>";
+                //                    contador_div += 1;
+                //                }
+                //            }
+                //        }
+                //        else { carrusel = false; }
+                //        html += "<div class='col-sm-3 funcion mar-hor' onclick='javascrip:get_tarifas(" + funciones.RowID_Funcion + ")'>";
+                //        string Hora_Funcion = DateTime.Parse(funciones.HoraInicial.ToString()).ToString("hh:mm tt", CultureInfo.InvariantCulture);
+                //        //string lol = funciones.HoraInicial;
+                //        html += "<h5 class='text-main hora_funcion'>" + Hora_Funcion + "</h5>";
+                //        html += "<p>" + funciones.NombreSala + "<br />Disponible: 120</p>";
+                //        html += "</div>";
+                //        if (contador_funciones_pelicula == 3)
+                //        {
+                //            html += "</div>";
+                //            contador_funciones_pelicula = 0;
+                //            cerrar = false;
+                //        }
+                //        contador_funciones_pelicula++;
+
+                //    }
+                //    if (cerrar == false)
+                //    {
+                //        html += "</div>";
+                //    }
+                //    html += "</div>";
+                //    if (carrusel == true)
+                //    {
+                //        html += "<a class='carousel-control left' data-slide='prev' href='#" + peliculas_vista.Detalle_Pelicula.RowID + "' style='margin-left:10px;'><i class='demo-pli-arrow-left icon-3x'></i></a>";
+                //        html += "<a class='carousel-control right' data-slide='next' href='#" + peliculas_vista.Detalle_Pelicula.RowID + "' style='margin-right:-30px;'><i class='demo-pli-arrow-right icon-3x'></i></a>";
+                //    }
+
+                //    html += "</div>";
+
+                //    html += "</div>";
+                //    html += "</td>";
+                //    html += "</tr>";
+                //}
+            //}
+
+            
+        //}
         [CheckSessionOutAttribute]
         public string Get_Tarifas_Funcion(int RowID_Funcion)
         {
@@ -299,7 +388,7 @@ namespace CinemaPOS.Controllers
                     html_tarifas += "<div class='row'>";
                     cerrar_row = false;
                 }
-                html_tarifas += "<div class='col-sm-6 mar-hor' style='width:40%;' onclick='javascript:adicionar_item(" + tarifafuncion.RowID + ")'>";
+                html_tarifas += "<div class='col-sm-6 mar-hor' style='width:40%;' onclick='javascript:adicionar_item(" + tarifafuncion.RowID + ",1)'>";
                 html_tarifas += "<div class='panel " + clase + " panel-colorful' style='height:50%'>";
                 html_tarifas += "<div class='pad-all text-center'>";
                 html_tarifas += "<span class='text-2x text-thin'>$" + tarifafuncion.ListaDetalle.Precio + "</span>";
@@ -322,23 +411,33 @@ namespace CinemaPOS.Controllers
             return html_tarifas;
         }
         [CheckSessionOutAttribute]
-        public string AdicionarItemVenta(int RowID_ListaFuncion, short? cantidad)
+        public string AdicionarItemVenta(int RowID_ListaFuncion, short? cantidadnueva,short?cantidad_anterior)
         {
             ListaPrecioFuncion ItemVenta = db.ListaPrecioFuncion.Where(lpf => lpf.RowID == RowID_ListaFuncion).FirstOrDefault();
             string html_item_venta = "";
-            html_item_venta += "<div class='panel panel-primary panel-colorful item-venta item-elimina" + ItemVenta.RowID + "'  onclick='javascript:eliminar_item(" + ItemVenta.RowID + ")'>";
+            html_item_venta += "<div class='panel panel-primary panel-colorful item-venta item-elimina" + ItemVenta.RowID + "'  >";
             html_item_venta += "<div class='pad-all media'>";
             html_item_venta += "<div class='media-left'>";
-            html_item_venta += "<span class='text-2x text-bold' id='cantidad-total-" + ItemVenta.RowID + "'>" + cantidad + "</span>";
+            html_item_venta += "<span class='text-2x text-bold' id='cantidad-total-" + ItemVenta.RowID + "'>" + cantidadnueva + "</span>";
             html_item_venta += "</div>";
             html_item_venta += "<div class='media-body'>";
+            html_item_venta += "<div class='col-sm-9'>";
             html_item_venta += "<p class='h3 text-light mar-no media-heading'>" + ItemVenta.Funcion.DetallePelicula.EncabezadoPelicula.TituloLocal + "&nbsp;" + ItemVenta.Funcion.DetallePelicula.Opcion.Nombre + "&nbsp;" + ItemVenta.Funcion.DetallePelicula.Opcion1.Nombre + "</p>";
-            html_item_venta += "<span class='suma-costo-pedido' id='total-costo" + ItemVenta.RowID + "'>$ " + ItemVenta.ListaDetalle.Precio * cantidad + "</span>";
+            html_item_venta += "<span class='suma-costo-pedido' id='total-costo" + ItemVenta.RowID + "'>$ " + ItemVenta.ListaDetalle.Precio * cantidadnueva + "</span>";
             html_item_venta += "<input type='hidden' class='precio-items-" + ItemVenta.RowID + "' value='" + ItemVenta.ListaDetalle.Precio + "'>";
-            html_item_venta += "<input type='hidden' class='cantidad-boleta-" + ItemVenta.RowID + "' value='" + cantidad + "'></span>";
+            html_item_venta += "<input type='hidden' class='cantidad-boleta-" + ItemVenta.RowID + "' value='" + cantidadnueva + "'></span>";
             html_item_venta += "<input type='hidden' class='tarifas_id' value='" + ItemVenta.ListaDetalle.RowID + "'></span>";
             html_item_venta += "</div>";
+            html_item_venta += "<div class='col-sm-3'>";
+            html_item_venta += "<button class='btn btn-info btn-icon col-sm-12' onclick=javascript:adicionar_item("+ RowID_ListaFuncion + ",5) style='background-color: rgba(97,208,255,1);width:100%;font-size: 28px;margin-bottom:10px'><i class='ion-ios-cart icon-3x></i><i class='icon-2x mar-rgt'>+5</i></button>";
+            html_item_venta += "<button class='btn btn-info btn-icon col-sm-12' onclick=javascript:adicionar_item(" + RowID_ListaFuncion + ",10) style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-cart icon-3x'></i><i class='icon-2x'>+10</i></button>";
+            html_item_venta += "<button class='btn btn-info btn-icon col-sm-12' onclick='javascript:adicionar_item(" + ItemVenta.RowID + ",-1)' style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-trash icon-3x'></i></button>";
             html_item_venta += "</div>";
+            html_item_venta += "</div>";
+            
+            html_item_venta += "</div>";
+            
+           
 
             //<div class='progress progress-xs progress-dark-base mar-no'>
             //	<div role = 'progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' class='progress-bar progress-bar-light' style='width: 75%'></div>
@@ -348,7 +447,7 @@ namespace CinemaPOS.Controllers
             html_item_venta += "<a href=\"javascript:cancelar_venta(\'item-elimina" + ItemVenta.RowID + "','" + ItemVenta.RowID + "\')\" class='close'><i class='ion-ios-close text-2x'></i></a>";
             html_item_venta += "</div>";
             html_item_venta += "</div>";
-            html_item_venta += "<input type='hidden' class='item-ventas " + ItemVenta.RowID + "' >";
+            html_item_venta += "<input type='hidden' value='" + cantidadnueva + "' name='" + RowID_ListaFuncion + "' id='cantidad_boletas_tarifa_"+RowID_ListaFuncion+"' class='boletas_vender_ " + RowID_ListaFuncion + "'>";
             return html_item_venta;
         }
         [CheckSessionOutAttribute]
