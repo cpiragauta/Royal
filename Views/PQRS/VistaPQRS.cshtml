@@ -4,6 +4,16 @@
     ViewBag.Title = "Vista PQRS";
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
+<head>
+    <!--jQuery [ REQUIRED ]-->
+    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
+    <!--DataTables [ OPTIONAL ]-->
+    <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+    <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <!--DataTables Sample [ SAMPLE ]-->
+    <script src="~/Content/js/demo/tables-datatables.js"></script>
+</head>
 <p>
     <a class="btn btn-success" href='@Url.Action("CreacionPQRS", "PQRS")'>Nueva PQRS</a>
 </p>
@@ -16,6 +26,7 @@
             <thead>
                 <tr>
                     <th>Titulo PQRS</th>
+                    <th>Nombre Usuario</th>
                     <th>Teatro</th>
                     <th class="min-tablet">Tipo solicitud</th>
                     <th class="min-desktop">Estado PQRS</th>
@@ -30,6 +41,15 @@
                 {
                     <tr>
                         <td>@pqrs.Titulo</td>
+                        <td>@if (!String.IsNullOrEmpty(@pqrs.Tercero.Nombre))
+                            {
+                                @pqrs.Tercero.Nombre
+                            }
+                            @if (!String.IsNullOrEmpty(@pqrs.Tercero.Apellidos))
+                            {
+                                @pqrs.Tercero.Apellidos
+                            }                         
+                        </td>
                         <td>@pqrs.Teatro.Nombre</td>
                         <td>@pqrs.TipoSolicitud.Nombre</td>
                         <td>@pqrs.Estado.Nombre</td>

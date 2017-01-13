@@ -35,18 +35,21 @@ namespace CinemaPOS.Controllers.Inicio
             }
             return collection;
         }
-        public ActionResult CreacionPQRS(int? RowID_pqrs,int? RowIdTercero)
+
+        #region PQRS
+        [CheckSessionOutAttribute]
+        public ActionResult CreacionPQRS(int? RowID_pqrs, int? RowIdTercero)
         {
-           
+
             //ViewBag.TipoTerceroID = new List<Opcion>();
             ViewBag.TipoTerceroID = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOTERCERO").ToList();
             ViewBag.SexoID = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOSEXO").ToList();
             ViewBag.CiudadID = db.Ciudad.ToList().OrderBy(f => f.Nombre);
             ViewBag.TipoIdentificacion = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOIDENTIFICACION").ToList();
-            
-            if (RowID_pqrs==null|| RowID_pqrs==0)
+
+            if (RowID_pqrs == null || RowID_pqrs == 0)
             {
-               
+
                 return View(new ModelosPropios.Model.Modelos_Pqrs());
             }
             else
@@ -59,6 +62,8 @@ namespace CinemaPOS.Controllers.Inicio
 
             }
         }
+
+        [CheckSessionOutAttribute]
         public ActionResult ModalTercero()
         {
 
@@ -70,10 +75,12 @@ namespace CinemaPOS.Controllers.Inicio
             ViewBag.Estados = db.Estado.Where(f => f.TipoEstadoID == TipoEstados.RowID).ToList();
             return View();
         }
-        public JsonResult Guardar_PQRS(FormCollection formulario,int? RowIDTercero)
+
+        [CheckSessionOutAttribute]
+        public JsonResult Guardar_PQRS(FormCollection formulario, int? RowIDTercero)
         {
             Pqrs Obj_pqrs = new Pqrs();
-            
+
             formulario = DeSerialize(formulario);
             Obj_pqrs.TeatroID = int.Parse(formulario["TeatroID"]);
             Obj_pqrs.TipoSolicitudID = int.Parse(formulario["tiposolicitud"]);
@@ -88,13 +95,15 @@ namespace CinemaPOS.Controllers.Inicio
             db.SaveChanges();
             return Json(Obj_pqrs.RowID);
         }
+
+        [CheckSessionOutAttribute]
         public JsonResult CargarCLiente()
         {
             string term = Request.Params["term"];
             try
             {
                 var data = (from Sucur in db.Tercero
-                                                 .Where(f => f.Nombre.Contains(term)||f.Identificacion.Contains(term.Trim())).ToList()
+                                                 .Where(f => f.Nombre.Contains(term) || f.Identificacion.Contains(term.Trim())).ToList()
                             select new
                             {
                                 rowid = Sucur.RowID,
@@ -113,15 +122,109 @@ namespace CinemaPOS.Controllers.Inicio
 
         }
 
+        [CheckSessionOutAttribute]
         public ActionResult VistaPQRS()
         {
             return View(db.Pqrs.ToList());
         }
-        public ActionResult Seguimiento(int? Rowid_Pqrs)
+
+        [CheckSessionOutAttribute]
+        public void EnviarCorreoRecepcion(Int32 PQRS_ID)
         {
-            return View(db.Pqrs.Where(s=>s.RowID==Rowid_Pqrs).FirstOrDefault());
+            Pqrs pqrsCorreo = db.Pqrs.FirstOrDefault(f => f.RowID == PQRS_ID);
+            MailSender.Enviar_RecepcionPQRS(pqrsCorreo, "PLANTILLA_RECEPCION_PQRS", Session["usuario_creacion"].ToString(), null, pqrsCorreo.Tercero.Correo, "camilop@pangea.com.co");
         }
 
+
+
+        #endregion
+
+        #region PQRS - Tipo Solicitud
+        [CheckSessionOutAttribute]
+        public ActionResult VistaTipoSolicitud()
+        {
+            return View(db.TipoSolicitud.ToList());
+        }
+
+        [CheckSessionOutAttribute]
+        public ActionResult TipoSolicitud(int? TipoSolicitud_pqrs)
+        {
+            var TipoAreas = db.Tipo.Where(f => f.Codigo == Util.Constantes.TIPO_AREA).FirstOrDefault();
+            ViewBag.ListaAreas = db.Opcion.Where(f => f.TipoID == TipoAreas.RowID && f.Activo == true).ToList();
+            TipoSolicitud  solicitud= new TipoSolicitud();
+            if (TipoSolicitud_pqrs != null)
+            {
+                solicitud = db.TipoSolicitud.Where(f => f.RowID == TipoSolicitud_pqrs).FirstOrDefault();
+            }
+           
+            return View(solicitud);
+        }
+
+        
+
+        [CheckSessionOutAttribute]
+        public JsonResult guardar_TipoSolicitud(FormCollection formulario)
+        {
+            formulario = DeSerialize(formulario);
+            String respuesta = "";
+            int RowidSeguimiento = 0;
+            TipoSolicitud tipoSolicitud = new TipoSolicitud();
+            if (formulario["RowID_TipoSolicitud"] != null)
+            {
+                RowidSeguimiento = Int32.Parse(formulario["RowID_TipoSolicitud"].ToString());
+                if (RowidSeguimiento !=0 )
+                {
+                    tipoSolicitud = db.TipoSolicitud.FirstOrDefault(f => f.RowID == RowidSeguimiento);
+                }
+            }
+            
+            try
+            {
+                tipoSolicitud.Nombre = formulario["nombre"];
+                tipoSolicitud.AreaID = Convert.ToInt32(formulario["Area"]);
+                if (formulario["activo"] == null)
+                {
+                    tipoSolicitud.Estado = false;
+                }
+                else
+                {
+                    tipoSolicitud.Estado = true;
+                }
+                tipoSolicitud.Descripcion = formulario["descripcion"];                
+                if (RowidSeguimiento == 0) {
+                    tipoSolicitud.FechaCreacion = DateTime.Now;
+                    tipoSolicitud.CreadoPor = Session["usuario_creacion"].ToString();
+                    db.TipoSolicitud.Add(tipoSolicitud);
+                    respuesta = "Guardado Correctamente";
+                }
+                else
+                {
+                    respuesta = "Actualizado Correctamente";
+                }               
+                db.SaveChanges();
+                return Json(new { respuesta = respuesta, tipoRespuesta = "success" });
+            }
+            catch (Exception)
+            {
+                return Json(new { respuesta = "Error", tipoRespuesta = "error"});
+            }
+        }
+
+
+        #endregion
+
+        #region Seguimiento 
+        [CheckSessionOutAttribute]
+        public ActionResult Seguimiento(int? Rowid_Pqrs)
+        {
+            var TipoAreas = db.Tipo.Where(f => f.Codigo == Util.Constantes.TIPO_AREA).FirstOrDefault();
+            var TipoEstados = db.TipoEstado.Where(f => f.Codigo == Util.Constantes.TIPO_ESTADO_PQRS).FirstOrDefault();
+            ViewBag.CambioArea = db.Opcion.Where(f => f.TipoID == TipoAreas.RowID && f.Activo == true).ToList();
+            ViewBag.Estados = db.Estado.Where(f => f.TipoEstadoID == TipoEstados.RowID).ToList();
+            return View(db.Pqrs.Where(s => s.RowID == Rowid_Pqrs).FirstOrDefault());
+        }
+
+        [CheckSessionOutAttribute]
         public JsonResult GuardarSeguimiento(FormCollection formulario)
         {
             formulario = DeSerialize(formulario);
@@ -146,11 +249,27 @@ namespace CinemaPOS.Controllers.Inicio
             }
         }
 
-       //public ActionResult VistaPQRS()
-       //{
-       //     ViewBag.ListaPQRS = db.Pqrs.OrderBy(Pqrs => Pqrs.RowID).ToList();
-       //     return View();
 
-       //}
+        [CheckSessionOutAttribute]
+        public String CargarListaSeguimiento(Int32 PQRS_ID)
+        {
+            String tabla = "";
+            List<Seguimiento> ListaSeguimiento = db.Seguimiento.Where(ld => ld.PQRS_ID == PQRS_ID).ToList();
+            foreach (Seguimiento seguimiento in ListaSeguimiento)
+            {
+                tabla = tabla + "<tr>";
+                tabla += "<td>" + seguimiento.Opcion.Nombre + "</td>";
+                tabla += "<td>" + seguimiento.Opcion1.Nombre + "</td>";
+                tabla += "<td>" + seguimiento.Estado.Nombre + "</td>";
+                tabla += "<td>" + seguimiento.Observaciones + "</td>";
+                tabla += "<td>" + seguimiento.CreadoPor + "</td>";
+                tabla = tabla + "</tr>";
+
+            }
+            return tabla;
+        }
+
+        #endregion
+     
     }
 }

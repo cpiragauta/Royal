@@ -122,19 +122,25 @@
                     <div class="form-group">
                         <label class="control-label">*Tipo menu:</label>
                             <select name="menu" value="@Model.TipoMenuID" class="form-control chosen"  required>
-                            <option value="" disabled selected>Seleccione una opcion</option>
-                            @foreach (CinemaPOS.Models.TipoMenu tipo in ViewBag.Tipo)
-                            {
-                                if (Model.Tipo.RowID == tipo.RowID)
+                                <option value="" disabled selected>Seleccione una opcion</option>
+                                @foreach (CinemaPOS.Models.TipoMenu tipo in ViewBag.Tipo)
                                 {
-                                    <option value="@tipo.RowID" selected="selected">@tipo.Nombre</option>
+                                    if (Model.Tipo != null)
+                                    {
+                                        if (Model.Tipo.RowID == tipo.RowID)
+                                        {
+                                            <option value="@tipo.RowID" selected="selected">@tipo.Nombre</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@tipo.RowID">@tipo.Nombre</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option value="@tipo.RowID">@tipo.Nombre</option>
+                                    }
                                 }
-                                else
-                                {
-                                    <option value="@tipo.RowID">@tipo.Nombre</option>
-                                }
-
-                            }
                         </select>
                     </div>
                 </div>
