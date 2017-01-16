@@ -239,15 +239,15 @@ namespace CinemaPOS.Controllers
                                     if (contador_funciones_div == 0 && cerrar==true)
                                     {
                                         html += "<div class='item active'>";
-                                        html += "<div class='contenedor-funciones'>";
+                                        html += "<div class='contenedor-funciones col-sm-12'>";
                                         cerrar = false;
                                     }
                                     else if (contador_funciones_div == 0 && cerrar == false)
                                     {
                                         html += "<div class='item'>";
-                                         html += "<div class='text-center'>";
+                                         html += "<div class='contenedor-funciones col-sm-12'>";
                                     }
-                                            html += "<div class='col-sm-3 funcion mar-hor' onclick='javascrip:get_tarifas(" + funciones.RowID_Funcion + ")'>";
+                                            html += "<div class='col-sm-3 funcion mar-hor text-center' onclick='javascrip:get_tarifas(" + funciones.RowID_Funcion + ")'>";
                                                 string Hora_Funcion = DateTime.Parse(funciones.HoraInicial.ToString()).ToString("hh:mm tt", CultureInfo.InvariantCulture);
                                                 html += "<h5 class='text-main hora_funcion'>" + Hora_Funcion + "</h5>";
                                                 html += "<p>" + funciones.NombreSala + "<br />Disponible: 120</p>";
@@ -269,8 +269,8 @@ namespace CinemaPOS.Controllers
                             html += "</div>";
                             
                             html += "</div>";
-                            html += "<a class='carousel-control left' data-slide='prev' href='#" + funciones.DetallePeliculaID + "' ><i class='demo-pli-arrow-left icon-3x'></i></a>";
-                            html += "<a class='carousel-control right' data-slide='next' href='#" + funciones.DetallePeliculaID + "' ><i class='demo-pli-arrow-right icon-3x'></i></a>";
+                            html += "<a class='carousel-control left control-izquierdo' data-slide='prev' href='#" + funciones.DetallePeliculaID + "' ><i class='demo-pli-arrow-left icon-3x'></i></a>";
+                            html += "<a class='carousel-control right control-derecho' data-slide='next' href='#" + funciones.DetallePeliculaID + "' ><i class='demo-pli-arrow-right icon-3x'></i></a>";
                         }
                         html += "</td>";
                     }

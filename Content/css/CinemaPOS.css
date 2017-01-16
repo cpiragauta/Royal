@@ -1,10 +1,34 @@
-﻿@media only screen and (max-width:920px) and (min-width:1400px ) {
-    .contenedor-funciones{
-
+﻿@media (min-width: 768px){
+    .col-sm-12 {
+        width: 100%;
+        margin-left: 23px!important;
+    }
+    .control-izquierdo{
+        margin-left: -15px;
+    }
+    .control-derecho{
+        margin-right: -13px;
+    }
+    .carousel-control i {
+        position: relative;
+        top: .25em;
+        font-size: 66px;
     }
 }
-@media only screen and (max-width:1401) and (min-width:1920px ) {
-    contenedor-funciones{
-
+@media (min-width: 1920px){
+    .col-sm-12 {
+        width: 110%;
+        margin-left: 20px!important;
+    }
+    .control-izquierdo{
+        margin-left: -22px!important;
+    }
+    .control-derecho{
+        margin-right: -20px;
+    }
+    .carousel-control i {
+        position: relative;
+        top: .25em;
+        font-size: 66px;
     }
 }
