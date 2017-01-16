@@ -2384,6 +2384,8 @@
     <Content Include="Views\Maestro\HabeasData.cshtml" />
     <Content Include="Views\PQRS\VistaTipoSolicitud.cshtml" />
     <Content Include="Views\PQRS\TipoSolicitud.cshtml" />
+    <Content Include="Views\Maestro\VistaPlantillasCorreo.cshtml" />
+    <Content Include="Views\Maestro\FormatoCorreo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

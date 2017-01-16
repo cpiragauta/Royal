@@ -2130,6 +2130,7 @@ namespace CinemaPOS.Controllers.Master
             { return Json(new { respuesta = "error", Act = actividad.rowID }); }
         }
         #endregion
+
         #region HABEAS DATA
         [CheckSessionOutAttribute]
         public ActionResult HabeasData()
@@ -2160,6 +2161,39 @@ namespace CinemaPOS.Controllers.Master
             var data = db.Parametros.Where(f => f.cod_parametro == "HABEASDATA").FirstOrDefault().valor_parametros;
             return data;
         }
+        #endregion
+
+
+        #region Plantillas Correos
+
+        [CheckSessionOutAttribute]
+        public ActionResult VistaPlantillasCorreo()
+        {
+            ViewBag.Plantillas = db.Plantillas.ToList();
+            return View();
+        }
+
+
+
+
+        public ActionResult FormatoCorreo(int? RowID_Lista)
+        {
+            //ViewBag.Planillas = _db.m_plantillas_clientes.ToList();
+            if (RowID_Lista != null)
+            {
+                Plantillas plantilla = db.Plantillas.Where(le => le.RowID == RowID_Lista).FirstOrDefault();
+                //ViewBag.formato = plantilla.formato_correo;
+                return View(plantilla);
+            }
+            else
+            {
+                return View(new Plantillas());
+            }
+
+        }
+
+
+
         #endregion
         public string CodigoEstado()
         {

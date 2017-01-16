@@ -40,12 +40,16 @@ namespace CinemaPOS.Controllers.Cuenta
             // Getting Ip address of local machine…
             // First get the host name of local machine.
             // Then using host name, get the IP address list..
-            string[] segmentos = ip.ToString().Split('.');
-            for (int i = 0; i < segmentos.Length; i++)
+            if (ip != null)
             {
-                ip_return += segmentos[i].PadLeft(3, '0') + ".";
+                string[] segmentos = ip.ToString().Split('.');
+                for (int i = 0; i < segmentos.Length; i++)
+                {
+                    ip_return += segmentos[i].PadLeft(3, '0') + ".";
+                }
+                ip_return = ip_return.TrimEnd('.');
             }
-            ip_return = ip_return.TrimEnd('.');
+           
             //Session["IP"] = ip_return;
             //ip_return += "Nombre de la computadora: " +strHostName;
             return ip_return;
