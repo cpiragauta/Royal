@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="ae8727279e94475199cbe851b869d483" Name="Diagram1" ZoomLevel="132">
+      <Diagram DiagramId="ae8727279e94475199cbe851b869d483" Name="Diagram1" ZoomLevel="88">
         <EntityTypeShape EntityType="CinemaPOSModel.DetalleConvenio" Width="1.5" PointX="10.5" PointY="83.125" />
         <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoConvenio" Width="1.5" PointX="5.25" PointY="71.375" />
         <EntityTypeShape EntityType="CinemaPOSModel.Actividades" Width="1.5" PointX="8.25" PointY="77.75" />
@@ -40,7 +40,6 @@
         <EntityTypeShape EntityType="CinemaPOSModel.Menu" Width="1.5" PointX="3" PointY="64.125" />
         <EntityTypeShape EntityType="CinemaPOSModel.RolMenu" Width="1.5" PointX="5.25" PointY="61.5" />
         <EntityTypeShape EntityType="CinemaPOSModel.TipoMenu" Width="1.5" PointX="0.75" PointY="63.75" />
-        <EntityTypeShape EntityType="CinemaPOSModel.UsuarioSistema" Width="1.5" PointX="27.75" PointY="82.75" />
         <EntityTypeShape EntityType="CinemaPOSModel.EvidenciaPqrs" Width="1.5" PointX="27" PointY="118.25" />
         <EntityTypeShape EntityType="CinemaPOSModel.Pqrs" Width="1.5" PointX="24.75" PointY="117.125" />
         <EntityTypeShape EntityType="CinemaPOSModel.SeguientoEvidencia" Width="1.5" PointX="13.5" PointY="61.125" />
@@ -50,9 +49,7 @@
         <EntityTypeShape EntityType="CinemaPOSModel.ListaPrecioFuncion" Width="1.5" PointX="25" PointY="72.375" />
         <EntityTypeShape EntityType="CinemaPOSModel.ListaDetalle" Width="1.5" PointX="13.5" PointY="70.75" />
         <EntityTypeShape EntityType="CinemaPOSModel.ListaEncabezado" Width="1.5" PointX="8.25" PointY="71.875" />
-        <EntityTypeShape EntityType="CinemaPOSModel.BoletaVendida" Width="1.5" PointX="24" PointY="68.5" />
         <EntityTypeShape EntityType="CinemaPOSModel.FormatoSala" Width="1.5" PointX="10.5" PointY="70.625" />
-        <EntityTypeShape EntityType="CinemaPOSModel.MapaSala" Width="1.5" PointX="7.5" PointY="83" />
         <EntityTypeShape EntityType="CinemaPOSModel.Sala" Width="1.5" PointX="5.25" PointY="65.375" />
         <EntityTypeShape EntityType="CinemaPOSModel.ServicioSala" Width="1.5" PointX="10.5" PointY="61.625" />
         <EntityTypeShape EntityType="CinemaPOSModel.DetalleVentaEmpresarial" Width="1.5" PointX="21.75" PointY="68.75" />
@@ -95,7 +92,6 @@
         <AssociationConnector Association="CinemaPOSModel.FK__Porcentaj__Estad__68487DD7" />
         <AssociationConnector Association="CinemaPOSModel.FK__Pqrs__EstadoID__50C5FA01" />
         <AssociationConnector Association="CinemaPOSModel.FK__Sala__EstadoID__787EE5A0" />
-        <AssociationConnector Association="CinemaPOSModel.FK__Silla__EstadoID__7D439ABD" />
         <AssociationConnector Association="CinemaPOSModel.FK_TipoEstado" />
         <AssociationConnector Association="CinemaPOSModel.FK__Impuesto__TipoIm__5165187F" />
         <AssociationConnector Association="CinemaPOSModel.FK__ImpuestoP__Impue__6477ECF3" />
@@ -122,7 +118,6 @@
         <AssociationConnector Association="CinemaPOSModel.FK__TipoSolic__AreaI__473C8FC7" />
         <AssociationConnector Association="CinemaPOSModel.FKEC4991158B6B12E" />
         <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__PaisI__5DCAEF64" />
-        <AssociationConnector Association="CinemaPOSModel.FK__Silla__SillaTipo__7F2BE32F" />
         <AssociationConnector Association="CinemaPOSModel.FK__Sello_Dis__Distr__3572E547" />
         <AssociationConnector Association="CinemaPOSModel.FK__Sello_Dis__Sello__347EC10E" />
         <AssociationConnector Association="CinemaPOSModel.FK__Encabezad__Distr__5BE2A6F2" />
@@ -130,7 +125,6 @@
         <AssociationConnector Association="CinemaPOSModel.FK__Pqrs__TerceroID__4FD1D5C8" />
         <AssociationConnector Association="CinemaPOSModel.FK__Menu__TipoMenuID__0169315C" />
         <AssociationConnector Association="CinemaPOSModel.FK__Menu__TipoMenuID__035179CE" />
-        <AssociationConnector Association="CinemaPOSModel.FK__Silla__ZonaID__00200768" />
         <AssociationConnector Association="CinemaPOSModel.FK__DetallePe__Encab__5629CD9C" />
         <AssociationConnector Association="CinemaPOSModel.FK__Funcion__Detalle__6D0D32F4" />
         <AssociationConnector Association="CinemaPOSModel.FK__Elenco__Encabeza__59FA5E80" />
@@ -144,24 +138,18 @@
         <AssociationConnector Association="CinemaPOSModel.FK__Evidencia__PqrsI__53A266AC" />
         <AssociationConnector Association="CinemaPOSModel.FK__Pqrs__TipoSolici__2A6B46EF" />
         <AssociationConnector Association="CinemaPOSModel.FK__Funcion__Encabez__6E01572D" />
-        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Funci__5303482E" />
         <AssociationConnector Association="CinemaPOSModel.FK__Funcion__SalaID__70DDC3D8" />
         <AssociationConnector Association="CinemaPOSModel.FK__ListaPrec__Funci__5FD33367" />
         <AssociationConnector Association="CinemaPOSModel.FK__ListaPrec__Lista__60C757A0" />
-        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Tarif__511AFFBC" />
         <AssociationConnector Association="CinemaPOSModel.FK__DetalleVe__Lista__505BE5AD" />
         <AssociationConnector Association="CinemaPOSModel.FK__ListaDeta__Lista__72C60C4A" />
-        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Silla__5026DB83" />
         <AssociationConnector Association="CinemaPOSModel.FK__FormatoSa__SalaI__76969D2E" />
-        <AssociationConnector Association="CinemaPOSModel.FK__Silla__SalaID__7E37BEF6" />
         <AssociationConnector Association="CinemaPOSModel.FK__ServicioS__SalaI__7B5B524B" />
         <AssociationConnector Association="CinemaPOSModel.FK__DetalleVe__Venta__47C69FAC" />
         <AssociationConnector Association="CinemaPOSModel.FK__TeatroVen__Venta__4C8B54C9" />
-        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Usuar__5B638405" />
         <EntityTypeShape EntityType="CinemaPOSModel.Taquilla" Width="1.5" PointX="26.75" PointY="65.625" />
         <AssociationConnector Association="CinemaPOSModel.FK__Taquilla__Estado__01142BA1" />
         <AssociationConnector Association="CinemaPOSModel.FK__Taquilla__TipoTa__4944D3CA" />
-        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Taqui__520F23F5" />
         <EntityTypeShape EntityType="CinemaPOSModel.Seguimiento" Width="1.5" PointX="30" PointY="82.875" />
         <AssociationConnector Association="CinemaPOSModel.FK__Seguimien__Estad__5B438874" />
         <AssociationConnector Association="CinemaPOSModel.FK__Seguimien__AreaA__595B4002" />
@@ -170,7 +158,6 @@
         <AssociationConnector Association="CinemaPOSModel.FK__Seguiento__Segui__5E1FF51F" />
         <EntityTypeShape EntityType="CinemaPOSModel.Rol" Width="1.5" PointX="0.75" PointY="9" />
         <AssociationConnector Association="CinemaPOSModel.FK__RolMenu__RolID__19AACF41" />
-        <AssociationConnector Association="CinemaPOSModel.FK__UsuarioSi__RolID__7BE56230" />
         <AssociationConnector Association="CinemaPOSModel.fk_TipoIdentificacion" />
         <EntityTypeShape EntityType="CinemaPOSModel.HistoricolLog" Width="1.5" PointX="3.375" PointY="8.75" />
         <EntityTypeShape EntityType="CinemaPOSModel.OportunidadVenta" Width="1.5" PointX="27.75" PointY="71.75" />
@@ -193,7 +180,27 @@
         <AssociationConnector Association="CinemaPOSModel.FK__Teatro__Compania__534D60F1" />
         <AssociationConnector Association="CinemaPOSModel.FK__TeatroPel__Teatr__68336F3E" />
         <AssociationConnector Association="CinemaPOSModel.FK__TeatroVen__Teatr__4D7F7902" />
+        <EntityTypeShape EntityType="CinemaPOSModel.UsuarioSistema" Width="1.5" PointX="24.75" PointY="27.875" />
+        <EntityTypeShape EntityType="CinemaPOSModel.BoletaVendida" Width="1.5" PointX="30" PointY="74.375" />
+        <EntityTypeShape EntityType="CinemaPOSModel.MapaSala" Width="1.5" PointX="8.25" PointY="84.25" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Silla__EstadoID__7D439ABD" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Silla__SillaTipo__7F2BE32F" />
         <AssociationConnector Association="CinemaPOSModel.FK__UsuarioSi__Teatr__353DDB1D" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Silla__ZonaID__00200768" />
+        <AssociationConnector Association="CinemaPOSModel.FK__UsuarioSi__RolID__7BE56230" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Usuar__5B638405" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Funci__5303482E" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Tarif__511AFFBC" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Silla__5026DB83" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Taqui__520F23F5" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Silla__SalaID__7E37BEF6" />
+        <EntityTypeShape EntityType="CinemaPOSModel.BoletasVendidas" Width="1.5" PointX="5.375" PointY="8.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ControlIngreso" Width="1.5" PointX="7.375" PointY="8.75" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Contr__62CF9BA3" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ControlCajaUsuarioEntrega" Width="3.125" PointX="27" PointY="29.375" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ControlCa__Usuar__688874F9" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ControlCajaUsuarioRecibe" Width="1.5" PointX="27" PointY="33.375" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ControlCa__Usuar__75E27017" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

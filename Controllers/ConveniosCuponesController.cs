@@ -18,6 +18,7 @@ using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Modes;
 using Org.BouncyCastle.Crypto.Engines;
+using Microsoft.Reporting.WebForms;
 
 namespace CinemaPOS.Controllers
 {
@@ -81,63 +82,63 @@ namespace CinemaPOS.Controllers
             }
         }
 
-//        public void PrintFile(int? RowId_Covenio)
-//        {
-//            try
-//            {
-//                List<DetalleConvenio> detalle = new List<DetalleConvenio>();
-//                detalle = db.DetalleConvenio.Where(f => f.EncabezadoConvenioID == RowId_Covenio).ToList();
-//                foreach (var det in detalle)
-//                {
-//                    LocalReport localReport = new LocalReport();
-//                    localReport.ReportPath = @"Content/Reportes/Convenio.rdlc";
+        public void PrintFile(int? RowId_Covenio)
+        {
+            try
+            {
+                List<DetalleConvenio> detalle = new List<DetalleConvenio>();
+                detalle = db.DetalleConvenio.Where(f => f.EncabezadoConvenioID == RowId_Covenio).ToList();
+                foreach (var det in detalle)
+                {
+                    LocalReport localReport = new LocalReport();
+                    localReport.ReportPath = @"Content/Reportes/Convenio.rdlc";
 
-//                    ////Parametros del reporte
-//                    ReportParameter p1 = new ReportParameter("NombreConvenio", det.EncabezadoConvenio.Nombre);
-//                    ReportParameter p2 = new ReportParameter("FechaInicio", det.EncabezadoConvenio.FechaInicio.Value.ToShortDateString());
-//                    ReportParameter p3 = new ReportParameter("FechaFinal", det.EncabezadoConvenio.FechaFinal.Value.ToShortDateString());
-//                    ReportParameter p4 = new ReportParameter("Formato", det.EncabezadoConvenio.Opcion1.Nombre);
-//                    ReportParameter p5 = new ReportParameter("condiciones", det.EncabezadoConvenio.Descripcion);
-//                    ReportParameter p6 = new ReportParameter("porcentaje", det.Porcentaje + "%");
-//                    ReportParameter p7 = new ReportParameter("codigo", det.Codigo);
+                    ////Parametros del reporte
+                    ReportParameter p1 = new ReportParameter("NombreConvenio", det.EncabezadoConvenio.Nombre);
+                    ReportParameter p2 = new ReportParameter("FechaInicio", det.EncabezadoConvenio.FechaInicio.Value.ToShortDateString());
+                    ReportParameter p3 = new ReportParameter("FechaFinal", det.EncabezadoConvenio.FechaFinal.Value.ToShortDateString());
+                    ReportParameter p4 = new ReportParameter("Formato", det.EncabezadoConvenio.Opcion1.Nombre);
+                    ReportParameter p5 = new ReportParameter("condiciones", det.EncabezadoConvenio.Descripcion);
+                    ReportParameter p6 = new ReportParameter("porcentaje", det.Porcentaje + "%");
+                    ReportParameter p7 = new ReportParameter("codigo", det.Codigo);
 
-//                    localReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p5, p6, p7 });
-//                    localReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
-//                    string deviceInfo =
-//                     @"<DeviceInfo>
-//                <OutputFormat>PDF</OutputFormat>
-//               <PageWidth>12in</PageWidth>
-//                <PageHeight>25in</PageHeight>
-//                <MarginTop>0in</MarginTop>
-//                <MarginLeft>0in</MarginLeft>
-//                <MarginRight>0in</MarginRight>
-//                <MarginBottom>0in</MarginBottom>
-//                </DeviceInfo>";
-//                    byte[] bytes1 = localReport.Render("PDF", deviceInfo);
-//                    var doc = new Document();
-//                    var reader = new PdfReader(bytes1);
-//                    using (FileStream fs = new FileStream(Server.MapPath("~/Content/Reportes/Convenios.pdf"), FileMode.Create))
-//                    {
-//                        PdfStamper stamper = new PdfStamper(reader, fs);
-//                        string Printer = "";
-//                        if (Printer == null || Printer == "")
-//                        {
-//                            stamper.JavaScript = "var pp = getPrintParams();pp.interactive = pp.constants.interactionLevel.automatic;pp.printerName = getPrintParams().printerName;print(pp);\r";
-//                            stamper.Close();
-//                        }
-//                        else
-//                        {
-//                            stamper.JavaScript = "var pp = getPrintParams();pp.interactive = pp.constants.interactionLevel.automatic;pp.printerName = " + Printer + ";print(pp);\r";
-//                            stamper.Close();
-//                        }
-//                    }
-//                    reader.Close();
-//                    SendToPrinter();
-//                    System.IO.File.Delete(Server.MapPath("~/Content/Reportes/Convenios.pdf"));
-//                }
-//            }
-//            catch (Exception e) { }
-//        }
+                    localReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p5, p6, p7 });
+                    localReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
+                    string deviceInfo =
+                     @"<DeviceInfo>
+                <OutputFormat>PDF</OutputFormat>
+               <PageWidth>12in</PageWidth>
+                <PageHeight>25in</PageHeight>
+                <MarginTop>0in</MarginTop>
+                <MarginLeft>0in</MarginLeft>
+                <MarginRight>0in</MarginRight>
+                <MarginBottom>0in</MarginBottom>
+                </DeviceInfo>";
+                    byte[] bytes1 = localReport.Render("PDF", deviceInfo);
+                    var doc = new Document();
+                    var reader = new PdfReader(bytes1);
+                    using (FileStream fs = new FileStream(Server.MapPath("~/Content/Reportes/Convenios.pdf"), FileMode.Create))
+                    {
+                        PdfStamper stamper = new PdfStamper(reader, fs);
+                        string Printer = "";
+                        if (Printer == null || Printer == "")
+                        {
+                            stamper.JavaScript = "var pp = getPrintParams();pp.interactive = pp.constants.interactionLevel.automatic;pp.printerName = getPrintParams().printerName;print(pp);\r";
+                            stamper.Close();
+                        }
+                        else
+                        {
+                            stamper.JavaScript = "var pp = getPrintParams();pp.interactive = pp.constants.interactionLevel.automatic;pp.printerName = " + Printer + ";print(pp);\r";
+                            stamper.Close();
+                        }
+                    }
+                    reader.Close();
+                    SendToPrinter();
+                    System.IO.File.Delete(Server.MapPath("~/Content/Reportes/Convenios.pdf"));
+                }
+            }
+            catch (Exception e) { }
+        }
 
 
         private void SendToPrinter()

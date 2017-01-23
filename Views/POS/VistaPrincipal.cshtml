@@ -358,6 +358,7 @@
 
                 </div>
             </a>
+
         </div>
     </div>
     <div class="row col-sm-4 pad-no ">
@@ -383,6 +384,7 @@
                     <div class="col-sm-6" id="precio-items"><h4>Total $</h4></div>
                     <div class="col-sm-6" id="cantidad-items"><h4>Total #:</h4></div>
                     <input type="hidden" id="cantidad_sillas" />
+                    <input type="hidden" id="precio-total-boletas" />
                 </div>
             </div>
         </div>
@@ -492,10 +494,12 @@
             precios += parseInt($(this).text().replace('$', ''));
         });
         $("#precio-items").text("$" + precios);
+        $("#precio-total-boletas").val(precios);
         $("#precio-items").empty().append("<h4>Total $:" + precios + "</h4>");
+        
         $("#cantidad_boletas").val(boletas);
         $("#cantidad-items").empty().append("<h4>Total #:" + $(".boletas_vender_").val() + "</h4>");
-        $("#cantidad_sillas").val(boletas);
+        $("#cantidad_sillas").val($(".boletas_vender_").val());
     }
     function eliminar_item(clase) {
         debugger

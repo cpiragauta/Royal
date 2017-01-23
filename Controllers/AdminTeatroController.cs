@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using CinemaPOS.Models;
+
+namespace CinemaPOS.Controllers
+{
+    public class AdminTeatroController : Controller
+    {
+        CinemaPOSEntities db = new CinemaPOSEntities();
+        //
+        // GET: /AdminTeatro/
+        private FormCollection DeSerialize(FormCollection formulario)
+        {
+            FormCollection collection = new FormCollection();
+            //un-encode, and add spaces back in
+            string querystring = Uri.UnescapeDataString(formulario["formulario"]).Replace("+", " ");
+            var split = querystring.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
+            Dictionary<string, string> items = new Dictionary<string, string>();
+            foreach (string s in split)
+            {
+                string text = s.Substring(0, s.IndexOf("="));
+                string value = s.Substring(s.IndexOf("=") + 1);
+
+                if (items.Keys.Contains(text))
+                    items[text] = items[text] + "," + value;
+                else
+                    items.Add(text, value);
+            }
+            foreach (var i in items)
+            {
+                collection.Add(i.Key, i.Value);
+            }
+            return collection;
+        }
+
+        public ActionResult ControlCajaUsuario()
+        {
+            ViewBag.Taquilleros = db.UsuarioSistema.Where(us => us.Activo == true && us.Rol.Nombre== "CAJERO TAQUILLERO").ToList();
+            return View();
+        }
+
+        public JsonResult GuardarControl(FormCollection formulario,int? rowid_control)
+        {
+            ControlCajaUsuarioEntrega objcontrol_ingresa = new ControlCajaUsuarioEntrega();
+            //formulario = DeSerialize(formulario);
+            string tipo_respuesta = "";
+            string respuesta = "";
+            if (rowid_control!=null ||rowid_control!=0)
+            {
+                try
+                {
+                    objcontrol_ingresa.UsuarioID = int.Parse(formulario["taquillero"]);
+                    objcontrol_ingresa.ValorEntrega = int.Parse(formulario["valor_entrega"]);
+                    objcontrol_ingresa.CantidadTarjetas = int.Parse(formulario["cantidad_tcr"]);
+                    objcontrol_ingresa.CantidadGafas = int.Parse(formulario["cantidad_gafas_adulto"]);
+                    objcontrol_ingresa.CantidadGafasNin = int.Parse(formulario["cantidad_gafas_nino"]);
+                    objcontrol_ingresa.CantidadBonoRegalo = int.Parse(formulario["cantidad_bono_regalo"]);
+                    objcontrol_ingresa.FechaEntrega = DateTime.Now;
+                    db.ControlCajaUsuarioEntrega.Add(objcontrol_ingresa);
+                    db.SaveChanges();
+                    tipo_respuesta = "success";
+                    respuesta = "Información guardada exitosamente";
+                }
+                catch (Exception ex)
+                {
+                    tipo_respuesta = "error";
+                    respuesta = ex.Message;
+                }
+               
+            }
+            return Json(new { tipo_respuesta=tipo_respuesta,respuesta=respuesta},JsonRequestBehavior.AllowGet);
+        }
+
+    }
+}

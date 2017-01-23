@@ -75,6 +75,7 @@ namespace CinemaPOS.Controllers.Cuenta
                         {
                             Session["RowID_Teatro"] = objtaquilla.TeatroID;
                             Session["RowID_Taquilla"] = objtaquilla.RowID.ToString();
+                            Session["Taquilla"] = objtaquilla;
                             return RedirectToAction("VistaPrincipal", "POS");
                         }
                     }
