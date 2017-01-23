@@ -70,7 +70,7 @@ namespace CinemaPOS.ModelosPropios
 
                 objMessage.From = new MailAddress(MailFrom); //new MailAddress(message.mfrom);
 
-
+                //objMessage.CC.Add("camilop@pangea.com");
                 foreach (String address in message.MTo.Replace(" ", ";").Split(';'))
                 {
                     if (string.IsNullOrEmpty(address.Trim()))
@@ -166,6 +166,51 @@ namespace CinemaPOS.ModelosPropios
 
             SendPendingMessages();
         }
+
+        public static void Enviar_RecepcionPQRS(object Pqrs, string CodPlantilla, string usuario, string adjunto, string correoUsuario, string Copiacorreo)
+        {
+            if (db == null)
+                db = new CinemaPOSEntities();
+
+            Plantillas plantilla = db.Plantillas.FirstOrDefault(f => f.NombrePlantilla == CodPlantilla);
+            string mensaje = "", subject = "";
+            mensaje = ReemplazarPlantillaRecepcionPQRS(plantilla.CuerpoMsj, (Pqrs)Pqrs);
+            subject = ReemplazarPlantillaRecepcionPQRS(plantilla.Titulo, (Pqrs)Pqrs);
+
+            string fecha = Convert.ToString(DateTime.Now.ToString("yyyy/MM/dd"));
+            DateTime Fe = Convert.ToDateTime(fecha);
+            EnvioMail SendMail = new EnvioMail
+            {
+                MTo = correoUsuario + ";" + Copiacorreo,
+                Mensaje = mensaje,
+                CreadoPor = usuario,
+                Asunto = subject,
+                FechaCreacion = Fe,
+                FechaEnviado = Fe,
+                sent = 0
+            };
+
+            if (!string.IsNullOrEmpty(adjunto))
+            {
+                try
+                {
+                    //Crear el attachment con el file creado
+                    //Carpeta Documentos - Adjuntos
+                    StreamWriter file = new StreamWriter(adjunto);
+                    file.WriteLine(mensaje);
+                    file.Close();
+
+                    SendMail.Adjunto = adjunto;
+                }
+                catch { }
+            }
+            db.EnvioMail.Add(SendMail);
+            db.SaveChanges();
+
+            SendPendingMessages();
+        }
+
+
         public static string ReemplazarPlantillaActividades(string mensaje, Actividades actividad)
         {
             string Logo = "";
@@ -213,6 +258,46 @@ namespace CinemaPOS.ModelosPropios
             catch{}
             return mensaje;
         }
+
+        public static string ReemplazarPlantillaRecepcionPQRS(string mensaje, Pqrs pqrs)
+        {
+            string Logo = "";
+            try
+            {
+                Parametros log = db.Parametros.Where(f => f.cod_parametro == "LOGOMAIL").First();
+                Logo = log.valor_parametros;
+                Logo = "<img src='" + Logo + "'/><br/>";
+            }
+            catch { } 
+
+            mensaje = mensaje.Replace("__LOGO", Logo);
+            mensaje = mensaje.Replace("__TITULO", pqrs.Titulo);
+            mensaje = mensaje.Replace("__NOMBRE_USUARIO_PQRS", pqrs.Tercero.Nombre);
+            mensaje = mensaje.Replace("_TEATRO", pqrs.Teatro.Nombre + " - " + pqrs.Teatro.Ciudad.Nombre);
+            mensaje = mensaje.Replace("__TIPO_SOLICITUD", pqrs.TipoSolicitud.Nombre);
+            mensaje = mensaje.Replace("__FECHA_SUCESO", pqrs.FechaSuceso.Value.ToLongDateString());
+            mensaje = mensaje.Replace("__DESCRIPCION", pqrs.Descripcion);
+            mensaje = mensaje.Replace("__EMPRESA", "ROYAL FILMS");
+            mensaje = mensaje.Replace("__COD", pqrs.RowID.ToString());
+
+            try
+            {
+                mensaje = mensaje.Replace("__LOGO", "");
+                mensaje = mensaje.Replace("__TITULO", "");
+                mensaje = mensaje.Replace("_TEATRO", "");
+                mensaje = mensaje.Replace("__NOMBRE_USUARIO_PQRS", "");
+                mensaje = mensaje.Replace("__TIPO_SOLICITUD", "");
+                mensaje = mensaje.Replace("__FECHA_SUCESO", "");
+                mensaje = mensaje.Replace("__DESCRIPCION", "");
+                mensaje = mensaje.Replace("__EMPRESA", "");
+                mensaje = mensaje.Replace("__COD", "");
+            }
+            catch { }
+            return mensaje;
+        }
+
+
+
         public static void SendPendingMessages()
         {
             if (db == null)
@@ -229,7 +314,7 @@ namespace CinemaPOS.ModelosPropios
                 {
                     MailSender.SendEmail(msg);
                     msg.sent = 1;
-                    msg.FechaEnviado = DateTime.Now;
+                    msg.FechaEnviado = DateTime.Now;                    
                 }
                 catch (Exception ex)
                 {

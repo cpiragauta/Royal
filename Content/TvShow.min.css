@@ -1,0 +1,259 @@
+﻿*,body{
+    margin:0px;
+    padding:0px;
+    overflow:hidden;
+
+}
+    .jssora02l, .jssora02r {
+        display: block;
+        position: absolute;
+        width: 55px;
+        height: 55px;
+        cursor: pointer;
+        background: url('img/a02.png') no-repeat;
+        overflow: hidden;
+    }
+
+    .jssora02l {
+        background-position: -3px -33px;
+    }
+
+    .jssora02r {
+        background-position: -63px -33px;
+    }
+
+    .jssora02l:hover {
+        background-position: -123px -33px;
+    }
+
+    .jssora02r:hover {
+        background-position: -183px -33px;
+    }
+
+    .jssora02l.jssora02ldn {
+        background-position: -3px -33px;
+    }
+
+    .jssora02r.jssora02rdn {
+        background-position: -63px -33px;
+    }
+
+    .jssora02l.jssora02lds {
+        background-position: -3px -33px;
+        opacity: .3;
+        pointer-events: none;
+    }
+
+    .jssora02r.jssora02rds {
+        background-position: -63px -33px;
+        opacity: .3;
+        pointer-events: none;
+    }
+
+    .jssort11 .p {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200px;
+        height: 69px;
+        background: #181818;
+    }
+
+    .jssort11 .tp {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .jssort11 .i, .jssort11 .pav:hover .i {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 60px;
+        height: 30px;
+        border: #fff 1px dashed;
+    }
+
+    * html .jssort11 .i {
+        width: 62px;
+        height: 32px;
+    }
+
+    .jssort11 .pav .i {
+        border: #fff 1px solid;
+    }
+
+    .jssort11 .t, .jssort11 .pav:hover .t {
+        position: absolute;
+        top: 3px;
+        left: 68px;
+        width: 129px;
+        height: 32px;
+        line-height: 32px;
+        text-align: center;
+        color: #fc9835;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .jssort11 .pav .t, .jssort11 .p:hover .t {
+        color: #fff;
+    }
+
+    .jssort11 .c, .jssort11 .pav:hover .c {
+        position: absolute;
+        top: 38px;
+        left: 3px;
+        width: 194px;
+        height: 32px;
+        line-height: 32px;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 400;
+        overflow: hidden;
+    }
+
+    .jssort11 .pav .c, .jssort11 .p:hover .c {
+        color: #fc9835;
+    }
+
+    .jssort11 .t, .jssort11 .c {
+        transition: color 2s;
+        -moz-transition: color 2s;
+        -webkit-transition: color 2s;
+        -o-transition: color 2s;
+    }
+
+    .jssort11 .p:hover .t, .jssort11 .pav:hover .t, .jssort11 .p:hover .c, .jssort11 .pav:hover .c {
+        transition: none;
+        -moz-transition: none;
+        -webkit-transition: none;
+        -o-transition: none;
+    }
+
+    .jssort11 .p:hover, .jssort11 .pav:hover {
+        background: #333;
+    }
+
+    .jssort11 .pav, .jssort11 .p.pdn {
+        background: #462300;
+    }
+#jtama{
+    cursor: default;
+    position: absolute; 
+    top: 0px; 
+    left: 0px; 
+    width: 300px; 
+    height: 300px; 
+    overflow: hidden;
+}
+.jssort11{
+    float:right; 
+    right:5px;
+    top:0px;
+    font-family:Arial, Helvetica, sans-serif;
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    width:0px; 
+    height:300px
+}
+#jssor_1{
+    position: absolute; 
+    height:0px; 
+    width: 0px;  
+    margin: 90px; 
+    top: 0px; 
+    overflow: hidden; 
+    visibility: hidden; 
+    /*background-color: #000000;*/
+}
+#jssor_1 iframe#jssor_videos{
+    height:100px;
+}
+
+
+/*LAYOUT*/
+#multicine ul li#Welcome h1{
+    margin-top:10px;
+}
+#multicine ul li#Welcome{
+    background-image:url(../../Repositorio_Imagenes/Imagenes_Generales/TvShowFondo.png);
+    width: 30%;
+    color: #fff;
+    font-family: sans-serif;
+    font-weight: normal;
+    font-style: italic;
+    border-left: 4px solid #d9ab46;
+    /*-webkit-transform:skew(-10deg); -moz-transform:skew(10deg); -o-transform:skew(20deg);*/
+    border-bottom-right-radius:100px;
+    -moz-box-shadow: 10px 0px 5px 5px rgba(51, 51, 51, 0.57) ;
+    -webkit-box-shadow: 10px 0px 5px 5px rgba(51, 51, 51, 0.57) ;
+    box-shadow: 10px 0px 5px 5px rgba(51, 51, 51, 0.57) ;
+    position:absolute;
+    z-index:9999;
+    height:60px;
+
+}
+#multicine h1{
+    padding:2%;
+    font-size:1.3em;
+}
+#Royal {
+    background: #f2ae00;
+    color: #333;
+    text-align: center;
+    font-family: sans-serif;
+    height: 52px;
+    -moz-box-shadow: 10px 11px 151px 15px rgba(51, 51, 51, 0.57);
+    -webkit-box-shadow: 10px 0px 5px 5px rgba(51, 51, 51, 0.57);
+    box-shadow: 10px 11px 151px 15px rgba(51, 51, 51, 0.57);
+    -moz-transition: all ease 500ms ease-in-out;
+    -o-transition: all ease 500ms ease-in-out;
+    -webkit-transition: all ease 500ms ease-in-out;
+    transition: all ease 500ms ease-in-out;
+
+}
+#title{
+    -moz-box-shadow: 10px 1px 9px 5px rgba(51, 51, 51, 0.57) ;
+    -webkit-box-shadow: 10px 9px 5px 5px rgba(51, 51, 51, 0.57) ;
+    box-shadow: 10px 1px 5px 9px rgba(51, 51, 51, 0.57) ;
+}
+
+#Royal #multicine ul li#RoyalFilms h1{
+    position: absolute;
+    left: 50%;
+    top:0%;
+    transform: translate(-20%, -50%);
+    -webkit-transform: translate(-20%, -40%);
+    font-weight:bold;
+    font-size:2em;
+    font-family: Arial;
+}
+#content{
+    background: -webkit-radial-gradient(center, ellipse cover,rgba(14, 14, 16, 0.68),#0e0e10);
+    background: -moz-radial-gradient(center, ellipse cover,rgba(14, 14, 16, 0.68),#0e0e10);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=1 );
+    width:1578px;
+    height:800px;
+}
+
+#Royal #multicine ul li#SitioRoyal h1{
+    position: absolute;
+    left: 80%;
+    top:0%;
+    transform: translate(10%, -50%);
+    -webkit-transform: translate(10%, -50%);
+    font-size:1.3em;
+    color:#fff;
+    -webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    height:40px;
+    background-image: url(../Repositorio_Imagenes/Imagenes_Generales/FondoPagina.png);
+
+}

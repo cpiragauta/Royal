@@ -127,7 +127,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\AdminTeatroController.cs" />
     <Compile Include="Controllers\ConveniosCuponesController.cs" />
     <Compile Include="Controllers\CRMController.cs" />
     <Compile Include="Controllers\Cuenta\CuentaController.cs" />
@@ -163,9 +162,6 @@
     <Compile Include="Models\Actividades.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BoletasVendidas.cs">
-      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\BoletaVendida.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -179,15 +175,6 @@
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Contacto.cs">
-      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ControlCajaUsuarioEntrega.cs">
-      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ControlCajaUsuarioRecibe.cs">
-      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ControlIngreso.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Cuenta\CuentaModels.cs" />
@@ -371,9 +358,6 @@
     <Compile Include="Models\UsuarioSistema.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\VerMapaVenta_Result.cs">
-      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Zona.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -398,8 +382,8 @@
     <Content Include="Content\css\demo\nifty-demo.css" />
     <Content Include="Content\css\demo\nifty-demo.min.css" />
     <Content Include="Content\css\demo\premium-icon-screenshot.css" />
-    <Content Include="Content\css\EstiloBoleta.css" />
     <Content Include="Content\css\Forms.css" />
+    <Content Include="Content\css\Fuentes.min.css" />
     <Content Include="Content\css\Global.min.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\nifty.css" />
@@ -477,6 +461,8 @@
     <Content Include="Content\css\themes\type-c\theme-well-red.min.css" />
     <Content Include="Content\css\themes\type-c\theme-yellow.css" />
     <Content Include="Content\css\themes\type-c\theme-yellow.min.css" />
+    <Content Include="Content\css\TvShowFunciones.min.css" />
+    <Content Include="Content\css\TVShowTrailers.min.css" />
     <Content Include="Content\font-own\icomoon.svg" />
     <Content Include="Content\fonts-pos\icomoon.svg" />
     <Content Include="Content\fonts-pos\style.css" />
@@ -1563,7 +1549,6 @@
     <Content Include="Content\plugins\pace\pace.js" />
     <Content Include="Content\plugins\pace\pace.min.css" />
     <Content Include="Content\plugins\pace\pace.min.js" />
-    <Content Include="Content\plugins\PrintElement.js" />
     <Content Include="Content\plugins\select2\css\select2.css" />
     <Content Include="Content\plugins\select2\css\select2.min.css" />
     <Content Include="Content\plugins\select2\js\i18n\ar.js" />
@@ -1621,6 +1606,10 @@
     <Content Include="Content\plugins\skycons\README.txt" />
     <Content Include="Content\plugins\skycons\skycons.js" />
     <Content Include="Content\plugins\skycons\skycons.min.js" />
+    <Content Include="Content\plugins\SliceBox\Css\slicebox.css" />
+    <Content Include="Content\plugins\SliceBox\Js\BoxesFx.js" />
+    <Content Include="Content\plugins\SliceBox\Js\jquery.slicebox.js" />
+    <Content Include="Content\plugins\SliceBox\Js\modernizr.custom.46884.js" />
     <Content Include="Content\plugins\sparkline\jquery.sparkline.js" />
     <Content Include="Content\plugins\sparkline\jquery.sparkline.min.js" />
     <Content Include="Content\plugins\summernote\lang\summernote-ar-AR.js" />
@@ -1684,6 +1673,7 @@
     <Content Include="Content\plugins\transactional-email-templates\templates\inlined\alert.html" />
     <Content Include="Content\plugins\transactional-email-templates\templates\inlined\billing.html" />
     <Content Include="Content\plugins\transactional-email-templates\templates\styles.css" />
+    <Content Include="Content\plugins\VerticalSlider\VerticalSlider.min.js" />
     <Content Include="Content\plugins\x-editable\CHANGELOG.txt" />
     <Content Include="Content\plugins\x-editable\css\bootstrap-editable.css" />
     <Content Include="Content\plugins\x-editable\img\clear.png" />
@@ -1844,6 +1834,7 @@
     <Content Include="Content\premium\icon-sets\thumbs\solid-icons\hardware.png" />
     <Content Include="Content\premium\icon-sets\thumbs\solid-icons\hipster.png" />
     <Content Include="Content\Tables.min.css" />
+    <Content Include="Content\TvShow.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Models\DAO_CinemaPOS.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -2391,7 +2382,10 @@
     <Content Include="Views\Perfil\VistaMenu.cshtml" />
     <Content Include="Views\Perfil\TipoMenu.cshtml" />
     <Content Include="Views\Maestro\HabeasData.cshtml" />
-    <Content Include="Views\AdminTeatro\ControlCajaUsuario.cshtml" />
+    <Content Include="Views\PQRS\VistaTipoSolicitud.cshtml" />
+    <Content Include="Views\PQRS\TipoSolicitud.cshtml" />
+    <Content Include="Views\Maestro\VistaPlantillasCorreo.cshtml" />
+    <Content Include="Views\Maestro\FormatoCorreo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

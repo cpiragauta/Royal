@@ -1,0 +1,54 @@
+﻿@model CinemaPOS.Models.Plantillas
+
+@{
+    ViewBag.Title = "Vista Plantillas Correo";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+
+<head>
+    <!--jQuery [ REQUIRED ]-->
+    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
+    <!--DataTables [ OPTIONAL ]-->
+    <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+    <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <!--DataTables Sample [ SAMPLE ]-->
+    <script src="~/Content/js/demo/tables-datatables.js"></script>
+</head>
+<p>
+    <a class="btn btn-success" href='@Url.Action("FormatoCorreo", "Maestro")'>Nueva Plantilla</a>
+</p>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Lista Plantillas</h3>
+    </div>
+    <div class="panel-body table-responsive">
+        <table id="demo-dt-basic" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre Plantilla</th>
+                    <th>Titulo</th>
+                    <th>Creado Por</th>
+                    <th>Fecha Creación</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (CinemaPOS.Models.Plantillas listas_plantillas in ViewBag.Plantillas)
+                {
+                    <tr>
+                        <td>@listas_plantillas.RowID</td>
+                        <td>@listas_plantillas.NombrePlantilla</td>
+                        <td>@listas_plantillas.Titulo</td>
+                        <td>@listas_plantillas.CreadoPor</td>
+                        <td>@listas_plantillas.FechaCreacion</td>
+                        <td><a href="@Url.Action("FormatoCorreo", "Maestro", new { RowID_Lista = listas_plantillas.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,154 @@
+﻿@model CinemaPOS.Models.TipoSolicitud
+@{
+    ViewBag.Title = "Tipo Solicitud";
+    Layout = "~/Views/Inicio/Diseño.cshtml";}
+<script>
+    function valida_formulario() {
+        debugger;
+        hasChangue = false;
+        var validator = $("#formulario_TipoSolicitud_pqrs").validate();
+        if (validator.form()) {
+            guardar_TipoSolicitud();
+        }
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        new Switchery(document.getElementById("demo-sw-checked"));
+
+        $('.solo-numero').keyup(function () {
+            this.value = (this.value + '').replace(/[^0-9]/g, '');
+        });
+    });
+
+
+</script>
+
+<script>
+    function guardar_TipoSolicitud(encabezado) {
+        if (!$("#formulario_TipoSolicitud_pqrs").validate().form()) {
+            return false;
+        }
+            $.ajax({
+                type: "POST",
+                url: "/PQRS/guardar_TipoSolicitud",
+                data: {
+                    formulario: $("#formulario_TipoSolicitud_pqrs").serialize(),
+                },
+                success: function (data) {
+                    debugger;
+                    if (data.tipoRespuesta != "error") {
+                        Alerts(data.respuesta, data.tipoRespuesta);
+                        window.location = "/PQRS/VistaTipoSolicitud"
+                    } else {
+                        Alerts(data.respuesta, data.tipoRespuesta);
+                    }
+                },
+                error: function () {
+                    Alerts(data.respuesta, data.tipoRespuesta);
+                }
+            });
+
+
+    }
+</script>
+
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+
+<!--Masked Input [ OPTIONAL ]-->
+
+<script src="~/Content/plugins/masked-input/jquery.maskedinput.js"></script>
+
+<!--Form validation [ SAMPLE ]-->
+<script src="~/Content/js/demo/form-validation.js"></script>
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaTipoSolicitud", "PQRS")'>Vista Tipo Solicitud</a>
+    </p>
+</div>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Tipo Solicitud</h3>
+    </div>
+    <form id="formulario_TipoSolicitud_pqrs" data-toggle="validator" role="form">
+        <input type="hidden" class="RowID_TipoSolicitud" name="RowID_TipoSolicitud" value="@Model.RowID" />
+        <div class="panel-body">
+            <div class="row">
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">*Nombre:</label>
+                        <input name="nombre" id="nombre" class="form-control" value="@Model.Nombre" maxlength="50" required>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">*Área:</label>
+                        <select name="Area" id="Area" class="form-control chosen" required>
+                            <option value="" disabled selected>Seleccione una opción</option>
+                            @foreach (CinemaPOS.Models.Opcion item in ViewBag.ListaAreas)
+                                    {
+                                        if (Model.Opcion != null)
+                                        {
+                                            if (Model.Opcion.RowID == item.RowID)
+                                            {
+                                    <option value="@item.RowID" selected="selected">@item.Nombre</option>
+                                            }
+                                            else
+                                            {
+                                    <option value="@item.RowID">@item.Nombre</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                    <option value="@item.RowID">@item.Nombre</option>
+                                        }
+                                    }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Activo:</label>
+                        @if (Model.Estado.Equals(true))
+                                {
+                                <input id="demo-sw-checked" type="checkbox" name="activo" checked>
+                                }
+                                else
+                                {
+                                <input id="demo-sw-checked" type="checkbox" name="activo">
+                                }
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="control-label">Descripción:</label>
+                        <textarea name="descripcion" id="descripcion" class="form-control" cols="40" rows="3" style="resize:none" maxlength="100">@Model.Descripcion</textarea>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="pull-right text-right">
+                @if (Model.RowID == 0)
+                {
+                    <input class="btn btn-success" value="Guardar" onclick="javascript:valida_formulario()">
+                }
+                else
+                {
+                    <input class="btn btn-success" value="Actualizar" onclick="javascript:valida_formulario()">
+                }
+            </div>
+        </div>
+    </form>
+</div>

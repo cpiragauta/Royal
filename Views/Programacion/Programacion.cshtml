@@ -846,7 +846,7 @@
                                     @if (ViewBag.ListaPeliculas != null)
                                     {
                                         foreach (CinemaPOS.Models.TeatroPelicula pelicula in ViewBag.ListaPeliculas)
-                                        {
+                                        {  
                                             foreach (CinemaPOS.Models.DetallePelicula DetallePelicula in pelicula.EncabezadoPelicula.DetallePelicula)
                                             {
                                                 <option value="@DetallePelicula.RowID">@DetallePelicula.EncabezadoPelicula.TituloLocal @DetallePelicula.Opcion.Codigo @DetallePelicula.Opcion1.Codigo2</option>

@@ -1,10 +1,17 @@
 ﻿@{
     ViewBag.Title = "ValidaCupones";
 }
-<!--STYLESHEET-->
-<!--=================================================-->
-<!--Open Sans Font [ OPTIONAL ]-->
-<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+<!--Demo script [ DEMONSTRATION ]-->
+<script src="~/Content/js/demo/nifty-demo.min.js"></script>
+<!--Bootbox Modals [ OPTIONAL ]-->
+<script src="~/Content/plugins/bootbox/bootbox.min.js"></script>
+<!--Modals [ SAMPLE ]-->
+<script src="~/Content/js/demo/ui-modals.js"></script>
+
+<!--Sparkline [ OPTIONAL ]-->
+<script src="~/Content/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+
 
 <!--Bootstrap Stylesheet [ REQUIRED ]-->
 <link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
@@ -48,8 +55,9 @@
 @*<script src="~/Content/plugins/morris-js/morris.min.js"></script>
     <script src="~/Content/plugins/morris-js/raphael-js/raphael.min.js"></script>*@
 
-<!--Sparkline [ OPTIONAL ]-->
-<script src="~/Content/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+
+
 
 
 <script>
@@ -61,7 +69,9 @@
             url: "/POS/valida_estado_cupon",
             data: { codigo_barras: $("#codigo").val() },
             success: function (data) {
-                $("#cupones").append(data);
+                debugger
+                $("#cupones").empty().append(data);
+                adicionar_item(37);
             },
             error: function (data) {
                 alert(data);
@@ -72,17 +82,30 @@
 <div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <button type="button" class="close salir" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <form>
-                <div class="form-group">
-                    <label class="control-label">Codigo Convenio / Venta Empresarial</label>
-                    <input type="password" id="codigo" autocomplete="off" onblur="validacupones()"/>
-                </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <i class="pci-cross pci-circle"></i>
+                </button>
+                
+                    <h2>Validación Cupones</h2>
                 <div id="cupones">
-
                 </div>
-            </form>
-            <h2>ValidaCupones</h2>
+            </div>
+
+            @*<button type="button" class="close salir" data-dismiss="modal" aria-hidden="true">&times;</button>*@
+            <div class="modal-body">
+                <form>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Codigo Convenio / Venta Empresarial: </label>
+
+                            <input style="width: 50%;" type="password" id="codigo" autocomplete="off" onblur="validacupones()" />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
 </div>
