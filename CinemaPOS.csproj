@@ -2386,6 +2386,7 @@
     <Content Include="Views\PQRS\TipoSolicitud.cshtml" />
     <Content Include="Views\Maestro\VistaPlantillasCorreo.cshtml" />
     <Content Include="Views\Maestro\FormatoCorreo.cshtml" />
+    <Content Include="Views\AdminTeatro\ControlCajaUsuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
