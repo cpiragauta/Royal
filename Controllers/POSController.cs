@@ -643,7 +643,7 @@ namespace CinemaPOS.Controllers
                     objBoletaVenta.FechaVenta = DateTime.Now;
                     objBoletaVenta.MedioPago = "Efectivo";
                     objBoletaVenta.TaquillaID = taquillas.RowID;
-                    objBoletaVenta.UsuarioID = usuariotaquilla.RolID;
+                    objBoletaVenta.UsuarioID = usuariotaquilla.RowID;
                     objBoletaVenta.ControlIngresoID = RowIDControl;
                     db.BoletaVendida.Add(objBoletaVenta);
                     db.SaveChanges();

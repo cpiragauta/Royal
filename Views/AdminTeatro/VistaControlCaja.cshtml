@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "VistaControlCaja";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<p>
+    <a class="btn btn-success" href="@Url.Action("ControlCajaUsuario", "AdminTeatro")">Crear Control</a>
+</p>
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Lista control</h3>
+    </div>
+    <div class="panel-body">
+        <table id="demo-dt-basic" class="table table-striped table-bordered" cellspacing="0" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Valor entrega</th>
+                    <th>Cantidad tajetas</th>
+                    <th>Cantidad gafas adulto</th>
+                    <th>Cantidad gafas niño</th>
+                    <th>Cantidad bono regalo</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (CinemaPOS.Models.ControlCajaUsuarioEntrega ControlUsuario in ViewBag.Controles)
+                {
+                    <tr>
+                        <td>@ControlUsuario.UsuarioSistema.Nombre - @ControlUsuario.UsuarioSistema.Apellido</td>
+                        <td>$@ControlUsuario.ValorEntrega</td>
+                        <td>@ControlUsuario.CantidadTarjetas</td>
+                        <td>@ControlUsuario.CantidadGafas</td>
+                        <td>@ControlUsuario.CantidadGafasNin</td>
+                        <td>@ControlUsuario.CantidadBonoRegalo</td>
+                        <td><a class="glyphicon glyphicon-pencil" href="@Url.Action("ControlCajaUsuario", "AdminTeatro", new { RowIDControl=ControlUsuario.RowID })"></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

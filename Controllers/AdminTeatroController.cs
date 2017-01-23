@@ -36,10 +36,19 @@ namespace CinemaPOS.Controllers
             return collection;
         }
 
-        public ActionResult ControlCajaUsuario()
+        public ActionResult ControlCajaUsuario(int? RowIDControl)
         {
-            ViewBag.Taquilleros = db.UsuarioSistema.Where(us => us.Activo == true && us.Rol.Nombre== "CAJERO TAQUILLERO").ToList();
-            return View();
+            ViewBag.Taquilleros = db.UsuarioSistema.Where(us => us.Activo == true && us.Rol.Nombre == "CAJERO TAQUILLERO").ToList();
+            if (RowIDControl!=null)
+            {
+                return View(db.ControlCajaUsuarioEntrega.Where(ccu => ccu.RowID == RowIDControl).FirstOrDefault());
+            }
+            else
+            {
+                return View(new ControlCajaUsuarioEntrega());
+            }
+            
+           // return View();
         }
 
         public JsonResult GuardarControl(FormCollection formulario,int? rowid_control)
@@ -74,5 +83,37 @@ namespace CinemaPOS.Controllers
             return Json(new { tipo_respuesta=tipo_respuesta,respuesta=respuesta},JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult VistaControlCaja()
+        {
+            ViewBag.Controles = db.ControlCajaUsuarioEntrega.ToList();
+            return View();
+        }
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

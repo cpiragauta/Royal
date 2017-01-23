@@ -127,6 +127,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AdminTeatroController.cs" />
     <Compile Include="Controllers\ConveniosCuponesController.cs" />
     <Compile Include="Controllers\CRMController.cs" />
     <Compile Include="Controllers\Cuenta\CuentaController.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Models\Actividades.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BoletasVendidas.cs" />
     <Compile Include="Models\BoletaVendida.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -177,6 +179,9 @@
     <Compile Include="Models\Contacto.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ControlCajaUsuarioEntrega.cs" />
+    <Compile Include="Models\ControlCajaUsuarioRecibe.cs" />
+    <Compile Include="Models\ControlIngreso.cs" />
     <Compile Include="Models\Cuenta\CuentaModels.cs" />
     <Compile Include="Models\DAO_CinemaPOS.Context.cs">
       <AutoGen>True</AutoGen>
@@ -358,6 +363,7 @@
     <Compile Include="Models\UsuarioSistema.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\VerMapaVenta_Result.cs" />
     <Compile Include="Models\Zona.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -2387,6 +2393,7 @@
     <Content Include="Views\Maestro\VistaPlantillasCorreo.cshtml" />
     <Content Include="Views\Maestro\FormatoCorreo.cshtml" />
     <Content Include="Views\AdminTeatro\ControlCajaUsuario.cshtml" />
+    <Content Include="Views\AdminTeatro\VistaControlCaja.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

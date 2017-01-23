@@ -46,6 +46,7 @@
     <!--Input Size-->
     <!--===================================================-->
     <form id="formulario_control_usuario">
+        <input type="hidden" value="@Model.RowID" id="RowIDControl" />
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-3">
@@ -55,7 +56,22 @@
                             <option disabled selected>Seleccione taquillero</option>
                             @foreach (CinemaPOS.Models.UsuarioSistema taquillero in ViewBag.Taquilleros)
                             {
-                                <option value="@taquillero.RolID">@*@taquillero.cedula*@ @taquillero.Nombre - @taquillero.Apellido</option>
+                                if (Model.RowID != null)
+                                {
+                                    if (Model.UsuarioID == taquillero.RowID)
+                                    {
+                                        <option value = "@taquillero.RowID" selected>@*@taquillero.cedula*@ @taquillero.Nombre - @taquillero.Apellido</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@taquillero.RowID">@*@taquillero.cedula*@ @taquillero.Nombre - @taquillero.Apellido</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@taquillero.RowID">@*@taquillero.cedula*@ @taquillero.Nombre - @taquillero.Apellido</option>
+                                }
+
                             }
                         </select>
                     </div>
@@ -65,7 +81,7 @@
                         <label class="control-label">Valor entregado</label>
                         <div class="input-group mar-btm">
                             <span class="input-group-addon">$</span>
-                            <input type="text" class="form-control solo-numeros" name="valor_entrega" required>
+                            <input type="text" class="form-control solo-numeros" name="valor_entrega" value="@Model.ValorEntrega" required>
                             <span class="input-group-addon">.00</span>
                         </div>
                     </div>
@@ -74,7 +90,7 @@
                     <div class="form-group">
                         <label class="control-label">Cantidad tarjetas TCR</label>  
                         <div class="input-group mar-btm">
-                            <input type="text" class="form-control solo-numeros" name="cantidad_tcr" required>
+                            <input type="text" class="form-control solo-numeros" name="cantidad_tcr" value="@Model.CantidadTarjetas" required>
                             <span class="input-group-addon"><i class="ion-card"></i></span>
                         </div>
                     </div>
@@ -85,7 +101,7 @@
                     <div class="form-group">
                         <label class="control-label">Cantidad gafas adulto 3D</label>
                         <div class="input-group mar-btm">
-                            <input type="text" class="form-control solo-numeros" name="cantidad_gafas_adulto" required>
+                            <input type="text" class="form-control solo-numeros" name="cantidad_gafas_adulto" value="@Model.CantidadGafas" required>
                             <span class="input-group-addon"><i class="ion-ios-glasses-outline"></i></span>
                         </div>
                     </div>
@@ -94,7 +110,7 @@
                     <div class="form-group">
                         <label class="control-label">Cantidad gafas niño 3D</label>
                         <div class="input-group mar-btm">
-                            <input type="text" class="form-control solo-numeros" name="cantidad_gafas_nino" required>
+                            <input type="text" class="form-control solo-numeros" name="cantidad_gafas_nino" value="@Model.CantidadGafasNin" required>
                             <span class="input-group-addon"><i class="ion-ios-glasses-outline"></i></span>
                         </div>
                     </div>
@@ -103,7 +119,7 @@
                     <div class="form-group">
                         <label class="control-label">Cantidad bono regalo</label>
                         <div class="input-group mar-btm">
-                            <input type="text" class="form-control solo-numeros" name="cantidad_bono_regalo" required>
+                            <input type="text" class="form-control solo-numeros" name="cantidad_bono_regalo" value="@Model.CantidadBonoRegalo" required>
                             <span class="input-group-addon"><i class="demo-pli-mine"></i></span>
                         </div>
                     </div>
