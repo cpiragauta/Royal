@@ -6,6 +6,7 @@
 <p>
     <a class="btn btn-success" href="@Url.Action("ControlCajaUsuario", "AdminTeatro")">Crear Control</a>
 </p>
+<div id="Dialog"></div>
 <div class="panel">
     <div class="panel-heading">
         <h3 class="panel-title">Lista control</h3>
@@ -34,9 +35,20 @@
                         <td>@ControlUsuario.CantidadGafasNin</td>
                         <td>@ControlUsuario.CantidadBonoRegalo</td>
                         <td><a class="glyphicon glyphicon-pencil" href="@Url.Action("ControlCajaUsuario", "AdminTeatro", new { RowIDControl=ControlUsuario.RowID })"></a></td>
+                        <td><button class="glyphicon ion-clipboard" onclick="cargar_contro_ingreso(@ControlUsuario.RowID)"></button></td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
+<script>
+    //ModalProcesandoShow();
+    function cargar_contro_ingreso(rowid_control_ingreso) {
+        var urlWithCont = '../AdminTeatro/RegistrarIngreso?RowIDControlentrega='+rowid_control_ingreso;
+        $("#Dialog")
+        .load(urlWithCont.trim())
+        .dialog('open');
+    }
+
+</script>

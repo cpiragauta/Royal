@@ -199,8 +199,8 @@
         <AssociationConnector Association="CinemaPOSModel.FK__BoletaVen__Contr__62CF9BA3" />
         <EntityTypeShape EntityType="CinemaPOSModel.ControlCajaUsuarioEntrega" Width="3.125" PointX="27" PointY="29.375" />
         <AssociationConnector Association="CinemaPOSModel.FK__ControlCa__Usuar__688874F9" />
-        <EntityTypeShape EntityType="CinemaPOSModel.ControlCajaUsuarioRecibe" Width="1.5" PointX="27" PointY="33.375" />
-        <AssociationConnector Association="CinemaPOSModel.FK__ControlCa__Usuar__75E27017" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ControlCajaUsuarioRecibe" Width="3.25" PointX="30.875" PointY="29.5" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ControlCa__Contr__0FA2421A" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

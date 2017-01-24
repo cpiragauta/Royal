@@ -89,31 +89,25 @@ namespace CinemaPOS.Controllers
             return View();
         }
 
+        public ActionResult RegistrarIngreso(int? RowIDControlentrega)
+        {
+            if (RowIDControlentrega!=null)
+            {
+                return View(db.ControlCajaUsuarioEntrega.Where(cue => cue.RowID == RowIDControlentrega).FirstOrDefault());
+            }
+            return View(new ControlCajaUsuarioEntrega());
+        }
+        public JsonResult GuardarControlIngreso(FormCollection formulario)
+        {
+            formulario = DeSerialize(formulario);
+            ControlCajaUsuarioRecibe objControlRecibe = new ControlCajaUsuarioRecibe();
+            objControlRecibe.ValorEntrega = int.Parse(formulario["valor_entrega"]);
+            objControlRecibe.CantidadTarjetas = int.Parse(formulario["cantidad_tarjetas"]);
+            objControlRecibe.CantidadBonoRegalo = int.Parse(formulario["cantidad_bono_regalo"]);
+            objControlRecibe.CantidadGafasAd = int.Parse(formulario["cantidad_gafas_adulto"]);
+            objControlRecibe.CantidadGafasNin = int.Parse(formulario["cantidad_gafas_nino"]);
+            objControlRecibe.FechaEntrega = DateTime.Now;
+            return Json("");
+        }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

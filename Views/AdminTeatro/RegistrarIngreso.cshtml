@@ -1,0 +1,94 @@
+﻿@model CinemaPOS.Models.ControlCajaUsuarioEntrega
+@{
+    ViewBag.Title = "RegistrarIngreso";
+    Layout = null;
+}
+
+<script>
+    ModalProcesandoHiden();
+    $("#myModal1").modal('show');
+    function guardar_ingreso() {
+        $.ajax({
+            url: "/AdminTeatro/GuardarControlIngreso",
+            data: $("#form_control_ingreso").serialize(),
+            success: function (data) {
+
+            },
+            error: function (data) {
+
+            }
+        })
+    }
+</script>
+<div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="false" style="overflow: hidden; border-radius:2px;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 5px;">
+                <button type="button" class="close salir" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" style="padding:1px;color:#455A64"><b>Terminos & Condiciones</b></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label class="control-label">@Model.UsuarioSistema.Nombre - @Model.UsuarioSistema.Apellido</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="control-label">@Model.ValorEntrega</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="control-label">@Model.CantidadBonoRegalo</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="control-label">@Model.CantidadGafas</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="control-label">@Model.CantidadGafasNin</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="control-label">@Model.CantidadTarjetas</label>
+                    </div>
+                </div>
+                <form id="form_control_ingreso">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Valor entrega</label>
+                                <input type="text" class="form-control" name="valor_entrega" >
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Cantidad tarjetas</label>
+                                <input type="text" class="form-control" name="cantidad_tarjetas">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Cantidad bono regalo</label>
+                                <input type="text" class="form-control" name="cantidad_bono_regalo">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Cantidad gafas adulto</label>
+                                <input type="text" class="form-control" name="cantidad_gafas_adulto">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Cantidad gafas niño</label>
+                                <input type="text" class="form-control" name="cantidad_gafas_nino">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <button class="btn btn-success" type="submit">Submit</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

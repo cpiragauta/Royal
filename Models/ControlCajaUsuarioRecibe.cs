@@ -15,14 +15,14 @@ namespace CinemaPOS.Models
     public partial class ControlCajaUsuarioRecibe
     {
         public int RowID { get; set; }
-        public int UsuarioID { get; set; }
-        public double ValorBase { get; set; }
+        public double ValorEntrega { get; set; }
         public Nullable<System.DateTime> FechaEntrega { get; set; }
         public Nullable<int> CantidadTarjetas { get; set; }
         public Nullable<int> CantidadBonoRegalo { get; set; }
         public Nullable<int> CantidadGafasAd { get; set; }
         public Nullable<int> CantidadGafasNin { get; set; }
+        public Nullable<int> ControlCajaEntregaID { get; set; }
     
-        public virtual UsuarioSistema UsuarioSistema { get; set; }
+        public virtual ControlCajaUsuarioEntrega ControlCajaUsuarioEntrega { get; set; }
     }
 }

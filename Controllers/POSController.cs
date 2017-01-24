@@ -622,6 +622,7 @@ namespace CinemaPOS.Controllers
             List<BoletaVendida> ListaBoletas = new List<Models.BoletaVendida>();
             for (int i = 0; i < RowIDSillas.Length; i++)
             {
+
                 RowIDSilla = int.Parse(RowIDSillas[i].ToString());
                 objBoleta = db.BoletaVendida.Where(BV => BV.SillaID == RowIDSilla && BV.FuncionID == RowIDFuncion).FirstOrDefault();
                 if (objBoleta != null)

@@ -902,13 +902,13 @@
             <PropertyRef Name="RowID" />
           </Key>
           <Property Name="RowID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UsuarioID" Type="int" Nullable="false" />
-          <Property Name="ValorBase" Type="float" Nullable="false" />
+          <Property Name="ValorEntrega" Type="float" Nullable="false" />
           <Property Name="FechaEntrega" Type="datetime" />
           <Property Name="CantidadTarjetas" Type="int" />
           <Property Name="CantidadBonoRegalo" Type="int" />
           <Property Name="CantidadGafasAd" Type="int" />
           <Property Name="CantidadGafasNin" Type="int" />
+          <Property Name="ControlCajaEntregaID" Type="int" />
         </EntityType>
         <EntityType Name="ControlIngreso">
           <Key>
@@ -1270,6 +1270,18 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__ControlCa__Contr__0FA2421A">
+          <End Role="ControlCajaUsuarioEntrega" Type="Self.ControlCajaUsuarioEntrega" Multiplicity="0..1" />
+          <End Role="ControlCajaUsuarioRecibe" Type="Self.ControlCajaUsuarioRecibe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ControlCajaUsuarioEntrega">
+              <PropertyRef Name="RowID" />
+            </Principal>
+            <Dependent Role="ControlCajaUsuarioRecibe">
+              <PropertyRef Name="ControlCajaEntregaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__ControlCa__Usuar__688874F9">
           <End Role="UsuarioSistema" Type="Self.UsuarioSistema" Multiplicity="1" />
           <End Role="ControlCajaUsuarioEntrega" Type="Self.ControlCajaUsuarioEntrega" Multiplicity="*" />
@@ -1278,18 +1290,6 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
               <PropertyRef Name="RowID" />
             </Principal>
             <Dependent Role="ControlCajaUsuarioEntrega">
-              <PropertyRef Name="UsuarioID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ControlCa__Usuar__75E27017">
-          <End Role="UsuarioSistema" Type="Self.UsuarioSistema" Multiplicity="1" />
-          <End Role="ControlCajaUsuarioRecibe" Type="Self.ControlCajaUsuarioRecibe" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UsuarioSistema">
-              <PropertyRef Name="RowID" />
-            </Principal>
-            <Dependent Role="ControlCajaUsuarioRecibe">
               <PropertyRef Name="UsuarioID" />
             </Dependent>
           </ReferentialConstraint>
@@ -2915,13 +2915,13 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
             <End Role="Tercero" EntitySet="Tercero" />
             <End Role="Contacto" EntitySet="Contacto" />
           </AssociationSet>
+          <AssociationSet Name="FK__ControlCa__Contr__0FA2421A" Association="Self.FK__ControlCa__Contr__0FA2421A">
+            <End Role="ControlCajaUsuarioEntrega" EntitySet="ControlCajaUsuarioEntrega" />
+            <End Role="ControlCajaUsuarioRecibe" EntitySet="ControlCajaUsuarioRecibe" />
+          </AssociationSet>
           <AssociationSet Name="FK__ControlCa__Usuar__688874F9" Association="Self.FK__ControlCa__Usuar__688874F9">
             <End Role="UsuarioSistema" EntitySet="UsuarioSistema" />
             <End Role="ControlCajaUsuarioEntrega" EntitySet="ControlCajaUsuarioEntrega" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ControlCa__Usuar__75E27017" Association="Self.FK__ControlCa__Usuar__75E27017">
-            <End Role="UsuarioSistema" EntitySet="UsuarioSistema" />
-            <End Role="ControlCajaUsuarioRecibe" EntitySet="ControlCajaUsuarioRecibe" />
           </AssociationSet>
           <AssociationSet Name="FK__Departame__PaisI__79C80F94" Association="Self.FK__Departame__PaisI__79C80F94">
             <End Role="Pais" EntitySet="Pais" />
@@ -4032,8 +4032,8 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
             <End Role="ControlCajaUsuarioEntrega" EntitySet="ControlCajaUsuarioEntrega" />
           </AssociationSet>
           <EntitySet Name="ControlCajaUsuarioRecibe" EntityType="CinemaPOSModel.ControlCajaUsuarioRecibe" />
-          <AssociationSet Name="FK__ControlCa__Usuar__75E27017" Association="CinemaPOSModel.FK__ControlCa__Usuar__75E27017">
-            <End Role="UsuarioSistema" EntitySet="UsuarioSistema" />
+          <AssociationSet Name="FK__ControlCa__Contr__0FA2421A" Association="CinemaPOSModel.FK__ControlCa__Contr__0FA2421A">
+            <End Role="ControlCajaUsuarioEntrega" EntitySet="ControlCajaUsuarioEntrega" />
             <End Role="ControlCajaUsuarioRecibe" EntitySet="ControlCajaUsuarioRecibe" />
           </AssociationSet>
           </EntityContainer>
@@ -6763,7 +6763,6 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <NavigationProperty Name="Rol" Relationship="CinemaPOSModel.FK__UsuarioSi__RolID__7BE56230" FromRole="UsuarioSistema" ToRole="Rol" />
           <NavigationProperty Name="BoletaVendida" Relationship="CinemaPOSModel.FK__BoletaVen__Usuar__5B638405" FromRole="UsuarioSistema" ToRole="BoletaVendida" />
           <NavigationProperty Name="ControlCajaUsuarioEntrega" Relationship="CinemaPOSModel.FK__ControlCa__Usuar__688874F9" FromRole="UsuarioSistema" ToRole="ControlCajaUsuarioEntrega" />
-          <NavigationProperty Name="ControlCajaUsuarioRecibe" Relationship="CinemaPOSModel.FK__ControlCa__Usuar__75E27017" FromRole="UsuarioSistema" ToRole="ControlCajaUsuarioRecibe" />
         </EntityType>
         <EntityType Name="BoletaVendida">
           <Key>
@@ -7004,6 +7003,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <Property Name="CantidadGafas" Type="Int32" />
           <NavigationProperty Name="UsuarioSistema" Relationship="CinemaPOSModel.FK__ControlCa__Usuar__688874F9" FromRole="ControlCajaUsuarioEntrega" ToRole="UsuarioSistema" />
           <Property Name="CantidadGafasNin" Type="Int32" />
+          <NavigationProperty Name="ControlCajaUsuarioRecibe" Relationship="CinemaPOSModel.FK__ControlCa__Contr__0FA2421A" FromRole="ControlCajaUsuarioEntrega" ToRole="ControlCajaUsuarioRecibe" />
         </EntityType>
         <Association Name="FK__ControlCa__Usuar__688874F9">
           <End Type="CinemaPOSModel.UsuarioSistema" Role="UsuarioSistema" Multiplicity="1" />
@@ -7022,24 +7022,24 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
             <PropertyRef Name="RowID" />
           </Key>
           <Property Name="RowID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UsuarioID" Type="Int32" Nullable="false" />
-          <Property Name="ValorBase" Type="Double" Nullable="false" />
+          <Property Name="ValorEntrega" Type="Double" Nullable="false" />
           <Property Name="FechaEntrega" Type="DateTime" Precision="3" />
           <Property Name="CantidadTarjetas" Type="Int32" />
           <Property Name="CantidadBonoRegalo" Type="Int32" />
           <Property Name="CantidadGafasAd" Type="Int32" />
           <Property Name="CantidadGafasNin" Type="Int32" />
-          <NavigationProperty Name="UsuarioSistema" Relationship="CinemaPOSModel.FK__ControlCa__Usuar__75E27017" FromRole="ControlCajaUsuarioRecibe" ToRole="UsuarioSistema" />
+          <Property Name="ControlCajaEntregaID" Type="Int32" />
+          <NavigationProperty Name="ControlCajaUsuarioEntrega" Relationship="CinemaPOSModel.FK__ControlCa__Contr__0FA2421A" FromRole="ControlCajaUsuarioRecibe" ToRole="ControlCajaUsuarioEntrega" />
         </EntityType>
-        <Association Name="FK__ControlCa__Usuar__75E27017">
-          <End Type="CinemaPOSModel.UsuarioSistema" Role="UsuarioSistema" Multiplicity="1" />
+        <Association Name="FK__ControlCa__Contr__0FA2421A">
+          <End Type="CinemaPOSModel.ControlCajaUsuarioEntrega" Role="ControlCajaUsuarioEntrega" Multiplicity="0..1" />
           <End Type="CinemaPOSModel.ControlCajaUsuarioRecibe" Role="ControlCajaUsuarioRecibe" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="UsuarioSistema">
+            <Principal Role="ControlCajaUsuarioEntrega">
               <PropertyRef Name="RowID" />
             </Principal>
             <Dependent Role="ControlCajaUsuarioRecibe">
-              <PropertyRef Name="UsuarioID" />
+              <PropertyRef Name="ControlCajaEntregaID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8264,13 +8264,13 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <EntitySetMapping Name="ControlCajaUsuarioRecibe">
             <EntityTypeMapping TypeName="CinemaPOSModel.ControlCajaUsuarioRecibe">
               <MappingFragment StoreEntitySet="ControlCajaUsuarioRecibe">
+                <ScalarProperty Name="ControlCajaEntregaID" ColumnName="ControlCajaEntregaID" />
                 <ScalarProperty Name="CantidadGafasNin" ColumnName="CantidadGafasNin" />
                 <ScalarProperty Name="CantidadGafasAd" ColumnName="CantidadGafasAd" />
                 <ScalarProperty Name="CantidadBonoRegalo" ColumnName="CantidadBonoRegalo" />
                 <ScalarProperty Name="CantidadTarjetas" ColumnName="CantidadTarjetas" />
                 <ScalarProperty Name="FechaEntrega" ColumnName="FechaEntrega" />
-                <ScalarProperty Name="ValorBase" ColumnName="ValorBase" />
-                <ScalarProperty Name="UsuarioID" ColumnName="UsuarioID" />
+                <ScalarProperty Name="ValorEntrega" ColumnName="ValorEntrega" />
                 <ScalarProperty Name="RowID" ColumnName="RowID" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -14,6 +14,11 @@ namespace CinemaPOS.Models
     
     public partial class ControlCajaUsuarioEntrega
     {
+        public ControlCajaUsuarioEntrega()
+        {
+            this.ControlCajaUsuarioRecibe = new HashSet<ControlCajaUsuarioRecibe>();
+        }
+    
         public int RowID { get; set; }
         public int UsuarioID { get; set; }
         public double ValorEntrega { get; set; }
@@ -24,5 +29,6 @@ namespace CinemaPOS.Models
         public Nullable<int> CantidadGafasNin { get; set; }
     
         public virtual UsuarioSistema UsuarioSistema { get; set; }
+        public virtual ICollection<ControlCajaUsuarioRecibe> ControlCajaUsuarioRecibe { get; set; }
     }
 }
