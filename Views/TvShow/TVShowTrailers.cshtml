@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "TVShowTrailers";
+    Layout = "~/Views/Inicio/DiseñoTvShow.cshtml";
+}
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<link href="~/Content/css/Fuentes.min.css" rel="stylesheet" />
+<script src="~/Content/js/jquery-2.2.4.min.js"></script>
+<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+<link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+<script src="~/Content/js/bootstrap.js"></script>
+<script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/Content/js/demo/tables-datatables.js"></script>
+<link href="~/Content/css/TVShowTrailers.min.css" rel="stylesheet" />
+<link href="~/Content/css/nifty.min.css" rel="stylesheet" />
+<link href="~/Content/css/demo/nifty-demo-icons.min.css" rel="stylesheet">
+<link href="~/Content/css/demo/nifty-demo.min.css" rel="stylesheet">
+<script src="~/Content/js/nifty.min.js"></script>
+<script src="~/Content/js/demo/nifty-demo.min.js"></script>
+<div id="div"></div>
+<div class="row" id="Contenidos">
+    <div id="demo-carousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+        </div>
+    </div>
+</div>
+<script>
+    function CargarTrailers() {
+        $.ajax({
+            url: "TvTrailers",
+            success: function (data) {
+                $('.carousel-inner').append(data);
+
+            }
+        })
+    }
+    $(document).ready(function () {
+        CargarTrailers();
+    });
+    $(document).ready(function () {
+        $("iframe").end(function () {
+            alert('El video ha finalizado!!!');
+        });
+    });
+</script>

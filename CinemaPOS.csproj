@@ -479,6 +479,8 @@
     <Content Include="Content\css\themes\type-c\theme-yellow.min.css" />
     <Content Include="Content\css\TvShowFunciones.min.css" />
     <Content Include="Content\css\TVShowTrailers.min.css" />
+    <Content Include="Content\demo-files\demo.css" />
+    <Content Include="Content\demo-files\demo.js" />
     <Content Include="Content\font-own\icomoon.svg" />
     <Content Include="Content\fonts-pos\icomoon.svg" />
     <Content Include="Content\fonts-pos\style.css" />
@@ -1568,6 +1570,7 @@
     <Content Include="Content\plugins\pace\pace.js" />
     <Content Include="Content\plugins\pace\pace.min.css" />
     <Content Include="Content\plugins\pace\pace.min.js" />
+    <Content Include="Content\plugins\PrintElement.js" />
     <Content Include="Content\plugins\select2\css\select2.css" />
     <Content Include="Content\plugins\select2\css\select2.min.css" />
     <Content Include="Content\plugins\select2\js\i18n\ar.js" />
@@ -2363,6 +2366,17 @@
     <Content Include="Content\fonts-pos\icomoon.eot" />
     <Content Include="Content\fonts-pos\icomoon.ttf" />
     <Content Include="Content\fonts-pos\icomoon.woff" />
+    <Content Include="Content\Fuente Royal\Futura %28Light%29.ttf" />
+    <Content Include="Content\Fuente Royal\Futura Beyaz Italic.ttf" />
+    <Content Include="Content\Fuente Royal\Futura Extra Bold.ttf" />
+    <Content Include="Content\Fuente Royal\Futura Koyu Italic.ttf" />
+    <Content Include="Content\Fuente Royal\Futura Koyu.ttf" />
+    <Content Include="Content\Fuente Royal\Futura LightOblique .ttf" />
+    <Content Include="Content\Fuente Royal\Futura Oblique.ttf" />
+    <Content Include="Content\Fuente Royal\FuturaExtended.ttf" />
+    <Content Include="Content\Fuente Royal\FuturaExtraBoldIta.ttf" />
+    <Content Include="Content\Fuente Royal\FuturaLighItalic.ttf" />
+    <Content Include="Content\Fuente Royal\FuturaLight.ttf" />
     <None Include="DB_9CAC35_cinemaposDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DB_9CAC35_cinemaposDataSet.Designer.cs</LastGenOutput>
@@ -2408,6 +2422,12 @@
     <Content Include="Views\AdminTeatro\ControlCajaUsuario.cshtml" />
     <Content Include="Views\AdminTeatro\VistaControlCaja.cshtml" />
     <Content Include="Views\AdminTeatro\RegistrarIngreso.cshtml" />
+    <Content Include="Views\CRM\ModalHabeasData.cshtml" />
+    <Content Include="Views\CRM\ModalSello.cshtml" />
+    <Content Include="Views\TvShow\TvShowFunciones.cshtml" />
+    <Content Include="Views\TvShow\TVShowTrailers.cshtml" />
+    <Content Include="Views\Sincronizacion\SincronizacionMaestros.cshtml" />
+    <Content Include="Views\Inicio\DiseñoTvShow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
