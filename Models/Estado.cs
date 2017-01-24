@@ -34,12 +34,12 @@ namespace CinemaPOS.Models
             this.PorcentajeParticipacion = new HashSet<PorcentajeParticipacion>();
             this.Pqrs = new HashSet<Pqrs>();
             this.Sala = new HashSet<Sala>();
-            this.MapaSala = new HashSet<MapaSala>();
             this.Taquilla = new HashSet<Taquilla>();
             this.Seguimiento = new HashSet<Seguimiento>();
             this.OportunidadVenta = new HashSet<OportunidadVenta>();
             this.TeatroPelicula = new HashSet<TeatroPelicula>();
             this.Teatro = new HashSet<Teatro>();
+            this.MapaSala = new HashSet<MapaSala>();
         }
     
         public int RowID { get; set; }
@@ -72,12 +72,12 @@ namespace CinemaPOS.Models
         public virtual ICollection<PorcentajeParticipacion> PorcentajeParticipacion { get; set; }
         public virtual ICollection<Pqrs> Pqrs { get; set; }
         public virtual ICollection<Sala> Sala { get; set; }
-        public virtual ICollection<MapaSala> MapaSala { get; set; }
         public virtual TipoEstado TipoEstado { get; set; }
         public virtual ICollection<Taquilla> Taquilla { get; set; }
         public virtual ICollection<Seguimiento> Seguimiento { get; set; }
         public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }
         public virtual ICollection<TeatroPelicula> TeatroPelicula { get; set; }
         public virtual ICollection<Teatro> Teatro { get; set; }
+        public virtual ICollection<MapaSala> MapaSala { get; set; }
     }
 }

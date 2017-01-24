@@ -1,0 +1,148 @@
+﻿@model  CinemaPOS.Models.ControlCajaUsuarioEntrega
+@{
+    ViewBag.Title = "ControlCajaUsuario";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+
+}
+<script>
+    $(document).ready(function () {
+        $("#taquillero").chosen();
+        $('.solo-numeros').keyup(function () {
+            this.value = (this.value + '').replace(/[^0-9]/g, '');
+        });
+
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+
+    });
+    
+    function valida_formulario() {
+        hasChangue = false;
+        var validator = $("#formulario_control_usuario").validate();
+        if (validator.form()) {
+            guardar_control();
+        }
+    }
+    function guardar_control() {
+        $.ajax({
+            url: "/AdminTeatro/GuardarControl",
+            type:"POST",
+            data :$("#formulario_control_usuario").serialize(),
+            success: function (data) {
+
+            },error:function(data){
+
+            }
+        })
+    }
+</script>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Input size</h3>
+    </div>
+
+
+    <!--Input Size-->
+    <!--===================================================-->
+    <form id="formulario_control_usuario">
+        <input type="hidden" value="@Model.RowID" id="RowIDControl" />
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Taquillero</label>
+                        <select class="form-control" name="taquillero" id="taquillero" required>
+                            <option disabled selected>Seleccione taquillero</option>
+                            @foreach (CinemaPOS.Models.UsuarioSistema taquillero in ViewBag.Taquilleros)
+                            {
+                                if (Model.RowID != null)
+                                {
+                                    if (Model.UsuarioID == taquillero.RowID)
+                                    {
+                                        <option value = "@taquillero.RowID" selected>@*@taquillero.cedula*@ @taquillero.Nombre - @taquillero.Apellido</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@taquillero.RowID">@*@taquillero.cedula*@ @taquillero.Nombre - @taquillero.Apellido</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@taquillero.RowID">@*@taquillero.cedula*@ @taquillero.Nombre - @taquillero.Apellido</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Valor entregado</label>
+                        <div class="input-group mar-btm">
+                            <span class="input-group-addon">$</span>
+                            <input type="text" class="form-control solo-numeros" name="valor_entrega" value="@Model.ValorEntrega" required>
+                            <span class="input-group-addon">.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Cantidad tarjetas TCR</label>  
+                        <div class="input-group mar-btm">
+                            <input type="text" class="form-control solo-numeros" name="cantidad_tcr" value="@Model.CantidadTarjetas" required>
+                            <span class="input-group-addon"><i class="ion-card"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Cantidad gafas adulto 3D</label>
+                        <div class="input-group mar-btm">
+                            <input type="text" class="form-control solo-numeros" name="cantidad_gafas_adulto" value="@Model.CantidadGafas" required>
+                            <span class="input-group-addon"><i class="ion-ios-glasses-outline"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Cantidad gafas niño 3D</label>
+                        <div class="input-group mar-btm">
+                            <input type="text" class="form-control solo-numeros" name="cantidad_gafas_nino" value="@Model.CantidadGafasNin" required>
+                            <span class="input-group-addon"><i class="ion-ios-glasses-outline"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Cantidad bono regalo</label>
+                        <div class="input-group mar-btm">
+                            <input type="text" class="form-control solo-numeros" name="cantidad_bono_regalo" value="@Model.CantidadBonoRegalo" required>
+                            <span class="input-group-addon"><i class="demo-pli-mine"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer text-right">
+            <div class="row">
+                <div class="col-sm-9 col-sm-offset-3">
+                    <button class="btn btn-success" type="button" onclick="valida_formulario()">Guardar información</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="panel">
+        <div class="panel-body">
+
+        </div>
+    </div>
+    <!--===================================================-->
+    <!--End Input Size-->
+
+
+</div>
+

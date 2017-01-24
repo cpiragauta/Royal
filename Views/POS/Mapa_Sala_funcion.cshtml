@@ -52,6 +52,8 @@
 
 <!--Sparkline [ OPTIONAL ]-->
 <script src="~/Content/plugins/sparkline/jquery.sparkline.min.js"></script>
+@*<link href="~/Content/css/EstiloBoleta.css" rel="stylesheet" />*@
+<script src="~/Content/js/jquery.PrintArea.js"></script>
 
 <!--Specify page [ SAMPLE ]-->
 @*<script src="~/Content/js/demo/dashboard.js"></script>*@
@@ -66,6 +68,7 @@
         WIDTH: 50PX;
         HEIGHT: 50PX;
     }
+
 </style>
 
 <link href="~/Content/plugins/chosen/chosen.min.css" rel="stylesheet">
@@ -205,33 +208,68 @@
         
     }
 
-    function TerminarVenta(){
-        var boletas=0;
-        var idsillas="";
-        $(".Seleccionada").each(function (index,element){
-            console.log($(this).attr('id'));
-            idsillas+=$(this).attr('id')+',';
-            boletas++;
-        })
-        if ($("#cantidad-ventas").val() !=boletas) {
-            alert("Faltan sillas por seleccionar");
-        }
-        if ($("#cantidad-ventas").val() ==boletas) {
-            $.ajax({
-                url:'/POS/TerminarVenta/',
-                data:{
-                    IDSillas:idsillas,
-                    IDTarifas:$("#tarifaID").val(),
-                    RowIDFuncion:$("#RowIDFuncion").val()
-                },succes:function(data){
-                    swal('','Venta terminada');
-                },error:function(){
-                    swal('','Verifica la información','warning')
-                }
 
+    function abrirmodalpago(){
+        $("#demo-modal-wo-anim").modal('show');
+        $(".total-facturar").val(parseInt($("#precio-total-boletas").val()));
+    }
+    function CrearCambio(){
+        console.log($("#efectivo").val())
+        console.log($(".total-facturar").val())
+        var cambio=parseInt($("#efectivo").val())-parseInt($("#totalAfacturar").val());
+        $(".cambio").val(cambio);
+    }
+    function TerminarVenta(){
+        debugger
+        var cambio=parseInt($("#efectivo").val())-parseInt($("#totalAfacturar").val());
+        if (cambio<0||cambio==null||cambio=="" || isNaN(cambio)) {
+            alert("Verifique el efectivo ingresado");
+        }
+        else{
+            var boletas=0;
+            var idsillas="";
+            $(".Seleccionada").each(function (index,element){
+                console.log($(this).attr('id'));
+                idsillas+=$(this).attr('id')+',';
+                boletas++;
             })
+            if ($("#cantidad-ventas").val() !=boletas) {
+                alert("Faltan sillas por seleccionar");
+            }
+            if ($("#cantidad-ventas").val() ==boletas) {
+                $.ajax({
+                    url:'/POS/TerminarVenta/',
+                    async:false,
+                    data:{
+                        IDSillas:idsillas,
+                        IDTarifas:$("#tarifaID").val(),
+                        RowIDFuncion:$("#RowIDFuncion").val(),
+                        Efectivo:$("#efectivo").val(),
+                        Cambio:$("#cambio").val(),
+                        Total:$("#totalAfacturar").val()
+                    },success:function(data){
+                        debugger
+                        console.log(data.html);
+                        $("#panel-boletas-imprimir").append(data.html);
+                        var mode = 'iframe'; //popup
+                        var close = mode == "popup";
+                        var options = { mode: mode, popClose: close };
+                        $(".printableArea").printArea(options);
+                        $("#panel-boletas-imprimir").empty();
+                        //swal('','Venta terminada');
+                        $("#demo-modal-wo-anim").modal('hide');
+                        $("#myModal1").modal('hide');
+                    },error:function(){
+                        swal('','Verifica la información','warning')
+                    }
+
+                })
+            }
         }
     }
+    $('.solo-numero').keyup(function () {
+        this.value = (this.value + '').replace(/[^0-9]/g, '');
+    });
 
     function imprimir() {
         if ((navigator.appName == "Netscape")) {
@@ -321,7 +359,7 @@
                         <div class="nav">
                             <div id="Dialog"></div><!--Abre el modal  -->
                             <div class="row">
-                                <input type="hidden" class="RowID_Sala" value="@Request.Params["RowID_Sala"].ToString()" />
+                                <input type="hidden" class="RowID_Sala"  value="@Request.Params["RowID_Sala"].ToString()" />
 
                                 <table id="esquema_mapa" align="center" style="height:@(Model.Cantidad_Columnas *50)px;width:@(Model.Cantidad_Filas *50)px;margin:0 auto;"></table>
                                 <h1 class="text-center">Pantalla</h1>
@@ -331,53 +369,66 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="TerminarVenta()" id="printButton" data-dismiss="modal" aria-hidden="true">Terminar Venta</button>
+                    <button type="button" class="btn btn-success" onclick="abrirmodalpago()" >Pagar</button>
                 </div>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
     @*<a href="javascript:void(0);" id="printButton">Print</a>*@
-    <div class="printableArea" id="panel-boletas-imprimir" style="width:400px;height:300px;">
-
-
-        @*<div class="boleta" style="float:left;width:50%;height:100%;">
-            <p class="text-center">Royal Films SAS<br />NIT: 890.105.652-3</p>
-            <p class="text-center pad-no mar-no"><strong>Resolución:</strong><br /><strong>20000199088 de @DateTime.Now.ToShortDateString()</strong></p>
-            <p class="text-center pad-no mar-no"><strong>Regimen simplificado:</strong></p>
-            <h4 class="">FACTURA DE VENTA N. 45789</h4>
-            <p><strong>Funcion:</strong><br />@DateTime.Now.ToShortDateString()</p>
-            <p><strong>Sala 1</strong></p>
-            <p><strong>Hora:4:30 PM</strong></p>
-            <p><strong>2D DB Doctor Strange</strong></p>
-
-            <p><strong>Tarifa:</strong><br />Lunes A Miércoles antes de 3</p>
-            <p><strong>Precio: $5.000</strong></p>
-            <p><strong>Iva: $0</strong></p>
-            <strong>Silla<br /> A-10</strong><br />
-            <p><strong>Cajero: </strong><br />James Alexander Bernal Gonzalez</p>
-            <p><strong>Terminal </strong>01</p>
-            <p><strong>Prefijo: </strong>AL</p>
-            <p><strong>Fecha y hora de venta</strong><br />@DateTime.Now</p>
-        </div>
-
-        <div class="tirilla" style="float:right;width:50%;height:100%;">
-            <p class="text-center">Royal Films SAS<br />NIT: 890.105.652-3</p>
-            <p class="text-center pad-no mar-no"><strong>Resolución:</strong><br /><strong>20000199088 de @DateTime.Now.ToShortDateString()</strong></p>
-            <p class="text-center pad-no mar-no"><strong>Regimen simplificado:</strong></p>
-            <h4 class="">FACTURA DE VENTA N. 45789</h4>
-            <p><strong>Funcion:</strong><br />@DateTime.Now.ToShortDateString()</p>
-            <p><strong>Sala 1</strong></p>
-            <p><strong>Hora:4:30 PM</strong></p>
-            <p><strong>2D DB Doctor Strange</strong></p>
-
-            <p><strong>Tarifa:</strong><br />Lunes A Miércoles antes de 3</p>
-            <p><strong>Precio: $5.000</strong></p>
-            <p><strong>Iva: $0</strong></p>
-            <strong>Silla<br /> A-10</strong><br />
-            <p><strong>Cajero: </strong><br />James Alexander Bernal Gonzalez</p>
-            <p><strong>Terminal </strong>01</p>
-            <p><strong>Prefijo: </strong>AL</p>
-            <p><strong>Fecha y hora de venta</strong><br />@DateTime.Now</p>
-        </div>*@
+    <div  id="panel-boletas-imprimir">
     </div>
 </div><!-- /.modal -->
+
+<div class="modal fade" id="demo-modal-wo-anim"  role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true" data-backdrop="static" data-keyboard="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!--Modal header-->
+                <div class="modal-header">
+                     <!--<button type="button" class="close" data-dismiss="modal"><i class="pci-cross pci-circle"></i></button>-->
+                    <h3 class="panel-title">Control de caja</h3>
+                </div>
+
+
+                <!--Modal body-->
+                <div class="modal-body" style="min-height:250px;">
+                    <div id="page-content" style="height:50px">
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" >Efectivo</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control efectivo-recibido solo-numero" id="efectivo" onblur="CrearCambio()" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Total </label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control total-facturar" disabled/>
+                                        <input type="hidden" class="total-facturar" id="totalAfacturar" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Cambio</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control cambio" id="" disabled />
+                                        <input type="hidden" class="cambio" id="cambio" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    
+                </div>
+
+
+                <!--Modal footer-->
+                <div class="modal-footer">
+                    <!--<button data-dismiss="modal" class="btn btn-default" type="button">Close</button>-->
+                    <button class="btn btn-primary" onclick="TerminarVenta()">Terminar Venta</button>
+                </div>
+            </div>
+        </div>
+    </div>

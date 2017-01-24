@@ -17,6 +17,7 @@ namespace CinemaPOS.Models
         public UsuarioSistema()
         {
             this.BoletaVendida = new HashSet<BoletaVendida>();
+            this.ControlCajaUsuarioEntrega = new HashSet<ControlCajaUsuarioEntrega>();
         }
     
         public int RowID { get; set; }
@@ -39,8 +40,9 @@ namespace CinemaPOS.Models
         public Nullable<int> RowIDCreacion { get; set; }
         public Nullable<int> TeatroCreacion { get; set; }
     
-        public virtual ICollection<BoletaVendida> BoletaVendida { get; set; }
-        public virtual Rol Rol { get; set; }
         public virtual Teatro Teatro { get; set; }
+        public virtual Rol Rol { get; set; }
+        public virtual ICollection<BoletaVendida> BoletaVendida { get; set; }
+        public virtual ICollection<ControlCajaUsuarioEntrega> ControlCajaUsuarioEntrega { get; set; }
     }
 }
