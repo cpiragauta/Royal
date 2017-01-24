@@ -99,7 +99,7 @@ namespace CinemaPOS.Controllers
         }
         public JsonResult GuardarControlIngreso(FormCollection formulario)
         {
-            formulario = DeSerialize(formulario);
+            //formulario = DeSerialize(formulario);
             ControlCajaUsuarioRecibe objControlRecibe = new ControlCajaUsuarioRecibe();
             objControlRecibe.ValorEntrega = int.Parse(formulario["valor_entrega"]);
             objControlRecibe.CantidadTarjetas = int.Parse(formulario["cantidad_tarjetas"]);
@@ -107,6 +107,9 @@ namespace CinemaPOS.Controllers
             objControlRecibe.CantidadGafasAd = int.Parse(formulario["cantidad_gafas_adulto"]);
             objControlRecibe.CantidadGafasNin = int.Parse(formulario["cantidad_gafas_nino"]);
             objControlRecibe.FechaEntrega = DateTime.Now;
+            objControlRecibe.ControlCajaEntregaID = int.Parse(formulario["RowID_ControlUsuario"]);
+            db.ControlCajaUsuarioRecibe.Add(objControlRecibe);
+            db.SaveChanges();
             return Json("");
         }
     }

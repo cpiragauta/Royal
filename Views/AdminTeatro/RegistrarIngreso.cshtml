@@ -9,6 +9,7 @@
     $("#myModal1").modal('show');
     function guardar_ingreso() {
         $.ajax({
+            type:"POST",
             url: "/AdminTeatro/GuardarControlIngreso",
             data: $("#form_control_ingreso").serialize(),
             success: function (data) {
@@ -28,27 +29,35 @@
                 <h4 class="modal-title" style="padding:1px;color:#455A64"><b>Terminos & Condiciones</b></h4>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-2">
+                
+                <div class="row mar-ver panel-bordered-dark">
+                    <div class="col-sm-4">
+                        <label class="control-label text-bold">Taquillero</label><br />
                         <label class="control-label">@Model.UsuarioSistema.Nombre - @Model.UsuarioSistema.Apellido</label>
                     </div>
                     <div class="col-sm-2">
+                        <label class="control-label text-bold">Valor entrega</label><br />
                         <label class="control-label">@Model.ValorEntrega</label>
                     </div>
                     <div class="col-sm-2">
+                        <label class="control-label text-bold">Cant-Bono regalo</label><br />
                         <label class="control-label">@Model.CantidadBonoRegalo</label>
                     </div>
                     <div class="col-sm-2">
+                        <label class="control-label text-bold">Gafas adultos</label><br />
                         <label class="control-label">@Model.CantidadGafas</label>
                     </div>
                     <div class="col-sm-2">
+                        <label class="control-label text-bold">Gafas niño</label><br />
                         <label class="control-label">@Model.CantidadGafasNin</label>
                     </div>
                     <div class="col-sm-2">
+                        <label class="control-label text-bold">Tarjetas TCR</label><br />
                         <label class="control-label">@Model.CantidadTarjetas</label>
                     </div>
                 </div>
                 <form id="form_control_ingreso">
+                    <input type="hidden" id="RowID_ControlUsuario" name="RowID_ControlUsuario" value="@Model.RowID" />
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
@@ -84,7 +93,7 @@
                         </div>
                     </div>
                     <div class="panel-footer text-right">
-                        <button class="btn btn-success" type="submit">Submit</button>
+                        <button class="btn btn-success" type="button" onclick="guardar_ingreso()">Submit</button>
                     </div>
 
                 </form>
