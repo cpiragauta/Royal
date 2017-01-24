@@ -13,45 +13,22 @@
     <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
     <!--DataTables Sample [ SAMPLE ]-->
     <script src="~/Content/js/demo/tables-datatables.js"></script>
+    <script src="~Content/js/jquery.dataTables.min1.10.10.js"></script>
+
+    <link href="~/Content/Tables.min.css" rel="stylesheet" />
+    <link href="~/Content/js/JqueryDataRables/jquery.dataTables.min.css" rel="stylesheet" />
 </head>
-<style>
- 
-    .fixed-table-body {
-        overflow-x: scroll;
-        overflow-y: scroll;
-        height: 100%;
-    }
 
-    .fixed-table-footer, .fixed-table-header {
-        overflow: hidden;
-    }
-    table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        border: 1px solid #bbb;
-    }
-
-    td, th {
-        border-top: 1px solid #ddd;
-        padding: 4px 8px;
-    }
-
-    tbody tr:nth-child(even) td {
-        background-color: #eee;
-    }
-
-</style>
 <p>
     <a class="btn btn-success" href='@Url.Action("Programacion", "Programacion")'>Crear Programacion</a>
 </p>
-@*Comentario*@
 <div class="panel">
     <div class="panel-heading">
         <h3 class="panel-title">Lista Programación</h3>
     </div>
     <div class="panel-body" style="overflow-x:auto;">
-        <div class="fixed-table-body">
-            <table id="demo-dt-basic" class="table table-hover table-striped table-responsive table-bordered " cellspacing="0" data-show-pagination-switch="true">
+        <div class="">
+            <table id="Table" class="table table-condensed table-striped table-bordered table-hover table-checkable table-responsive ">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -65,6 +42,19 @@
                         <th></th>
                     </tr>
                 </thead>
+                <tfoot>
+                    <tr>
+                        <td>Nombre</td>
+                        <td>Teatro</td>
+                        <td>Cant Funciones</td>
+                        <td>Fecha Inicial</td>
+                        <td>Fecha Final</td>
+                        <td>Estado</td>
+                        <td>Usuario Creación</td>
+                        <td>Fecha Creación</td>
+                    </tr>
+
+                </tfoot>
                 <tbody>
                     @foreach (CinemaPOS.Models.EncabezadoProgramacion item in Model)
                     {
@@ -105,6 +95,96 @@
         </div>
  
 
+<script>
+
+    $(document).ready(function () {
+
+        $('#Table tfoot td').each(function () {
+            var title = $(this).text();
+            var width = 'width: 100%;';
+            var id = '';
+
+
+            if (title == 'Nombre') {
+                id = 'id="Nombre"';
+            }
+
+            if (title == 'Teatro') {
+                id = 'id="Teatro"';
+            }
+
+            if (title == 'Cant Funciones') {
+                id = 'id="Cant_Funciones"';
+            }
+
+
+            if (title == 'Fecha Inicial') {
+                id = 'id="Fecha_Inicial"';
+            }
+
+            if (title == 'Fecha Final') {
+                id = 'id="Fecha_Final"';
+            }
+
+            if (title == 'Estado') {
+                id = 'id="Estado"';
+            }
+
+            if (title == 'Usuario Creación') {
+                id = 'id="Usuario_Creacion"';
+            }
+            if (title == 'Fecha Creación') {
+                id = 'id="Fecha_Creacion"';
+            }
+
+            if (title != '' && id.length > 1) {
+                $(this).html('<input type="text" style="' + width + '" ' + id + ' placeholder="Buscar ' + title + '" />');
+            }
+            else {
+                $(this).html('');
+                title = '';
+            }
+        });
+
+        var aoColumnDefsType = [
+          { "bSortable": false, "aTargets": [0] }
+        ];
+
+
+        debugger
+
+        var table = $('#Table').DataTable({
+            "processing": true,
+            "bFilter": true,
+            "bPaginate": true,
+            "info": true,
+            "bDestroy": true,
+            aLengthMenu: [
+                [12],
+                [12]
+            ],
+            "iDisplayLength": 6,
+            "order": [[2, "desc"]],//original "order": [[2, "desc"]],
+            "aoColumnDefs": aoColumnDefsType
+        });
+
+        // Apply the search
+        table.columns().every(function () {
+            debugger
+            var that = this;
+
+            $('input', this.footer()).on('keyup change', function () {
+                if (that.search() !== this.value) {
+                    that
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
 
 
 
+    });
+
+
+</script>

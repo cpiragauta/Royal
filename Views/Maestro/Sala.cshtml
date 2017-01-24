@@ -53,6 +53,7 @@
         jQuery.validator.messages.required = '*Este campo es obligatorio.';
 
     });
+
 </script>
 
 <div>
@@ -103,11 +104,11 @@
                             {
                                 if (Model.RowID != 0 && teatro.RowID == Model.TeatroID)
                                 {
-                                    <option value="@teatro.RowID" selected>@teatro.Nombre</option>
+                                    <option value="@teatro.RowID" selected>@teatro.Nombre - @teatro.Ciudad.Nombre</option>
                                 }
                                 else
                                 {
-                                    <option value="@teatro.RowID">@teatro.Nombre</option>
+                                    <option value="@teatro.RowID">@teatro.Nombre - @teatro.Ciudad.Nombre</option>
                                 }
 
                             }

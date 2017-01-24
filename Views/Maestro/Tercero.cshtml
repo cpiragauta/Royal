@@ -134,7 +134,7 @@
             $("#Sexo").removeAttr('required');
             $("#nombreTercero").removeAttr('required');
             $("#oculto").hide();
-            $("#PanelIdentificacion").hide();
+            //$("#PanelIdentificacion").hide();
             $("#tipo_se").slideDown('fast');
             $("#Correr").addClass("CorrerIzquierda");
             $(".Ocultar").addClass("CorrerIzquierda");
@@ -385,7 +385,7 @@
                         </div>
 
                         <div class="col-sm-4">
-                            <div class="form-group Ocultar" id="PanelIdentificacion">
+                            <div class="form-group" id="PanelIdentificacion">
                                 <label class="control-label" id="lblIdentificacion">Identificacion:*</label>
                                 <input value="@Model.Identificacion" name="Identificacion" id="Identificacion" class="form-control solo-numero">
                             </div>

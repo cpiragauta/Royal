@@ -541,7 +541,7 @@ namespace CinemaPOS.Controllers.Master
             ViewBag.Servicios = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOSERVICIO" && f.Activo == true).ToList();
             ViewBag.Estados = db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOSALA").ToList();
             ViewBag.Audios = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOAUDIO" && f.Activo == true).ToList();
-            ViewBag.Teatros = db.Teatro.ToList();
+            ViewBag.Teatros = db.Teatro.Where(f=> f.Estado.Codigo == "ABIERTO").ToList();
             if (RowId_Sala != null && RowId_Sala != 0)
             {
                 RowId_Sala = int.Parse(Request.Params["RowId_Sala"].ToString());
@@ -598,8 +598,9 @@ namespace CinemaPOS.Controllers.Master
                 Estado objestado = db.Estado.Where(es => es.RowID == estadoid).FirstOrDefault();
                 if (objestado.Codigo == "ENFUNCIONAMIENTO")
                 {
-                    if (objestado.MapaSala.Count() == 0)
-                    {
+                    List<MapaSala> ObjetosSala = db.MapaSala.Where(f => f.SalaID == RowID_Sala).ToList();
+                    if (ObjetosSala.Count() == 0)
+                    {                        
                         return Json(new { tipo_respuesta = "warning", respuesta = "La sala no cuenta con mapa" });
                     }
                 }
@@ -923,6 +924,7 @@ namespace CinemaPOS.Controllers.Master
             ObjTeatro.Nombre = formulario["nombre"].ToUpper();
             ObjTeatro.CiudadID = int.Parse(formulario["ciudad"]);
             ObjTeatro.EstadoID = int.Parse(formulario["Estado"]);
+            ObjTeatro.CadenaBD = formulario["CadenaBD"];
             ObjTeatro.Sincronizado = false;
             if (ObjTeatro.RowID == 0)
             {
