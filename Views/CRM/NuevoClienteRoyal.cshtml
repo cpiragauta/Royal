@@ -199,8 +199,8 @@
             autoclose: true,
             todayHighlight: false
         });
-        jQuery.validator.messages.required = 'Este campo es obligatorio.';
-        jQuery.validator.messages.mail = 'Ingrese un correo valido.';
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+        jQuery.validator.messages.mail = '*Ingrese un correo valido.';
         $.validator.setDefaults({ ignore: ":hidden:not(select)" });
         debugger
         if ('@Model.RecibirInformacion' == 'True') {
@@ -249,6 +249,8 @@
                     swal("ERROR", data.respuesta, "error");
                 }
             });
+        } else {
+            ModalProcesandoHiden();
         }
     }
 </script>

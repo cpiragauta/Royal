@@ -23,7 +23,7 @@ namespace CinemaPOS.Controllers
         [CheckSessionOutAttribute]
         public ActionResult Programacion(int? RowID_EncabezadoProgramacion)
         {
-            ViewBag.ListaTeatro = db.Teatro;
+            ViewBag.ListaTeatro = db.Teatro.Where(f => f.Estado.Codigo == "ABIERTO").ToList();
             ViewBag.ListasPrecios = db.ListaEncabezado.ToList();
             ViewBag.ListaEstados = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOFUNCION");
             if (RowID_EncabezadoProgramacion != null && RowID_EncabezadoProgramacion != 0)

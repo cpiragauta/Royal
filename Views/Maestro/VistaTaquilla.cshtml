@@ -52,7 +52,13 @@
                     <tr>
                         <td>@lista_Taquilla.RowID</td>
                         <td>@lista_Taquilla.Nombre</td>
-                        <td>@lista_Taquilla.Teatro.Nombre</td>
+                        <td>
+                            @lista_Taquilla.Teatro.Nombre -
+                            @if (lista_Taquilla.Teatro.Ciudad != null)
+                            {
+                                @lista_Taquilla.Teatro.Ciudad.Nombre
+                            }
+                        </td>
                         <td>@lista_Taquilla.IP</td>
                         <td>@lista_Taquilla.Estado.Nombre</td>
                         <td><a href="@Url.Action("Taquilla", "Maestro", new { RowID_Lista = lista_Taquilla.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>

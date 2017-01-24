@@ -39,7 +39,12 @@
                 @foreach (CinemaPOS.Models.Sala salas in ViewBag.Salas)
                 {
                     <tr>
-                        <td>@salas.Teatro.Nombre</td>
+                        <td>@salas.Teatro.Nombre - 
+                        @if (null != salas.Teatro.Ciudad)
+                        {
+                           @salas.Teatro.Ciudad.Nombre 
+                        }
+                        </td>
                         <td>@salas.Nombre</td>
                         <td>@salas.Capacidad</td>
                         <td>@salas.Opcion.Nombre</td>

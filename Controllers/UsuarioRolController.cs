@@ -54,7 +54,7 @@ namespace CinemaPOS.Controllers
         [CheckSessionOutAttribute]
         public ActionResult UsuarioSistema(int? RowID_UsuarioSistema)
         {
-            ViewBag.Teatros = db.Teatro.ToList();
+            ViewBag.Teatros = db.Teatro.Where(f=>f.Estado.Codigo == "ABIERTO").ToList();
             ViewBag.Roles = db.Rol.ToList();
             ViewBag.Pantallas = db.Menu.Where(f => f.Activo == true).ToList();
             if (RowID_UsuarioSistema != null && RowID_UsuarioSistema != 0)

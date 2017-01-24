@@ -6,15 +6,16 @@
 
 <!--jQuery [ REQUIRED ]-->
 <script src="~/Content/js/jquery-2.2.4.min.js"></script>
+<script src="~/Content/js/JqueryDataRables/jquery.dataTables.min.js"></script>
+
 <!--DataTables [ OPTIONAL ]-->
-<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
-<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
-<script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+@*<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>*@
+@*<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>*@
+@*<script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>*@
 <!--DataTables Sample [ SAMPLE ]-->
-<script src="~/Content/js/demo/tables-datatables.js"></script>
-@*<script src="~/Content/js/JqueryDataRables/jquery.dataTables.min.js"></script>
+@*<script src="~/Content/js/demo/tables-datatables.js"></script>*@
 <link href="~/Content/Tables.min.css" rel="stylesheet" />
-<link href="~/Content/css/JqueryDataTables/jquery.dataTables.min.css" rel="stylesheet" />*@
+<link href="~/Content/js/JqueryDataRables/jquery.dataTables.min.css" rel="stylesheet" />
 <p>
     <a class="btn btn-success" href='@Url.Action("NuevoClienteRoyal", "CRM")'>Crear Cliente Royal</a>
 </p>
@@ -38,9 +39,8 @@
                     <th></th>
                 </tr>
             </thead>
-            @*<tfoot>
+           <tfoot>
                 <tr>
-                    <th>ID</th>
                     <th>Nombre Completo</th>
                     <th>Documento</th>
                     <th>Correo</th>
@@ -51,7 +51,7 @@
                     <th>Preferencias</th>
                     <th></th>
                 </tr>
-            </tfoot>*@
+            </tfoot>
             <tbody>
                 @foreach (var item in (List<CinemaPOS.ModelosPropios.Util.ClientesRoyal>)ViewBag.Listado)
                 {
@@ -71,16 +71,13 @@
         </table>
     </div>
 </div>
-@*<script>
+<script>
     $(document).ready(function () { 
     var cont = 0;
     $('#demo-dt-basic tfoot th').each(function () {
         var title = $(this).text();
         var width = 'width: 100px;';
-        var id = '';
-
-        if (title == 'ID')
-            id = 'id="ID"';
+        var id = '';       
 
         if (title == 'Nombre Completo')
             id = ' id="Nombre_Completo"';
@@ -146,4 +143,4 @@
         });
     });
     });
-</script>*@
+</script>

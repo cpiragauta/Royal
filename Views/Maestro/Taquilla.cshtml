@@ -168,11 +168,11 @@
                             {
                                 if (@Model.TeatroID.Equals(@teatros.RowID))
                                 {
-                                    <option value="@teatros.RowID" selected>@teatros.Nombre</option>
+                                    <option value="@teatros.RowID" selected>@teatros.Nombre - @teatros.Ciudad.Nombre</option>
                                 }
                                 else
                                 {
-                                    <option value="@teatros.RowID">@teatros.Nombre</option>
+                                    <option value="@teatros.RowID">@teatros.Nombre - @teatros.Ciudad.Nombre</option>
                                 }
                             }
                         </select>
