@@ -112,8 +112,8 @@ namespace CinemaPOS.ModelosPropios
 
             /*Para validar los permisos de los usuarios*/
             public const string NOMBRE_TEATRO_CENTRAL = "CENTRAL";
-
-
+            /*Estado apertura caja usuario*/
+            public const string ESTADO_CONTROL_CAJA_USUARIO = "PORRECIBIR";
             
         }
         public class Actividades

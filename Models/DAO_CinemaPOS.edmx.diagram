@@ -16,7 +16,7 @@
         <EntityTypeShape EntityType="CinemaPOSModel.Ciudad" Width="1.5" PointX="20.25" PointY="92.625" />
         <EntityTypeShape EntityType="CinemaPOSModel.Contacto" Width="1.5" PointX="16.5" PointY="81.25" />
         <EntityTypeShape EntityType="CinemaPOSModel.Departamento" Width="1.5" PointX="18" PointY="92.875" />
-        <EntityTypeShape EntityType="CinemaPOSModel.EnvioMail" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.EnvioMail" Width="1.75" PointX="4.75" PointY="0.75" />
         <EntityTypeShape EntityType="CinemaPOSModel.Estado" Width="1.5" PointX="6" PointY="52.125" />
         <EntityTypeShape EntityType="CinemaPOSModel.Impuesto" Width="1.5" PointX="8.25" PointY="67" />
         <EntityTypeShape EntityType="CinemaPOSModel.Opcion" Width="1.5" PointX="3" PointY="69.25" />
@@ -201,7 +201,8 @@
         <AssociationConnector Association="CinemaPOSModel.FK__ControlCa__Usuar__688874F9" />
         <EntityTypeShape EntityType="CinemaPOSModel.ControlCajaUsuarioRecibe" Width="3.25" PointX="30.875" PointY="29.5" />
         <AssociationConnector Association="CinemaPOSModel.FK__ControlCa__Contr__0FA2421A" />
-        <EntityTypeShape EntityType="CinemaPOSModel.VistaCierreCaja" Width="1.5" PointX="9.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.VistaCierreCaja" Width="2.125" PointX="8.75" PointY="0.75" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ControlCa__Estad__1C0818FF" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -27,8 +27,10 @@ namespace CinemaPOS.Models
         public Nullable<int> CantidadBonoRegalo { get; set; }
         public Nullable<int> CantidadGafas { get; set; }
         public Nullable<int> CantidadGafasNin { get; set; }
+        public Nullable<int> EstadoID { get; set; }
     
         public virtual UsuarioSistema UsuarioSistema { get; set; }
         public virtual ICollection<ControlCajaUsuarioRecibe> ControlCajaUsuarioRecibe { get; set; }
+        public virtual Estado Estado { get; set; }
     }
 }

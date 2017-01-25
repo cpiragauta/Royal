@@ -8,16 +8,27 @@
     ModalProcesandoHiden();
     $("#myModal1").modal('show');
     function guardar_ingreso() {
-        $.ajax({
-            url: "/AdminTeatro/GuardarControlIngreso",
-            data: $("#form_control_ingreso").serialize(),
-            success: function (data) {
-
-            },
-            error: function (data) {
-
-            }
-        })
+        console.log(parseFloat($("#CantidadSistemaValida").val()));
+        console.log(parseFloat($("#valor_entrega").val()));
+        if (parseFloat($("#CantidadSistemaValida").val()) == parseFloat($("#valor_entrega").val())) {
+            $.ajax({
+                type: "POST",
+                url: "/AdminTeatro/GuardarControlIngreso",
+                data: $("#form_control_ingreso").serialize(),
+                success: function (data) {
+                    Alerts(parseFloat($("#valor_entrega").val()), "success");
+                    $("#myModal1").modal('hide');
+                },
+                error: function (data) {
+                    Alerts("No se puede realizar el cierre del usuario", "warning");
+                }
+            })
+            
+        }
+        else {
+            Alerts("No se puede realizar el cierre del usuario", "warning");
+        }
+        
     }
 </script>
 <div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="false" style="overflow: hidden; border-radius:2px;">
@@ -25,35 +36,75 @@
         <div class="modal-content">
             <div class="modal-header" style="padding: 5px;">
                 <button type="button" class="close salir" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" style="padding:1px;color:#455A64"><b>Terminos & Condiciones</b></h4>
+                <h4 class="modal-title" style="padding:1px;color:#455A64"><b>Cierre de  caja a @Model.UsuarioSistema.Nombre - @Model.UsuarioSistema.Apellido</b></h4>
             </div>
             <div class="modal-body">
-                <div class="row">
+                
+                <div class="row mar-ver panel-bordered-dark">
                     <div class="col-sm-2">
-                        <label class="control-label">@Model.UsuarioSistema.Nombre - @Model.UsuarioSistema.Apellido</label>
-                    </div>
-                    <div class="col-sm-2">
+                        <label class="control-label text-bold">Valor entrega</label><br />
                         <label class="control-label">@Model.ValorEntrega</label>
                     </div>
                     <div class="col-sm-2">
+                        <label class="control-label text-bold">Cant-Bono regalo</label><br />
                         <label class="control-label">@Model.CantidadBonoRegalo</label>
                     </div>
                     <div class="col-sm-2">
+                        <label class="control-label text-bold">Gafas adultos</label><br />
                         <label class="control-label">@Model.CantidadGafas</label>
                     </div>
                     <div class="col-sm-2">
+                        <label class="control-label text-bold">Gafas niño</label><br />
                         <label class="control-label">@Model.CantidadGafasNin</label>
                     </div>
                     <div class="col-sm-2">
+                        <label class="control-label text-bold">Tarjetas TCR</label><br />
                         <label class="control-label">@Model.CantidadTarjetas</label>
                     </div>
+                    
+                </div>
+                <div class="row">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Boletas vendidas</th>
+                                <th>Fecha</th>
+                                <th>Valor</th>
+                                <th>Medio pago</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{float TotalVenta = 0; }
+                            @foreach (CinemaPOS.Models.ValoreCierreCaja_Result item in ViewBag.Valores)
+                            {
+                                <tr>
+                                    <td>@item.boletasvendidas</td> 
+                                    <td>@item.Fecha</td>
+                                    <td>@float.Parse(item.valor.Split('.')[0].Replace(",","")).ToString("N0")</td> 
+                                    <td>@item.MedioPago</td>
+                                    @{TotalVenta = TotalVenta+ float.Parse(item.valor.ToString().Split('.')[0].Replace(",",""));
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td><strong class="">Total</strong></td>
+                                <td>@TotalVenta.ToString("N0")<input type="hidden" id="CantidadSistemaValida" value="@TotalVenta.ToString("N0")"/></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    
                 </div>
                 <form id="form_control_ingreso">
+                    <input type="hidden" id="RowID_ControlUsuario" name="RowID_ControlUsuario" value="@Model.RowID" />
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">Valor entrega</label>
-                                <input type="text" class="form-control" name="valor_entrega" >
+                                <input type="text" class="form-control" name="valor_entrega" id="valor_entrega" >
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -84,7 +135,7 @@
                         </div>
                     </div>
                     <div class="panel-footer text-right">
-                        <button class="btn btn-success" type="submit">Submit</button>
+                        <button class="btn btn-success" type="button" onclick="guardar_ingreso()">Guardar</button>
                     </div>
 
                 </form>

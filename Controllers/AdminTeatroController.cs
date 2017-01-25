@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CinemaPOS.Models;
+using CinemaPOS.ModelosPropios;
 
 namespace CinemaPOS.Controllers
 {
@@ -55,6 +56,7 @@ namespace CinemaPOS.Controllers
         {
             ControlCajaUsuarioEntrega objcontrol_ingresa = new ControlCajaUsuarioEntrega();
             //formulario = DeSerialize(formulario);
+            int CodigoEstado = db.Estado.Where(E => E.Codigo == Util.Constantes.ESTADO_CONTROL_CAJA_USUARIO).FirstOrDefault().RowID;
             string tipo_respuesta = "";
             string respuesta = "";
             if (rowid_control!=null ||rowid_control!=0)
@@ -68,6 +70,7 @@ namespace CinemaPOS.Controllers
                     objcontrol_ingresa.CantidadGafasNin = int.Parse(formulario["cantidad_gafas_nino"]);
                     objcontrol_ingresa.CantidadBonoRegalo = int.Parse(formulario["cantidad_bono_regalo"]);
                     objcontrol_ingresa.FechaEntrega = DateTime.Now;
+                    objcontrol_ingresa.EstadoID = CodigoEstado;
                     db.ControlCajaUsuarioEntrega.Add(objcontrol_ingresa);
                     db.SaveChanges();
                     tipo_respuesta = "success";
@@ -91,22 +94,33 @@ namespace CinemaPOS.Controllers
 
         public ActionResult RegistrarIngreso(int? RowIDControlentrega)
         {
+            ControlCajaUsuarioEntrega objControlUsuario = new ControlCajaUsuarioEntrega();
             if (RowIDControlentrega!=null)
-            {
-                return View(db.ControlCajaUsuarioEntrega.Where(cue => cue.RowID == RowIDControlentrega).FirstOrDefault());
+            {   
+                objControlUsuario = db.ControlCajaUsuarioEntrega.Where(cue => cue.RowID == RowIDControlentrega).FirstOrDefault();
+                string fecha = objControlUsuario.FechaEntrega.Value.ToShortDateString();
+                //var lolol = db.ValoreCierreCaja();
+                ViewBag.Valores = db.ValoreCierreCaja().Where(ciu =>ciu.RowidUsuario == objControlUsuario.UsuarioID && ciu.Fecha == fecha).ToList();
+
+                //var lol = db.VistaCierreCaja.ToList();
+                //ViewBag.Valores = db.VistaCierreCaja.ToList();/* Where(ciu =>/*ciu.RowidUsuario == objControlUsuario.UsuarioID && ciu.Fecha == fecha).ToList();*/
+                    return View(objControlUsuario);
             }
-            return View(new ControlCajaUsuarioEntrega());
+            return View(objControlUsuario);
         }
         public JsonResult GuardarControlIngreso(FormCollection formulario)
         {
-            formulario = DeSerialize(formulario);
+            //formulario = DeSerialize(formulario);
             ControlCajaUsuarioRecibe objControlRecibe = new ControlCajaUsuarioRecibe();
-            objControlRecibe.ValorEntrega = int.Parse(formulario["valor_entrega"]);
+            objControlRecibe.ValorEntrega = int.Parse(formulario["valor_entrega"].ToString().Replace(".",""));
             objControlRecibe.CantidadTarjetas = int.Parse(formulario["cantidad_tarjetas"]);
             objControlRecibe.CantidadBonoRegalo = int.Parse(formulario["cantidad_bono_regalo"]);
             objControlRecibe.CantidadGafasAd = int.Parse(formulario["cantidad_gafas_adulto"]);
             objControlRecibe.CantidadGafasNin = int.Parse(formulario["cantidad_gafas_nino"]);
             objControlRecibe.FechaEntrega = DateTime.Now;
+            objControlRecibe.ControlCajaEntregaID = int.Parse(formulario["RowID_ControlUsuario"]);
+            db.ControlCajaUsuarioRecibe.Add(objControlRecibe);
+            db.SaveChanges();
             return Json("");
         }
     }

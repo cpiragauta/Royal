@@ -39,3 +39,6 @@
 @page{
    margin: 0;
 }
+.media:first-child {
+    margin-top: 15px!important;
+}

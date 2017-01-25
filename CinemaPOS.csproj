@@ -371,6 +371,9 @@
     <Compile Include="Models\UsuarioSistema.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ValoreCierreCaja_Result.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\VerMapaVenta_Result.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -401,8 +404,6 @@
     <Content Include="Content\css\demo\nifty-demo.css" />
     <Content Include="Content\css\demo\nifty-demo.min.css" />
     <Content Include="Content\css\demo\premium-icon-screenshot.css" />
-    <Content Include="Content\css\EstiloTablasFiltros.css" />
-    <Content Include="Content\css\EstiloBoleta.css" />
     <Content Include="Content\css\Forms.css" />
     <Content Include="Content\css\Fuentes.min.css" />
     <Content Include="Content\css\Global.min.css" />
@@ -490,7 +491,6 @@
     <Content Include="Content\fonts-pos\icomoon.svg" />
     <Content Include="Content\fonts-pos\style.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Content\fonts\icomoon.svg" />
     <Content Include="Content\img\bg-img\1.jpg" />
     <Content Include="Content\img\bg-img\2.jpg" />
     <Content Include="Content\img\bg-img\3.jpg" />
@@ -586,11 +586,6 @@
     <Content Include="Content\js\demo\ui-modals.js" />
     <Content Include="Content\js\demo\ui-panels.js" />
     <Content Include="Content\js\demo\widgets.js" />
-    <Content Include="Content\js\images\sort_asc.png" />
-    <Content Include="Content\js\images\sort_asc_disabled.png" />
-    <Content Include="Content\js\images\sort_both.png" />
-    <Content Include="Content\js\images\sort_desc.png" />
-    <Content Include="Content\js\images\sort_desc_disabled.png" />
     <Content Include="Content\js\jquery-2.2.4.min.js" />
     <Content Include="Content\js\jquery.dataTables.min1.10.10.js" />
     <Content Include="Content\js\jquery.PrintArea.js" />
@@ -2092,6 +2087,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\plugins\bootstrap-markdown\less\bootstrap-markdown.less" />
     <Content Include="Content\plugins\bootstrap-markdown\scss\bootstrap-markdown.scss" />
     <Content Include="Content\plugins\datatables\examples\resources\examples.php" />
@@ -2387,10 +2383,6 @@
     <Content Include="Content\Fuente Royal\FuturaExtraBoldIta.ttf" />
     <Content Include="Content\Fuente Royal\FuturaLighItalic.ttf" />
     <Content Include="Content\Fuente Royal\FuturaLight.ttf" />
-    <Content Include="Content\fonts\icomoon.eot" />
-    <Content Include="Content\fonts\icomoon.ttf" />
-    <Content Include="Content\fonts\icomoon.woff" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <None Include="DB_9CAC35_cinemaposDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DB_9CAC35_cinemaposDataSet.Designer.cs</LastGenOutput>

@@ -222,5 +222,10 @@ namespace CinemaPOS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VerMapaVenta_Result>("VerMapaVenta", funcionParameter);
         }
+    
+        public virtual ObjectResult<ValoreCierreCaja_Result> ValoreCierreCaja()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ValoreCierreCaja_Result>("ValoreCierreCaja");
+        }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CinemaPOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CinemaPOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DetalleConvenio">
           <Key>
             <PropertyRef Name="RowID" />
@@ -896,6 +896,7 @@
           <Property Name="CantidadBonoRegalo" Type="int" />
           <Property Name="CantidadGafas" Type="int" />
           <Property Name="CantidadGafasNin" Type="int" />
+          <Property Name="EstadoID" Type="int" />
         </EntityType>
         <EntityType Name="ControlCajaUsuarioRecibe">
           <Key>
@@ -1293,6 +1294,18 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
             </Principal>
             <Dependent Role="ControlCajaUsuarioRecibe">
               <PropertyRef Name="ControlCajaEntregaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ControlCa__Estad__1C0818FF">
+          <End Role="Estado" Type="Self.Estado" Multiplicity="0..1" />
+          <End Role="ControlCajaUsuarioEntrega" Type="Self.ControlCajaUsuarioEntrega" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estado">
+              <PropertyRef Name="RowID" />
+            </Principal>
+            <Dependent Role="ControlCajaUsuarioEntrega">
+              <PropertyRef Name="EstadoID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2770,6 +2783,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="ValoreCierreCaja" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="VerMapaVenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="funcion" Type="int" Mode="In" />
         </Function>
@@ -2942,6 +2956,10 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <AssociationSet Name="FK__ControlCa__Contr__0FA2421A" Association="Self.FK__ControlCa__Contr__0FA2421A">
             <End Role="ControlCajaUsuarioEntrega" EntitySet="ControlCajaUsuarioEntrega" />
             <End Role="ControlCajaUsuarioRecibe" EntitySet="ControlCajaUsuarioRecibe" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ControlCa__Estad__1C0818FF" Association="Self.FK__ControlCa__Estad__1C0818FF">
+            <End Role="Estado" EntitySet="Estado" />
+            <End Role="ControlCajaUsuarioEntrega" EntitySet="ControlCajaUsuarioEntrega" />
           </AssociationSet>
           <AssociationSet Name="FK__ControlCa__Usuar__688874F9" Association="Self.FK__ControlCa__Usuar__688874F9">
             <End Role="UsuarioSistema" EntitySet="UsuarioSistema" />
@@ -4061,6 +4079,11 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
             <End Role="ControlCajaUsuarioRecibe" EntitySet="ControlCajaUsuarioRecibe" />
           </AssociationSet>
           <EntitySet Name="VistaCierreCaja" EntityType="CinemaPOSModel.VistaCierreCaja" />
+          <FunctionImport Name="ValoreCierreCaja" ReturnType="Collection(CinemaPOSModel.ValoreCierreCaja_Result)" />
+          <AssociationSet Name="FK__ControlCa__Estad__1C0818FF" Association="CinemaPOSModel.FK__ControlCa__Estad__1C0818FF">
+            <End Role="Estado" EntitySet="Estado" />
+            <End Role="ControlCajaUsuarioEntrega" EntitySet="ControlCajaUsuarioEntrega" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -4345,6 +4368,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <NavigationProperty Name="TeatroPelicula" Relationship="CinemaPOSModel.FK__TeatroPel__Estad__27AED5D5" FromRole="Estado" ToRole="TeatroPelicula" />
           <NavigationProperty Name="Teatro" Relationship="CinemaPOSModel.FK__Teatro__EstadoID__76818E95" FromRole="Estado" ToRole="Teatro" />
           <NavigationProperty Name="MapaSala" Relationship="CinemaPOSModel.FK__Silla__EstadoID__7D439ABD" FromRole="Estado" ToRole="MapaSala" />
+          <NavigationProperty Name="ControlCajaUsuarioEntrega" Relationship="CinemaPOSModel.FK__ControlCa__Estad__1C0818FF" FromRole="Estado" ToRole="ControlCajaUsuarioEntrega" />
         </EntityType>
         <EntityType Name="Impuesto">
           <Key>
@@ -7029,6 +7053,8 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <NavigationProperty Name="UsuarioSistema" Relationship="CinemaPOSModel.FK__ControlCa__Usuar__688874F9" FromRole="ControlCajaUsuarioEntrega" ToRole="UsuarioSistema" />
           <Property Name="CantidadGafasNin" Type="Int32" />
           <NavigationProperty Name="ControlCajaUsuarioRecibe" Relationship="CinemaPOSModel.FK__ControlCa__Contr__0FA2421A" FromRole="ControlCajaUsuarioEntrega" ToRole="ControlCajaUsuarioRecibe" />
+          <Property Name="EstadoID" Type="Int32" />
+          <NavigationProperty Name="Estado" Relationship="CinemaPOSModel.FK__ControlCa__Estad__1C0818FF" FromRole="ControlCajaUsuarioEntrega" ToRole="Estado" />
         </EntityType>
         <Association Name="FK__ControlCa__Usuar__688874F9">
           <End Type="CinemaPOSModel.UsuarioSistema" Role="UsuarioSistema" Multiplicity="1" />
@@ -7080,6 +7106,26 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <Property Name="Fecha" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
           <Property Name="MedioPago" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <ComplexType Name="ValoreCierreCaja_Result">
+          <Property Type="Int32" Name="boletasvendidas" Nullable="true" />
+          <Property Type="Int32" Name="RowidUsuario" Nullable="false" />
+          <Property Type="String" Name="NombreTaquillero" Nullable="false" MaxLength="101" />
+          <Property Type="String" Name="valor" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="Fecha" Nullable="true" MaxLength="8000" />
+          <Property Type="String" Name="MedioPago" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <Association Name="FK__ControlCa__Estad__1C0818FF">
+          <End Type="CinemaPOSModel.Estado" Role="Estado" Multiplicity="0..1" />
+          <End Type="CinemaPOSModel.ControlCajaUsuarioEntrega" Role="ControlCajaUsuarioEntrega" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estado">
+              <PropertyRef Name="RowID" />
+            </Principal>
+            <Dependent Role="ControlCajaUsuarioEntrega">
+              <PropertyRef Name="EstadoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8287,6 +8333,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <EntitySetMapping Name="ControlCajaUsuarioEntrega">
             <EntityTypeMapping TypeName="CinemaPOSModel.ControlCajaUsuarioEntrega">
               <MappingFragment StoreEntitySet="ControlCajaUsuarioEntrega">
+                <ScalarProperty Name="EstadoID" ColumnName="EstadoID" />
                 <ScalarProperty Name="CantidadGafasNin" ColumnName="CantidadGafasNin" />
                 <ScalarProperty Name="CantidadGafas" ColumnName="CantidadGafas" />
                 <ScalarProperty Name="CantidadBonoRegalo" ColumnName="CantidadBonoRegalo" />
@@ -8324,6 +8371,18 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ValoreCierreCaja" FunctionName="CinemaPOSModel.Store.ValoreCierreCaja">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CinemaPOSModel.ValoreCierreCaja_Result">
+                <ScalarProperty Name="boletasvendidas" ColumnName="boletasvendidas" />
+                <ScalarProperty Name="RowidUsuario" ColumnName="RowidUsuario" />
+                <ScalarProperty Name="NombreTaquillero" ColumnName="NombreTaquillero" />
+                <ScalarProperty Name="valor" ColumnName="valor" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="MedioPago" ColumnName="MedioPago" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
