@@ -390,27 +390,26 @@ namespace CinemaPOS.Controllers
                 if (contador_row == 1)
                 {
                     html_tarifas += "<div class='row'>";
-                    cerrar_row = false;
                 }
-                html_tarifas += "<div class='panel media middle panel-tarifa-funcion col-sm-5 mar-all' title='"+ tarifafuncion.ListaDetalle.Nombre + "' onclick='javascript:adicionar_item(" + tarifafuncion.RowID + ",1)'>";
-                html_tarifas += "<div class='media-left bg-mint pad-all'>";
-                    html_tarifas += "<i class='demo-pli-coin icon-3x'></i><br />";
-                html_tarifas += "</div>";
-                html_tarifas +="<div class='media-body'>";
-                html_tarifas +="<p class='text-2x mar-no text-semibold'>$" + tarifafuncion.ListaDetalle.Precio + "</p>";
-                html_tarifas +="<p class='text-muted mar-no text-bold'>Nombre de la tarifa:</p>";
-                html_tarifas += "<p class='text-overflow'>" + tarifafuncion.ListaDetalle.Nombre + " </p>";
-                html_tarifas += "<p class='text-muted mar-no text-bold'>Servicio:</p>";
-                html_tarifas += "<p>"+tarifafuncion.ListaDetalle.Opcion1.Nombre+"</p>";
+                        html_tarifas += "<div class='panel media middle panel-tarifa-funcion col-sm-5 mar-all' title='"+ tarifafuncion.ListaDetalle.Nombre + "' onclick='javascript:adicionar_item(" + tarifafuncion.RowID + ",1)'>";
+                            html_tarifas += "<div class='media-left bg-mint pad-all'>";
+                                html_tarifas += "<i class='demo-pli-coin icon-3x'></i><br />";
+                            html_tarifas += "</div>";
+                            html_tarifas +="<div class='media-body'>";
+                                html_tarifas +="<p class='text-2x mar-no text-semibold'>$" + tarifafuncion.ListaDetalle.Precio + "</p>";
+                                html_tarifas +="<p class='text-muted mar-no text-bold'>Nombre de la tarifa:</p>";
+                                html_tarifas += "<p class='text-overflow'>" + tarifafuncion.ListaDetalle.Nombre + " </p>";
+                                html_tarifas += "<p class='text-muted mar-no text-bold'>Servicio:</p>";
+                                html_tarifas += "<p>"+tarifafuncion.ListaDetalle.Opcion1.Nombre+"</p>";
 
-                //  html_tarifas += "<div class='col-sm-6 mar-hor '  style='width:40%;' onclick='javascript:adicionar_item(" + tarifafuncion.RowID + ",1)'>";
-                //html_tarifas += "<div class='panel " + clase + " panel-colorful' title='" + tarifafuncion.ListaDetalle.Nombre + "' style='height:50%'>";
-                //html_tarifas += "<div class='pad-all text-center'>";
-                //html_tarifas += "<span class='text-2x text-thin'>$" + tarifafuncion.ListaDetalle.Precio + "</span>";
-                //html_tarifas += "<p class='text-overflow'>" + tarifafuncion.ListaDetalle.Nombre + "</p>";
-                //html_tarifas += "</div>";
-                //html_tarifas += "</div>";
-                //html_tarifas += "</div>";
+                            //  html_tarifas += "<div class='col-sm-6 mar-hor '  style='width:40%;' onclick='javascript:adicionar_item(" + tarifafuncion.RowID + ",1)'>";
+                            //html_tarifas += "<div class='panel " + clase + " panel-colorful' title='" + tarifafuncion.ListaDetalle.Nombre + "' style='height:50%'>";
+                            //html_tarifas += "<div class='pad-all text-center'>";
+                            //html_tarifas += "<span class='text-2x text-thin'>$" + tarifafuncion.ListaDetalle.Precio + "</span>";
+                            //html_tarifas += "<p class='text-overflow'>" + tarifafuncion.ListaDetalle.Nombre + "</p>";
+                            //html_tarifas += "</div>";
+                            html_tarifas += "</div>";
+                        html_tarifas += "</div>";
                 if (contador_row == 2)
                 {
                     html_tarifas += "</div>";
@@ -418,10 +417,7 @@ namespace CinemaPOS.Controllers
                 }
                 contador_row++;
             }
-            if (cerrar_row == false)
-            {
-                html_tarifas += "</div>";
-            }
+            
 
             return html_tarifas;
         }

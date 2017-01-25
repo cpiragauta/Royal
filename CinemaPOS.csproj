@@ -371,7 +371,13 @@
     <Compile Include="Models\UsuarioSistema.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ValoreCierreCaja_Result.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\VerMapaVenta_Result.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VistaCierreCaja.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Zona.cs">

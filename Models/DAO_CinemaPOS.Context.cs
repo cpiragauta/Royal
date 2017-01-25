@@ -91,6 +91,7 @@ namespace CinemaPOS.Models
         public virtual DbSet<ControlIngreso> ControlIngreso { get; set; }
         public virtual DbSet<ControlCajaUsuarioEntrega> ControlCajaUsuarioEntrega { get; set; }
         public virtual DbSet<ControlCajaUsuarioRecibe> ControlCajaUsuarioRecibe { get; set; }
+        public virtual DbSet<VistaCierreCaja> VistaCierreCaja { get; set; }
     
         public virtual int Eliminar_sillas_sala(Nullable<int> rowIDSala)
         {
@@ -220,6 +221,11 @@ namespace CinemaPOS.Models
                 new ObjectParameter("funcion", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VerMapaVenta_Result>("VerMapaVenta", funcionParameter);
+        }
+    
+        public virtual ObjectResult<ValoreCierreCaja_Result> ValoreCierreCaja()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ValoreCierreCaja_Result>("ValoreCierreCaja");
         }
     }
 }
