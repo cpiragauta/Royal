@@ -91,6 +91,7 @@ namespace CinemaPOS.Models
         public virtual DbSet<ControlIngreso> ControlIngreso { get; set; }
         public virtual DbSet<ControlCajaUsuarioEntrega> ControlCajaUsuarioEntrega { get; set; }
         public virtual DbSet<ControlCajaUsuarioRecibe> ControlCajaUsuarioRecibe { get; set; }
+        public virtual DbSet<VistaCierreCaja> VistaCierreCaja { get; set; }
     
         public virtual int Eliminar_sillas_sala(Nullable<int> rowIDSala)
         {

@@ -5,16 +5,17 @@
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
 
-<head>
-    <!--jQuery [ REQUIRED ]-->
-    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
-    <!--DataTables [ OPTIONAL ]-->
-    <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
-    <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
-    <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
-    <!--DataTables Sample [ SAMPLE ]-->
-    <script src="~/Content/js/demo/tables-datatables.js"></script>
-</head>
+
+<script src="~/Content/js/jquery-2.2.4.min.js"></script>
+
+<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+
+<script src="~/Content/js/jquery.dataTables.min1.10.10.js"></script>
+<link href="~/Content/Tables.min.css" rel="stylesheet" />
+<link href="~/Content/js/JqueryDataRables/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="~/Content/css/EstiloTablasFiltros.css" rel="stylesheet" />
+
 <p>
     <a class="btn btn-success" href='@Url.Action("Opcion", "Maestro")'>Nueva opción</a>
 </p>
@@ -28,6 +29,7 @@
 
             <thead>
                 <tr>
+                    <th style="width: 10px; display:none">ID</th>
                     <th>Tipo</th>
                     <th>Nombre</th>
                     <th>Código</th>
@@ -39,10 +41,25 @@
                     <th></th>
                 </tr>
             </thead>
+            <tfoot>
+                <tr>
+                    <th style="display: none;padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="ID" placeholder="Buscar ID"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Tipo" placeholder="Buscar Tipo"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Nombre" placeholder="Buscar Nombre"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Codigo" placeholder="Buscar Código"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Codigo2" placeholder="Buscar Código2"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Descripcion" placeholder="Buscar Descripción"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Valor_defecto" placeholder="Buscar Valor defecto"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Numero_orden" placeholder="Número orden"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Activo" placeholder="Buscar Activo"></th>
+                    <th></th>
+                </tr>
+            </tfoot>
             <tbody>
                 @foreach (CinemaPOS.Models.Opcion listas_opcion in ViewBag.Opcion)
                 {
                     <tr>
+                        <td style="display: none;">@listas_opcion.RowID</td>
                         <td style="width:auto">@listas_opcion.Tipo.Nombre</td>
                         <td>@listas_opcion.Nombre</td>
                         <td>@listas_opcion.Codigo</td>
@@ -50,7 +67,14 @@
                         <td style="width:auto">@listas_opcion.Descripcion</td>
                         <td>@listas_opcion.ValorDefecto</td>
                         <td>@listas_opcion.NumOrden</td>
-                        <td>@listas_opcion.Activo</td>
+                        @if (listas_opcion.Activo == true)
+                        {
+                            <td>SI</td>
+                        }
+                        else
+                        {
+                            <td>NO</td>
+                        }
                         <td><a href="@Url.Action("Opcion", "Maestro", new { RowID_Lista = listas_opcion.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
                     </tr>
                 }
@@ -58,4 +82,46 @@
         </table>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        var cont = 0;
 
+        var aoColumnDefsType = [
+           //{ "sType": "title-numeric", "aTargets": [3] },
+           //{ "sType": "title-numeric", "aTargets": [7] },
+           { "bSortable": false, "aTargets": [0] }//,
+           //{ "bSortable": false, "aTargets": [8] },
+           //{ "bSortable": false, "aTargets": [9] },
+           //{ "sClass": "center", "aTargets": [2, 3, 4, 5, 6, 7] }
+        ];
+
+        var table = $('#demo-dt-basic').DataTable({
+            "processing": true,
+            "bFilter": true,
+            "bPaginate": true,
+            "info": true,
+            "bDestroy": true,
+            aLengthMenu: [
+                [6],
+                [6]
+            ],
+            "iDisplayLength": 10,
+            "order": [[0, "desc"]],
+            "aoColumnDefs": aoColumnDefsType
+            //"aaSorting": [[2,'desc']]
+        });
+
+        // Apply the search
+        table.columns().every(function () {
+            var that = this;
+
+            $('input', this.footer()).on('keyup change', function () {
+                if (that.search() !== this.value) {
+                    that
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+    });
+</script>

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CinemaPOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CinemaPOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DetalleConvenio">
           <Key>
             <PropertyRef Name="RowID" />
@@ -1137,6 +1137,20 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
           <Property Name="NombreTeatro" Type="varchar" MaxLength="50" />
           <Property Name="RowIDTeatro" Type="int" Nullable="false" />
           <Property Name="EstadoFuncion" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="VistaCierreCaja">
+          <Key>
+            <PropertyRef Name="RowidUsuario" />
+            <PropertyRef Name="NombreTaquillero" />
+          </Key>
+          <Property Name="boletasvendidas" Type="int" />
+          <Property Name="RowidUsuario" Type="int" Nullable="false" />
+          <Property Name="NombreTaquillero" Type="nvarchar" MaxLength="101" Nullable="false" />
+          <Property Name="valor" Type="varchar" MaxLength="30" />
+          <Property Name="Fecha" Type="varchar" MaxLength="8000" />
+          <Property Name="MedioPago" Type="varchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK__BoletaVen__Contr__62CF9BA3">
           <End Role="ControlIngreso" Type="Self.ControlIngreso" Multiplicity="0..1" />
@@ -2871,6 +2885,16 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
     [Funciones].[EstadoFuncion] AS [EstadoFuncion]
     FROM [dbo].[Funciones] AS [Funciones]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="VistaCierreCaja" EntityType="Self.VistaCierreCaja" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VistaCierreCaja].[boletasvendidas] AS [boletasvendidas], 
+    [VistaCierreCaja].[RowidUsuario] AS [RowidUsuario], 
+    [VistaCierreCaja].[NombreTaquillero] AS [NombreTaquillero], 
+    [VistaCierreCaja].[valor] AS [valor], 
+    [VistaCierreCaja].[Fecha] AS [Fecha], 
+    [VistaCierreCaja].[MedioPago] AS [MedioPago]
+    FROM [dbo].[VistaCierreCaja] AS [VistaCierreCaja]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK__BoletaVen__Contr__62CF9BA3" Association="Self.FK__BoletaVen__Contr__62CF9BA3">
             <End Role="ControlIngreso" EntitySet="ControlIngreso" />
             <End Role="BoletaVendida" EntitySet="BoletaVendida" />
@@ -4036,6 +4060,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
             <End Role="ControlCajaUsuarioEntrega" EntitySet="ControlCajaUsuarioEntrega" />
             <End Role="ControlCajaUsuarioRecibe" EntitySet="ControlCajaUsuarioRecibe" />
           </AssociationSet>
+          <EntitySet Name="VistaCierreCaja" EntityType="CinemaPOSModel.VistaCierreCaja" />
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -7043,6 +7068,18 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="VistaCierreCaja">
+          <Key>
+            <PropertyRef Name="RowidUsuario" />
+            <PropertyRef Name="NombreTaquillero" />
+          </Key>
+          <Property Name="boletasvendidas" Type="Int32" />
+          <Property Name="RowidUsuario" Type="Int32" Nullable="false" />
+          <Property Name="NombreTaquillero" Type="String" Nullable="false" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="valor" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Fecha" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="MedioPago" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8272,6 +8309,18 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene 
                 <ScalarProperty Name="FechaEntrega" ColumnName="FechaEntrega" />
                 <ScalarProperty Name="ValorEntrega" ColumnName="ValorEntrega" />
                 <ScalarProperty Name="RowID" ColumnName="RowID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VistaCierreCaja">
+            <EntityTypeMapping TypeName="CinemaPOSModel.VistaCierreCaja">
+              <MappingFragment StoreEntitySet="VistaCierreCaja">
+                <ScalarProperty Name="MedioPago" ColumnName="MedioPago" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="valor" ColumnName="valor" />
+                <ScalarProperty Name="NombreTaquillero" ColumnName="NombreTaquillero" />
+                <ScalarProperty Name="RowidUsuario" ColumnName="RowidUsuario" />
+                <ScalarProperty Name="boletasvendidas" ColumnName="boletasvendidas" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
