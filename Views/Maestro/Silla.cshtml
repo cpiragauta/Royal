@@ -22,7 +22,7 @@
                 dataType: "html",
                 data: formData,
                 success: function (data) {
-                    swal("La informacion fue almacena", data, "success");
+                    swal("La informacion fue almacenada", data, "success");
                     window.location = "/Maestro/VistaSilla/"
                 },
                 error: function () {
@@ -34,6 +34,49 @@
             })
         });
     });
+
+    function Eliminar_objeto(){
+        swal({
+            title: '¿Esta seguro?',
+            text: "¿Desea eliminar el objeto  "+$(".Nombre").val()+"?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        },
+        function (isConfirm) {
+            debugger
+            if (isConfirm) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Maestro/EliminarObjeto",
+                    data: {
+                        RowID_TipoSilla: $(".RowID_TipoSilla").val()
+                    },
+                    success: function (data) {
+
+                        if(data.TipoRespuesta == "success"){
+                            swal("OK", data.Respuesta, "success");
+                            window.location = "/Maestro/VistaSilla/"
+                        }else{
+                            swal("Advertencia", data.Respuesta, data.TipoRespuesta);
+                        }
+                    },
+                    error: function (data) {
+                        swal("Error, no se pudo borrar el elemento", data, "warning");
+                    }
+                });
+            } else {
+            }
+        });
+    }
+
+
     $(document).ready(function () {
         if (@Model.RowID!=0) {
             $(".crearobjeto").empty().append('Actualizar Objeto @Model.Nombre');
@@ -42,6 +85,8 @@
         new Switchery(document.getElementById('estado-checked'));
        
     })
+
+
 </script>
 <div>
     <p>
@@ -56,7 +101,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">*Nombre:</label>
-                        <input type="text" name="nombre" value="@Model.Nombre" class="form-control" maxlength="20" required>
+                        <input type="text" name="nombre"  value="@Model.Nombre" class="form-control Nombre" maxlength="20" required>
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -146,7 +191,7 @@
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
-                            <label class="control-label">Estado:</label>
+                            <label class="control-label">Activo:</label>
                             <div class="">
                                 @if (Model.Estado == true)
                                 {
@@ -165,10 +210,12 @@
         <div class="panel-footer text-right">
             @if (Model.RowID == 0)
             {
+                <input class="btn btn-danger" value="Eliminar objeto" onclick="Eliminar_objeto()">
                 <input class="btn btn-success" type="submit" value="Crear objeto" onclick="guardar_objeto()">
             }
             else
             {
+                <input class="btn btn-danger" value="Eliminar objeto" onclick="Eliminar_objeto()">
                 <input class="btn btn-success" type="submit" value="Actualizar objeto" onclick="guardar_objeto()">
             }
         </div>

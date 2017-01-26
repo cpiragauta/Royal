@@ -852,6 +852,46 @@ namespace CinemaPOS.Controllers.Master
 
             return Json("Registro Exitoso");
         }
+
+
+        [CheckSessionOutAttribute]
+        public JsonResult EliminarObjeto(int RowID_TipoSilla)
+        {
+            String Respuesta = "";
+            String TipoRespuesta = "";
+            if (RowID_TipoSilla != null)
+            {
+                //Valido que no existan mapas con este objeto
+                int CantidadObjetos = db.MapaSala.Where(f => f.ObjetoID == RowID_TipoSilla).ToList().Count();
+                if (CantidadObjetos>0)
+                {
+                    Respuesta = "No se puede eliminar este objeto, se encuentra asociado a un mapa";
+                    TipoRespuesta = "warning";
+                }
+                else
+                {
+                    try
+                    {
+                        SalaObjeto objeto = db.SalaObjeto.FirstOrDefault(f => f.RowID == RowID_TipoSilla);
+                        db.SalaObjeto.Remove(objeto);
+                        db.SaveChanges();
+                        Respuesta = "Objeto Eliminado";
+                        TipoRespuesta = "success";
+                    }
+                    catch (Exception)
+                    {
+                        Respuesta = "No se puede eliminar este objeto";
+                        TipoRespuesta = "error";
+                    }
+                }
+
+            }
+
+            return Json(new { Respuesta = Respuesta, TipoRespuesta = TipoRespuesta });
+        }
+
+
+
         #endregion
 
         #region Teatro
