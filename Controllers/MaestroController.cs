@@ -855,7 +855,7 @@ namespace CinemaPOS.Controllers.Master
 
 
         [CheckSessionOutAttribute]
-        public JsonResult EliminarObjeto(int RowID_TipoSilla)
+        public JsonResult EliminarObjeto(int? RowID_TipoSilla)
         {
             String Respuesta = "";
             String TipoRespuesta = "";
@@ -2218,6 +2218,7 @@ namespace CinemaPOS.Controllers.Master
 
 
 
+        [CheckSessionOutAttribute]
         public ActionResult FormatoCorreo(int? RowID_Lista)
         {
             //ViewBag.Planillas = _db.m_plantillas_clientes.ToList();
@@ -2234,6 +2235,18 @@ namespace CinemaPOS.Controllers.Master
 
         }
 
+
+        [CheckSessionOutAttribute]
+        public String CargarPlantillaCorreos(int? RowidPlantilla)
+        {
+            String plantilla = "";
+
+            if (RowidPlantilla != null)
+            {
+                plantilla = db.Plantillas.FirstOrDefault(f => f.RowID == RowidPlantilla).CuerpoMsj;
+            }
+            return plantilla;
+        }
 
 
         #endregion
