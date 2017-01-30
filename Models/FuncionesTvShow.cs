@@ -12,16 +12,16 @@ namespace CinemaPOS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Funcion
+    public partial class FuncionesTvShow
     {
-        public Funcion()
-        {
-            this.ListaPrecioFuncion = new HashSet<ListaPrecioFuncion>();
-            this.BoletaVendida = new HashSet<BoletaVendida>();
-            this.SillaBloqueo = new HashSet<SillaBloqueo>();
-        }
-    
-        public int RowID { get; set; }
+        public string TituloLocal { get; set; }
+        public int RowID_EncabezadoPelicula { get; set; }
+        public string Afiche { get; set; }
+        public string ClasificacionPelicula { get; set; }
+        public int RowID_Detalle { get; set; }
+        public string PeliculaIdioma { get; set; }
+        public string PeliculaVersion { get; set; }
+        public int RowID_Funcion { get; set; }
         public int EncabezadoProgramacionID { get; set; }
         public Nullable<int> DetallePeliculaID { get; set; }
         public int SalaID { get; set; }
@@ -36,15 +36,12 @@ namespace CinemaPOS.Models
         public Nullable<bool> Sincronizado { get; set; }
         public Nullable<System.TimeSpan> HoraInicial { get; set; }
         public Nullable<System.TimeSpan> HoraFinal { get; set; }
-        public Nullable<int> RowIDCreacion { get; set; }
-        public Nullable<int> TeatroCreacion { get; set; }
-    
-        public virtual Estado Estado { get; set; }
-        public virtual DetallePelicula DetallePelicula { get; set; }
-        public virtual EncabezadoProgramacion EncabezadoProgramacion { get; set; }
-        public virtual Sala Sala { get; set; }
-        public virtual ICollection<ListaPrecioFuncion> ListaPrecioFuncion { get; set; }
-        public virtual ICollection<BoletaVendida> BoletaVendida { get; set; }
-        public virtual ICollection<SillaBloqueo> SillaBloqueo { get; set; }
+        public string NombreSala { get; set; }
+        public string NombreEstadoSala { get; set; }
+        public string FechaFuncion { get; set; }
+        public string NombreTeatro { get; set; }
+        public int RowIDTeatro { get; set; }
+        public string EstadoFuncion { get; set; }
+        public string Servicio { get; set; }
     }
 }

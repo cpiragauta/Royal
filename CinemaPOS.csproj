@@ -163,6 +163,9 @@
     <Compile Include="Models\Actividades.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BloqueoSillas_Result.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BoletasVendidas.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -251,6 +254,9 @@
     <Compile Include="Models\Funciones.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FuncionesTvShow.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\GeneroPelicula.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -324,6 +330,9 @@
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ServicioSala.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SillaBloqueo.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
@@ -2434,6 +2443,8 @@
     <Content Include="Views\TvShow\TVShowTrailers.cshtml" />
     <Content Include="Views\Sincronizacion\SincronizacionMaestros.cshtml" />
     <Content Include="Views\Inicio\DiseñoTvShow.cshtml" />
+    <Content Include="Views\AdminTeatro\VistaSalasTeatro.cshtml" />
+    <Content Include="Views\AdminTeatro\BloquearSilla.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

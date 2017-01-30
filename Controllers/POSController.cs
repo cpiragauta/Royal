@@ -492,7 +492,11 @@ namespace CinemaPOS.Controllers
                 }
                 if (SillaMapa.TipoObjeto=="SILLA")
                 {
-                    if (SillaMapa.SillaVendida==1)
+                    if (SillaMapa.SillaBloqueada==1)
+                    {
+                        Data_Table = Data_Table + " <td id='" + SillaMapa.RowIDSillaMapa + "' class='disabled' style='background: #FF8000;' >";
+                    }
+                    else if (SillaMapa.SillaVendida==1)
                     {
                         Data_Table = Data_Table + " <td id='" + SillaMapa.RowIDSillaMapa + "' class='disabled' style='background: #B0BEC5;' >";
                     }
