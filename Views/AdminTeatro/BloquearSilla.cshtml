@@ -1,0 +1,215 @@
+﻿@using System.Globalization;
+@{
+    ViewBag.Title = "BloquearSilla";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+<style>
+    td {
+        padding: 0px;
+        border: solid 1px;
+    }
+
+    img {
+        width: 50px;
+        z-index: 0;
+    }
+
+    .icon-remove-element {
+        display: none;
+    }
+
+    small {
+        margin-left: 1.3%;
+        display: inline;
+        position: absolute;
+        z-index: 99999;
+        display: none;
+    }
+
+    td:hover {
+        cursor: pointer;
+    }
+
+        td:hover small {
+            display: table-row-group;
+            position: absolute;
+            z-index: 8888;
+            margin-top: -3%;
+            color:black;
+            margin-left:0.5%;
+        }
+
+        td:hover .icon-remove-element {
+            display: inline;
+            position: absolute;
+            z-index: 8888;
+            color: rgba(245, 107, 10, 0.86);
+        }
+
+
+    #esquema_mapa {
+        width: 50%;
+        height: 50%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .pantalla {
+        border-radius: 0px 0 100px 100px;
+        background-color: black;
+    }
+
+        .pantalla h1 {
+            color: rgb(128, 128, 128);
+        }
+</style>
+<script>
+    //$("h2").append();
+    $(document).ready(function () {
+        Cargar_Sillas_Bloqueadas();
+        $(".list_funciones_sala").chosen({width:"100%;"});
+        var htmlvis = "@Model";
+        var lol = htmlvis.replace('"', "");
+        debugger
+        $("#phtml").append(htmlvis);
+        $("#mapa-sala").append($("#phtml").text());
+        $(".pantalla").width($("#mapa-sala").width())
+    })
+
+    function Cargar_Sillas_Bloqueadas() {
+        $.ajax({
+            url: "/AdminTeatro/DataTable/",
+            data:{ SalaID: @Request.Params["SalaID"]},
+            success:function(data){
+                debugger
+                $("#Sillas_Bloqueadas tbody").empty().append(data);
+            },
+            error:function(data){
+
+            }
+        })
+    }
+</script>
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Mapa de la sala</h3>
+    </div>
+    <div class="panel-body">
+        <div class="col-sm-8">
+            <table id="mapa-sala" class="table-responsive"></table>
+            <div class="pantalla">
+                <h1 class="text-center">Pantalla</h1>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-bordered panel-mint">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Funciones para bloqueo</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="formulario_bloqueo">
+                        <div class="row">
+                            <select class="list_funciones_sala" name="list_funciones_sala" multiple data-placeholder="Seleccione funciones">
+                                @foreach (CinemaPOS.Models.Funcion Funcion in ViewBag.Funciones)
+                                {
+                                    <option value="@Funcion.RowID">
+                                        @DateTime.Parse(Funcion.HoraInicial.ToString()).ToString("hh:mm tt", CultureInfo.InvariantCulture) -
+                                        @Funcion.DetallePelicula.EncabezadoPelicula.TituloLocal -
+                                        @Funcion.Fecha.Value.ToShortDateString()
+                                    </option>
+                                }
+                            </select>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label">Observación</label>
+                                <textarea class="form-control" rows="6" cols="6" id="Observacion" name="observacion"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>
+<p id="phtml" style="display:none"></p>
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Sillas Bloqueadas</h3>
+    </div>
+    <div class="panel-body">
+        <table id="Sillas_Bloqueadas" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Pelicula</th>
+                    <th>Hora función</th>
+                    <th>Fecha función</th>
+                    <th>Silla</th>
+                    <th>Estado</th>
+                    <th>Usuario</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function bloquear_silla(element) {
+        debugger
+        var funciones = $(".list_funciones_sala").val();
+        var observacion=$("#Observacion").val();
+        if ($(".list_funciones_sala option:selected").text()=='') {
+            swal({ title: "Advertencia", text: "No hay funciones selecionadas",type:"warning" })
+        }
+        else {
+            swal({
+                title: '¿Esta seguro ¿Desea bloquear la silla  ' + $(element).find("small").text() + '?',
+                text: "Para las funciones" + $(".list_funciones_sala option:selected").text() + "?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si',
+                cancelButtonText: 'No',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        type:"POST",
+                        url: "/AdminTeatro/BloquearSillaFuncion/",
+                        data: { RowIDObjeto: element.id, formulario:$("#formulario_bloqueo").serialize() },
+                        success: function (data) {
+                            swal("", data.respuesta, "success");
+                            Cargar_Sillas_Bloqueadas();
+                        },
+                        error: function (data) {
+                            swal("", data.respuesta, "warning");
+                        }
+                    })
+                }
+            });
+        }
+        
+       console.log(element);
+    }
+    function liberar_silla(rowid,estado){
+        $.ajax({
+            url:"/AdminTeatro/EstadoBloqueoSala",
+            data:{rowid_bloqueo:rowid,estado:estado},
+            success:function(data){
+                swal("success",data,"success");
+                Cargar_Sillas_Bloqueadas();
+            },error:function(data){
+
+            }
+        })
+    }
+</script>

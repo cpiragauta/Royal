@@ -68,6 +68,7 @@ namespace CinemaPOS.Controllers.Cuenta
             {
                 if (ValidateLogin(model.NombreUsuario, model.Contraseña))
                 {
+                    
                     if (Session["POS"].ToString() == "ACTIVO")
                     {
                         Taquilla objtaquilla = db.Taquilla.Where(taq => taq.IP == IP).FirstOrDefault();
@@ -77,7 +78,7 @@ namespace CinemaPOS.Controllers.Cuenta
                         }
                         else
                         {
-                            Session["RowID_Teatro"] = objtaquilla.TeatroID;
+                            
                             Session["RowID_Taquilla"] = objtaquilla.RowID.ToString();
                             Session["Taquilla"] = objtaquilla;
                             return RedirectToAction("VistaPrincipal", "POS");
@@ -115,6 +116,7 @@ namespace CinemaPOS.Controllers.Cuenta
             Session["estadousuario"] = "";
             Session["POS"] = "INACTIVO";
             UsuarioSistema usuario = db.UsuarioSistema.FirstOrDefault(f => f.NombreUsuario == username && f.Contrasena == passwd );
+            Session["RowID_Teatro"] = usuario.TeatroID;
             List<TipoMenu> tipoMenu;
             List<Menu> menu;
             if (usuario != null)

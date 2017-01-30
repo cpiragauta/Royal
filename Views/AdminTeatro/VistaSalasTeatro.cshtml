@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "VistaSalasTeatro";
+    Layout= "~/Views/Inicio/Diseño.cshtml";
+}
+<script src="~/Content/js/jquery-2.2.4.min.js"></script>
+
+<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+
+<script src="~/Content/js/jquery.dataTables.min1.10.10.js"></script>
+<link href="~/Content/Tables.min.css" rel="stylesheet" />
+<link href="~/Content/js/JqueryDataRables/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+<link href="~/Content/css/EstiloTablasFiltros.css" rel="stylesheet" />
+
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Vista salas</h3>
+    </div>
+    <div class="panel-body">
+        <table id="table-salas-teatros" class="table table-condensed table-striped table-bordered table-hover table-checkable table-responsive">
+            <thead>
+                <tr>
+                    <th style="width:10px;display:none;"></th>
+                    <th>Nombre</th>
+                    <th >Capacidad</th>
+                    <th>Estado</th>
+                    <th >Audio</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th style="width:10px;display:none;"><input type="text" id="ID" /></th>
+                    <th class="pad-no "><input type="text" class="col-sm-8 mar-hor" placeholder="Nombre Sala" id="Nombre" /></th>
+                    <th class="pad-no"><input type="text" class="col-sm-10 mar-hor" placeholder="Capacidad" id="Capacidad" /></th>
+                    <th class="pad-no"><input type="text" class="col-sm-10 mar-hor" placeholder="Estado"  id="Estado" /></th>
+                    <th class="pad-no"><input type="text" class="col-sm-10 mar-hor" placeholder="Tipo audio" id="Audio"/></th>
+                    <th class="pad-no"></th>
+                </tr>
+            </tfoot>
+            <tbody>
+                @foreach (CinemaPOS.Models.Sala Salas in ViewBag.Salas)
+                {
+                    <tr>
+                        <td style="width:10px;display:none;">@Salas.RowID</td>
+                        <td>@Salas.Nombre</td>
+                        <td>@Salas.Capacidad</td>
+                        <td>@Salas.Estado.Nombre</td>
+                        <td>@Salas.Opcion.Nombre</td>
+                        <td><a href="@Url.Action("BloquearSilla","AdminTeatro",new { SalaID = Salas.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
+                    </tr>
+                }
+            </tbody>  
+        </table> 
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#table-salas-teatros').dataTable({
+            "responsive": true,
+            "language": {
+                "paginate": {
+                    "previous": '<i class="demo-psi-arrow-left"></i>',
+                    "next": '<i class="demo-psi-arrow-right"></i>'
+                }
+            }
+        });
+        var aoColumnDefsType = [
+              //{ "sType": "title-numeric", "aTargets": [3] },
+              //{ "sType": "title-numeric", "aTargets": [7] },
+              { "bSortable": false, "aTargets": [0] }//,
+              //{ "bSortable": false, "aTargets": [8] },
+              //{ "bSortable": false, "aTargets": [9] },
+              //{ "sClass": "center", "aTargets": [2, 3, 4, 5, 6, 7] }
+        ];
+
+        var table = $('#table-salas-teatros').DataTable({
+            "processing": true,
+            "bFilter": true,
+            "bPaginate": true,
+            "info": true,
+            "bDestroy": true,
+            aLengthMenu: [
+                [6],
+                [6]
+            ],
+            "iDisplayLength": 10,
+            "order": [[0, "desc"]],
+            "aoColumnDefs": aoColumnDefsType
+            //"aaSorting": [[2,'desc']]
+        });
+        table.columns().every(function () {
+            var that = this;
+
+            $('input', this.footer()).on('keyup change', function () {
+                if (that.search() !== this.value) {
+                    that
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+    })
+
+</script>

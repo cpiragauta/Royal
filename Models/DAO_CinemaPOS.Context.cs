@@ -92,6 +92,8 @@ namespace CinemaPOS.Models
         public virtual DbSet<ControlCajaUsuarioEntrega> ControlCajaUsuarioEntrega { get; set; }
         public virtual DbSet<ControlCajaUsuarioRecibe> ControlCajaUsuarioRecibe { get; set; }
         public virtual DbSet<VistaCierreCaja> VistaCierreCaja { get; set; }
+        public virtual DbSet<FuncionesTvShow> FuncionesTvShow { get; set; }
+        public virtual DbSet<SillaBloqueo> SillaBloqueo { get; set; }
     
         public virtual int Eliminar_sillas_sala(Nullable<int> rowIDSala)
         {
@@ -214,6 +216,16 @@ namespace CinemaPOS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Eliminar_Sillas_Sala_sp", rowIDSalaParameter);
         }
     
+        public virtual ObjectResult<ValoreCierreCaja_Result> ValoreCierreCaja()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ValoreCierreCaja_Result>("ValoreCierreCaja");
+        }
+    
+        public virtual ObjectResult<BloqueoSillas_Result> BloqueoSillas()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BloqueoSillas_Result>("BloqueoSillas");
+        }
+    
         public virtual ObjectResult<VerMapaVenta_Result> VerMapaVenta(Nullable<int> funcion)
         {
             var funcionParameter = funcion.HasValue ?
@@ -221,11 +233,6 @@ namespace CinemaPOS.Models
                 new ObjectParameter("funcion", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VerMapaVenta_Result>("VerMapaVenta", funcionParameter);
-        }
-    
-        public virtual ObjectResult<ValoreCierreCaja_Result> ValoreCierreCaja()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ValoreCierreCaja_Result>("ValoreCierreCaja");
         }
     }
 }

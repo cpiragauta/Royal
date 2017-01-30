@@ -203,6 +203,11 @@
         <AssociationConnector Association="CinemaPOSModel.FK__ControlCa__Contr__0FA2421A" />
         <EntityTypeShape EntityType="CinemaPOSModel.VistaCierreCaja" Width="2.125" PointX="8.75" PointY="0.75" />
         <AssociationConnector Association="CinemaPOSModel.FK__ControlCa__Estad__1C0818FF" />
+        <EntityTypeShape EntityType="CinemaPOSModel.FuncionesTvShow" Width="1.5" PointX="9.375" PointY="8.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.SillaBloqueo" Width="1.5" PointX="27" PointY="57.375" />
+        <AssociationConnector Association="CinemaPOSModel.FK__SillaBloq__Usuar__5A054B78" />
+        <AssociationConnector Association="CinemaPOSModel.FK__SillaBloq__Funci__5911273F" />
+        <AssociationConnector Association="CinemaPOSModel.FK__SillaBloq__Silla__581D0306" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
