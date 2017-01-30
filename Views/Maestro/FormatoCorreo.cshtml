@@ -5,24 +5,16 @@
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
 
-<!--Summernote [ OPTIONAL ]-->
-<link href="~/Content/plugins/summernote/summernote.min.css" rel="stylesheet" />
-
-<!--Demo script [ DEMONSTRATION ]-->
+<link href="~/Content/plugins/summernote/summernote.min.css" rel="stylesheet">
 <script src="~/Content/js/demo/nifty-demo.min.js"></script>
-
-<!--Summernote [ OPTIONAL ]-->
 <script src="~/Content/plugins/summernote/summernote.min.js"></script>
-
-<!--Mail [ SAMPLE ]-->
 <script src="~/Content/js/demo/mail.js"></script>
-@*<script src="~/Content/plugins/switchery/switchery.js"></script>*@
-@*<link href="~/Content/plugins/switchery/switchery.min.css" rel="stylesheet">*@
+<script src="~/Content/js/demo/form-text-editor.js"></script>
 
 <script>
     $(document).ready(function () {
-        new Switchery(document.getElementById('demo-sw-checked'));
-        if(@Model.RowID > 0){
+        //new Switchery(document.getElementById('demo-sw-checked'));
+        @*if(@Model.RowID > 0){
             var rowid = @Model.RowID;
             $.ajax({
                 type: "POST",
@@ -41,7 +33,7 @@
             });
         }
 
-        debugger
+        debugger*@
     })
 
     function guardarFormatoCorreo() {
@@ -63,7 +55,7 @@
             },
             error: function (request) {
                 debugger
-                Mensajes(request.responseText.substring(1, (request.responseText.length -1)), 'error', '');
+                Mensajes(request.responseText.substring(1, (request.responseText.length - 1)), 'error', '');
             }
         });
     }
@@ -96,13 +88,13 @@
             },
             error: function (request) {
                 debugger
-                Mensajes(request.responseText.substring(1, (request.responseText.length -1)), 'error');
+                Mensajes(request.responseText.substring(1, (request.responseText.length - 1)), 'error');
             }
         });
 
     }
 
-    function adicionarParametro(){
+    function adicionarParametro() {
         debugger
         var parametro = $("#parametro").val();
         $(".note-editable").append("<h6>" + parametro + "</h6>");
@@ -119,90 +111,137 @@
     <div class="panel-body">
 
         <form id="formCorreo" data-toggle="validator" role="form">
-            <input type="hidden" class="RowID_Encabezado" name="RowID_Encabezado" value="@Model.RowID" />
-            <div class="col-md-1"></div>
-            <div class="col-md-11">
-                <br />
-                <div class="row ">
-                    <label class="col-md-1 control-label text-left" for="asunto">Asunto</label>
-                    <div class="col-md-6">
-                        <input type="text" id="asunto" name="asunto" style="width: 100%" class="form-control" value="@Model.Titulo" required="required">
-                    </div>
-                </div>
-                <br />
-                <div class="row">
+            <input type="hidden" class="RowidPlantilla" name="RowidPlantilla" value="@Model.RowID" />
+            <label class="col-md-1 control-label text-left" for="asunto">Asunto:</label>
+            <div class="col-md-3">
+                <input type="text" id="asunto" name="asunto" style="width: 100%" class="form-control" value="@Model.Titulo" required="required">
+            </div>
+            @*<div class="row">
                     <label class="col-md-1 control-label text-left" for="descripcion">Descripción</label>
                     <div class="col-md-6">
-                        <textarea name="descripcion" id="descripcion" class="form-control" style="resize: none" cols="20" rows="3">@Model.CuerpoMsj</textarea>
+                        <textarea name="descripcion" id="descripcion" class="form-control" style="resize: none" cols="20" rows="3">@Model.</textarea>
                     </div>
-                </div>
-                <br />
-                <div class="row ">
-                    @*<div class="form-group align-left">
-                            <label class="col-md-1 control-label text-left" for="descripcion">Activo</label>
-                            @if (@Model.estado.Equals(true))
-                                {
-                                    <input id="demo-sw-checked" type="checkbox" name="activo" checked>
-                                }
-                                else
-                                {
-                                    <input id="demo-sw-checked" type="checkbox" name="activo">
-                                }
-                        </div>*@
-                    <br />
-                    <div class="form-group align-left">
-                        <label class="col-md-1 control-label text-left" for="parametro">Parámetros</label>
-                        <select id="parametro" name="parametro" class="col-md-2 form-control" style="min-width:50px; width: 200px" required>
-                            <option value="" disabled selected>Seleccione una opcion</option>
-                            <option value="__ClienteNombre">Nombre del cliente</option>
-                            <option value="__ClienteCedula">Cedula del cliente</option>
-                        </select>
-                        <div class="col-md-1">
-                            @*<input class="btn btn-success glyphicon glyphicon-paperclip" id="adicionar" name="adicionar" style="float: left"  onclick="javascript:adicionarParametro()">*@
-                            <button type="button" class="btn" style="background-color: white;" title="Adicionar parámetro" onclick="javascript:adicionarParametro()">
-                                <i class="glyphicon glyphicon-edit "></i>
-                            </button>
-
-                        </div>
-                    </div>
-
-                    <form id="formulario_adjuntos" enctype="multipart/form-data">
-                        <center>
-                            <input type="file" maxlength="20480" name="file_adjunto" id="file_adjunto" multiple>
-
-                            <button type="button" class="btn  fileupload-exists" onclick="javascript:RegistrarAdjunto()" style="color:gray;background-color:white">
-                                <i class="glyphicon glyphicon-paperclip icon-white"></i> Adjuntar
-                            </button>
-                        </center>
-                    </form>
-                </div>
-
-                <br />
-                <div class="row ">
-                    <div class="col-md-11">
-                        <div id="demo-mail-compose" class="demo-mail-compose"></div>
-                    </div>
-                </div>
-                <div class="note-editor note-frame panel panel-default">
-
-                </div>
-                    <div class="row ">
-                        <div class="col-md-11">
-                            @if (Model.RowID == 0)
+                </div>*@
+            <div class="row ">
+                @*<div class="form-group align-left">
+                        <label class="col-md-1 control-label text-left" for="descripcion">Activo</label>
+                        @if (@Model.estado.Equals(true))
                             {
-                                <input class="btn btn-success" id="guardar" name="guardar" style="float: right" value="Guardar" onclick="javascript:guardarFormatoCorreo()">
+                                <input id="demo-sw-checked" type="checkbox" name="activo" checked>
                             }
                             else
                             {
-                                <input class="btn btn-success" id="actualizar" name="actualizar" style="float: right" value="Actualizar" onclick="javascript:guardarFormatoCorreo()">
+                                <input id="demo-sw-checked" type="checkbox" name="activo">
                             }
-                        </div>
+                    </div>*@
+                <div class="form-group align-left">
+                    <label class="col-md-1 control-label text-left" for="parametro">Parámetros</label>
+                    <select id="parametro" name="parametro" class="col-md-2 form-control" style="min-width:50px; width: 200px" required>
+                        <option value="" disabled selected>Seleccione una opcion</option>
+                        <option value="__ClienteNombre">Nombre del cliente</option>
+                        <option value="__ClienteCedula">Cedula del cliente</option>
+                    </select>
+                    <div class="col-md-1">
+                        @*<input class="btn btn-success glyphicon glyphicon-paperclip" id="adicionar" name="adicionar" style="float: left"  onclick="javascript:adicionarParametro()">*@
+                        <button type="button" class="btn" style="background-color: white;" title="Adicionar parámetro" onclick="javascript:adicionarParametro()">
+                            <i class="glyphicon glyphicon-edit "></i>
+                        </button>
+
                     </div>
                 </div>
+
+                <form id="formulario_adjuntos" enctype="multipart/form-data">
+                    <center>
+                        <input type="file" maxlength="20480" name="file_adjunto" id="file_adjunto" multiple>
+
+                        <button type="button" class="btn  fileupload-exists" onclick="javascript:RegistrarAdjunto()" style="color:gray;background-color:white">
+                            <i class="glyphicon glyphicon-paperclip icon-white"></i> Adjuntar
+                        </button>
+                    </center>
+                </form>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-11">
+                    <div id="demo-mail-compose" class="demo-mail-compose"></div>
+                </div>
+            </div>
+
+            <div class="note-editor note-frame panel panel-default">
+
+            </div>
+            <div class="row ">
+                <div class="col-md-11">
+                    @if (Model.RowID == 0)
+            {
+            <input class="btn btn-success" id="guardar" name="guardar" style="float: right" value="Guardar" onclick="javascript:guardarFormatoCorreo()">
+            }
+            else
+            {
+            <input class="btn btn-success" id="actualizar" name="actualizar" style="float: right" value="Actualizar" onclick="javascript:guardarFormatoCorreo()">
+            }
+                </div>
+            </div>
         </form>
 
     </div>
 </div>
 
 
+<!--GUARDAR HABEAS DATA-->
+<script>
+    function GuardarHabeasData() {
+        var habeas = $(".note-editable").text();
+        if (habeas == null || habeas == "") {
+            Alerts("Campo requerido.", "warning");
+            $(".note-editable").css("border", "1px solid #B71C1C");
+        } else {
+            debugger
+            ModalProcesandoShow();
+            var htmlHabeas = $(".note-editable").html();
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/GuardarHabeasData",
+                data: {
+                    habeas: htmlHabeas,
+                },
+                success: function (data) {
+                    ModalProcesandoHiden();
 
+                    if (data == "ok") {
+                        Alerts("Datos almacenados correctamente.", "success");
+                        return;
+                    } else {
+                        Alerts("Error al guardar los datos.", "danger");
+                    }
+
+                },
+                error: function (data) {
+                    ModalProcesandoHiden();
+                    Alerts("Error al guardar los datos.", "danger");
+                }
+            });
+        }
+    }
+
+</script>
+<script>
+    $(document).ready(function () {
+        ModalProcesandoShow();
+        $.ajax({
+            type: "POST",
+            url: "/Maestro/CargarPlantillaCorreos",
+            data: {
+                RowidPlantilla: $("#RowidPlantilla").val()
+            },
+            success: function (data) {
+                ModalProcesandoHiden();
+                $(".note-editable").prepend(data);
+            },
+            error: function (data) {
+                ModalProcesandoHiden();
+                Alerts("Error al cargar la información.", "danger");
+            }
+        });
+    });
+</script>
