@@ -2225,7 +2225,6 @@ namespace CinemaPOS.Controllers.Master
             if (RowID_Lista != null)
             {
                 Plantillas plantilla = db.Plantillas.Where(le => le.RowID == RowID_Lista).FirstOrDefault();
-                //ViewBag.formato = plantilla.formato_correo;
                 return View(plantilla);
             }
             else
@@ -2241,11 +2240,53 @@ namespace CinemaPOS.Controllers.Master
         {
             String plantilla = "";
 
-            if (RowidPlantilla != null)
+            if (RowidPlantilla != null && RowidPlantilla !=0)
             {
                 plantilla = db.Plantillas.FirstOrDefault(f => f.RowID == RowidPlantilla).CuerpoMsj;
             }
             return plantilla;
+        }
+
+        [ValidateInput(false)]
+        [CheckSessionOutAttribute]
+        public string GuardarFormatoCorreo(FormCollection formulario, string TextoPlantilla)
+        {
+            formulario = DeSerialize(formulario);
+            int RowIDPlantilla = Convert.ToInt32(formulario["RowidPlantilla"].ToString());
+            Plantillas plantilla;
+            if (RowIDPlantilla !=0)
+            {
+                plantilla = db.Plantillas.FirstOrDefault(f => f.RowID == RowIDPlantilla);
+                plantilla.UsuarioMod = Session["usuario_creacion"].ToString();
+                plantilla.FechaMod = DateTime.Now;
+            }
+            else
+            {
+                plantilla = new Plantillas();
+                plantilla.CreadoPor = Session["usuario_creacion"].ToString();
+                plantilla.FechaCreacion = DateTime.Now;
+            }
+            plantilla.NombrePlantilla = formulario["Nombre"].ToString();
+            plantilla.Titulo = formulario["Titulo"].ToString();
+            plantilla.CuerpoMsj = TextoPlantilla;
+            try
+            {
+                if (RowIDPlantilla != 0)
+                {
+                    db.SaveChanges();
+                    return "Actualizado Correctamente";
+                }
+                else
+                {
+                    db.Plantillas.Add(plantilla);
+                    db.SaveChanges();
+                    return "Guardado Correctamente";
+                }
+            }
+            catch
+            {
+                return "error";
+            }
         }
 
 
