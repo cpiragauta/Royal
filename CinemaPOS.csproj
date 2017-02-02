@@ -237,6 +237,9 @@
     <Compile Include="Models\Funciones.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FuncionesTvShow.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\GeneroPelicula.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -309,9 +312,6 @@
     <Compile Include="Models\ServicioSala.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SincronizacionMaestros.cs">
-      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -371,6 +371,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Content\Actividades.min.css" />
+    <Content Include="Content\Audios\silencio_mudo_sin_sonido_3FwvlSsggDk.mp3" />
     <Content Include="Content\css\bootstrap-fileupload.css" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
@@ -380,7 +381,9 @@
     <Content Include="Content\css\demo\nifty-demo.css" />
     <Content Include="Content\css\demo\nifty-demo.min.css" />
     <Content Include="Content\css\demo\premium-icon-screenshot.css" />
+    <Content Include="Content\css\EstiloBoleta.css" />
     <Content Include="Content\css\Forms.css" />
+    <Content Include="Content\css\Fuentes.min.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\nifty.css" />
     <Content Include="Content\css\nifty.min.css" />
@@ -457,6 +460,8 @@
     <Content Include="Content\css\themes\type-c\theme-well-red.min.css" />
     <Content Include="Content\css\themes\type-c\theme-yellow.css" />
     <Content Include="Content\css\themes\type-c\theme-yellow.min.css" />
+    <Content Include="Content\css\TvShowFunciones.min.css" />
+    <Content Include="Content\css\TVShowTrailers.min.css" />
     <Content Include="Content\font-own\icomoon.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\bg-img\1.jpg" />
@@ -555,6 +560,8 @@
     <Content Include="Content\js\demo\ui-panels.js" />
     <Content Include="Content\js\demo\widgets.js" />
     <Content Include="Content\js\jquery-2.2.4.min.js" />
+    <Content Include="Content\js\jquery.PrintArea.js" />
+    <Content Include="Content\js\JsBarcode.all.min.js" />
     <Content Include="Content\js\nifty.js" />
     <Content Include="Content\js\nifty.min.js" />
     <Content Include="Content\js\noty\jquery.noty.js" />
@@ -578,6 +585,8 @@
     <Content Include="Content\plugins\animate-css\animate.css" />
     <Content Include="Content\plugins\animate-css\animate.min.css" />
     <Content Include="Content\plugins\animate-css\LICENSE.txt" />
+    <Content Include="Content\plugins\Animation\functions.js" />
+    <Content Include="Content\plugins\Animation\jquery.smoothState.js" />
     <Content Include="Content\plugins\blockUI\jquery.blockUI.js" />
     <Content Include="Content\plugins\bootbox\bootbox.js" />
     <Content Include="Content\plugins\bootbox\bootbox.min.js" />
@@ -1596,6 +1605,10 @@
     <Content Include="Content\plugins\skycons\README.txt" />
     <Content Include="Content\plugins\skycons\skycons.js" />
     <Content Include="Content\plugins\skycons\skycons.min.js" />
+    <Content Include="Content\plugins\SliceBox\Css\slicebox.css" />
+    <Content Include="Content\plugins\SliceBox\Js\BoxesFx.js" />
+    <Content Include="Content\plugins\SliceBox\Js\jquery.slicebox.js" />
+    <Content Include="Content\plugins\SliceBox\Js\modernizr.custom.46884.js" />
     <Content Include="Content\plugins\sparkline\jquery.sparkline.js" />
     <Content Include="Content\plugins\sparkline\jquery.sparkline.min.js" />
     <Content Include="Content\plugins\summernote\lang\summernote-ar-AR.js" />
@@ -1649,6 +1662,8 @@
     <Content Include="Content\plugins\themify-icons\readme.txt" />
     <Content Include="Content\plugins\themify-icons\themify-icons.css" />
     <Content Include="Content\plugins\themify-icons\themify-icons.min.css" />
+    <Content Include="Content\plugins\TinyCarousel\jquery.tinycarousel.js" />
+    <Content Include="Content\plugins\TinyCarousel\tinycarousel.css" />
     <Content Include="Content\plugins\toggle-switch\css\style.css" />
     <Content Include="Content\plugins\toggle-switch\index.html" />
     <Content Include="Content\plugins\transactional-email-templates\LICENSE.txt" />
@@ -1659,6 +1674,7 @@
     <Content Include="Content\plugins\transactional-email-templates\templates\inlined\alert.html" />
     <Content Include="Content\plugins\transactional-email-templates\templates\inlined\billing.html" />
     <Content Include="Content\plugins\transactional-email-templates\templates\styles.css" />
+    <Content Include="Content\plugins\VerticalSlider\VerticalSlider.min.js" />
     <Content Include="Content\plugins\x-editable\CHANGELOG.txt" />
     <Content Include="Content\plugins\x-editable\css\bootstrap-editable.css" />
     <Content Include="Content\plugins\x-editable\img\clear.png" />
@@ -1819,6 +1835,7 @@
     <Content Include="Content\premium\icon-sets\thumbs\solid-icons\hardware.png" />
     <Content Include="Content\premium\icon-sets\thumbs\solid-icons\hipster.png" />
     <Content Include="Content\Tables.min.css" />
+    <Content Include="Content\TvShow.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Models\DAO_CinemaPOS.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -1830,10 +1847,54 @@
       <DependentUpon>DAO_CinemaPOS.edmx</DependentUpon>
       <LastGenOutput>DAO_CinemaPOS.cs</LastGenOutput>
     </Content>
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\backgrounds-black-black-background-room-textures-1703648-1680x1050.jpg" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\bienvenido_00372.png" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Cargando.gif" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\CORTO_00296.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Fondo-Formato.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Fondo-Idiomo.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Fondo-TituloPelicula.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\FondoFormatos.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\FondoPagina.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Blanco_Sin_Fondo\logo 2D-01.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Blanco_Sin_Fondo\logo 3D-01.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Blanco_Sin_Fondo\logo 4dx-01.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Blanco_Sin_Fondo\logo covan-01.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Blanco_Sin_Fondo\logo plus-01.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Blanco_Sin_Fondo\logo ultra-01.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Blanco_Sin_Fondo\logo vip-01.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Fondo_Negro\LOGOS_SALAS_ROYAL_FILMS2-01.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Fondo_Negro\LOGOS_SALAS_ROYAL_FILMS2-02.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Fondo_Negro\LOGOS_SALAS_ROYAL_FILMS2-03.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Fondo_Negro\LOGOS_SALAS_ROYAL_FILMS2-04.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Fondo_Negro\LOGOS_SALAS_ROYAL_FILMS2-05.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Fondo_Negro\LOGOS_SALAS_ROYAL_FILMS2-06.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Fondo_Negro\LOGOS_SALAS_ROYAL_FILMS2-07.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo 2D-01-Funciones.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo 2D-01.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo 3D-01-Funciones.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo 3D-01.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo 4dx-01.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo covan-01.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo plus-01.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo ultra-01.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo vip-01.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\loading.gif" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\modal-loading.gif" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\NoDisponibleAfiche.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Redes sociales.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\SALA 1_00446.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\SALASCOMP_00219.png" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\SillaDiscapacitados.png" />
     <Content Include="Properties\DataSources\System.Data.DataSet.datasource" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Titulo.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Titulo_00372.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\TvShowFondo.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\www.png" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\LA LEYENDA DE TARZAN.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\SING.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\Sing_ps.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\Tarzan la pelicula.jpg" />
     <Content Include="RoyalSync.asmx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1851,7 +1912,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\plugins\flot-charts\examples\gauge\" />
     <Folder Include="Repositorio_Imagenes\Fotos_Empleados\" />
-    <Folder Include="Repositorio_Imagenes\Poster_Peliculas\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -2308,6 +2368,17 @@
     <Content Include="Content\font-own\icomoon.eot" />
     <Content Include="Content\font-own\icomoon.ttf" />
     <Content Include="Content\font-own\icomoon.woff" />
+    <Content Include="Content\Fuente Royal\Futura %28Light%29.ttf" />
+    <Content Include="Content\Fuente Royal\Futura Beyaz Italic.ttf" />
+    <Content Include="Content\Fuente Royal\Futura Extra Bold.ttf" />
+    <Content Include="Content\Fuente Royal\Futura Koyu Italic.ttf" />
+    <Content Include="Content\Fuente Royal\Futura Koyu.ttf" />
+    <Content Include="Content\Fuente Royal\Futura LightOblique .ttf" />
+    <Content Include="Content\Fuente Royal\Futura Oblique.ttf" />
+    <Content Include="Content\Fuente Royal\FuturaExtended.ttf" />
+    <Content Include="Content\Fuente Royal\FuturaExtraBoldIta.ttf" />
+    <Content Include="Content\Fuente Royal\FuturaLighItalic.ttf" />
+    <Content Include="Content\Fuente Royal\FuturaLight.ttf" />
     <None Include="DB_9CAC35_cinemaposDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DB_9CAC35_cinemaposDataSet.Designer.cs</LastGenOutput>
@@ -2336,6 +2407,9 @@
     <Content Include="Views\CRM\ModalReferenciado.cshtml" />
     <Content Include="Views\CRM\NuevoClienteRoyal.cshtml" />
     <Content Include="Views\CRM\RegistroClienteTarjeta.cshtml" />
+    <Content Include="Views\Inicio\DiseñoTvShow.cshtml" />
+    <Content Include="Views\TvShow\TvShowFunciones.cshtml" />
+    <Content Include="Views\TvShow\TVShowTrailers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

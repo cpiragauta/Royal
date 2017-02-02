@@ -110,7 +110,34 @@ namespace CinemaPOS.ModelosPropios
             /*TIPO ESTADO SEGUIMIENTO PQRS*/
             public const int TIPO_ESTADO_PQRS = 14;
 
+            public const string TIPO_VERSION_2D = "2D";
+            public const string TIPO_VERSION_3D = "3D";
+            public const string SERVICIO_ULTRA = "Ultra";
+            public const string SERVICIO_GENERAL = "General";
+            public const string SERVICIO_VIP = "VIP";
+            public const string SERVICIO_PLUS = "Plus";
+            public const string SERVICIO_4DX = "4DX";
+            public const string SERVICIO_4TD = "4TD";
+            public const string SERVICIO_Covan = "Covan";
+            public const string SERVICIO_Atmos = "Atmos";
+        }
 
+        public class funcionesUtil
+        {
+            public Funciones Funcion { get; set; }
+            
+        }
+        public class FuncionEncabezado
+        {
+            public string titulo { get; set; }
+            public string version { get; set; }
+            public string Formato { get; set; }
+            
+            public int pelicula { get; set; }
+            public int peliculaDetalleID { get; set; }
+            public string Poster { get; set; }
+            public string Servicio { get; set; }
+            public List<FuncionesTvShow> Lista { get; set; }
         }
         public class Actividades
         {

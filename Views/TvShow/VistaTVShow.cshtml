@@ -6,7 +6,7 @@
 }
 
 
-<head>
+<head>c
     <!--jQuery [ REQUIRED ]-->
     <script src="~/Content/js/jquery-2.2.4.min.js"></script>
     <!--DataTables [ OPTIONAL ]-->
@@ -44,11 +44,11 @@
         document.getElementById("jssor_1").style.height = (ventana_alto - 8) + "px";
         document.getElementById("jssor_videos").style.width = (ventana_ancho/2) + "px";
         document.getElementById("jssor_videos").style.height = (ventana_alto - 8) + "px";
-        
-        
+
+
     });
 
-    
+
 </script>
 
 <style>
@@ -189,8 +189,6 @@
     .jssort11 .pav, .jssort11 .p.pdn {
         background: #462300;
     }
-
-
 </style>
 
 
@@ -198,18 +196,19 @@
 
 
 <div class="panel">
-  <div class="panel-body">   
-          <div class="row">
+    <div class="panel-body">
+        <div class="row">
             <div class="col-sm-12 jssor_1" id="jssor_1" style="position: absolute; height:0px; width: 0px;  margin: 0 auto; top: 0px; overflow: hidden; visibility: hidden; background-color: #000000;">
-                <iframe id="jssor_videos" src="https://www.youtube-nocookie.com/embed/videoseries?list=PL42BFEEA26EECB5E0&amp;controls=0&amp;showinfo=0;rel=0&autoplay=1;vq=hd720" frameborder="0" allowfullscreen></iframe>                <div data-u="slides" id="jtama" style="cursor: default; position: absolute; top: 0px; left: 0px; width: 600px; height: 300px; overflow: hidden;">
+                <iframe id="jssor_videos" src="https://www.youtube-nocookie.com/embed/videoseries?list=PL42BFEEA26EECB5E0&amp;controls=0&amp;showinfo=0;rel=0&autoplay=1;vq=hd720" frameborder="0" allowfullscreen></iframe>                
+                <div data-u="slides" id="jtama" style="cursor: default; position: absolute; top: 0px; left: 0px; width: 600px; height: 300px; overflow: hidden;">
                     @foreach (CinemaPOS.Models.Funciones item in Model)
                     {
                         <div data-p="112.50" style="display: none;float:right">
                             <div data-u="thumb">
                                 <div class="row">
                                     @*<div class="col-sm-4">
-                                        <img src="/@item.Afiche" alt="" width="50" height="20">
-                                    </div>*@
+                                            <img src="/@item.Afiche" alt="" width="50" height="20">
+                                        </div>*@
                                     <div class="col-sm-8">
                                         <label class="control-label" style="color:white">La Vida Secreta de tus Mascotas</label><br>
                                         <label class="control-label" style="color:antiquewhite">Funciones:  </label><br>
@@ -220,7 +219,7 @@
                         </div>
                     }
                 </div>
-                <div data-u="thumbnavigator" class="jssort11" style="float:right; right:5px;top:0px;font-family:Arial, Helvetica, sans-serif;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none;width:150px; height:300px" >
+                <div data-u="thumbnavigator" class="jssort11" style="float:right; right:5px;top:0px;font-family:Arial, Helvetica, sans-serif;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none;width:150px; height:300px">
                     <div data-u="slides" style="cursor: default; float: right">
                         <div data-u="prototype" class="p">
                             <div data-u="thumbnailtemplate" class="tp"></div>
@@ -230,9 +229,9 @@
             </div>
 
         </div>
-                <script type="text/javascript">jssor_1_slider_init();</script>
+        <script type="text/javascript">jssor_1_slider_init();</script>
 
-            </div>
+    </div>
 </div>
 
 
