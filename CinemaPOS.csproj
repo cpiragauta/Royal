@@ -86,7 +86,7 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
@@ -127,6 +127,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AdminTeatroController.cs" />
     <Compile Include="Controllers\ConveniosCuponesController.cs" />
     <Compile Include="Controllers\CRMController.cs" />
     <Compile Include="Controllers\Cuenta\CuentaController.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Controllers\Inicio\InicioController.cs" />
     <Compile Include="Controllers\MaestroController.cs" />
     <Compile Include="Controllers\PeliculaController.cs" />
+    <Compile Include="Controllers\PerfilController.cs" />
     <Compile Include="Controllers\POSController.cs" />
     <Compile Include="Controllers\PQRSController.cs" />
     <Compile Include="Controllers\ProgramacionController.cs" />
@@ -161,6 +163,12 @@
     <Compile Include="Models\Actividades.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BloqueoSillas_Result.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BoletasVendidas.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BoletaVendida.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -174,6 +182,15 @@
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Contacto.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ControlCajaUsuarioEntrega.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ControlCajaUsuarioRecibe.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ControlIngreso.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Cuenta\CuentaModels.cs" />
@@ -241,6 +258,9 @@
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\GeneroPelicula.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HistoricolLog.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Impuesto.cs">
@@ -312,6 +332,9 @@
     <Compile Include="Models\ServicioSala.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SillaBloqueo.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -357,6 +380,15 @@
     <Compile Include="Models\UsuarioSistema.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ValoreCierreCaja_Result.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VerMapaVenta_Result.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VistaCierreCaja.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Zona.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -371,19 +403,19 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Content\Actividades.min.css" />
-    <Content Include="Content\Audios\silencio_mudo_sin_sonido_3FwvlSsggDk.mp3" />
     <Content Include="Content\css\bootstrap-fileupload.css" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\CinemaPOS.css" />
     <Content Include="Content\css\demo\fonts\nifty-demo-icons.svg" />
     <Content Include="Content\css\demo\nifty-demo-icons.css" />
     <Content Include="Content\css\demo\nifty-demo-icons.min.css" />
     <Content Include="Content\css\demo\nifty-demo.css" />
     <Content Include="Content\css\demo\nifty-demo.min.css" />
     <Content Include="Content\css\demo\premium-icon-screenshot.css" />
-    <Content Include="Content\css\EstiloBoleta.css" />
     <Content Include="Content\css\Forms.css" />
     <Content Include="Content\css\Fuentes.min.css" />
+    <Content Include="Content\css\Global.min.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\nifty.css" />
     <Content Include="Content\css\nifty.min.css" />
@@ -462,7 +494,11 @@
     <Content Include="Content\css\themes\type-c\theme-yellow.min.css" />
     <Content Include="Content\css\TvShowFunciones.min.css" />
     <Content Include="Content\css\TVShowTrailers.min.css" />
+    <Content Include="Content\demo-files\demo.css" />
+    <Content Include="Content\demo-files\demo.js" />
     <Content Include="Content\font-own\icomoon.svg" />
+    <Content Include="Content\fonts-pos\icomoon.svg" />
+    <Content Include="Content\fonts-pos\style.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\bg-img\1.jpg" />
     <Content Include="Content\img\bg-img\2.jpg" />
@@ -560,7 +596,10 @@
     <Content Include="Content\js\demo\ui-panels.js" />
     <Content Include="Content\js\demo\widgets.js" />
     <Content Include="Content\js\jquery-2.2.4.min.js" />
+    <Content Include="Content\js\jquery.dataTables.min1.10.10.js" />
     <Content Include="Content\js\jquery.PrintArea.js" />
+    <Content Include="Content\js\JqueryDataRables\jquery.dataTables.min.css" />
+    <Content Include="Content\js\JqueryDataRables\jquery.dataTables.min.js" />
     <Content Include="Content\js\JsBarcode.all.min.js" />
     <Content Include="Content\js\nifty.js" />
     <Content Include="Content\js\nifty.min.js" />
@@ -585,8 +624,6 @@
     <Content Include="Content\plugins\animate-css\animate.css" />
     <Content Include="Content\plugins\animate-css\animate.min.css" />
     <Content Include="Content\plugins\animate-css\LICENSE.txt" />
-    <Content Include="Content\plugins\Animation\functions.js" />
-    <Content Include="Content\plugins\Animation\jquery.smoothState.js" />
     <Content Include="Content\plugins\blockUI\jquery.blockUI.js" />
     <Content Include="Content\plugins\bootbox\bootbox.js" />
     <Content Include="Content\plugins\bootbox\bootbox.min.js" />
@@ -1548,6 +1585,7 @@
     <Content Include="Content\plugins\pace\pace.js" />
     <Content Include="Content\plugins\pace\pace.min.css" />
     <Content Include="Content\plugins\pace\pace.min.js" />
+    <Content Include="Content\plugins\PrintElement.js" />
     <Content Include="Content\plugins\select2\css\select2.css" />
     <Content Include="Content\plugins\select2\css\select2.min.css" />
     <Content Include="Content\plugins\select2\js\i18n\ar.js" />
@@ -1662,8 +1700,6 @@
     <Content Include="Content\plugins\themify-icons\readme.txt" />
     <Content Include="Content\plugins\themify-icons\themify-icons.css" />
     <Content Include="Content\plugins\themify-icons\themify-icons.min.css" />
-    <Content Include="Content\plugins\TinyCarousel\jquery.tinycarousel.js" />
-    <Content Include="Content\plugins\TinyCarousel\tinycarousel.css" />
     <Content Include="Content\plugins\toggle-switch\css\style.css" />
     <Content Include="Content\plugins\toggle-switch\index.html" />
     <Content Include="Content\plugins\transactional-email-templates\LICENSE.txt" />
@@ -1847,54 +1883,29 @@
       <DependentUpon>DAO_CinemaPOS.edmx</DependentUpon>
       <LastGenOutput>DAO_CinemaPOS.cs</LastGenOutput>
     </Content>
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\backgrounds-black-black-background-room-textures-1703648-1680x1050.jpg" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\bienvenido_00372.png" />
+    <Content Include="Repositorio_Imagenes\Fotos_Empleados\BrayanGetzamha.png" />
+    <Content Include="Repositorio_Imagenes\Fotos_Empleados\Brian Camilo  Piragauta.png" />
+    <Content Include="Repositorio_Imagenes\Fotos_Empleados\JamesBernal.jpg" />
+    <Content Include="Repositorio_Imagenes\Fotos_Empleados\JamesBernal.png" />
+    <Content Include="Repositorio_Imagenes\Fotos_Empleados\Royal-Filmslol.jpg" />
+    <Content Include="Repositorio_Imagenes\Fotos_Empleados\Royal-FilmsRoyal.jpg" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Cargando.gif" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\CORTO_00296.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Fondo-Formato.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Fondo-Idiomo.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Fondo-TituloPelicula.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\FondoFormatos.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\FondoPagina.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Blanco_Sin_Fondo\logo 2D-01.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Blanco_Sin_Fondo\logo 3D-01.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Blanco_Sin_Fondo\logo 4dx-01.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Blanco_Sin_Fondo\logo covan-01.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Blanco_Sin_Fondo\logo plus-01.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Blanco_Sin_Fondo\logo ultra-01.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Blanco_Sin_Fondo\logo vip-01.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Fondo_Negro\LOGOS_SALAS_ROYAL_FILMS2-01.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Fondo_Negro\LOGOS_SALAS_ROYAL_FILMS2-02.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Fondo_Negro\LOGOS_SALAS_ROYAL_FILMS2-03.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Fondo_Negro\LOGOS_SALAS_ROYAL_FILMS2-04.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Fondo_Negro\LOGOS_SALAS_ROYAL_FILMS2-05.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Fondo_Negro\LOGOS_SALAS_ROYAL_FILMS2-06.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Fondo_Negro\LOGOS_SALAS_ROYAL_FILMS2-07.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo 2D-01-Funciones.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo 2D-01.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo 3D-01-Funciones.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo 3D-01.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo 4dx-01.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo covan-01.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo plus-01.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo ultra-01.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Iconos_TvShow\Negro_Sin_Fondo\logo vip-01.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\loading.gif" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\modal-loading.gif" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\NoDisponibleAfiche.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Redes sociales.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\SALA 1_00446.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\SALASCOMP_00219.png" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\SillaDiscapacitados.png" />
     <Content Include="Properties\DataSources\System.Data.DataSet.datasource" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Titulo.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Titulo_00372.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\TvShowFondo.png" />
-    <Content Include="Repositorio_Imagenes\Imagenes_Generales\www.png" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\CIGÜEÑAS.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\CIGÜEÑAS_thumbnail.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\dsafsdaf_thumbnail.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\imagennodisponible.png" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\JUEGOS SATANICOS.jpg" />
     <Content Include="Repositorio_Imagenes\Poster_Peliculas\LA LEYENDA DE TARZAN.jpg" />
-    <Content Include="Repositorio_Imagenes\Poster_Peliculas\SING.jpg" />
-    <Content Include="Repositorio_Imagenes\Poster_Peliculas\Sing_ps.jpg" />
-    <Content Include="Repositorio_Imagenes\Poster_Peliculas\Tarzan la pelicula.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\LA VIDA SECRETA DE LAS MASCOTAS.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\LA VIDA SECRETA DE LAS MASCOTAS_thumbnail.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\LOS ILUCIONISTAS.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\PELICULA 1.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\PELICULA 1_thumbnail.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\Silla General.png" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\UN ESPIA Y MEDIO .jpg" />
     <Content Include="RoyalSync.asmx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1911,7 +1922,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\plugins\flot-charts\examples\gauge\" />
-    <Folder Include="Repositorio_Imagenes\Fotos_Empleados\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -2368,6 +2378,9 @@
     <Content Include="Content\font-own\icomoon.eot" />
     <Content Include="Content\font-own\icomoon.ttf" />
     <Content Include="Content\font-own\icomoon.woff" />
+    <Content Include="Content\fonts-pos\icomoon.eot" />
+    <Content Include="Content\fonts-pos\icomoon.ttf" />
+    <Content Include="Content\fonts-pos\icomoon.woff" />
     <Content Include="Content\Fuente Royal\Futura %28Light%29.ttf" />
     <Content Include="Content\Fuente Royal\Futura Beyaz Italic.ttf" />
     <Content Include="Content\Fuente Royal\Futura Extra Bold.ttf" />
@@ -2407,9 +2420,31 @@
     <Content Include="Views\CRM\ModalReferenciado.cshtml" />
     <Content Include="Views\CRM\NuevoClienteRoyal.cshtml" />
     <Content Include="Views\CRM\RegistroClienteTarjeta.cshtml" />
-    <Content Include="Views\Inicio\DiseñoTvShow.cshtml" />
+    <Content Include="Views\POS\ValidaCupones.cshtml" />
+    <Content Include="Views\Programacion\ModalEliminarFuncionMasivo.cshtml" />
+    <Content Include="Views\Programacion\ModalReplicarFuncionxDia.cshtml" />
+    <Content Include="Views\Programacion\ModalReplicarFuncionxSala.cshtml" />
+    <Content Include="Views\Cuenta\AccesoDenegado.cshtml" />
+    <Content Include="Views\Perfil\Menu.cshtml" />
+    <Content Include="Views\Perfil\VistaTipoMenu.cshtml" />
+    <Content Include="Views\Perfil\VistaMenu.cshtml" />
+    <Content Include="Views\Perfil\TipoMenu.cshtml" />
+    <Content Include="Views\Maestro\HabeasData.cshtml" />
+    <Content Include="Views\PQRS\VistaTipoSolicitud.cshtml" />
+    <Content Include="Views\PQRS\TipoSolicitud.cshtml" />
+    <Content Include="Views\Maestro\VistaPlantillasCorreo.cshtml" />
+    <Content Include="Views\Maestro\FormatoCorreo.cshtml" />
+    <Content Include="Views\AdminTeatro\ControlCajaUsuario.cshtml" />
+    <Content Include="Views\AdminTeatro\VistaControlCaja.cshtml" />
+    <Content Include="Views\AdminTeatro\RegistrarIngreso.cshtml" />
+    <Content Include="Views\CRM\ModalHabeasData.cshtml" />
+    <Content Include="Views\CRM\ModalSello.cshtml" />
     <Content Include="Views\TvShow\TvShowFunciones.cshtml" />
     <Content Include="Views\TvShow\TVShowTrailers.cshtml" />
+    <Content Include="Views\Sincronizacion\SincronizacionMaestros.cshtml" />
+    <Content Include="Views\Inicio\DiseñoTvShow.cshtml" />
+    <Content Include="Views\AdminTeatro\VistaSalasTeatro.cshtml" />
+    <Content Include="Views\AdminTeatro\BloquearSilla.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

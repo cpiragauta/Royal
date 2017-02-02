@@ -40,8 +40,8 @@ namespace CinemaPOS.Controllers
         public ActionResult RegistroClienteTarjeta()
         {
             ViewBag.Ciudades = db.Ciudad.ToList();
-            ViewBag.Generos = db.Opcion.Where(g => g.Tipo.Codigo == "TIPOSEXO").ToList();
-            ViewBag.TipoCliente = db.Opcion.Where(g => g.Tipo.Codigo == "TIPOCLIENTE").ToList();
+            ViewBag.Generos = db.Opcion.Where(g => g.Tipo.Codigo == "TIPOSEXO" && g.Activo == true).ToList();
+            ViewBag.TipoCliente = db.Opcion.Where(g => g.Tipo.Codigo == "TIPOCLIENTE" && g.Activo == true).ToList();
             return View();
         }
         public JsonResult GuardarCliente(FormCollection formulario)
@@ -81,12 +81,12 @@ namespace CinemaPOS.Controllers
                            nombreCompleto = clientes.Nombre + " " + clientes.Apellido,
                            telefono = clientes.Telefono,
                            ciudades = (clientes.CiudadResidenciaID == null) ? "" : clientes.Ciudad.Nombre + " " + clientes.Ciudad.Departamento.Nombre,
-                           genero = (clientes.GeneroID == null) ? "" : db.Opcion.Where(f => f.RowID == clientes.GeneroID).FirstOrDefault().Nombre,
+                           genero = (clientes.GeneroID == null) ? "" : db.Opcion.Where(f => f.RowID == clientes.GeneroID && f.Activo == true).FirstOrDefault().Nombre,
                            fechaNac = clientes.FechaNacimiento,
                            tarjetaID = (membresia.Codigo == null) ? "" : membresia.Codigo,
                            info = clientes.RecibirInformacion,
-                           clasificacion = (clientes.Opcion == null) ? "" : db.Opcion.Where(f => f.RowID == clientes.ClasificacionID).FirstOrDefault().Nombre,
-                           pref = (clientes.preferenciasID == null) ? "" : db.Opcion.Where(f => f.RowID == clientes.preferenciasID).FirstOrDefault().Nombre
+                           clasificacion = (clientes.Opcion == null) ? "" : db.Opcion.Where(f => f.RowID == clientes.ClasificacionID && f.Activo == true).FirstOrDefault().Nombre,
+                           pref = (clientes.preferenciasID == null) ? "" : db.Opcion.Where(f => f.RowID == clientes.preferenciasID && f.Activo == true).FirstOrDefault().Nombre
                        }).ToList();
             ViewBag.Listado = cliente;
             return View();
@@ -97,9 +97,9 @@ namespace CinemaPOS.Controllers
         {
             ViewBag.TipoIdentificacion = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOIDENTIFICACION").ToList();
             ViewBag.Ciudades = db.Ciudad.ToList();
-            ViewBag.SexoID = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOSEXO").ToList();
-            ViewBag.Clasificacion = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOCLIENTE").ToList();
-            ViewBag.preferencias = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOGENEROPELICULA").ToList();
+            ViewBag.SexoID = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOSEXO" && f.Activo == true).ToList();
+            ViewBag.Clasificacion = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOCLIENTE" && f.Activo == true).ToList();
+            ViewBag.preferencias = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOGENEROPELICULA" && f.Activo == true).ToList();
             TarjetaMembresiaClienteRoyal tmembresia = new TarjetaMembresiaClienteRoyal();
             try
             { tmembresia = db.TarjetaMembresiaClienteRoyal.Where(f => f.ClienteRoyalID == rowID).FirstOrDefault(); }
@@ -122,6 +122,7 @@ namespace CinemaPOS.Controllers
         {
             formulario = DeSerialize(formulario);
             ClienteRoyal cliente = db.ClienteRoyal.Where(f => f.RowID == rowID).FirstOrDefault();
+            var estado = db.Estado.Where(f => f.Codigo == Util.Constantes.ESTADO_ACTIVO).FirstOrDefault();
             if (cliente == null || rowID == 0)
             { cliente = new Models.ClienteRoyal(); }
 
@@ -136,11 +137,12 @@ namespace CinemaPOS.Controllers
                 if (info == "on")
                 { cliente.RecibirInformacion = true; }
                 else { cliente.RecibirInformacion = false; }
-                cliente.FechaNacimiento = Convert.ToDateTime(formulario["FechaNacimiento"]);
+                cliente.FechaNacimiento = CinemaPOS.ModelosPropios.Util.FechaInsertar(formulario["FechaNacimiento"]);
                 cliente.CiudadResidenciaID = Convert.ToInt32(formulario["CiudadResidenciaID"]);
                 cliente.GeneroID = Convert.ToInt32(formulario["GeneroID"]);
                 cliente.ClasificacionID = Convert.ToInt32(formulario["ClasificacionID"]);
                 cliente.preferenciasID = Convert.ToInt32(formulario["preferenciasID"]);
+                cliente.TipoIdentificacionID= Convert.ToInt32(formulario["TipoIdentificacionID"]);
                 cliente.CreadoPor = Session["usuario_creacion"].ToString();
                 cliente.FechaNacimiento = DateTime.Now;
                 string cofd = formulario["TarjetaMembresiaClienteRoyal"].ToString();
@@ -151,7 +153,7 @@ namespace CinemaPOS.Controllers
                 membresia.Codigo = codigo;
                 membresia.CreadoPor = Session["usuario_creacion"].ToString();
                 membresia.FechaCreacion = DateTime.Now;
-                membresia.EstadoID = Util.Constantes.ESTADO_ACTIVO;
+                membresia.EstadoID = estado.RowID;
                 membresia.NoRedenciones = Util.Constantes.REDENCIONES_No4;
                 if (membresia == null || rowID == 0)
                 { db.TarjetaMembresia.Add(membresia); }
@@ -166,7 +168,7 @@ namespace CinemaPOS.Controllers
                 tarjetaID.TarjetaMembresiaID = membresia.RowID;
                 tarjetaID.ClienteRoyalID = cliente.RowID;
                 tarjetaID.FechaActivacion = DateTime.Now;
-                tarjetaID.EstadoID = Util.Constantes.ESTADO_ACTIVO;
+                tarjetaID.EstadoID = estado.RowID;
                 tarjetaID.NoRedencionesAprob = Util.Constantes.REDENCIONES_No4;
                 if (rowID == null || rowID == 0)
                 { db.TarjetaMembresiaClienteRoyal.Add(tarjetaID); }
@@ -218,10 +220,10 @@ namespace CinemaPOS.Controllers
         [CheckSessionOutAttribute]
         public ActionResult Cotizaciones(int? rowid)
         {
-            //db.Database.Connection.ConnectionString = "";
             ViewBag.prospectos = db.Tercero.ToList();
             ViewBag.teatros = db.Teatro.ToList();
-            ViewBag.estado = db.Estado.Where(f => f.TipoEstadoID == Util.Constantes.TIPO_ESTADO_COTIZACION).ToList();
+            var TipoEstado = db.TipoEstado.Where(f => f.Codigo == Util.Constantes.TIPO_ESTADO_COTIZACION).FirstOrDefault();
+            ViewBag.estado = db.Estado.Where(f => f.TipoEstadoID == TipoEstado.RowID).ToList();
             ViewBag.ListaPrecios = db.ListaEncabezado.ToList();
             OportunidadVenta cotizacion = db.OportunidadVenta.Where(f => f.RowID == rowid).FirstOrDefault();
             if (cotizacion == null || rowid == null)
@@ -253,15 +255,20 @@ namespace CinemaPOS.Controllers
 
                 venta.ProspectoID = Convert.ToInt32(formulario["ProspectoIDx"]);
                 venta.TeatroID = Convert.ToInt32(formulario["TeatroID"]);
-                venta.ContactoID = Convert.ToInt32(formulario["ContactoHiden"]);
+                if ( !String.IsNullOrEmpty(formulario["ContactoHiden"]))
+                {
+                    venta.ContactoID = Convert.ToInt32(formulario["ContactoHiden"]);
+                }
                 venta.Titulo = formulario["Titulo"];
                 venta.Valor = formulario["Valor"];
-                venta.FechaApertura = Convert.ToDateTime(formulario["FechaApertura"]);
-                venta.FechaCierra = Convert.ToDateTime(formulario["FechaCierra"]);
-                venta.FechaEntrega = Convert.ToDateTime(formulario["FechaEntrega"]);
+                venta.FechaApertura = CinemaPOS.ModelosPropios.Util.FechaInsertar(formulario["FechaApertura"]);
+                venta.FechaCierra = CinemaPOS.ModelosPropios.Util.FechaInsertar(formulario["FechaCierra"]);
+                venta.FechaEntrega = CinemaPOS.ModelosPropios.Util.FechaInsertar(formulario["FechaEntrega"]);
                 venta.ListaPrecioID = Convert.ToInt32(formulario["ListaPrecioID"]);
                 venta.Descripcion = formulario["Descripcion"];
                 venta.EstadoID = Convert.ToInt32(formulario["EstadoID"]);
+                venta.fechaCreacion = DateTime.Now;
+                venta.CreadoPor = Session["usuario_creacion"].ToString();
                 if (rowID == 0 || rowID == null)
                 { db.OportunidadVenta.Add(venta); }
                 db.SaveChanges();
@@ -284,12 +291,12 @@ namespace CinemaPOS.Controllers
                            {
                                rowid = actividad.rowID,
                                asunto = actividad.asunto,
-                               tipoAct = (actividad.tipoActividadID == 0) ? "" : db.Opcion.Where(f => f.RowID == actividad.tipoActividadID).FirstOrDefault().Nombre,
+                               tipoAct = (actividad.tipoActividadID == 0) ? "" : db.Opcion.Where(f => f.RowID == actividad.tipoActividadID && f.Activo == true).FirstOrDefault().Nombre,
                                fechaInicio = actividad.fechaInicio,
                                FechaFin = actividad.fechaFin,
-                               tipoRef = (actividad.tipoReferenciaID == 0) ? "" : db.Opcion.Where(f => f.RowID == actividad.tipoReferenciaID).FirstOrDefault().Nombre,
+                               tipoRef = (actividad.tipoReferenciaID == 0) ? "" : db.Opcion.Where(f => f.RowID == actividad.tipoReferenciaID && f.Activo == true).FirstOrDefault().Nombre,
                                referenciado_a = actividad.referenciado_a,
-                               prioridad = (actividad.prioridadID == 0) ? "" : db.Opcion.Where(f => f.RowID == actividad.prioridadID).FirstOrDefault().Nombre,
+                               prioridad = (actividad.prioridadID == 0) ? "" : db.Opcion.Where(f => f.RowID == actividad.prioridadID && f.Activo == true).FirstOrDefault().Nombre,
                                estado = (actividad.estadoID == 0) ? "" : db.Estado.Where(f => f.RowID == actividad.estadoID).FirstOrDefault().Nombre,
                                descripcion = actividad.descripcion
 
@@ -304,10 +311,14 @@ namespace CinemaPOS.Controllers
             Actividades actividad = db.Actividades.Where(f => f.rowID == rowid).FirstOrDefault();
             if (actividad == null)
             { actividad = new Models.Actividades(); }
-            ViewBag.TipoAct = db.Opcion.Where(f => f.TipoID == Util.Constantes.TIPO_ACTIVIDAD).ToList();
-            ViewBag.tipoRef = db.Opcion.Where(f => f.TipoID == Util.Constantes.TIPO_REFERENCIA).ToList();
-            ViewBag.Prioridad = db.Opcion.Where(f => f.TipoID == Util.Constantes.PRIORIDAD).OrderBy(f => f.NumOrden).ToList();
-            ViewBag.Estados = db.Estado.Where(f => f.TipoEstadoID == Util.Constantes.ESTADOS_ACTIVIDAD).ToList();
+            var TipoActividades = db.Tipo.Where(f => f.Codigo == Util.Constantes.TIPO_ACTIVIDAD).FirstOrDefault();
+            var TipoReferencias = db.Tipo.Where(f => f.Codigo == Util.Constantes.TIPO_REFERENCIA).FirstOrDefault();
+            var TipoPrioridades = db.Tipo.Where(f => f.Codigo == Util.Constantes.PRIORIDAD).FirstOrDefault();
+            var TipoEstados = db.TipoEstado.Where(f => f.Codigo == Util.Constantes.ESTADOS_ACTIVIDAD).FirstOrDefault();
+            ViewBag.TipoAct = db.Opcion.Where(f => f.TipoID == TipoActividades.RowID && f.Activo == true).ToList();
+            ViewBag.tipoRef = db.Opcion.Where(f => f.TipoID == TipoReferencias.RowID && f.Activo == true).ToList();
+            ViewBag.Prioridad = db.Opcion.Where(f => f.TipoID == TipoPrioridades.RowID && f.Activo == true).OrderBy(f => f.NumOrden).ToList();
+            ViewBag.Estados = db.Estado.Where(f => f.TipoEstadoID == TipoEstados.RowID).ToList();
             var usuario = Session["usuario_creacion"].ToString();
             var rol = db.UsuarioSistema.Where(f => f.NombreUsuario.Contains(usuario.Trim())).FirstOrDefault().RolID;
             ViewBag.rol = rol;
@@ -325,7 +336,8 @@ namespace CinemaPOS.Controllers
             ViewBag.columna5 = "";
 
             List<Util.ModalReferencias> lista = new List<Util.ModalReferencias>();
-            switch (t_referencia)
+            var referencias = db.Opcion.Where(f => f.RowID == t_referencia && f.Activo == true).FirstOrDefault().Codigo;
+            switch (referencias)
             {
                 case Util.Constantes.ACTIVIDAD_TIPO_RELACION_Cliente:
                     ViewBag.titulo = "CLIENTES";
@@ -352,7 +364,8 @@ namespace CinemaPOS.Controllers
                     ViewBag.columna2 = "Vendedor";
                     ViewBag.columna3 = "Fecha Solicitud";
                     ViewBag.columna4 = "Estado";
-                    lista = (from item in db.OportunidadVenta.Where(f => f.EstadoID != Util.Constantes.OPORTUNIDAD_VENTA).OrderByDescending(f => f.RowID).ToList()
+                    var EstadoPedida = db.Estado.Where(f => f.Codigo == Util.Constantes.OPORTUNIDAD_VENTA).FirstOrDefault();
+                    lista = (from item in db.OportunidadVenta.Where(f => f.EstadoID != EstadoPedida.RowID).OrderByDescending(f => f.RowID).ToList()
                              select new Util.ModalReferencias()
                              {
                                  rowid = item.RowID,
@@ -394,7 +407,7 @@ namespace CinemaPOS.Controllers
                                  valor = item.RowID + " - " + item.Titulo,
                                  columna1 = item.Titulo,
                                  columna2 = (item.TerceroID == null) ? "" : db.Tercero.Where(f => f.RowID == item.TerceroID).FirstOrDefault().Nombre + " " + db.Tercero.Where(f => f.RowID == item.TerceroID).FirstOrDefault().Apellidos,
-                                 columna3 = (item.TipoSolicitudID == null) ? "" : db.Opcion.Where(f => f.TipoID == item.TipoSolicitudID).FirstOrDefault().Nombre,
+                                 columna3 = (item.TipoSolicitudID == null) ? "" : db.Opcion.Where(f => f.TipoID == item.TipoSolicitudID && f.Activo == true).FirstOrDefault().Nombre,
                                  columna4 = (item.EstadoID == null) ? "" : db.Estado.Where(f => f.RowID == item.EstadoID).FirstOrDefault().Nombre
                              }).ToList();
                     break;
@@ -429,7 +442,7 @@ namespace CinemaPOS.Controllers
             if (rowid == null || rowid == 0)
             { actividad = new Models.Actividades(); }
             string RutaAdjunto = "";
-            string name = "Actividad" + DateTime.Now.ToString("dd-MM-yyyy");
+            string name = "Actividad" + DateTime.Now.ToString("dd/MM/yyyy");
             if (afiche != null)
             {
                 RutaAdjunto = name+Path.GetExtension(afiche.FileName);
@@ -440,9 +453,9 @@ namespace CinemaPOS.Controllers
             {
                 actividad.asunto = formulario["asunto"];
                 actividad.tipoActividadID = Convert.ToInt32(formulario["tipoActividadID"]);
-                actividad.fechaInicio = Convert.ToDateTime(formulario["fechaInicio"]);
+                actividad.fechaInicio = CinemaPOS.ModelosPropios.Util.FechaInsertar(formulario["fechaInicio"]);
                 try
-                {actividad.fechaFin = Convert.ToDateTime(formulario["fechaFin"]);}
+                { actividad.fechaFin = CinemaPOS.ModelosPropios.Util.FechaInsertar(formulario["fechaFin"]); }
                 catch
                 {}
                 actividad.tipoReferenciaID = Convert.ToInt32(formulario["tipoReferenciaID"]);
@@ -450,11 +463,14 @@ namespace CinemaPOS.Controllers
                 actividad.prioridadID = Convert.ToInt32(formulario["prioridadID"]);
                 actividad.estadoID = Convert.ToInt32(formulario["estadoID"]);
                 actividad.descripcion = formulario["descripcion"];
-                actividad.fechaCreacion = DateTime.Now;
-                actividad.creadoPor = Session["usuario_creacion"].ToString();
+               
                 actividad.Adjunto = RutaAdjunto;
                 if (rowid == 0 || rowid == null)
-                { db.Actividades.Add(actividad); }
+                {
+                    actividad.fechaCreacion = DateTime.Now;
+                    actividad.creadoPor = Session["usuario_creacion"].ToString(); 
+                    db.Actividades.Add(actividad);
+                }
                 else
                 {
                     actividad.fechaMod = DateTime.Now;
@@ -463,8 +479,12 @@ namespace CinemaPOS.Controllers
                 db.SaveChanges();
                 if (rowid == null || rowid == 0)
                 {
-                    
-                    MailSender.Enviar_Actividad(actividad, "PLANTILLA_ACTIVIDAD", Session["usuario_creacion"].ToString(),"");
+                    MailSender.Enviar_Actividad(actividad, "PLANTILLA_ACTIVIDAD", Session["usuario_creacion"].ToString(),"","");
+                    var CopiaCorreo = formulario["CopiaCorreo"];
+                    if (CopiaCorreo !=null)
+                    {
+                        MailSender.Enviar_Actividad(actividad, "PLANTILLA_ACTIVIDAD", Session["usuario_creacion"].ToString(), "","");
+                    }
                 }
                 return Json(actividad.rowID);
             }
@@ -483,7 +503,7 @@ namespace CinemaPOS.Controllers
         public JsonResult GuardarSello(FormCollection formulario)
         {
             formulario = DeSerialize(formulario);
-
+            var Tiposellos = db.Opcion.Where(f => f.Codigo == Util.Constantes.TIPO_SELLO && f.Activo == true).FirstOrDefault();
             Tercero tercero = new Tercero();
             try
             {
@@ -492,7 +512,7 @@ namespace CinemaPOS.Controllers
                 tercero.Correo = formulario["Correo"];
                 tercero.Descripcion = formulario["Descripcion"];
                 tercero.CiudadID = Convert.ToInt32(formulario["CiudadID"]);
-                tercero.TipoTerceroID = Util.Constantes.TIPO_SELLO;
+                tercero.TipoTerceroID = Tiposellos.RowID;
                 tercero.FechaCreacion = DateTime.Now;
                 tercero.CreadoPor = Session["usuario_creacion"].ToString();
                 db.Tercero.Add(tercero);
@@ -500,6 +520,14 @@ namespace CinemaPOS.Controllers
                 return Json("ok");
             }
             catch (Exception){ return Json("Error"); }
+        }
+        #endregion
+
+        #region HABEASDATA
+        public ActionResult ModalHabeasData()
+        {
+            Parametros Data = db.Parametros.Where(f => f.cod_parametro == "HABEASDATA").FirstOrDefault();
+            return View(Data);
         }
         #endregion
     }

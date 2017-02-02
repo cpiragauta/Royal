@@ -20,11 +20,11 @@ namespace CinemaPOS.Models
             this.Contacto = new HashSet<Contacto>();
             this.Sello_Distribuidor = new HashSet<Sello_Distribuidor>();
             this.Sello_Distribuidor1 = new HashSet<Sello_Distribuidor>();
-            this.Teatro = new HashSet<Teatro>();
             this.EncabezadoPelicula = new HashSet<EncabezadoPelicula>();
             this.EncabezadoVentaEmpresarial = new HashSet<EncabezadoVentaEmpresarial>();
             this.Pqrs = new HashSet<Pqrs>();
             this.OportunidadVenta = new HashSet<OportunidadVenta>();
+            this.Teatro = new HashSet<Teatro>();
         }
     
         public int RowID { get; set; }
@@ -47,6 +47,8 @@ namespace CinemaPOS.Models
         public Nullable<System.DateTime> FechaNacimiento { get; set; }
         public Nullable<int> SexoID { get; set; }
         public Nullable<int> RowIDCentral { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
         public virtual ICollection<EncabezadoConvenio> EncabezadoConvenio { get; set; }
         public virtual Ciudad Ciudad { get; set; }
@@ -56,10 +58,10 @@ namespace CinemaPOS.Models
         public virtual Opcion Opcion2 { get; set; }
         public virtual ICollection<Sello_Distribuidor> Sello_Distribuidor { get; set; }
         public virtual ICollection<Sello_Distribuidor> Sello_Distribuidor1 { get; set; }
-        public virtual ICollection<Teatro> Teatro { get; set; }
         public virtual ICollection<EncabezadoPelicula> EncabezadoPelicula { get; set; }
         public virtual ICollection<EncabezadoVentaEmpresarial> EncabezadoVentaEmpresarial { get; set; }
         public virtual ICollection<Pqrs> Pqrs { get; set; }
         public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }
+        public virtual ICollection<Teatro> Teatro { get; set; }
     }
 }

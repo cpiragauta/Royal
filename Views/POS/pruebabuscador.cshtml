@@ -178,44 +178,147 @@
 <!--=================================================-->
 <!--Open Sans Font [ OPTIONAL ]-->
 <head>
+    <style>
+        #floating-top-right {
+            z-index: 999999999;
+        }
+
+        .active {
+            width: 100% !important;
+        }
+
+        }
+    </style>
+
+    <!--STYLESHEET-->
+    <!--=================================================-->
+    <!--Open Sans Font [ OPTIONAL ]-->
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
 
+    <!--Bootstrap Stylesheet [ REQUIRED ]-->
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--Nifty Stylesheet [ REQUIRED ]-->
+    <link href="~/Content/css/nifty.min.css" rel="stylesheet">
+
+    <!--Nifty Premium Icon [ DEMONSTRATION ]-->
+    <link href="~/Content/css/demo/nifty-demo-icons.min.css" rel="stylesheet">
+
+    <!--Demo [ DEMONSTRATION ]-->
+    <link href="~/Content/css/demo/nifty-demo.min.css" rel="stylesheet">
+
+    <!--Morris.js [ OPTIONAL ]-->
+    @*<link href="~/Content/plugins/morris-js/morris.min.css" rel="stylesheet">*@
+
+    <link href="~/Content/plugins/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <!--Magic Checkbox [ OPTIONAL ]-->
+    <link href="~/Content/plugins/magic-check/css/magic-check.min.css" rel="stylesheet">
+
+    <!--JAVASCRIPT-->
+    <!--=================================================-->
+    <!--Pace - Page Load Progress Par [OPTIONAL]-->
+    <link href="~/Content/plugins/pace/pace.min.css" rel="stylesheet">
+    <script src="~/Content/plugins/pace/pace.min.js"></script>
 
     <!--jQuery [ REQUIRED ]-->
     <script src="~/Content/js/jquery-2.2.4.min.js"></script>
 
+    <!--BootstrapJS [ RECOMMENDED ]-->
+    <script src="~/Content/js/bootstrap.min.js"></script>
 
-    <link href="~/Content/css/EstiloBoleta.css" rel="stylesheet" />
+    <!--NiftyJS [ RECOMMENDED ]-->
+    <script src="~/Content/js/nifty.min.js"></script>
+
+    <!--=================================================-->
+    <!--Demo script [ DEMONSTRATION ]-->
+    <script src="~/Content/js/demo/nifty-demo.min.js"></script>
+
+    <!--Morris.js [ OPTIONAL ]-->
+    @*<script src="~/Content/plugins/morris-js/morris.min.js"></script>
+        <script src="~/Content/plugins/morris-js/raphael-js/raphael.min.js"></script>*@
+
+    <!--Sparkline [ OPTIONAL ]-->
+    <script src="~/Content/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+    <!--Specify page [ SAMPLE ]-->
+    @*<script src="~/Content/js/demo/dashboard.js"></script>*@
+
+
+
+    <link href="~/Content/plugins/chosen/chosen.min.css" rel="stylesheet">
+    <script src="~/Content/plugins/chosen/chosen.jquery.min.js"></script>
+    <script src="~/Content/plugins/blockUI/jquery.blockUI.js"></script>
+    <!--jQuery [ REQUIRED ]-->
+    <!--DataTables [ OPTIONAL ]-->
+    <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+    <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <!--DataTables Sample [ SAMPLE ]-->
+    <link href="~/Content/css/demo/nifty-demo-icons.css" rel="stylesheet" />
+    <link href="~/Content/css/CinemaPOS.css" rel="stylesheet" />
+    <!--Bootstrap Stylesheet [ REQUIRED ]-->
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--Nifty Stylesheet [ REQUIRED ]-->
+    <link href="~/Content/css/nifty.min.css" rel="stylesheet">
+
+    <!--Nifty Premium Icon [ DEMONSTRATION ]-->
+    <link href="~/Content/css/demo/nifty-demo-icons.min.css" rel="stylesheet">
+
+    <!--Demo [ DEMONSTRATION ]-->
+    <link href="~/Content/css/demo/nifty-demo.min.css" rel="stylesheet">
+
+    <!--Morris.js [ OPTIONAL ]-->
+    @*<link href="~/Content/plugins/morris-js/morris.min.css" rel="stylesheet">*@
+
+    <link href="~/Content/plugins/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <!--Magic Checkbox [ OPTIONAL ]-->
+    <link href="~/Content/plugins/magic-check/css/magic-check.min.css" rel="stylesheet">
+
+    <!--JAVASCRIPT-->
+    <!--=================================================-->
+    <!--Pace - Page Load Progress Par [OPTIONAL]-->
+    <link href="~/Content/plugins/pace/pace.min.css" rel="stylesheet">
+    <script src="~/Content/plugins/pace/pace.min.js"></script>
+
+    <!--jQuery [ REQUIRED ]-->
+    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
+
+    <!--BootstrapJS [ RECOMMENDED ]-->
+    <script src="~/Content/js/bootstrap.min.js"></script>
+
+    <!--NiftyJS [ RECOMMENDED ]-->
+    <script src="~/Content/js/nifty.min.js"></script>
+
+    <!--=================================================-->
+    <!--Demo script [ DEMONSTRATION ]-->
+    <script src="~/Content/js/demo/nifty-demo.min.js"></script>
+
+    <!--Morris.js [ OPTIONAL ]-->
+    @*<script src="~/Content/plugins/morris-js/morris.min.js"></script>
+        <script src="~/Content/plugins/morris-js/raphael-js/raphael.min.js"></script>*@
+
+    <!--Sparkline [ OPTIONAL ]-->
+    <script src="~/Content/plugins/sparkline/jquery.sparkline.min.js"></script>
+    @*<link href="~/Content/css/EstiloBoleta.css" rel="stylesheet" />*@
     <script src="~/Content/js/jquery.PrintArea.js"></script>
-    @*<script type="text/javascript">
-        //$(function () {
-        //    $("#btnPrint").click(function () {
-        //        var contents = $("#dvContents").html();
-        //        var frame1 = $('<iframe />');
-        //        frame1[0].name = "frame1";
-        //        frame1.css({ "position": "absolute", "top": "-1000000px", "widht": "100px", "height":"10px" });
-        //        $("body").append(frame1);
-        //        var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
-        //        frameDoc.document.open('','','width=200,height=100');
-        //        //Create a new HTML document.
-        //        frameDoc.document.write('</head><body>');
-        //        //Append the external CSS file.
-        //        frameDoc.document.write('<link href="/Content/css/EstiloBoleta.css" rel="stylesheet" />');
-        //        //Append the DIV contents.
-        //        frameDoc.document.write(contents);
-        //        frameDoc.document.write('</body></html>');
-        //        frameDoc.document.close();
-        //        setTimeout(function () {
-        //            window.frames["frame1"].focus();
-        //            window.frames["frame1"].print();
-        //            frame1.remove();
-        //        }, 500);
-        //    });
-            //});
-           <script>*@
     <script>
         $(document).ready(function () {
             $("#printButton").click(function () {
+                //$('.printableArea').each(function (element, index) {
+                //    debugger;
+                //        $(index).printElement({
+                //            leaveOpen: false,
+                //            printMode: 'iframe'
+                //        });
+
+                //})
+                //$('.printableArea').printElement({
+                //    leaveOpen:false,
+                //    printMode:'iframe'
+                //});
+                //window.write($(".printableArea").html());
+                //window.print();
                 var mode = 'iframe'; //popup
                 var close = mode == "popup";
                 var options = { mode: mode, popClose: close };
@@ -223,18 +326,152 @@
             });
         });
     </script>
-    <style>
-        ul li {
-            display: inline;
-        }
-    </style>
 </head>
 <body>
-    <a href="javascript:void(0);" id="printButton">Print</a>
-    <div class="printableArea" style="width:400px;height:300px;">
+    @*<a href="javascript:void(0);" id="printButton">Print</a>
+    <div id="imprima" >
+    </div>
+    <div class="printableArea row" style="width:300px;height:350px;display:table;margin-top:10px; margin-left:5px; margin-bottom:60px;">
+        <div>
+            <img src="~/Repositorio_Imagenes/Imagenes_Generales/logo-royal.jpg" width="20%" />
+        </div>
+        
+        <div class="boleta" style="float:left;width:49%;height:100%;">
+            <p class="text-center pad-no mar-no">Royal Films SAS<br />NIT: 890.105.652-3</p>
+            <p class="text-center pad-no mar-no"><strong>Resolución:</strong><br /><strong>20000199088 de @DateTime.Now.ToShortDateString()</strong></p>
+            <p class="text-center pad-no mar-no"><strong>Regimen simplificado:</strong></p>
+            <h4 class="pad-no mar-no">FACTURA DE VENTA N. 45789</h4>
+            <p class="pad-no mar-no"><strong>Funcion:</strong><br />@DateTime.Now.ToShortDateString()</p>
+            <p class="pad-no mar-no"><strong>Sala 1</strong></p>
+            <p class="pad-no mar-no"><strong>Hora:4:30 PM</strong></p>
+            <p class="pad-no mar-no"><strong>2D DB Doctor Strange</strong></p>
 
+            <p class="pad-no mar-no"><strong>Tarifa:</strong><br />Lunes A Miércoles antes de 3</p>
+            <p class="pad-no mar-no"><strong>Precio: $5.000</strong></p>
+            <p class="pad-no mar-no"><strong>Iva: $0</strong></p>
+            <p class="pad-no mar-no"><strong>Silla<br /> A-10</strong></p>
+            <p class="pad-no mar-no"><strong>Cajero: </strong><br />James Alexander Bernal Gonzalez</p>
+            <p class="pad-no mar-no"><strong>Terminal </strong>01</p>
+            <p class="pad-no mar-no"><strong>Prefijo: </strong>AL</p>
+            <p class="pad-no mar-no"><strong>Fecha y hora de venta</strong><br />@DateTime.Now</p>
+        </div>
 
-        <div class="boleta" style="float:left;width:50%;height:100%;">
+        <div class="tirilla" style="float:right;width:49%;height:100%;">
+            <p class="text-center">Royal Films SAS<br />NIT: 890.105.652-3</p>
+            <p class="text-center pad-no mar-no"><strong>Resolución:</strong><br /><strong>20000199088 de @DateTime.Now.ToShortDateString()</strong></p>
+            <p class="text-center pad-no mar-no"><strong>Regimen simplificado:</strong></p>
+            <h4 class="">FACTURA DE VENTA N. 45789</h4>
+            <p><strong>Funcion:</strong><br />@DateTime.Now.ToShortDateString()</p>
+            <p><strong>Sala 1</strong></p>
+            <p><strong>Hora:4:30 PM</strong></p>
+            <p><strong>2D DB Doctor Strange</strong></p>
+
+            <p><strong>Tarifa:</strong><br />Lunes A Miércoles antes de 3</p>
+            <p><strong>Precio: $5.000</strong></p>
+            <p><strong>Iva: $0</strong></p>
+            <strong>Silla<br /> A-10</strong><br />
+            <p><strong>Cajero: </strong><br />James Alexander Bernal Gonzalez</p>
+            <p><strong>Terminal </strong>01</p>
+            <p><strong>Prefijo: </strong>AL</p>
+            <p><strong>Fecha y hora de venta</strong><br />@DateTime.Now</p>
+        </div>
+
+    </div>
+    <div class="printableArea row" style="width:300px;height:430px;display:table;  margin-left:5px; margin-bottom:20px;">
+        <div>
+            <img src="~/Repositorio_Imagenes/Imagenes_Generales/logo-royal.jpg" width="20%" />
+        </div>
+        <div class="boleta" style="float:left;width:49%;height:100%;">
+            <p class="text-center">Royal Films SAS<br />NIT: 890.105.652-3</p>
+            <p class="text-center pad-no mar-no"><strong>Resolución:</strong><br /><strong>20000199088 de @DateTime.Now.ToShortDateString()</strong></p>
+            <p class="text-center pad-no mar-no"><strong>Regimen simplificado:</strong></p>
+            <h4 class="">FACTURA DE VENTA N. 45789</h4>
+            <p><strong>Funcion:</strong><br />@DateTime.Now.ToShortDateString()</p>
+            <p><strong>Sala 1</strong></p>
+            <p><strong>Hora:4:30 PM</strong></p>
+            <p><strong>2D DB Doctor Strange</strong></p>
+
+            <p><strong>Tarifa:</strong><br />Lunes A Miércoles antes de 3</p>
+            <p><strong>Precio: $5.000</strong></p>
+            <p><strong>Iva: $0</strong></p>
+            <strong>Silla<br /> A-10</strong><br />
+            <p><strong>Cajero: </strong><br />James Alexander Bernal Gonzalez</p>
+            <p><strong>Terminal </strong>01</p>
+            <p><strong>Prefijo: </strong>AL</p>
+            <p><strong>Fecha y hora de venta</strong><br />@DateTime.Now</p>
+        </div>
+
+        <div class="tirilla" style="float:right;width:49%;height:100%;">
+            <p class="text-center">Royal Films SAS<br />NIT: 890.105.652-3</p>
+            <p class="text-center pad-no mar-no"><strong>Resolución:</strong><br /><strong>20000199088 de @DateTime.Now.ToShortDateString()</strong></p>
+            <p class="text-center pad-no mar-no"><strong>Regimen simplificado:</strong></p>
+            <h4 class="">FACTURA DE VENTA N. 45789</h4>
+            <p><strong>Funcion:</strong><br />@DateTime.Now.ToShortDateString()</p>
+            <p><strong>Sala 1</strong></p>
+            <p><strong>Hora:4:30 PM</strong></p>
+            <p><strong>2D DB Doctor Strange</strong></p>
+
+            <p><strong>Tarifa:</strong><br />Lunes A Miércoles antes de 3</p>
+            <p><strong>Precio: $5.000</strong></p>
+            <p><strong>Iva: $0</strong></p>
+            <strong>Silla<br /> A-10</strong><br />
+            <p><strong>Cajero: </strong><br />James Alexander Bernal Gonzalez</p>
+            <p><strong>Terminal </strong>01</p>
+            <p><strong>Prefijo: </strong>AL</p>
+            <p><strong>Fecha y hora de venta</strong><br />@DateTime.Now</p>
+        </div>
+
+    </div>
+    <div class="printableArea row" style="width:300px;height:430px; display:table; margin-left:5px;  margin-bottom:20px;">
+        <div>
+            <img src="~/Repositorio_Imagenes/Imagenes_Generales/logo-royal.jpg" width="20%" />
+        </div>
+        <div class="boleta" style="float:left;width:49%;height:100%;">
+            <p class="text-center">Royal Films SAS<br />NIT: 890.105.652-3</p>
+            <p class="text-center pad-no mar-no"><strong>Resolución:</strong><br /><strong>20000199088 de @DateTime.Now.ToShortDateString()</strong></p>
+            <p class="text-center pad-no mar-no"><strong>Regimen simplificado:</strong></p>
+            <h4 class="">FACTURA DE VENTA N. 45789</h4>
+            <p><strong>Funcion:</strong><br />@DateTime.Now.ToShortDateString()</p>
+            <p><strong>Sala 1</strong></p>
+            <p><strong>Hora:4:30 PM</strong></p>
+            <p><strong>2D DB Doctor Strange</strong></p>
+
+            <p><strong>Tarifa:</strong><br />Lunes A Miércoles antes de 3</p>
+            <p><strong>Precio: $5.000</strong></p>
+            <p><strong>Iva: $0</strong></p>
+            <strong>Silla<br /> A-10</strong><br />
+            <p><strong>Cajero: </strong><br />James Alexander Bernal Gonzalez</p>
+            <p><strong>Terminal </strong>01</p>
+            <p><strong>Prefijo: </strong>AL</p>
+            <p><strong>Fecha y hora de venta</strong><br />@DateTime.Now</p>
+        </div>
+
+        <div class="tirilla" style="float:right;width:49%;height:100%;">
+            <p class="text-center">Royal Films SAS<br />NIT: 890.105.652-3</p>
+            <p class="text-center pad-no mar-no"><strong>Resolución:</strong><br /><strong>20000199088 de @DateTime.Now.ToShortDateString()</strong></p>
+            <p class="text-center pad-no mar-no"><strong>Regimen simplificado:</strong></p>
+            <h4 class="">FACTURA DE VENTA N. 45789</h4>
+            <p><strong>Funcion:</strong><br />@DateTime.Now.ToShortDateString()</p>
+            <p><strong>Sala 1</strong></p>
+            <p><strong>Hora:4:30 PM</strong></p>
+            <p><strong>2D DB Doctor Strange</strong></p>
+
+            <p><strong>Tarifa:</strong><br />Lunes A Miércoles antes de 3</p>
+            <p><strong>Precio: $5.000</strong></p>
+            <p><strong>Iva: $0</strong></p>
+            <strong>Silla<br /> A-10</strong><br />
+            <p><strong>Cajero: </strong><br />James Alexander Bernal Gonzalez</p>
+            <p><strong>Terminal </strong>01</p>
+            <p><strong>Prefijo: </strong>AL</p>
+            <p><strong>Fecha y hora de venta</strong><br />@DateTime.Now</p>
+        </div>
+
+    </div>*@
+
+    @*<div class="printableArea" style="width:400px;height:300px;">
+        <p>Boleta 2</p>
+
+        @*<div class="boleta" style="float:left;width:50%;height:100%;">
             <p class="text-center">Royal Films SAS<br />NIT: 890.105.652-3</p>
             <p class="text-center pad-no mar-no"><strong>Resolución:</strong><br /><strong>20000199088 de @DateTime.Now.ToShortDateString()</strong></p>
             <p class="text-center pad-no mar-no"><strong>Regimen simplificado:</strong></p>
@@ -273,5 +510,174 @@
             <p><strong>Prefijo: </strong>AL</p>
             <p><strong>Fecha y hora de venta</strong><br />@DateTime.Now</p>
         </div>
+    </div>*@
+    @*<div class="row col-sm-12">
+        <div class="panel media middle col-sm-5">
+            <div class="media-left bg-mint pad-all">
+                <i class="demo-pli-coin icon-3x"></i><br />
+            </div>
+            <div class="media-body pad-all">
+                <p class="text-2x mar-no text-semibold">$6.000</p>
+                <p class="text-muted mar-no text-bold">Nombre de la tarifa:</p>
+                <p>General lun,mar,mie,jue,vie,sab,dom,fes</p>
+                <p class="text-muted mar-no text-bold">Servicio:</p>
+                <p>General </p>
+            </div>
+        </div>
+        <div class="panel media middle col-sm-5">
+            <div class="media-left bg-mint pad-all">
+                <i class="demo-pli-coin icon-3x"></i>
+            </div>
+            <div class="media-body pad-all">
+                <p class="text-2x mar-no text-semibold">34</p>
+                <p class="text-muted mar-no">Comments</p>
+            </div>
+        </div>
+    </div>*@
+    <div class="modal" id="demo-modal-wo-anim" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!--Modal header-->
+                <div class="modal-header">
+                     <!--<button type="button" class="close" data-dismiss="modal"><i class="pci-cross pci-circle"></i></button>-->
+                    <h3 class="panel-title">Control de caja</h3>
+                </div>
+
+
+                <!--Modal body-->
+                <div class="modal-body" style="min-height:250px;">
+                    <div id="page-content" style="height:50px">
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Efectivo</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Total </label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Cambio</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    
+                </div>
+
+
+                <!--Modal footer-->
+                <div class="modal-footer">
+                    <!--<button data-dismiss="modal" class="btn btn-default" type="button">Close</button>-->
+                    <button class="btn btn-primary" id="validar">Save changes</button>
+                </div>
+            </div>
+        </div>
     </div>
+    <button data-target="#demo-modal-wo-anim" data-toggle="modal" class="btn btn-primary btn-lg">Launch demo modal</button>
+
 </body>
+@*<html>
+<head>
+    <title>Reloj con Javascript</title>
+    <script language="JavaScript">
+
+function mueveReloj(){
+   	momentoActual = new Date()
+   	hora = momentoActual.getHours()
+   	minuto = momentoActual.getMinutes()
+   	segundo = momentoActual.getSeconds()
+
+   	str_segundo = new String (segundo)
+   	if (str_segundo.length == 1)
+      	segundo = "0" + segundo
+
+   	str_minuto = new String (minuto)
+   	if (str_minuto.length == 1)
+      	minuto = "0" + minuto
+
+   	str_hora = new String (hora)
+   	if (str_hora.length == 1)
+      	hora = "0" + hora
+
+   	horaImprimible = hora + " : " + minuto + " : " + segundo
+
+   	document.form_reloj.reloj.value = horaImprimible
+
+   	setTimeout("mueveReloj()",1000)
+}
+    </script>
+</head>
+
+<body onload="mueveReloj()">
+
+    Vemos aquí el reloj funcionando...
+
+    <form name="form_reloj">
+        <input type="text" name="reloj" size="10" style="background-color : Black; color : White; font-family : Verdana, Arial, Helvetica; font-size : 8pt; text-align : center;" onfocus="window.document.form_reloj.reloj.blur()">
+    </form>
+
+</body>
+</html>*@ 
+@*<head>
+    <script language="Javascript">
+<!--
+function doPrint() {
+  var cabecera = micab.printing.header;
+  var f = micab.printing.footer;
+  micab.printing.header = "";
+  micab.printing.footer = "";
+  micab.doPrint(true);
+  micab.printing.header = cabecera;
+  micab.printing.footer = f;
+}
+//--></script></head>
+<body>
+    <br><br><br>
+    <object id=micab style="display:none"
+            classid="clsid:1663ed61-23eb-11d2-b92f-008048fdd814" viewastext codebase="ScriptX.cab#Version=5,0,4,185"></object>
+    <br><br>
+    <div id="miboton"><input name=idPrint type=button value="Imprimir" onclick="doPrint()"></div>
+    laaaaaaaaaaaalalalal
+    laalala
+</body>*@
+
+@*</html>
+<HTML>
+<HEAD>
+    <SCRIPT language="javascript">
+function imprimir()
+{ if ((navigator.appName == "Netscape")) { window.print() ;
+}
+else
+{ var WebBrowser = '<OBJECT ID="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></OBJECT>';
+document.body.insertAdjacentHTML('beforeEnd', WebBrowser); WebBrowser1.ExecWB(6, -1); WebBrowser1.outerHTML = "";
+}
+}
+    </SCRIPT>
+</HEAD>
+<BODY onload="imprimir();">
+    Aqui estaria todo tu contenido a imprimir
+</BODY>
+</HTML>*@
+
+</html>
+<script>
+    $(document).ready(function () {
+        $("#demo-modal-wo-anim").modal('show');
+        $('#validar').click(function () {
+            $("#demo-modal-wo-anim").modal('hide');
+        })
+    })
+</script>

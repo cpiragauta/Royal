@@ -59,7 +59,7 @@
     <form name="formulario_teatro" id="formulario_teatro" onsubmit="return false">
         <input type="hidden" class="row_id" id="row_id" name="RowID_Teatro" value="@Model.RowID" />
         <div class="panel-body">
-                @*<div class="col-sm-4">
+            @*<div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">Empresa:*</label>
                         <select name="empresa" class="chosen form-control" required>
@@ -78,81 +78,121 @@
                         </select>
                     </div>
                 </div>*@
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="control-label">Nombre*:</label>
-                        <input type="text"  class="form-control Mayus" value="@Model.Nombre" name="nombre" required maxlength="50">
-                    </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label">Nombre*:</label>
+                    <input type="text" class="form-control Mayus" value="@Model.Nombre" name="nombre" required maxlength="50">
                 </div>
-
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="control-label">Ciudad*:</label>
-                        <select name="ciudad" class="chosen form-control" required>
-                            <option disabled selected>Seleccione una opcion</option>
-                            @foreach (CinemaPOS.Models.Ciudad ciudades in ViewBag.Ciudades)
-                            {
-                                if (Model.RowID != 0 && ciudades.RowID == Model.CiudadID)
-                                {
-                                    <option value="@ciudades.RowID" selected>@ciudades.Departamento.Nombre - @ciudades.Nombre</option>
-                                }
-                                else
-                                {
-                                    <option value="@ciudades.RowID">@ciudades.Departamento.Nombre - @ciudades.Nombre</option>
-                                }
-
-                            }
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-sm-2">
-                    <div class="form-group">
-                        <label class="control-label">Centro de costo:</label>
-                        <input type="text" class="form-control" value="@Model.CentroOperacion" name="centro_costo" maxlength="50">
-                    </div>
-                </div>
-
-                <div class="col-sm-2">
-                    <div class="form-group">
-                        <label class="control-label">IP:</label>
-                        <input type="text" id="demo-msk-ip" class="form-control" name="ip" value="@Model.IP" placeholder="255.255.255.255" maxlength="30" required>
-                    </div>
-                </div>
-
-                <div class="col-sm-2">
-                    <div class="form-group">
-                        <label class="control-label">Estado*:</label>
-                        <select name="Estado" class="chosen form-control" required>
-                            <option disabled selected>Seleccione una opcion</option>
-                            @foreach (CinemaPOS.Models.Estado item in ViewBag.ListaEstados)
-                            {
-                                if (Model.RowID != 0 && item.RowID == Model.EstadoID)
-                                {
-                                    <option value="@item.RowID" selected>@item.Descripcion</option>
-                                }
-                                else
-                                {
-                                    <option value="@item.RowID">@item.Descripcion</option>
-                                }
-
-                            }
-                        </select>
-                    </div>
             </div>
+
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label">Ciudad*:</label>
+                    <select name="ciudad" class="chosen form-control" required>
+                        <option disabled selected>Seleccione una opcion</option>
+                        @foreach (CinemaPOS.Models.Ciudad ciudades in ViewBag.Ciudades)
+                        {
+                            if (Model.RowID != 0 && ciudades.RowID == Model.CiudadID)
+                            {
+                                <option value="@ciudades.RowID" selected>@ciudades.Departamento.Nombre - @ciudades.Nombre</option>
+                            }
+                            else
+                            {
+                                <option value="@ciudades.RowID">@ciudades.Departamento.Nombre - @ciudades.Nombre</option>
+                            }
+
+                        }
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label">Centro de costo:</label>
+                    <select name="centro_costo" class="chosen form-control" required>
+                        <option disabled selected>Seleccione una opcion</option>
+                        @foreach (CinemaPOS.Models.CentroOperacion item in ViewBag.ListaCentrosOperacion)
+                        {
+                            if (Model.RowID != 0 && item.RowID == Model.CentroOperacionID)
+                            {
+                                <option value="@item.RowID" selected>@item.Nombre - @item.Region"</option>
+                            }
+                            else
+                            {
+                                <option value="@item.RowID">@item.Nombre - @item.Region</option>
+                            }
+
+                        }
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label">IP:</label>
+                    <input type="text" id="demo-msk-ip" class="form-control" name="ip" value="@Model.IP" placeholder="255.255.255.255" maxlength="30" required>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label">Estado*:</label>
+                    <select name="Estado" class="chosen form-control" required>
+                        <option disabled selected>Seleccione una opcion</option>
+                        @foreach (CinemaPOS.Models.Estado item in ViewBag.ListaEstados)
+                        {
+                            if (Model.RowID != 0 && item.RowID == Model.EstadoID)
+                            {
+                                <option value="@item.RowID" selected>@item.Descripcion</option>
+                            }
+                            else
+                            {
+                                <option value="@item.RowID">@item.Descripcion</option>
+                            }
+
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label class="control-label">Cadena BD:*</label>
+                    <input type="text" class="form-control" value="@Model.CadenaBD" name="CadenaBD" required>
+                </div>
+            </div>
+
+          
 
 
 
         </div>
         <div class="panel-footer text-right">
-            @if (Model.RowID == 0)
+
+            @if (Session["Usuario"] != null)
             {
-                <input class="btn btn-success" type="submit" value="Crear Teatro" onclick="guardar_teatro()">
+                CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                {
+                    if (Model.RowID == 0)
+                    {
+                        <input class="btn btn-success" type="submit" value="Crear Teatro" onclick="guardar_teatro()">
+                    }
+                    else
+                    {
+                        <input class=" btn btn-success" type="submit" value="Actualizar Teatro" onclick="guardar_teatro()">
+                    }
+                }
+                else
+                {
+                    <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Guardar">
+                }
             }
-            else
-            {
-                <input class=" btn btn-success" type="submit" value="Actualizar Teatro" onclick="guardar_teatro()">
-            }
+            
+
         </div>
+
+
     </form>
+
 </div>

@@ -1,0 +1,182 @@
+﻿@model CinemaPOS.Models.Plantillas
+
+@{
+    ViewBag.Title = "Formato Correo";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<link href="~/Content/plugins/summernote/summernote.min.css" rel="stylesheet">
+<script src="~/Content/js/demo/nifty-demo.min.js"></script>
+<script src="~/Content/plugins/summernote/summernote.min.js"></script>
+<script src="~/Content/js/demo/mail.js"></script>
+<script src="~/Content/js/demo/form-text-editor.js"></script>
+
+<script>
+    function RegistrarAdjunto() {
+        ruta = null;
+        hasChangue = false;
+        debugger
+        var formdata = new FormData(); //FormData object
+        var fileInput = $("#file_adjunto").get(0).files;
+
+        for (i = 0; i < fileInput.length; i++) {
+            formdata.append("file" + i, fileInput[i]);
+        }
+        //alamacena la imagen dentro del servidor
+        $.ajax({
+            type: "POST",
+            url: "/Masters/Get_Ruta_File",
+            contentType: false,
+            processData: false,
+            data: formdata,
+            success: function (data) {
+                debugger
+                Mensajes("Se ha adjuntado", 'success');
+                var loc = window.location;
+                var pathName = window.location.protocol + "//" + window.location.host + data;
+                $(".note-editable").append("<img src='" + pathName + "' ></img>");
+
+                //guardarAdjunto(data);
+            },
+            error: function (request) {
+                debugger
+                Mensajes(request.responseText.substring(1, (request.responseText.length - 1)), 'error');
+            }
+        });
+
+    }
+
+    function adicionarParametro(value) {
+        $(".note-editable").append("<h6>" + value + "</h6>");
+    }
+
+</script>
+
+<div>
+    <p>
+        <a class="btn btn-success" href='@Url.Action("VistaPlantillasCorreo", "Maestro")'>Vista Plantillas</a>
+    </p>
+</div>
+<div class="panel">
+    <div class="panel-body">
+
+        <form id="formCorreo" >
+            <input type="hidden" class="RowidPlantilla" name="RowidPlantilla" value="@Model.RowID" />
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label">*Nombre:</label>
+                    <input type="text" id="Nombre" name="Nombre" class="form-control" maxlength="40" required value="@Model.NombrePlantilla">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label">*Titulo:</label>
+                    <input type="text" id="Titulo" name="Titulo" class="form-control" maxlength="20" required value="@Model.Titulo">
+                </div>
+            </div>
+            <p id="CuerpoPlantilla" hidden> @Model.CuerpoMsj</p>
+           
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label">Parámetros:</label>
+                    <select class="form-control" name="parametro" id="parametro" onchange="adicionarParametro(this.value)">
+                        <option value="" disabled selected>Seleccione una opcion</option>
+                        <option value="__NOMBRE_USUARIO_PQRS">Nombre Usuario PQRS</option>
+                        <option value="__TIPO_SOLICITUD">Tipo Solicitud PQRS</option>
+                        <option value="_TEATRO">Teatro</option>
+                        <option value="__FECHA_SUCESO">Fecha Suceso PQRS</option>
+                        <option value="__DESCRIPCION">Descripción PQRS</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-11">
+                    <div id="demo-mail-compose" class="demo-mail-compose"></div>
+                </div>
+            </div>
+
+            <div class="note-editor note-frame panel panel-default">
+
+            </div>
+            <div class="row ">
+                <div class="col-md-11">
+                    @if (Model.RowID == 0)
+                    {
+                        <input class="btn btn-success" id="guardar" name="guardar" style="float: right" value="Guardar" onclick="javascript:GuardarFormatoCorreo()">
+                    }
+                    else
+                    {
+                        <input class="btn btn-success" id="actualizar" name="actualizar" style="float: right" value="Actualizar" onclick="javascript:GuardarFormatoCorreo()">
+                    }
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+<script>
+    function GuardarFormatoCorreo() {
+        debugger
+        var validator = $("#formCorreo").validate();
+        var Plantilla = $(".note-editable").text();
+        if (Plantilla == null || Plantilla == "") {
+            Alerts("Complete los campos requeridos", "warning");
+            $(".note-editable").css("border", "1px solid #B71C1C");
+            return;
+        } 
+        if (validator.form()) {
+           
+            var TextoPlantilla = $(".note-editable").html();
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/GuardarFormatoCorreo/",
+                data: {
+                    formulario: $("#formCorreo").serialize(),
+                    TextoPlantilla: TextoPlantilla,
+                },
+                success: function (data) {
+                    debugger
+                    swal("OK", data, "success");
+                    window.location = "/Maestro/VistaPlantillasCorreo";
+                },
+                error: function (request) {
+                    debugger
+                    swal("", "Error Guardando información", "error");
+                }
+            });
+        }
+        else{
+            Alerts("Complete los campos requeridos", "warning");
+
+        }
+    }
+
+</script>
+<script>
+    $(document).ready(function () {
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+
+        var rowid = @Model.RowID;
+            $(".note-editable").prepend($("#CuerpoPlantilla").text());
+        ModalProcesandoShow();
+        $.ajax({
+            type: "POST",
+            url: "/Maestro/CargarPlantillaCorreos",
+            data: {
+                RowidPlantilla: rowid
+            },
+            success: function (data) {
+                ModalProcesandoHiden();
+                $(".note-editable").prepend(data);
+            },
+            error: function (data) {
+                ModalProcesandoHiden();
+                Alerts("Error al cargar la información.", "danger");
+            }
+        });
+    });
+</script>

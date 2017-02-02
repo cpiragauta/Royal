@@ -4,9 +4,9 @@
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
 <p>
-    <a class="btn btn-success" href='@Url.Action("ClienteRoyal", "CRM")'>Vista</a>
+    <a class="btn btn-success" href='@Url.Action("ClienteRoyal", "CRM")'>Vista Clientes Royal</a>
 </p>
-
+<div id="Dialog"></div>
 <div class="panel">
     <div class="panel-heading">
         <h3 class="panel-title">Cliente Royal</h3>
@@ -33,11 +33,18 @@
                 <div class="col-sm-4">
                     <div class="form-group" name="TipoID" id="tipoID">
                         <label class="control-label">*Tipo Identificaci&oacute;n:</label>
-                        <select name="tipo_identificacion" id="tipo_identificacion" class="form-control" required>
+                        <select name="TipoIdentificacionID" id="TipoIdentificacionID" class="form-control" required>
                             <option value="" disabled selected>Seleccione una opcion</option>
                             @foreach (var Tipo_Id in (List<CinemaPOS.Models.Opcion>)ViewBag.TipoIdentificacion)
                             {
-                                <option value="@Tipo_Id.RowID">@Tipo_Id.Nombre</option>
+                                if (Model.TipoIdentificacionID == Tipo_Id.RowID)
+                                {
+                                    <option value="@Tipo_Id.RowID" selected>@Tipo_Id.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@Tipo_Id.RowID">@Tipo_Id.Nombre</option>
+                                }
                             }
                         </select>
                     </div>
@@ -162,6 +169,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
+                        <input type="hidden" name="HabeasValidate" value="" id="HabeasValidate"/>
                         <label for="RECIBIRINFORMACION" class="control-label">*Recibir Informaci&oacute;n:</label>
                         <input type="checkbox" name="RecibirInformacion" value="@Model.RecibirInformacion" id="checkInfo" required/>
                     </div>
@@ -186,21 +194,29 @@
         jQuery("#tipo_identificacion").chosen({ width: "95%;" });
 
         $('#FechaNacimiento').datepicker({
-            format: "dd/mm/yyyy",
+            format: "dd-mm-yyyy",
             todayBtn: "linked",
             autoclose: true,
-            todayHighlight: false,
-            endDate:"-14y"
+            todayHighlight: false
         });
-        jQuery.validator.messages.required = 'Este campo es obligatorio.';
-        jQuery.validator.messages.mail = 'Ingrese un correo valido.';
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+        jQuery.validator.messages.mail = '*Ingrese un correo valido.';
         $.validator.setDefaults({ ignore: ":hidden:not(select)" });
         debugger
         if ('@Model.RecibirInformacion' == 'True') {
             $('.switchery').trigger('click');
         }
     });
+    $(document).on("change", 'input[type=checkbox]', function () {
+        if ($('#checkInfo').is(':checked')) {
+            ModalProcesandoShow();
+            var urlWithCont = '../CRM/ModalHabeasData';
+            $("#Dialog")
+            .load(urlWithCont.trim())
+            .dialog('open');
+        }
 
+    });
 </script>
 
 <!--GUARDAR CLIENTE-->
@@ -221,7 +237,7 @@
                     
                     if (data.respuesta == "ok") {
                         swal("Datos almecenados correctamente.","", "success");
-                        window.location = "/CRM/ClienteRoyal"
+                        window.location = "/CRM/ClienteRoyal";
                         return;
                     } else {
                         swal("ERROR", data.respuesta, "error");
@@ -233,6 +249,11 @@
                     swal("ERROR", data.respuesta, "error");
                 }
             });
+        } else {
+            ModalProcesandoHiden();
         }
     }
+</script>
+<script>
+
 </script>

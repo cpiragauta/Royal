@@ -36,6 +36,8 @@ namespace CinemaPOS.Models
         public Nullable<System.DateTime> FechaInicial { get; set; }
         public Nullable<System.DateTime> FechaFinal { get; set; }
         public Nullable<int> TipoTaquillaID { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
         public virtual Estado Estado { get; set; }
         public virtual Opcion Opcion { get; set; }

@@ -28,7 +28,6 @@
 
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th></th>
@@ -38,7 +37,6 @@
                 @foreach (CinemaPOS.Models.Pais lista_pais in ViewBag.Pais)
                 {
                     <tr>
-                        <td>@lista_pais.RowID</td>
                         <td>@lista_pais.Nombre</td>
                         <td>@lista_pais.Descripcion</td>
                         <td><a href="@Url.Action("Pais", "Maestro", new { RowID_Lista = lista_pais.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>

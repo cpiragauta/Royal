@@ -47,7 +47,6 @@ namespace CinemaPOS.Models
         public virtual DbSet<Plantillas> Plantillas { get; set; }
         public virtual DbSet<SalaObjeto> SalaObjeto { get; set; }
         public virtual DbSet<Sello_Distribuidor> Sello_Distribuidor { get; set; }
-        public virtual DbSet<Teatro> Teatro { get; set; }
         public virtual DbSet<Tercero> Tercero { get; set; }
         public virtual DbSet<Tipo> Tipo { get; set; }
         public virtual DbSet<TipoEstado> TipoEstado { get; set; }
@@ -63,7 +62,6 @@ namespace CinemaPOS.Models
         public virtual DbSet<Menu> Menu { get; set; }
         public virtual DbSet<RolMenu> RolMenu { get; set; }
         public virtual DbSet<TipoMenu> TipoMenu { get; set; }
-        public virtual DbSet<UsuarioSistema> UsuarioSistema { get; set; }
         public virtual DbSet<EvidenciaPqrs> EvidenciaPqrs { get; set; }
         public virtual DbSet<Pqrs> Pqrs { get; set; }
         public virtual DbSet<SeguientoEvidencia> SeguientoEvidencia { get; set; }
@@ -71,12 +69,9 @@ namespace CinemaPOS.Models
         public virtual DbSet<EncabezadoProgramacion> EncabezadoProgramacion { get; set; }
         public virtual DbSet<Funcion> Funcion { get; set; }
         public virtual DbSet<ListaPrecioFuncion> ListaPrecioFuncion { get; set; }
-        public virtual DbSet<SincronizacionMaestros> SincronizacionMaestros { get; set; }
         public virtual DbSet<ListaDetalle> ListaDetalle { get; set; }
         public virtual DbSet<ListaEncabezado> ListaEncabezado { get; set; }
-        public virtual DbSet<BoletaVendida> BoletaVendida { get; set; }
         public virtual DbSet<FormatoSala> FormatoSala { get; set; }
-        public virtual DbSet<MapaSala> MapaSala { get; set; }
         public virtual DbSet<Sala> Sala { get; set; }
         public virtual DbSet<ServicioSala> ServicioSala { get; set; }
         public virtual DbSet<DetalleVentaEmpresarial> DetalleVentaEmpresarial { get; set; }
@@ -84,9 +79,21 @@ namespace CinemaPOS.Models
         public virtual DbSet<TeatroVentaEmpresarial> TeatroVentaEmpresarial { get; set; }
         public virtual DbSet<Funciones> Funciones { get; set; }
         public virtual DbSet<Taquilla> Taquilla { get; set; }
-        public virtual DbSet<OportunidadVenta> OportunidadVenta { get; set; }
         public virtual DbSet<Seguimiento> Seguimiento { get; set; }
         public virtual DbSet<Rol> Rol { get; set; }
+        public virtual DbSet<HistoricolLog> HistoricolLog { get; set; }
+        public virtual DbSet<OportunidadVenta> OportunidadVenta { get; set; }
+        public virtual DbSet<Teatro> Teatro { get; set; }
+        public virtual DbSet<UsuarioSistema> UsuarioSistema { get; set; }
+        public virtual DbSet<BoletaVendida> BoletaVendida { get; set; }
+        public virtual DbSet<MapaSala> MapaSala { get; set; }
+        public virtual DbSet<BoletasVendidas> BoletasVendidas { get; set; }
+        public virtual DbSet<ControlIngreso> ControlIngreso { get; set; }
+        public virtual DbSet<ControlCajaUsuarioEntrega> ControlCajaUsuarioEntrega { get; set; }
+        public virtual DbSet<ControlCajaUsuarioRecibe> ControlCajaUsuarioRecibe { get; set; }
+        public virtual DbSet<VistaCierreCaja> VistaCierreCaja { get; set; }
+        public virtual DbSet<FuncionesTvShow> FuncionesTvShow { get; set; }
+        public virtual DbSet<SillaBloqueo> SillaBloqueo { get; set; }
     
         public virtual int Eliminar_sillas_sala(Nullable<int> rowIDSala)
         {
@@ -207,6 +214,25 @@ namespace CinemaPOS.Models
                 new ObjectParameter("RowIDSala", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Eliminar_Sillas_Sala_sp", rowIDSalaParameter);
+        }
+    
+        public virtual ObjectResult<ValoreCierreCaja_Result> ValoreCierreCaja()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ValoreCierreCaja_Result>("ValoreCierreCaja");
+        }
+    
+        public virtual ObjectResult<BloqueoSillas_Result> BloqueoSillas()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BloqueoSillas_Result>("BloqueoSillas");
+        }
+    
+        public virtual ObjectResult<VerMapaVenta_Result> VerMapaVenta(Nullable<int> funcion)
+        {
+            var funcionParameter = funcion.HasValue ?
+                new ObjectParameter("funcion", funcion) :
+                new ObjectParameter("funcion", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VerMapaVenta_Result>("VerMapaVenta", funcionParameter);
         }
     }
 }

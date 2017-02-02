@@ -1,0 +1,107 @@
+﻿@model CinemaPOS.Models.EncabezadoProgramacion
+@{
+    Layout = null;
+}
+
+
+<!--Demo script [ DEMONSTRATION ]-->
+<script src="~/Content/js/demo/nifty-demo.min.js"></script>
+<!--Bootbox Modals [ OPTIONAL ]-->
+<script src="~/Content/plugins/bootbox/bootbox.min.js"></script>
+<!--Modals [ SAMPLE ]-->
+<script src="~/Content/js/demo/ui-modals.js"></script>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#myModal1").modal(); //Para Mostrar el modal
+        ModalProcesandoHiden();
+        $(".table").DataTable();
+    });
+
+    function ReplicarFuncionesxDia() {
+        ModalProcesandoShow();
+        $.ajax({
+            //async: false,
+            type: "POST",
+            url: "/Programacion/ReplicarFuncionesxDia",
+            data: {
+                RowID_Programacion: $("#RowID_Programacion").val(),
+                FechaReplicar : $("#FechaReplicar").val(),
+                formulario: $("#formulario_replicar").serialize(),
+            },
+            success: function (data) {                
+                ModalProcesandoHiden();
+                if (data.tipoMensaje == "success") {
+                    $('#myModal1').modal('hide');
+                }
+                Alerts(data.Respuesta, data.tipoMensaje);
+            },
+            error: function (data) {
+                ModalProcesandoHiden();
+                $('#myModal1').modal('toggle');
+                Alerts("Error", "danger");
+            }
+        });
+    }
+
+</script>
+
+
+<div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="false" style="overflow: hidden;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <i class="pci-cross pci-circle"></i>
+                </button>
+                @{System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");}
+
+                <h3 class="modal-title title">
+                    Replicar Funciones por Día @(((DateTime)ViewBag.FechaReplicar).ToString("dd/MM/yyyy")) - @Model.Titulo
+
+                </h3>
+
+
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <input type="hidden" id="RowID_Programacion" name="RowID_Programacion" value="@Model.RowID" />
+                    <input type="hidden" id="FechaReplicar" name="FechaReplicar" value="@(((DateTime)ViewBag.FechaReplicar).ToString("dd/MM/yyyy"))" />
+                    <form id="formulario_replicar">
+                        <div class="fixed-table-body">
+                            <table class="table table-hover table-responsive table-bordered table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Día</th>
+                                        <th>Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in (List<DateTime>)ViewBag.FechasFunciones)
+                                    {
+                                        <tr>
+                                            <td><input type="checkbox" name="@item.ToShortDateString()" value="@item.ToShortDateString()" id="@item.ToShortDateString()" checked data-rowid="@item.ToShortDateString()" /></td>
+                                            <td>@item.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.ToLongDateString()</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button data-bb-handler="confirm" type="button" class="btn btn-success" onclick="ReplicarFuncionesxDia()" >Replicar funciones</button>
+                <button data-bb-handler="cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

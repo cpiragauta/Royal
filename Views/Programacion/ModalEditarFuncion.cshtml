@@ -15,8 +15,7 @@
 <script>
     $(document).ready(function () {
         $("#myModal1").modal(); //Para Mostrar el modal
-
-
+        ModalProcesandoHiden();
         $('#demo-dp-range .input-daterange').datepicker({
             format: "dd/mm/yyyy",
             todayBtn: "linked",
@@ -49,14 +48,18 @@
 
     function EliminarFuncion(RowID_Funcion) {
         $.ajax({
+            //async: false,
             type: "POST",
             url: "/Programacion/EliminarFuncion",
             data: {
                 RowID_Funcion: RowID_Funcion,
             },
             success: function (data) {
-                $('#myModal1').modal('toggle');
-                Alerts("Eliminado Correctamente", "success") ;
+                debugger;
+                if(data.tipoMensaje == "success"){
+                    $('#myModal1').modal('hide');
+                }
+                Alerts(data.Respuesta, data.tipoMensaje) ;
             },
             error: function (data) {
                 $('#myModal1').modal('toggle');
@@ -67,7 +70,6 @@
 
 
     function AsignarListaPrecioFuncion() {
-        debugger
         var asd = $("#ListaPreciosDisponibles option:selected").val();
         $.ajax({
             type: "POST",

@@ -159,6 +159,9 @@
             textarea {
                 resize: none;
             }
+            #floating-top-right {
+                z-index: 999999999;
+            }
         </style>
         <script>
             function ValidaPOS(){
@@ -476,7 +479,7 @@
                                         <!--<img class="img-circle img-user media-object" src="~/Content/img/profile-photos/1.png" alt="Profile Picture">-->
                                         <i class="demo-pli-male ic-user"></i>
                                     </span>
-                                    <div class="username hidden-xs">@(((UsuarioSistema)(Session["usuario"])).Nombre + " " + ((UsuarioSistema)(Session["usuario"])).Apellido )</div>
+                                    <div class="username hidden-xs">@(((UsuarioSistema)(Session["usuario"])).Nombre + " " + ((UsuarioSistema)(Session["usuario"])).Apellido + " - "+((UsuarioSistema)(Session["usuario"])).Teatro.Nombre)</div>
 
                                 </a>
 
@@ -581,7 +584,7 @@
                 <!--END CONTENT CONTAINER-->
                 <!--ASIDE-->
                 <!--===================================================-->
-                <aside id="aside-container">
+                @*<aside id="aside-container">
                     <div id="aside">
                         <div class="nano">
                             <div class="nano-content">
@@ -844,7 +847,7 @@
                             </div>
                         </div>
                     </div>
-                </aside>
+                </aside>*@
                 <!--===================================================-->
                 <!--END ASIDE-->
                 <!--MAIN NAVIGATION-->
@@ -860,9 +863,9 @@
                                     <!--================================-->
                                     <div id="mainnav-profile" class="mainnav-profile">
                                         <div class="profile-wrap">
-                                            <div class="pad-btm">
+                                            <div class="pad-btm text-center">
                                                 @* <span class="label label-success pull-right">New</span>*@
-                                                <img class="img-circle pad-no img-sm img-border" src="/@Session["ruta_foto"]" alt="Foto del empleado" style="width:50px;height:50px;">
+                                                <img class="pad-no img-sm img-border" src="/@Session["ruta_foto"]" alt="Foto del empleado" style="height:40%;">
                                             </div>
                                             <a href="#profile-nav" class="box-block" data-toggle="collapse" aria-expanded="false">
                                                 <span class="pull-right dropdown-toggle">
@@ -1483,5 +1486,44 @@
             $(this).attr('src', '/Repositorio_Imagenes/Imagenes_Generales/nodisponible.png');
         });
     });
+
+    function ValidarImagen(obj,widht,height,size) {
+        var uploadFile = obj.files[0];
+        var ruta = $(".fileupload-new").find("img").attr("src");
+        if (ruta==null) {
+            ruta = $(".zoom").find("img").attr("src");
+        }
+        console.log(ruta);
+        if (!window.FileReader) {
+            alert('El navegador no soporta la lectura de archivos');
+            return;
+        }
+
+        if (!(/\.(jpg|png|gif)$/i).test(uploadFile.name)) {
+            alert('El archivo a adjuntar no es una imagen');
+        }
+        else {
+            var img = new Image();
+            img.onload = function () {
+                if (this.width.toFixed(0) >= widht && this.height.toFixed(0) >= height) {
+                    Alerts("Las medidas deben ser: " + widht + " * " + height + "", "warning")
+                    $(this).attr({ value: '' });
+                    $(".zoom").find("img").attr({ src: ruta });
+                }
+                else if (uploadFile.size > size) {
+                    Alerts('El peso de la imagen no puede exceder los ' + size + '')
+                    $(this).attr({ value: '' });
+                    $(".zoom").find("img").attr({ src: ruta });
+                }
+                if (uploadFile.size > size) {
+                    Alerts('El peso de la imagen no puede exceder los ' + size + '')
+                    $(this).attr({ value: '' });
+                    $(".zoom").find("img").attr({ src: ruta });
+                }
+                
+            };
+            img.src = URL.createObjectURL(uploadFile);
+        }
+    }
 
 </script>

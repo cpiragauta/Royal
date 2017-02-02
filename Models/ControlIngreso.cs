@@ -12,15 +12,18 @@ namespace CinemaPOS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class SincronizacionMaestros
+    public partial class ControlIngreso
     {
+        public ControlIngreso()
+        {
+            this.BoletaVendida = new HashSet<BoletaVendida>();
+        }
+    
         public int RowID { get; set; }
-        public int RowIDCentral { get; set; }
-        public string EntidadCentral { get; set; }
-        public int RowIDLocal { get; set; }
-        public string EntidadLocal { get; set; }
-        public string SincronizadoPor { get; set; }
-        public System.DateTime FechaSincronizacion { get; set; }
-        public string Descripcion { get; set; }
+        public double Efectivo { get; set; }
+        public double Total { get; set; }
+        public double Cambio { get; set; }
+    
+        public virtual ICollection<BoletaVendida> BoletaVendida { get; set; }
     }
 }

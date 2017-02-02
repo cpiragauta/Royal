@@ -1,39 +1,10 @@
 ﻿@model CinemaPOS.Models.UsuarioSistema
-
 @{
     ViewBag.Title = "Crear Usuario Sistema";
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
 
 <script>
-    //function guardar_UsuarioSistema() {
-    //    debugger;
-    //    var validator = $("#formulario_UsuarioSistema").validate();
-    //    if (validator.form()) {
-
-    //        $.ajax({
-    //            type: "POST",
-    //            url: "/UsuarioRol/GuardarUsuarioSistema",
-    //            data: {
-    //                RowID_UsuarioSistema: $("#row_id").val(),
-    //                formulario: $("#formulario_UsuarioSistema").serialize(),
-    //                afiche:$("#foto").val()
-    //            },
-    //            success: function (data) {
-    //                if (data == "Existe") {
-    //                    Alerts("El nombre de usuario, ya existe!!!", "warning");
-    //                } else {
-    //                    Alerts("Usuario guardado con exito!!!", "success");
-    //                    window.location = "/UsuarioRol/VistaUsuarioSistema/"
-    //                }
-    //                             },
-    //            error: function (data) {
-    //                swal("ERROR", data, "error");
-    //            }
-    //        });
-    //    }
-    //}
-
     function valida_formulario() {
         hasChangue = false;
         var validator = $("#formulario_UsuarioSistema").validate();
@@ -41,6 +12,14 @@
             enviar_formulario();
         }
     }
+
+    $(document).ready(function () {
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+
+     });
+
+
     function enviar_formulario() {
         debugger;
         $("#formulario_UsuarioSistema").on("submit", function (e) {
@@ -126,8 +105,8 @@
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label class="control-label">Teatro:</label>
-                            <select name="teatro" id="teatro" class="chosen form-control">
+                            <label class="control-label">Teatro*:</label>
+                            <select name="teatro" id="teatro" class="chosen form-control" required>
                                 <option value="" disabled selected>Seleccione una opción</option>
                                 @foreach (CinemaPOS.Models.Teatro item in ViewBag.Teatros)
                                 {
@@ -143,8 +122,6 @@
                             </select>
                         </div>
                     </div>
-                    
-
                 </div>
                 <div class="row">
                     <div class="col-sm-4">
@@ -205,7 +182,7 @@
                                     <span class="btn btn-file">
                                         <span class="fileupload-new">Selecccionar imagen</span>
                                         <span class="fileupload-exists">Cambiar</span>
-                                        <input type="file" accept="image/jpeg,image/png,image/gif" id="foto_empleado"  class="default" name="foto_empleado">
+                                        <input type="file" accept="image/jpeg,image/png,image/gif" id="foto_empleado" onchange="ValidarImagen(this,400,400,130000)"  class="default" name="foto_empleado">
                                     </span>
                                 </div>
                             </div>
@@ -222,15 +199,28 @@
 
             </div>
             <div class="panel-footer text-right">
-                @*<a class="btn btn-success" href="javascript:guardar_tercero();">Crear Tercero</a>*@
-                @if (Model.RowID == 0)
+
+                @if (Session["Usuario"] != null)
                 {
-                    <input class="btn btn-success" type="submit" value="Crear Usuario" onclick="javascript:valida_formulario()">
+                    CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                    if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                    {
+                        if (Model.RowID == 0)
+                        {
+                            <input class="btn btn-success" type="submit" value="Crear Usuario" onclick="javascript:valida_formulario()">
+                        }
+                        else
+                        {
+                            <input class="btn btn-success" type="submit" value="Actualizar Usuario" onclick="javascript:valida_formulario()">
+                        }
+                    }
+                    else
+                    {
+                        <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Guardar">
+                    }
                 }
-                else
-                {
-                    <input class="btn btn-success" type="submit" value="Actualizar Usuario" onclick="javascript:valida_formulario()">
-                }
+
+
             </div>
         </form>
 

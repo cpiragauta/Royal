@@ -27,7 +27,7 @@
 </style>
 <p>
     <a class="btn btn-success" href='@Url.Action("UsuarioSistema", "UsuarioRol")'>Crear Usuario</a>
-    <a class="text-right btn btn-success" href='@Url.Action("VistaRolesSistema", "UsuarioRol")'>Roles - Permisos</a>
+    <a class="text-right btn btn-success" href='@Url.Action("VistaRolesSistema", "UsuarioRol")'>Vista Roles - Permisos</a>
 </p>
 
 <div class="panel">
@@ -42,22 +42,27 @@
                     <th>Nombre Usuario</th>
                     <th>Nombres</th>
                     <th>Rol</th>
+                    <th>Teatro</th>
                     <th>Activo</th>
-                    <th class="ion-ios-loop-strong center"></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (CinemaPOS.Models.UsuarioSistema Usuario in ViewBag.Usuarios)
                 {
-                    String Color = Usuario.Sincronizado == true ? "Verde" : "Rojo";
                     <tr>
                         <td>@Usuario.RowID</td>
                         <td>@Usuario.NombreUsuario</td>
                         <td>@Usuario.Nombre @Usuario.Apellido</td>
                         <td>@Usuario.Rol.Nombre</td>
+                        <td>
+                            @if (Usuario.Teatro != null)
+                            {
+                                @Usuario.Teatro.Nombre
+
+                            }
+                        </td>
                         <td>@Usuario.Activo</td>
-                        <td class="@Color"></td>
                         <td>
                             <a href="@Url.Action("UsuarioSistema", "UsuarioRol", new { @RowID_UsuarioSistema = Usuario.RowID })"><i class="glyphicon glyphicon-pencil"> </i></a>
                         </td>

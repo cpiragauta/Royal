@@ -1,0 +1,44 @@
+﻿@media (min-width: 768px){
+    .col-sm-12 {
+        width: 100%;
+        margin-left: 23px!important;
+    }
+    .control-izquierdo{
+        margin-left: -15px;
+    }
+    .control-derecho{
+        margin-right: -13px;
+    }
+    .carousel-control i {
+        position: relative;
+        top: .25em;
+        font-size: 66px;
+    }
+    .panel-tarifa-funcion{
+        padding-left: 0px!important;
+    }    
+}
+@media (min-width: 1920px){
+    .col-sm-12 {
+        width: 110%;
+        margin-left: 20px!important;
+    }
+    .control-izquierdo{
+        margin-left: -22px!important;
+    }
+    .control-derecho{
+        margin-right: -20px;
+    }
+    .carousel-control i {
+        position: relative;
+        top: .25em;
+        font-size: 66px;
+    }
+
+}
+@page{
+   margin: 0;
+}
+.media:first-child {
+    margin-top: 15px!important;
+}

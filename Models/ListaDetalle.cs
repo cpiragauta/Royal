@@ -17,8 +17,8 @@ namespace CinemaPOS.Models
         public ListaDetalle()
         {
             this.ListaPrecioFuncion = new HashSet<ListaPrecioFuncion>();
-            this.BoletaVendida = new HashSet<BoletaVendida>();
             this.DetalleVentaEmpresarial = new HashSet<DetalleVentaEmpresarial>();
+            this.BoletaVendida = new HashSet<BoletaVendida>();
         }
     
         public int RowID { get; set; }
@@ -41,14 +41,16 @@ namespace CinemaPOS.Models
         public string Nombre { get; set; }
         public Nullable<int> TipoServicioID { get; set; }
         public Nullable<int> TipoListaDetalle { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
         public virtual Estado Estado { get; set; }
         public virtual Opcion Opcion { get; set; }
         public virtual Opcion Opcion1 { get; set; }
         public virtual Opcion Opcion2 { get; set; }
         public virtual ICollection<ListaPrecioFuncion> ListaPrecioFuncion { get; set; }
-        public virtual ICollection<BoletaVendida> BoletaVendida { get; set; }
         public virtual ICollection<DetalleVentaEmpresarial> DetalleVentaEmpresarial { get; set; }
         public virtual ListaEncabezado ListaEncabezado { get; set; }
+        public virtual ICollection<BoletaVendida> BoletaVendida { get; set; }
     }
 }

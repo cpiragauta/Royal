@@ -5,81 +5,142 @@
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
 
-<head>
-    <!--jQuery [ REQUIRED ]-->
-    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
-    <!--DataTables [ OPTIONAL ]-->
-    <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
-    <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
-    <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
-    <!--DataTables Sample [ SAMPLE ]-->
-    <script src="~/Content/js/demo/tables-datatables.js"></script>
-</head>
+
+<script src="~/Content/js/jquery-2.2.4.min.js"></script>
+
+<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+
+<script src="~/Content/js/jquery.dataTables.min1.10.10.js"></script>
+<link href="~/Content/Tables.min.css" rel="stylesheet" />
+<link href="~/Content/js/JqueryDataRables/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+<link href="~/Content/css/EstiloTablasFiltros.css" rel="stylesheet" />
+
 <p>
     <a class="btn btn-success" href='@Url.Action("Pelicula", "Pelicula")'>Crear Película</a>
 </p>
-    <div class="panel">
-        <div class="panel-heading">
-            <h3 class="panel-title">Lista Películas</h3>
-        </div>
-        <div class="panel-body">
-            <table id="demo-dt-basic" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                <thead>
-                    <tr>
-                        <th>Titulo local</th>
-                        <th>Distribuidor</th>
-                        <th class="min-tablet">Estado</th>
-                        <th class="min-desktop">Fecha estreno</th>
-                        <th>Formato / Versión</th>
-                        <th>Género</th>
-                        <th>Poster</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (CinemaPOS.Models.EncabezadoPelicula peliculas in ViewBag.Peliculas)
-                    {
-                        <tr>
-                            <td>@peliculas.TituloLocal</td>
-                            <td>@peliculas.Tercero.Nombre</td>
-                            <td>@peliculas.Estado.Nombre</td>
-                            <td>@peliculas.FechaEstreno.Value.ToString("dd/MM/yyyy")</td>
-                            <td>
-                                <table>
-                                    @foreach (CinemaPOS.Models.DetallePelicula detalle_pelicula in peliculas.DetallePelicula)
-                                    {
-                                        <tr>
-                                            <td>@detalle_pelicula.Opcion.Nombre</td>
-                                            <td>@detalle_pelicula.Opcion1.Nombre</td>
-                                        </tr>
-                                    }
-                                </table>
-                            </td>
-                            <td>
-                                <table>
-                                    @foreach (CinemaPOS.Models.GeneroPelicula generos in peliculas.GeneroPelicula)
-                                    {
-                                        <tr>
-                                            <td>@generos.Opcion.Nombre</td>
-                                        </tr>
-                                    }
-                                </table>
-                            </td>
-                            <td>
-                                @if (peliculas.MedioPelicula.Count() != 0)
-                                {
-                                  if(@peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().Afiche != "") { 
-                                    <img style="width:50px;" src="/@peliculas.MedioPelicula.ToList().OrderByDescending(m => m.RowID).FirstOrDefault().Afiche">
-                                  }
-                                  else { 
-                                    <img style="width:50px;" src="~/Repositorio_Imagenes/Imagenes_Generales/imagen_nodisponible.png">
-                                  }
-                                }
-                            </td>
-                            <td><a href="@Url.Action("Pelicula", "Pelicula", new { @RowID_Pelicula =peliculas.RowID})"><i class="glyphicon glyphicon-pencil"></i></a></td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Lista Películas</h3>
     </div>
+    <div class="panel-body">
+        <table id="demo-dt-basic" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th style="width: 10px; display:none">ID</th>
+                    <th>Titulo local</th>
+                    <th>Distribuidor</th>
+                    <th class="min-tablet">Estado</th>
+                    <th class="min-desktop">Fecha estreno</th>
+                    <th>Género</th>
+                    <th>Formato / Versión</th>
+                    <th>Poster</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th style="display: none;padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="ID" placeholder="Buscar ID"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Titulo_local" placeholder="Buscar Titulo local"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Distribuidor" placeholder="Buscar Distribuidor"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Estado" placeholder="Buscar Estado"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Fecha_estreno" placeholder="Buscar Fecha estreno"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Genero" placeholder="Buscar Género"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"></th>
+                    <th></th>
+                </tr>
+            </tfoot>
+            <tbody>
+                @foreach (CinemaPOS.Models.EncabezadoPelicula peliculas in ViewBag.Peliculas)
+                {
+                    <tr>
+                        <td style="display: none;">@peliculas.RowID</td>
+                        <td>@peliculas.TituloLocal</td>
+                        <td>@peliculas.Tercero.Nombre</td>
+                        <td>@peliculas.Estado.Nombre</td>
+                        @if (peliculas.FechaEstreno!=null)
+                        {
+                            <td>@peliculas.FechaEstreno.Value.ToString("dd/MM/yyyy")</td>
+                        }
+                        else
+                        {
+                            <td>Sin fecha de estreno</td>
+                        }
+                        <td>
+                            <table>
+                                @foreach (CinemaPOS.Models.GeneroPelicula generos in peliculas.GeneroPelicula)
+                                {
+                                    <tr>
+                                        <td>@generos.Opcion.Nombre</td>
+                                    </tr>
+                                }
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                @foreach (CinemaPOS.Models.DetallePelicula detalle_pelicula in peliculas.DetallePelicula)
+                                {
+                                    <tr>
+                                        <td>@detalle_pelicula.Opcion.Nombre</td>
+                                        <td>@detalle_pelicula.Opcion1.Nombre</td>
+                                    </tr>
+                                }
+                            </table>
+                        </td>
+                      
+                        <td>
+                            <img style="width:50px;" src="/@peliculas.Afiche">
+                        </td>
+                        <td><a href="@Url.Action("Pelicula", "Pelicula", new { @RowID_Pelicula =peliculas.RowID})"><i class="glyphicon glyphicon-pencil"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var cont = 0;
+
+        var aoColumnDefsType = [
+           //{ "sType": "title-numeric", "aTargets": [3] },
+           //{ "sType": "title-numeric", "aTargets": [7] },
+           { "bSortable": false, "aTargets": [0] }//,
+           //{ "bSortable": false, "aTargets": [8] },
+           //{ "bSortable": false, "aTargets": [9] },
+           //{ "sClass": "center", "aTargets": [2, 3, 4, 5, 6, 7] }
+        ];
+
+        var table = $('#demo-dt-basic').DataTable({
+            "processing": true,
+            "bFilter": true,
+            "bPaginate": true,
+            "info": true,
+            "bDestroy": true,
+            aLengthMenu: [
+                [6],
+                [6]
+            ],
+            "iDisplayLength": 10,
+            "order": [[0, "desc"]],
+            "aoColumnDefs": aoColumnDefsType
+            //"aaSorting": [[2,'desc']]
+        });
+
+        // Apply the search
+        table.columns().every(function () {
+            var that = this;
+
+            $('input', this.footer()).on('keyup change', function () {
+                if (that.search() !== this.value) {
+                    that
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+    });
+</script>

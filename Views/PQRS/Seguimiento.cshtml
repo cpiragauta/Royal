@@ -4,120 +4,279 @@
     ViewBag.Title = "Seguimiento";
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
+<div>
+    <p>
+        <a class="btn btn-success" href="@Url.Action("VistaPQRS", "PQRS")">Vista PQRS</a>
+    </p>
+</div>
 <div class="panel">
     <div class="panel-heading">
-        <h3 class="panel-title">Seguimiento PQRS</h3>
-    </div>vb
+        <h3 class="panel-title">Información general de la PQRS</h3>
+    </div>
     <div class="panel-body">
-        <div class="col-lg-4">
-            <div class="panel-body text-center">
-                @if (Model.Seguimiento.Count() != 0)
-                {
-                    <p class="text-muted">Administrator</p>
-                    <p class="text-sm">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. </p>
-                    <button class="btn btn-primary mar-ver"><i class="demo-pli-male icon-fw"></i>Follow</button>
-                    <ul class="list-unstyled text-center bord-top pad-top mar-no row">
-                        <li class="col-xs-4">
-                            <span class="text-lg text-semibold text-main">1,345</span>
-                            <p class="text-muted mar-no">Fecha suceso</p>
-                        </li>
-                        <li class="col-xs-4">
-                            <span class="text-lg text-semibold text-main">23K</span>
-                            <p class="text-muted mar-no">Fecha Creación</p>
-                        </li>
-                        <li class="col-xs-4">
-                            <span class="text-lg text-semibold text-main">278</span>
-                            <p class="text-muted mar-no">Creado por</p>
-                        </li>
-                    </ul>
-                }
-                
-            </div>
-        </div>
-        <div class="panel">
-            <div class="panel-heading">
-                <h3 class="panel-title">Informacion de la PQRS</h3>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Datos del cliente</h3>
-                            </div>
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <label class="control-label">Nombre:  @Model.Tercero.Nombre</label> 
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="control-label">Identificacion:  @Model.Tercero.Identificacion</label>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <label class="control-label">Telefono:  @Model.Tercero.Telefono</label>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <label class="control-label">Ciudad:  @Model.Tercero.Ciudad.Nombre</label>
-                                        </div>
-                   
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <label class="control-label">Correo:  @Model.Tercero.Correo</label>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <label class="control-label">Fecha de nacimiento:  @Model.Tercero.FechaNacimiento.Value.ToString("dd/MM/yyyy")</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
+        <div class="row">
+            <div class="col-sm-10">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Datos del cliente</h3>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Informacion de la PQRS</h3>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="control-label text-overflow">Nombre:  @Model.Tercero.Nombre</label>
                             </div>
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label class="control-label">Titulo:  @Model.Titulo</label>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="control-label">Teatro:  @Model.Teatro.Nombre</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label class="control-label">Tipo solicitud:  @Model.TipoSolicitud.Nombre</label>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="control-label">Estado:  @Model.Estado.Nombre</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label class="control-label">Fecha creación:  @Model.FechaCreacion.Value.ToString("dd/MM/yyyy")</label>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="control-label">Fecha del suceso:  @Model.FechaSuceso.Value.ToString("dd/MM/yyyy")</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <p class="control-label">Descripción de la PQRS <br />@Model.Descripcion</p>
-                                    </div>
-                                </div>
-                                
+                            <div class="col-lg-6">
+                                <label class="control-label text-overflow">Identificacion:  @Model.Tercero.Identificacion</label>
                             </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label class="control-label text-overflow">Telefono:  @Model.Tercero.Telefono</label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="control-label text-overflow">Ciudad:  @Model.Tercero.Ciudad.Nombre</label>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label class="control-label text-overflow">Correo:  @Model.Tercero.Correo</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="control-label">Fecha de nacimiento:  @Model.Tercero.FechaNacimiento.Value.ToString("dd/MM/yyyy")</label>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                        
                     </div>
                 </div>
             </div>
         </div>
-        
+        <div class="panel-footer text-right">
+            @if (Session["Usuario"] != null)
+            {
+                CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                {
+                    <a onclick="javascript:EnviarCorreoRecepcion()" class="btn btn-success add-tooltip" data-toggle="tooltip" id="seguimiento" data-original-title="Enviará un correo a @Model.Tercero.Correo" style="cursor:pointer">Enviar Correo de Recepcion</a>
+                }
+                else
+                {
+                    <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Enviar Correo de Recepción">
+                }
+            }
+        </div>
 
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Descripción de la PQRS</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="control-label text-overflow">Titulo:  @Model.Titulo</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="control-label text-overflow">Teatro:  @Model.Teatro.Nombre</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="control-label text-overflow">Tipo solicitud:  @Model.TipoSolicitud.Nombre</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="control-label text-overflow">Estado:  @Model.Estado.Nombre</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="control-label text-overflow">Fecha creación:  @Model.FechaCreacion.Value.ToString("dd/MM/yyyy")</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="control-label text-overflow">Fecha del suceso:  @Model.FechaSuceso.Value.ToString("dd/MM/yyyy")</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="control-label text-overflow">Descripción de la PQRS: <br />@Model.Descripcion</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Seguimientos</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="formpqrsSeg" style="margin-top:10px">
+                        <input type="hidden" name="PQRS_ID" value="@Model.RowID" id="PQRS_ID" />
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="ACTUAL">*Área Actual:</label>
+                                <select name="AreaActualID" id="AreaActualID" required class="form-control">
+                                    <option value="" disabled selected> Seleccione una Lista de precios:</option>
+                                    @foreach (var item in (List<CinemaPOS.Models.Opcion>)ViewBag.CambioArea)
+                                    {
+                                        <option value="@item.RowID">@item.Nombre</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="AREA">*Área de traslado:</label>
+                                <select name="AreaAnteriorID" id="AreaAnteriorID" required class="form-control">
+                                    <option value="" disabled selected> Seleccione una Lista de precios:</option>
+                                    @foreach (var item in (List<CinemaPOS.Models.Opcion>)ViewBag.CambioArea)
+                                    {
+                                        <option value="@item.RowID">@item.Nombre</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="AREA">*Estado:</label>
+                                <select name="EstadoID" id="EstadoID" required class="form-control">
+                                    <option value="" disabled selected> Seleccione una Lista de precios:</option>
+                                    @foreach (var item in (List<CinemaPOS.Models.Estado>)ViewBag.Estados)
+                                    {
+                                        <option value="@item.RowID">@item.Nombre</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="OBSERVACIONES">Observaci&oacute;n:</label>
+                                <textarea name="Observaciones" id="Observaciones" class="form-control"></textarea>
+                            </div>
+                        </div>
+
+
+                    </form>
+                   </div>
+                <div class="panel-footer text-right">
+                    @if (Session["Usuario"] != null)
+                    {
+                        CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                        if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                        {
+                            <a onclick="javascript:GuardarSeguimiento()" class="btn btn-success" id="seguimiento" style="cursor:pointer">Guardar Seguimiento</a>
+                        }
+                        else
+                        {
+                            <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Guardar Seguimiento">
+                        }
+                    }
+                </div>
+
+                <div class="panel-body">
+
+
+
+                    @if (Model.Seguimiento.Count() != 0)
+                    {
+                        <table id="demo-dt-basic" class="table table-striped table-bordered listaSeguimiento" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Área actual</th>
+                                    <th>Área de traslado</th>
+                                    <th>Estado</th>
+                                    <th>Observación</th>
+                                    <th>Creado por</th>
+                                </tr>
+                            </thead>
+                            @foreach (CinemaPOS.Models.Seguimiento seguimiento in Model.Seguimiento.ToList())
+                            {
+                                <tr>
+                                    <td>@seguimiento.Opcion.Nombre</td>
+                                    <td>@seguimiento.Opcion1.Nombre</td>
+                                    <td>@seguimiento.Estado.Nombre</td>
+                                    <td>@seguimiento.Observaciones</td>
+                                    <td>@seguimiento.CreadoPor</td>
+                                </tr>
+                            }
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+    function GuardarSeguimiento() {
+        var validator = $("#formpqrsSeg").validate();
+        if (validator.form()) {
+            ModalProcesandoShow();
+            $.ajax({
+                type: "POST",
+                url: "/PQRS/GuardarSeguimiento",
+                data: {
+                    formulario: $("#formpqrsSeg").serialize(),
+                },
+                success: function (data) {
+                    if (data == "error") {
+                        ModalProcesandoHiden();
+                        Alerts("Error al guardar los datos.", "danger");
+                    } else {
+                        ModalProcesandoHiden();
+                        Alerts("Datos Guardados Correctamente.", "success");
+                        CargarListaSeguimiento();
+                    }
+                },
+                error: function (request) {
+                    ModalProcesandoHiden();
+                    hasChangue = true;
+                }
+            });
+        }
+    }
+
+    function EnviarCorreoRecepcion() {
+        $.ajax({
+            type: "POST",
+            url: "/PQRS/EnviarCorreoRecepcion",
+            data: {
+                PQRS_ID: $("#PQRS_ID").val(),
+            },
+            success: function (data) {
+                Alerts("Correo enviado correctamente.", "success");
+            },
+            error: function (request) {
+            }
+        });
+    }
+
+    function CargarListaSeguimiento() {
+            $.ajax({
+                type: "POST",
+                url: "/PQRS/CargarListaSeguimiento",
+                data: {
+                    PQRS_ID: $("#PQRS_ID").val(),
+                },
+                success: function (data) {
+                    jQuery(".listaSeguimiento > tbody").empty().append(data);
+                },
+                error: function (request) {
+                }
+            });
+    }
+
+    $(document).ready(function () {
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+
+    });
+</script>

@@ -25,6 +25,7 @@
 </style>
 <p>
     <a class="btn btn-success" href='@Url.Action("RolesSistema", "UsuarioRol")'>Crear Rol</a>
+    <a class="btn btn-success" href='@Url.Action("VistaUsuarioSistema", "UsuarioRol")'>Vista Usuarios</a>
 
 </p>
 <div class="panel">
@@ -40,7 +41,6 @@
                     <th>ID</th>
                     <th>Rol</th>
                     <th>Creado Por</th>
-                    <th class="ion-ios-loop-strong center"></th>
                     <th></th>
                 </tr>
             </thead>
@@ -52,7 +52,6 @@
                         <td>@item.RowID</td>
                         <td>@item.Nombre</td>
                         <td>@item.CreadoPor</td>
-                        <td class="@Color"></td>
                         <td>
                             <a href="@Url.Action("RolesSistema", "UsuarioRol", new { @RowID_Roles = item.RowID })"><i class="glyphicon glyphicon-pencil"> </i></a>
                         </td>

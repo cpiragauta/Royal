@@ -1,0 +1,182 @@
+﻿@model CinemaPOS.Models.EncabezadoProgramacion
+@{
+    Layout = null;
+}
+
+
+<!--Demo script [ DEMONSTRATION ]-->
+<script src="~/Content/js/demo/nifty-demo.min.js"></script>
+<!--Bootbox Modals [ OPTIONAL ]-->
+<script src="~/Content/plugins/bootbox/bootbox.min.js"></script>
+<!--Modals [ SAMPLE ]-->
+<script src="~/Content/js/demo/ui-modals.js"></script>
+
+
+<style>
+    .bootstrap-timepicker-widget {
+        z-index: 999999999;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $("#myModal1").modal(); //Para Mostrar el modal
+        ModalProcesandoHiden();
+
+        jQuery(".hora_inicial, .hora_final").timepicker({ minuteStep: 1, showInputs: true, disableFocus: false, autoclose: true, showMeridian: false });
+
+        jQuery(".SalaChosen").chosen({ width: " 100%;" });
+        jQuery(".PeliculaChosen").chosen({ width: " 100%;" });
+        $('.fechaEliminar').datepicker({
+            format: "dd/mm/yyyy",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: false
+        });
+
+    });
+
+    $(".fechaEliminar").blur(function () {
+        $(".bootstrap-timepicker-widget").remove();
+    }
+    );
+
+    function EliminarFuncionesMasivo() {
+        $.ajax({
+            //async: false,
+            type: "POST",
+            url: "/Programacion/EliminarFuncionesMasivo",
+            data: {
+                RowID_Programacion: $("#RowID_Programacion").val(),
+                formulario: $("#formulario_eliminar").serialize(),
+            },
+            success: function (data) {
+                debugger;
+                if (data.tipoMensaje == "success") {
+                    $('#myModal1').modal('hide');
+                }
+                Alerts(data.Respuesta, data.tipoMensaje);
+            },
+            error: function (data) {
+                $('#myModal1').modal('toggle');
+                Alerts("Error", "danger");
+            }
+        });
+    }
+
+    function EliminarTodasFunciones() {
+        $.ajax({
+            //async: false,
+            type: "POST",
+            url: "/Programacion/EliminarTodasFunciones",
+            data: {
+                RowID_Programacion: $("#RowID_Programacion").val(),
+            },
+            success: function (data) {
+                debugger;
+                if (data.tipoMensaje == "success") {
+                    $('#myModal1').modal('hide');
+                }
+                Alerts(data.Respuesta, data.tipoMensaje);
+            },
+            error: function (data) {
+                $('#myModal1').modal('toggle');
+                Alerts("Error", "danger");
+            }
+        });
+    }
+
+
+</script>
+
+
+<div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="false" style="overflow: hidden;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                    @{System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");}
+
+                    <h3 class="modal-title title">
+                        Eliminar Funciones Masivamente  - @Model.Titulo
+
+                    </h3>
+                    <button data-bb-handler="confirm" type="button" class="btn btn-danger-basic add-tooltip" onclick="EliminarTodasFunciones()" data-toggle="tooltip" data-placement="bottom" data-original-title="Elimina toda las funciones exeptuando las que tienen boletas vendidas">Eliminar Todas las funciones</button>
+                       
+                    <button type="button" class="close" data-dismiss="modal">
+                        <i class="pci-cross pci-circle"></i>
+                    </button>
+
+               
+
+
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <form id="formulario_eliminar">
+                        <input type="hidden" id="RowID_Programacion" name="RowID_Programacion" value="@Model.RowID" />
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">Sala:</label>
+                                <select name="Sala" id="Sala" class="form-control SalaChosen">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    @if (ViewBag.listaSalas != null)
+                                    {
+                                        foreach (CinemaPOS.Models.Sala item in ViewBag.listaSalas)
+                                        {
+                                            <option value="@item.RowID">@item.Nombre </option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Pelicula:</label>
+                                <select name="DetallePelicula" id="DetallePelicula" class="form-control PeliculaChosen">
+                                    <option value=" " disabled selected>Seleccione una opción</option>
+                                    @if (ViewBag.ListaPeliculas != null)
+                                    {
+                                        foreach (CinemaPOS.Models.TeatroPelicula pelicula in ViewBag.ListaPeliculas)
+                                        {
+                                            foreach (CinemaPOS.Models.DetallePelicula DetallePelicula in pelicula.EncabezadoPelicula.DetallePelicula)
+                                            {
+                                                <option value="@DetallePelicula.RowID">@DetallePelicula.EncabezadoPelicula.TituloLocal @DetallePelicula.Opcion.Codigo @DetallePelicula.Opcion1.Codigo2</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">Horario de vigencia: </label>
+                                <div class="input-daterange input-group" id="datepicker">
+                                    <input type="text" id="hora_inicial" class="hora_inicial form-control" name="hora_inicial" value="hora_inicial" />
+                                    <span class="input-group-addon">a:</span>
+                                    <input type="text" id="hora_final" class="hora_final form-control" name="hora_final" value="hora_final" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">Fecha:</label>
+                                <input type="text" name="fechaEliminar" class="fechaEliminar form-control" value="">
+                            </div>
+                        </div>
+
+
+
+                        <button data-bb-handler="confirm" type="button" class="btn btn-danger" onclick="EliminarFuncionesMasivo()"  >Eliminar</button>
+
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

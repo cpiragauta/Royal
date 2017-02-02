@@ -5,6 +5,7 @@
 }
 
 <script>
+   
     function guardar_sala() {
         var validator = $("#formulario_sala").validate();
 
@@ -18,9 +19,15 @@
                     formulario: $("#formulario_sala").serialize(),
                 },
                 success: function (data) {
-                    swal("OK", data, "success")
-                    window.location = "/Maestro/VistaSala/";
-
+                    debugger
+                   
+                    if (data.tipo_respuesta!="warning") {
+                        window.location = "/Maestro/VistaSala/";
+                        swal("OK", data.respuesta, data.tipo_respuesta);
+                    }
+                    else {
+                        swal("Advertencia", data.respuesta, data.tipo_respuesta);
+                    }
                 },
                 error: function (data) {
                     swal("ERROR", data, "error");
@@ -46,6 +53,7 @@
         jQuery.validator.messages.required = '*Este campo es obligatorio.';
 
     });
+
 </script>
 
 <div>
@@ -96,11 +104,11 @@
                             {
                                 if (Model.RowID != 0 && teatro.RowID == Model.TeatroID)
                                 {
-                                    <option value="@teatro.RowID" selected>@teatro.Nombre</option>
+                                    <option value="@teatro.RowID" selected>@teatro.Nombre - @teatro.Ciudad.Nombre</option>
                                 }
                                 else
                                 {
-                                    <option value="@teatro.RowID">@teatro.Nombre</option>
+                                    <option value="@teatro.RowID">@teatro.Nombre - @teatro.Ciudad.Nombre</option>
                                 }
 
                             }
@@ -113,7 +121,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">Estado:</label>
-                        <select name="estado" class="form-control" required>
+                        <select name="estado" class="form-control" id="estado" onchange="validar_mapa()" required>
                             @foreach (CinemaPOS.Models.Estado estado in ViewBag.Estados)
                             {
                                 if (Model.RowID != 0 && estado.RowID == Model.EstadoID)
@@ -205,20 +213,49 @@
                 </div>
             </div>
             @*<a href="javascript:guardar_sala()" class="btn btn-success"><i class="icon-plus">&nbsp;&nbsp;Guardar</i></a>*@
-            @if (Model.Estado.Nombre != "EnFuncionamiento")
+            @if (Session["Usuario"] != null)
             {
-                <a href="@Url.Action("MapaSala", "Maestro", new { @RowID_Sala =Model.RowID})" style="display:none;" class="btn btn-success editar_mapa"><i class="icon-plus">&nbsp;&nbsp;Editar Mapa</i></a>
+                CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                {
+                    if (Model.Estado != null)
+                    {
+                        if (Model.Estado.Codigo != "ENFUNCIONAMIENTO")
+                        {
+                            <a href="@Url.Action("MapaSala", "Maestro", new { @RowID_Sala =Model.RowID})" style="display:none;" class="btn btn-success editar_mapa"><i class="icon-plus">&nbsp;&nbsp;Editar Mapa</i></a>
+                        }
+                    }
+                }
+                else
+                {
+                    <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Editar Mapa">
+                }
             }
+
+
         </div>
         <div class="panel-footer text-right">
-            @if (Model.RowID == 0)
+
+            @if (Session["Usuario"] != null)
             {
-                <input class="btn btn-success" type="submit" value="Crear Sala" onclick="guardar_sala()">
+                CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                {
+                    if (Model.RowID == 0)
+                    {
+                        <input class="btn btn-success" type="submit" value="Crear Sala" onclick="guardar_sala()">
+                    }
+                    else
+                    {
+                        <input class="btn btn-success" type="submit" value="Actualizar Sala" onclick="guardar_sala()">
+                    }
+                }
+                else
+                {
+                    <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Guardar">
+                }
             }
-            else
-            {
-                <input class="btn btn-success" type="submit" value="Actualizar Sala" onclick="guardar_sala()">
-            }
+            
         </div>
 
     </form>

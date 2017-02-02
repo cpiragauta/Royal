@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Windows;
 using System.Web.Mvc;
 using CinemaPOS.Models;
 using System.Security.Cryptography;
@@ -13,11 +14,11 @@ using System.IO;
 using iTextSharp.text;
 using System.Diagnostics;
 using System.Drawing.Printing;
-using Microsoft.Reporting.WebForms;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Modes;
 using Org.BouncyCastle.Crypto.Engines;
+using Microsoft.Reporting.WebForms;
 
 namespace CinemaPOS.Controllers
 {
@@ -46,40 +47,26 @@ namespace CinemaPOS.Controllers
             ViewBag.Clientes = db.Tercero.Where(f => f.Activo == true && f.Opcion2.Codigo == "EMPRESA").ToList();
             ViewBag.TipoEstado = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOCONVENIO").ToList();
 
-                 ///***********Reporte de convenio *************//
+            ///***********Reporte de convenio *************//
             List<DetalleConvenio> detalle = new List<DetalleConvenio>();
             detalle = db.DetalleConvenio.Where(f => f.EncabezadoConvenioID == RowId_Covenio).ToList();
 
             if (detalle.Count != 0)
             {
-                ReportViewer reportViewer = new ReportViewer();
-                reportViewer.ProcessingMode = ProcessingMode.Local;
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Content/Reportes/Convenio.rdlc";
-
-                ////Parametros del reporte
-
-                ReportParameter p1 = new ReportParameter("NombreConvenio", detalle.FirstOrDefault().EncabezadoConvenio.Nombre);
-                ReportParameter p2 = new ReportParameter("FechaInicio", detalle.FirstOrDefault().EncabezadoConvenio.FechaInicio.Value.ToShortDateString());
-                ReportParameter p3 = new ReportParameter("FechaFinal", detalle.FirstOrDefault().EncabezadoConvenio.FechaFinal.Value.ToShortDateString());
-                ReportParameter p4 = new ReportParameter("Formato", detalle.FirstOrDefault().EncabezadoConvenio.Opcion1.Nombre);
-                ReportParameter p5 = new ReportParameter("condiciones", detalle.FirstOrDefault().EncabezadoConvenio.Descripcion);
-                ReportParameter p6 = new ReportParameter("porcentaje", detalle.FirstOrDefault().Porcentaje + "%");
-                ReportParameter p7 = new ReportParameter("codigo", detalle.FirstOrDefault().Codigo);
-
-
-                reportViewer.LocalReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p5, p6, p7 });
-                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
-                reportViewer.SizeToReportContent = true;
-                reportViewer.Width = Unit.Percentage(100);
-                reportViewer.Height = Unit.Percentage(100);
-                ViewBag.ReportViewer = reportViewer;
+               
+             
+                ViewBag.detalle = detalle;
+                ViewBag.Nombre = detalle.FirstOrDefault().EncabezadoConvenio.Nombre;
+                ViewBag.FechaI = detalle.FirstOrDefault().EncabezadoConvenio.FechaInicio.Value.ToShortDateString();
+                ViewBag.FechaF = detalle.FirstOrDefault().EncabezadoConvenio.FechaFinal.Value.ToShortDateString();
+                ViewBag.Formato = detalle.FirstOrDefault().EncabezadoConvenio.Opcion1.Nombre;
+                ViewBag.condiciones = detalle.FirstOrDefault().EncabezadoConvenio.Descripcion;
+                ViewBag.porcentaje = detalle.FirstOrDefault().Porcentaje + "%";
+                ViewBag.codigo = detalle.FirstOrDefault().Codigo;
             }
-            else {
-                ReportViewer reportViewer = new ReportViewer();
-                reportViewer.ProcessingMode = ProcessingMode.Local;
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Content/Reportes/Convenio.rdlc";
-                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
-                ViewBag.ReportViewer = reportViewer;
+            else
+            {
+                
             }
             ///***********FIN reporte de convenio *************//
 
@@ -115,7 +102,7 @@ namespace CinemaPOS.Controllers
                     ReportParameter p6 = new ReportParameter("porcentaje", det.Porcentaje + "%");
                     ReportParameter p7 = new ReportParameter("codigo", det.Codigo);
 
-                    localReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p5, p6,p7 });
+                    localReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4, p5, p6, p7 });
                     localReport.DataSources.Add(new ReportDataSource("DataSet1", detalle));
                     string deviceInfo =
                      @"<DeviceInfo>
@@ -369,6 +356,7 @@ namespace CinemaPOS.Controllers
                 {
                     try
                     {
+                        String des = "";
                         DetalleConvenio convenio;
                         objDetalle = new DetalleConvenio();
                         objDetalle.Nombre = formulario["NombreItem"];
@@ -388,7 +376,19 @@ namespace CinemaPOS.Controllers
                         // Generate random key and IV
                         rngCsp.GetBytes(key);
                         rngCsp.GetBytes(iv);
-                        convenio.Codigo = encrip.Encrypt("C"+ convenio.RowID , key, iv);
+                        convenio.Codigo = encrip.Encrypt("C" + convenio.RowID, key, iv);
+
+                        string output = "";
+                        char[] readChar = convenio.Codigo.ToCharArray();
+                        for (int j = 0; j < readChar.Length; j++)
+                        {
+                            int no = Convert.ToInt32(readChar[j]) - 10;
+                            string r = Convert.ToChar(no).ToString();
+                            output += r;
+                        }
+                        DESCryptoServiceProvider DESalg = new DESCryptoServiceProvider();
+
+                        //des = encrip.Decrypt(convenio.Codigo, DESalg.CreateDecryptor(convenio.Codigo)., DESalg.iv);
                         con++;
                         db.SaveChanges();
 
@@ -430,11 +430,7 @@ namespace CinemaPOS.Controllers
                 respuesta = "Guardado Correctamente";
             }
             return Json(respuesta);
-
         }
-
-
-
     }
 
 }

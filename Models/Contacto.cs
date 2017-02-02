@@ -26,6 +26,12 @@ namespace CinemaPOS.Models
         public string CorreoElectronico { get; set; }
         public string Telefono { get; set; }
         public Nullable<int> EmpresaID { get; set; }
+        public Nullable<System.DateTime> FechaCreacion { get; set; }
+        public Nullable<System.DateTime> FechaModificacion { get; set; }
+        public string CreadoPor { get; set; }
+        public string ModificadoPor { get; set; }
+        public Nullable<int> RowIDCreacion { get; set; }
+        public Nullable<int> TeatroCreacion { get; set; }
     
         public virtual Tercero Tercero { get; set; }
         public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }

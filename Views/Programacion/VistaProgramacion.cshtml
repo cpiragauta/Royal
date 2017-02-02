@@ -4,107 +4,137 @@
     ViewBag.Title = "VistaProgramacion";
     Layout = "~/Views/Inicio/Diseño.cshtml";
 }
-<head>
-    <!--jQuery [ REQUIRED ]-->
-    <script src="~/Content/js/jquery-2.2.4.min.js"></script>
-    <!--DataTables [ OPTIONAL ]-->
-    <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
-    <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
-    <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
-    <!--DataTables Sample [ SAMPLE ]-->
-    <script src="~/Content/js/demo/tables-datatables.js"></script>
-</head>
-<style>
- 
-    .fixed-table-body {
-        overflow-x: scroll;
-        overflow-y: scroll;
-        height: 100%;
-    }
 
-    .fixed-table-footer, .fixed-table-header {
-        overflow: hidden;
-    }
-    table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        border: 1px solid #bbb;
-    }
+<script src="~/Content/js/jquery-2.2.4.min.js"></script>
 
-    td, th {
-        border-top: 1px solid #ddd;
-        padding: 4px 8px;
-    }
+<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
 
-    tbody tr:nth-child(even) td {
-        background-color: #eee;
-    }
+<script src="~/Content/js/jquery.dataTables.min1.10.10.js"></script>
+<link href="~/Content/Tables.min.css" rel="stylesheet" />
+<link href="~/Content/js/JqueryDataRables/jquery.dataTables.min.css" rel="stylesheet" />
 
-</style>
+
+<link href="~/Content/css/EstiloTablasFiltros.css" rel="stylesheet" />
+
 <p>
     <a class="btn btn-success" href='@Url.Action("Programacion", "Programacion")'>Crear Programacion</a>
 </p>
-@*Comentario*@
 <div class="panel">
     <div class="panel-heading">
         <h3 class="panel-title">Lista Programación</h3>
     </div>
-    <div class="panel-body" style="overflow-x:auto;">
-        <div class="fixed-table-body">
-            <table id="demo-dt-basic" class="table table-hover table-striped table-responsive table-bordered " cellspacing="0" data-show-pagination-switch="true">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Teatro</th>
-                        <th>Cant Funciones</th>
-                        <th>Fecha Inicial</th>
-                        <th>Fecha Final</th>
-                        <th>Estado</th>
-                        <th>Usuario Creación</th>
-                        <th>Fecha Creación</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (CinemaPOS.Models.EncabezadoProgramacion item in Model)
-                    {
+    <div class="panel-body">
+        <table id="demo-dt-basic" class="table table-condensed table-striped table-bordered table-hover table-checkable table-responsive">
+            <thead>
+                <tr>
+                    <th style="width: 10px; display:none">ID</th>
+                    <th class="lang">Nombre</th>
+                    <th class="lang">Teatro</th>
+                    <th>Cant Funciones</th>
+                    <th>Fecha Inicial</th>
+                    <th>Fecha Final</th>
+                    <th>Estado</th>
+                    <th>Usuario Creación</th>
+                    <th>Fecha Creación</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th style="display: none;padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="ID" placeholder="Buscar ID"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Nombre" placeholder="Buscar Nombre"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Teatro" placeholder="Buscar Teatro"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Cant_Funciones" placeholder="Buscar Cant Funciones"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Fecha_Inicial" placeholder="Buscar Fecha Inicial"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Fecha_Final" placeholder="Buscar Fecha Final"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Estado" placeholder="Buscar Estado"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Usuario_Creacion" placeholder="Buscar Usuario Creación"></th>
+                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Fecha_Creacion" placeholder="Buscar Fecha Creación"></th>
+                    <th></th>
+                </tr>
+            </tfoot>
+
+            <tbody>
+                @foreach (CinemaPOS.Models.EncabezadoProgramacion item in Model)
+                        {
                         <tr>
+                            <td style="display: none;">@item.RowID</td>
                             <td>@item.Titulo</td>
                             @if (@item.Teatro != null)
-                            {
+                                {
                                 <td>@item.Teatro.Nombre - @item.Teatro.Ciudad.Nombre</td>
-                            }
-                            else
-                            {
+                                }
+                                else
+                                {
                                 <td></td>
-                            }
+                                }
                             <td>@item.Funcion.Count</td>
                             <td>@item.FechaInicial.Value.ToString("dd/MM/yyyy")</td>
                             <td>@item.FechaFinal.Value.ToString("dd/MM/yyyy")</td>
                             @if (@item.Estado != null)
-                            {
+                                {
                                 <td>@item.Estado.Nombre</td>
-                            }
-                            else
-                            {
+                                }
+                                else
+                                {
                                 <td></td>
-                            }
+                                }
                             <td>@item.CreadoPor</td>
                             <td>@item.FechaCreacion.ToString("dd/MM/yyyy")</td>
                             <td><a href="@Url.Action("Programacion", "Programacion", new { RowID_EncabezadoProgramacion = item.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
 
                         </tr>
-                    }
+                        }
 
-                </tbody>
-            </table>
-        </div>
-        <div class="fixed-table-footer" style="display: none;"><table><tbody><tr></tr></tbody></table></div>
+            </tbody>
+        </table>
+
     </div>
 
-        </div>
- 
+</div>
 
 
+<script>
+    $(document).ready(function () {
+        var cont = 0;
 
+        var aoColumnDefsType = [
+           //{ "sType": "title-numeric", "aTargets": [3] },
+           //{ "sType": "title-numeric", "aTargets": [7] },
+           { "bSortable": false, "aTargets": [0] }//,
+           //{ "bSortable": false, "aTargets": [8] },
+           //{ "bSortable": false, "aTargets": [9] },
+           //{ "sClass": "center", "aTargets": [2, 3, 4, 5, 6, 7] }
+        ];
 
+        var table = $('#demo-dt-basic').DataTable({
+            "processing": true,
+            "bFilter": true,
+            "bPaginate": true,
+            "info": true,
+            "bDestroy": true,
+            aLengthMenu: [
+                [6],
+                [6]
+            ],
+            "iDisplayLength": 10,
+            "order": [[0, "desc"]],
+            "aoColumnDefs": aoColumnDefsType
+            //"aaSorting": [[2,'desc']]
+        });
+
+        // Apply the search
+        table.columns().every(function () {
+            var that = this;
+
+            $('input', this.footer()).on('keyup change', function () {
+                if (that.search() !== this.value) {
+                    that
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+    });
+</script>

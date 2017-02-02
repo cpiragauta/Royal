@@ -72,16 +72,7 @@
             });
 
         }
-    $("#fechainicialvigencia").change(function(){
-        $("#fechafinalvigencia").datepicker("destroy");
-        $("#fechafinalvigencia").datepicker({
-            format: "dd/mm/yyyy",
-            todayBtn: "linked",
-            autoclose: true,
-            todayHighlight: false,
-            startDate:  $("#fechainicialvigencia").val()
-        });
-    })
+
     function guardar_precio(encabezado){
             if ($(".RowID_Encabezado").val() != 0) {
                 $.ajax({
@@ -161,7 +152,15 @@
                 RowID_Detalle
                 },
             success: function (data) {
-                llenar_tabla(data);
+                if (data.tipo_respuesta=="warning") {
+                    swal("Advertencia",data.respuesta,data.tipo_repuesta);
+                    llenar_tabla(data.RowID_Encabezado);
+                }
+                else{
+                    swal("Ok",data.respuesta,data.tipo_repuesta);
+                    llenar_tabla(data.RowID_Encabezado);
+                }
+               
             },
             error: function () {
                 swal("Error al eliminar el registro " +RowID_Tarifa+" ", "");
@@ -279,7 +278,7 @@
         }else{
             $(".detalle_lista").slideUp();
         }
-        $('#fechainicialvigencia').datepicker({
+        $('#demo-dp-range .input-daterange').datepicker({
             format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
@@ -302,62 +301,17 @@
             startDate: $("#fechainicialvigencia").val(),
             endDate:$("#fechafinalvigencia").val()
         });
-        $("#fechainicialvigencia").change(function(){
-            $('#fechafinalvigencia').datepicker("destroy");
-            $('#fechafinalvigencia').datepicker({
-                format: "dd/mm/yyyy",
-                todayBtn: "linked",
-                autoclose: true,
-                todayHighlight: false,
-                startDate: $("#fechainicialvigencia").val(),
-            });
-            $('#fecha_inicial_detalle').datepicker("destroy");
-            $('#fecha_inicial_detalle').datepicker({
-                format: "dd/mm/yyyy",
-                todayBtn: "linked",
-                autoclose: true,
-                todayHighlight: false,
-                startDate: $("#fechainicialvigencia").val(),
-                endDate:$("#fechafinalvigencia").val()
-            });
-            $('#fecha_final_detalle').datepicker("destroy");
-            $('#fecha_final_detalle').datepicker({
-                format: "dd/mm/yyyy",
-                todayBtn: "linked",
-                autoclose: true,
-                todayHighlight: false,
-                startDate: $("#fechainicialvigencia").val(),
-                endDate:$("#fechafinalvigencia").val()
-            });
-        })
-        $("#fechafinalvigencia").change(function(){
-            $('#fecha_inicial_detalle').datepicker("destroy");
-            $('#fecha_inicial_detalle').datepicker({
-                format: "dd/mm/yyyy",
-                todayBtn: "linked",
-                autoclose: true,
-                todayHighlight: false,
-                startDate: $("#fechainicialvigencia").val(),
-                endDate:$("#fechafinalvigencia").val()
-            });
-            $('#fecha_final_detalle').datepicker("destroy");
-            $('#fecha_final_detalle').datepicker({
-                format: "dd/mm/yyyy",
-                todayBtn: "linked",
-                autoclose: true,
-                todayHighlight: false,
-                startDate: $("#fechainicialvigencia").val(),
-                endDate:$("#fechafinalvigencia").val()
-            });
-        })
-        
-        
-
     })
     function crear_nombre(){
         //console.log($(".select-dia option:selected").removeAttr('selected'));
         var Nombre="";
-        Nombre+=$("#servicios option:selected").text()+" "+$("#formato option:selected").text()+" "+$("#tipo_tarifa option:selected").text()+" "+$(".select-dia").val();
+        var nombredias="";
+        var dias=$(".select-dia").val();
+        console.log(dias)
+        for (var i = 0; i < dias.length; i++) {
+            nombredias+=dias[i].substring(0,3)+",";
+        }
+        Nombre+=$("#servicios option:selected").text()+" "+$("#formato option:selected").text()+" "+$("#tipo_tarifa option:selected").text()+" "+nombredias;
         $("#nombre_detalle").val(Nombre);
     }
 
@@ -564,161 +518,185 @@
                         </div>
                         <div class="col-sm-2 pull-right" style="margin-top:60px">
                             <div class="form-group">
-                                @if (Model.RowID == 0)
+                                @if (Session["Usuario"] != null)
                                 {
-                                    <input type="submit" class="btn btn-success" value="Crear lista de precios" onclick="javascript:valida_formulario()">
+                                    CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                                    if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                                    {
+                                        if (Model.RowID == 0)
+                                        {
+                                            <input type="submit" class="btn btn-success" value="Crear lista de precios" onclick="javascript:valida_formulario()">
+                                        }
+                                        else
+                                        {
+                                            <input type="submit" class="btn btn-success" value="Guardar lista de precios" onclick="javascript:valida_formulario()">
+                                        }
+                                    }
+                                     else
+                                    {
+                                        <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Guardar">
+                                    }
                                 }
-                                else
-                                {
-                                    <input type="submit" class="btn btn-success" value="Guardar lista de precios" onclick="javascript:valida_formulario()">
-                                }
+                               
                             </div>
+
                         </div>
                     </div>
-                </form>
-            </div>
+            </form>
+        </div>
 
-            <div id="detalles" class="tab-pane fade">
-                <form id="formulario_precio" data-toggle="validator" role="form">
-                    <div class="panel-price">
-                        <div class="row bord-no pad-no">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="control-label">Nombre: </label>
-                                    <input type="text" id="nombre_detalle" name="nombre_detalle" onkeyup="this.value=this.value.toUpperCase()" class="nombre_detalle form-control">
-                                </div>
-                            </div>
+                                    <div id="detalles" class="tab-pane fade">
+                                        <form id="formulario_precio" data-toggle="validator" role="form">
+                                            <div class="panel-price">
+                                                <div class="row bord-no pad-no">
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Nombre: </label>
+                                                            <input type="text" id="nombre_detalle" name="nombre_detalle" onkeyup="this.value=this.value.toUpperCase()" class="nombre_detalle form-control">
+                                                        </div>
+                                                    </div>
 
-                            <div class="col-sm-1">
-                                <div class="form-group">
-                                    <label class="control-label">Servicio: </label>
-                                    <select name="servicios" id="servicios" class="select-servicio form-control" onchange="crear_nombre()">
-                                        @foreach (CinemaPOS.Models.Opcion servicio in ViewBag.Servicios)
+                                                    <div class="col-sm-1">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Servicio: </label>
+                                                            <select name="servicios" id="servicios" class="select-servicio form-control" onchange="crear_nombre()">
+                                                                @foreach (CinemaPOS.Models.Opcion servicio in ViewBag.Servicios)
                                         {
-                                            <option value="@servicio.RowID">@servicio.Nombre</option>
+                                                                    <option value="@servicio.RowID">@servicio.Nombre</option>
                                         }
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="" class="control-label">Precio Distribuidor: </label>
-                                    @{int formato = 99999; string placeholder = formato.ToString("N0");}
-                                    <input type="text" name="precio_distribuidor" id="precio_distibuidor" onblur="validamoneda('precio_distibuidor')" placeholder="@placeholder" class="precio_distribuidor form-control " />
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="form-group">
+                                                            <label for="" class="control-label">Precio Distribuidor: </label>
+                                                            @{int formato = 99999; string placeholder = formato.ToString("N0");}
+                                                            <input type="text" name="precio_distribuidor" id="precio_distibuidor" onblur="validamoneda('precio_distibuidor')" placeholder="@placeholder" class="precio_distribuidor form-control " />
 
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="" class="control-label">Precio Taquilla: </label>
-                                    <input type="text" name="precio" id="precio" onblur="validamoneda('precio')" placeholder="@placeholder" class="precio form-control" />
-                                </div>
-                            </div>
-                            <div class="col-sm-1">
-                                <div class="form-group">
-                                    <label for="" class="control-label">Formato: </label>
-                                    <select name="formato" id="formato" class="chosen-formato form-control" onchange="crear_nombre()" ">
-                                        @foreach (CinemaPOS.Models.Opcion formatos in ViewBag.Formatos)
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="form-group">
+                                                            <label for="" class="control-label">Precio Taquilla: </label>
+                                                            <input type="text" name="precio" id="precio" onblur="validamoneda('precio')" placeholder="@placeholder" class="precio form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-1">
+                                                        <div class="form-group">
+                                                            <label for="" class="control-label">Formato: </label>
+                                                            <select name="formato" id="formato" class="chosen-formato form-control" onchange="crear_nombre()" ">
+                                                                @foreach (CinemaPOS.Models.Opcion formatos in ViewBag.Formatos)
                                         {
-                                            <option value="@formatos.RowID">@formatos.Nombre</option>
+                                                                    <option value="@formatos.RowID">@formatos.Nombre</option>
                                         }
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label class="">Tipo tarifa: </label>
-                                    <select class="form-control" id="tipo_tarifa" name="tipo_tarifa" onchange="crear_nombre()">
-                                        @foreach (CinemaPOS.Models.Opcion tipo_tarifa in ViewBag.TipoTarifa)
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="form-group">
+                                                            <label class="">Tipo tarifa: </label>
+                                                            <select class="form-control" id="tipo_tarifa" name="tipo_tarifa" onchange="crear_nombre()">
+                                                                @foreach (CinemaPOS.Models.Opcion tipo_tarifa in ViewBag.TipoTarifa)
                                         {
-                                            <option value="@tipo_tarifa.RowID">@tipo_tarifa.Nombre</option>
+                                                                    <option value="@tipo_tarifa.RowID">@tipo_tarifa.Nombre</option>
                                         }
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <div class="form-group" id="demo-dp-range-detalle">
-                                    <label class="control-label">Fecha de vigencia: </label>
-                                    <div class="input-daterange input-group" id="datepicker">
-                                        <input type="text" name="fecha_inicial" class="form-control" id="fecha_inicial_detalle" onblur="crear_nombre()">
-                                        <span class="input-group-addon">a:</span>
-                                        <input type="text" name="fecha_final" id="fecha_final_detalle" class="form-control" onblur="crear_nombre()">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label class="control-label">Horario de vigencia: </label>
-                                    <div class="input-daterange input-group" id="datepicker">
-                                        <input type="text" id="hora_inicial" class="hora_inicial form-control" name="hora_inicial" value="hora_inicial" onblur="crear_nombre()" />
-                                        <span class="input-group-addon">a:</span>
-                                        <input type="text" id="hora_final" class="hora_final form-control" name="hora_final" onblur="crear_nombre()" value="hora_final" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="form-group">
-                                    <label class="control-label">Dias de vigencia: </label>
-                                    <select style="width:10px" class="select-dia" name="dias" multiple="" onchange="crear_nombre()">
-                                        <option value="Lunes">Lunes</option>
-                                        <option value="Martes">Martes</option>
-                                        <option value="Miercoles">Miercoles</option>
-                                        <option value="Jueves">Jueves</option>
-                                        <option value="Viernes">Viernes</option>
-                                        <option value="Sabado">Sabado</option>
-                                        <option value="Domingo">Domingo</option>
-                                        <option value="Festivos">Festivos</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mar-btm">
-                            <div class="col-sm-2">
-                                <input class="btn btn-success" value="Guardar precio" onclick="javascript:guardar_precio()">
-                            </div>
-                        </div>
-                    </div>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-2">
+                                                        <div class="form-group" id="demo-dp-range-detalle">
+                                                            <label class="control-label">Fecha de vigencia: </label>
+                                                            <div class="input-daterange input-group" id="datepicker">
+                                                                <input type="text" name="fecha_inicial" class="form-control" id="fecha_inicial_detalle" onblur="crear_nombre()">
+                                                                <span class="input-group-addon">a:</span>
+                                                                <input type="text" name="fecha_final" id="fecha_final_detalle" class="form-control" onblur="crear_nombre()">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Horario de vigencia: </label>
+                                                            <div class="input-daterange input-group" id="datepicker">
+                                                                <input type="text" id="hora_inicial" class="hora_inicial form-control" name="hora_inicial" value="hora_inicial" onblur="crear_nombre()" />
+                                                                <span class="input-group-addon">a:</span>
+                                                                <input type="text" id="hora_final" class="hora_final form-control" name="hora_final" onblur="crear_nombre()" value="hora_final" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Dias de vigencia: </label>
+                                                            <select style="width:10px" class="select-dia" name="dias" multiple="" onchange="crear_nombre()">
+                                                                <option value="Lunes">Lunes</option>
+                                                                <option value="Martes">Martes</option>
+                                                                <option value="Miercoles">Miercoles</option>
+                                                                <option value="Jueves">Jueves</option>
+                                                                <option value="Viernes">Viernes</option>
+                                                                <option value="Sabado">Sabado</option>
+                                                                <option value="Domingo">Domingo</option>
+                                                                <option value="Festivos">Festivos</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mar-btm">
+                                                    <div class="col-sm-2">
+                                                        @if (Session["Usuario"] != null)
+                                                        {
+                                                            CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
+                                                            if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
+                                                            {
+                                                                    <input class="btn btn-success" value="Guardar precio" onclick="javascript:guardar_precio()">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Guardar">
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
 
 
 
-                </form>
+                                        </form>
 
 
-                <table id="demo-dt-basic_wrapper" class="table table-striped table-bordered tabla_detalle_lista dataTables_filter" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Nombre</th>
-                            <th>Servicio</th>
-                            <th>Precio Distribuidor</th>
-                            <th>Precio</th>
-                            <th>Formato</th>
-                            <th>Tipo tarifa</th>
-                            <th>Fecha Vigencia</th>
-                            <th>Horario de vigencia</th>
-                            <th>Dias de vigencia</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.RowID == 0)
+                                        <table id="demo-dt-basic_wrapper" class="table table-striped table-bordered tabla_detalle_lista dataTables_filter" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Nombre</th>
+                                                    <th>Servicio</th>
+                                                    <th>Precio Distribuidor</th>
+                                                    <th>Precio</th>
+                                                    <th>Formato</th>
+                                                    <th>Tipo tarifa</th>
+                                                    <th>Fecha Vigencia</th>
+                                                    <th>Horario de vigencia</th>
+                                                    <th>Dias de vigencia</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.RowID == 0)
                         {
-                            <tr class="fila_registro">
-                                <td class="td_nombre"></td>
-                                <td class="td_servicio"></td>
-                                <td class="td_precio_distribuidor"></td>
-                                <td class="td_precio"></td>
-                                <td class="td_formato"></td>
-                                <td class="td_fecha_vigencia"></td>
-                                <td class="td_horario_vigencia"></td>
-                                <td class="td_dias"></td>
+                                                    <tr class="fila_registro">
+                                                        <td class="td_nombre"></td>
+                                                        <td class="td_servicio"></td>
+                                                        <td class="td_precio_distribuidor"></td>
+                                                        <td class="td_precio"></td>
+                                                        <td class="td_formato"></td>
+                                                        <td class="td_fecha_vigencia"></td>
+                                                        <td class="td_horario_vigencia"></td>
+                                                        <td class="td_dias"></td>
 
-                            </tr>
+                                                    </tr>
                         }
 
-                        @if (Model.RowID != 0)
+                                                @if (Model.RowID != 0)
                         {
                             foreach (CinemaPOS.Models.ListaDetalle item in Model.ListaDetalle)
                             {
@@ -776,11 +754,12 @@
                                 </tr>
                             }
                         }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
     </div>
+
 </div>
 
 @*<div class="panel-footer text-right">

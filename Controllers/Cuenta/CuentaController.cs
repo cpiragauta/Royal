@@ -11,7 +11,6 @@ namespace CinemaPOS.Controllers.Cuenta
     public class CuentaController : Controller
     {
         CinemaPOSEntities db = new CinemaPOSEntities();
-
         //[AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -22,9 +21,15 @@ namespace CinemaPOS.Controllers.Cuenta
             else
             {
                 Session.Clear();
+                Session.Timeout=40;
                 Session.RemoveAll();
             }
             //ViewBag.Message = "Your contact page.";
+            return View();
+        }
+
+        public ActionResult AccesoDenegado()
+        {
             return View();
         }
 
@@ -35,12 +40,16 @@ namespace CinemaPOS.Controllers.Cuenta
             // Getting Ip address of local machine…
             // First get the host name of local machine.
             // Then using host name, get the IP address list..
-            string[] segmentos = ip.ToString().Split('.');
-            for (int i = 0; i < segmentos.Length; i++)
+            if (ip != null)
             {
-                ip_return += segmentos[i].PadLeft(3, '0') + ".";
+                string[] segmentos = ip.ToString().Split('.');
+                for (int i = 0; i < segmentos.Length; i++)
+                {
+                    ip_return += segmentos[i].PadLeft(3, '0') + ".";
+                }
+                ip_return = ip_return.TrimEnd('.');
             }
-            ip_return = ip_return.TrimEnd('.');
+           
             //Session["IP"] = ip_return;
             //ip_return += "Nombre de la computadora: " +strHostName;
             return ip_return;
@@ -59,6 +68,7 @@ namespace CinemaPOS.Controllers.Cuenta
             {
                 if (ValidateLogin(model.NombreUsuario, model.Contraseña))
                 {
+                    
                     if (Session["POS"].ToString() == "ACTIVO")
                     {
                         Taquilla objtaquilla = db.Taquilla.Where(taq => taq.IP == IP).FirstOrDefault();
@@ -68,8 +78,9 @@ namespace CinemaPOS.Controllers.Cuenta
                         }
                         else
                         {
-                            Session["RowID_Teatro"] = objtaquilla.TeatroID;
+                            
                             Session["RowID_Taquilla"] = objtaquilla.RowID.ToString();
+                            Session["Taquilla"] = objtaquilla;
                             return RedirectToAction("VistaPrincipal", "POS");
                         }
                     }
@@ -105,6 +116,7 @@ namespace CinemaPOS.Controllers.Cuenta
             Session["estadousuario"] = "";
             Session["POS"] = "INACTIVO";
             UsuarioSistema usuario = db.UsuarioSistema.FirstOrDefault(f => f.NombreUsuario == username && f.Contrasena == passwd );
+            Session["RowID_Teatro"] = usuario.TeatroID;
             List<TipoMenu> tipoMenu;
             List<Menu> menu;
             if (usuario != null)
