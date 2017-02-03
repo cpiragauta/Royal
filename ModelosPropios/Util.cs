@@ -9,6 +9,10 @@ namespace CinemaPOS.ModelosPropios
 {
     public class Util
     {
+        /*Conexion a base de datos para call Center*/
+        public static string CADENA_BD_CC { get; set; }
+
+
         public class ClientesRoyal
         {
             public ClienteRoyal Clienteroyal { get; set; }
@@ -22,7 +26,7 @@ namespace CinemaPOS.ModelosPropios
             public string telefono { get; set; }
             public string ciudades { get; set; }
             public string genero { get; set; }
-            public string fechanacimiento { get; set;}
+            public string fechanacimiento { get; set; }
             public string tarjetaid { get; set; }
             public string informacion { get; set; }
             public string clasificacion { get; set; }
@@ -35,10 +39,10 @@ namespace CinemaPOS.ModelosPropios
         }
         public class Cotizaciones
         {
-            
+
             public int? rowid { get; set; }
             public string prospecto { get; set; }
-            public string teatro { get; set;}
+            public string teatro { get; set; }
             public string contacto { get; set; }
             public Contacto contactos { get; set; }
             public string titulo { get; set; }
@@ -114,7 +118,23 @@ namespace CinemaPOS.ModelosPropios
             public const string NOMBRE_TEATRO_CENTRAL = "CENTRAL";
             /*Estado apertura caja usuario*/
             public const string ESTADO_CONTROL_CAJA_USUARIO = "PORRECIBIR";
-            
+
+
+            public const string TIPO_VERSION_2D = "2D";
+            public const string TIPO_VERSION_3D = "3D";
+            public const string SERVICIO_ULTRA = "Ultra";
+            public const string SERVICIO_GENERAL = "General";
+            public const string SERVICIO_VIP = "VIP";
+            public const string SERVICIO_PLUS = "Plus";
+            public const string SERVICIO_4DX = "4DX";
+            public const string SERVICIO_4TD = "4TD";
+            public const string SERVICIO_Covan = "Covan";
+            public const string SERVICIO_Atmos = "Atmos";
+
+
+
+
+
         }
         public class Actividades
         {
@@ -180,7 +200,22 @@ namespace CinemaPOS.ModelosPropios
             public int pelicula { get; set; }
             public int peliculaDetalleID { get; set; }
             public string Poster { get; set; }
-            public List<Funciones> Lista { get; set; }
+            public List<FuncionesTvShow> Lista { get; set; }
+            public string Servicio { get; set; }
+        }
+
+        public class PreciosEncabezado
+        {
+            public int RowID { get; set; }
+            public string Dias { get; set; }
+            public string Precio { get; set; }
+            public string Formato { get; set; }
+            public string TipoTarifa { get; set; }
+            public string Teatro { get; set; }
+            public string Servicio { get; set; }
+            public DateTime FechaInicial { get; set; }
+            public DateTime FechaFinal { get; set; }
+            public string GrupoDias { get; set; }
         }
     }
 }

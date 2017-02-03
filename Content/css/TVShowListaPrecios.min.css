@@ -1,0 +1,275 @@
+﻿*,body{
+    margin:0px;
+    padding:0px;
+    overflow:hidden;
+
+}
+body{
+    width: 100 &#37; /* en porcentaje (el highlight del foro lo trasforma) */
+    height: 100%;
+    top:0;
+    left:0;
+    z-index: -1;  
+    background:#e3ecf2;
+}
+/*LAYOUT*/
+#multicine ul li#Welcome h1{
+    margin-top:10px;
+    z-index:999999;
+}
+#multicine ul li#Welcome img{
+    width:30%;
+    float:left;
+    z-index:999999;
+    border-bottom-right-radius:20px;
+
+}
+#multicine ul li#Welcome{
+    background:#e3ecf2;
+    width: 100%;
+    /*color: #fff;
+    font-family: sans-serif;
+    font-weight: normal;
+    font-style: italic;*/
+    /*border-left: 4px solid #d9ab46;*/
+    /*-webkit-transform:skew(-10deg); -moz-transform:skew(10deg); -o-transform:skew(20deg);*/
+    /*border-bottom-right-radius:100px;*/
+    /*-moz-box-shadow: 10px 0px 5px 5px rgba(51, 51, 51, 0.57) ;
+    -webkit-box-shadow: 10px 0px 5px 5px rgba(51, 51, 51, 0.57) ;
+    box-shadow: 10px 0px 5px 5px rgba(51, 51, 51, 0.57) ;*/
+    position:absolute;
+    z-index:9999;
+    height:140px;
+    float:left;
+    list-style:none;
+
+}
+#multicine h1{
+    padding:2%;
+    font-size:1.3em;
+    z-index:999999;
+}
+#Royal {
+    background: #f2ae00;
+    color: #333;
+    text-align: center;
+    font-family: sans-serif;
+    height: 52px;
+    -moz-box-shadow: 10px 11px 151px 15px rgba(51, 51, 51, 0.57);
+    -webkit-box-shadow: 10px 0px 5px 5px rgba(51, 51, 51, 0.57);
+    box-shadow: 10px 11px 151px 15px rgba(51, 51, 51, 0.57);
+    -moz-transition: all ease 500ms ease-in-out;
+    -o-transition: all ease 500ms ease-in-out;
+    -webkit-transition: all ease 500ms ease-in-out;
+    transition: all ease 500ms ease-in-out;
+    z-index:999999;
+}
+#title{
+    -moz-box-shadow: 10px 1px 9px 5px rgba(51, 51, 51, 0.57) ;
+    -webkit-box-shadow: 10px 9px 5px 5px rgba(51, 51, 51, 0.57) ;
+    box-shadow: 10px 1px 5px 9px rgba(51, 51, 51, 0.57) ;
+    z-index:999999;
+}
+#Royal #multicine ul li#RoyalFilms h1{
+    position: absolute;
+    left: 50%;
+    top:0%;
+    transform: translate(-40%, -20%);
+    -webkit-transform: translate(-40%, -20%);
+    font-weight:bold;
+    font-size:3em;
+    font-family: FuturaKoyuIta;
+    color:#333;
+    z-index:9999;
+    text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);
+}
+#content{
+    position:absolute;
+    width:1578px;
+    height:800px;
+    z-index:999999;
+}
+#content #ListadoPrecios ul#DiasPrecios{
+    background:#151514;
+    border-left:8px solid #ed9f00;
+    margin-bottom:10px;
+}
+#content #ListadoPrecios ul#DiasPrecios > li:nth-child(odd){
+    background:#1a1a19;
+}
+#content #ListadoPrecios ul#DiasPrecios > li{
+    list-style:none;
+    padding:10px;
+    font-family:FuturaKoyu;
+    color:#fff;
+    font-size:1.79em;
+    text-shadow: 2px 2px 2px rgb(39, 38, 38);
+}
+#content #ListadoPrecios #Logos{
+    background:#151514;
+}
+#content #ListadoPrecios #Logos img{
+    width:20%;
+    margin-left:190px;
+}
+#content #ListadoPrecios #Logos .col-md-4{
+    align-content:center;
+    margin:0 auto;
+}
+#content #ListadoPrecios #Logos img#Segunda{
+    margin-left:290px;
+}
+#content #ListadoPrecios ul#ColorGeneral > li{
+    background:#d0d6db;
+    margin-bottom:10px;
+    list-style:none;
+    padding:10px;
+    font-family:FuturaKoyuIta;
+    /*color:#fff;*/
+    text-align:center;
+    font-size:2em;
+    text-shadow: 2px 2px 2px rgb(101, 96, 96);
+}
+#content #ListadoPrecios #TitulosPrecios{
+    margin-top:8px;
+}
+#Royal #multicine ul li#SitioRoyal img {
+    position: absolute;
+    width: 15%;
+    float: right;
+    z-index: 999999;
+    right: 60px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    -moz-box-shadow: 1px 1px 7px 1px rgba(57, 100, 161, 0.83);
+    -webkit-box-shadow: 1px 1px 7px 1px rgba(57, 100, 161, 0.83);
+    box-shadow: 1px 1px 7px 1px rgba(57, 100, 161, 0.83);
+}
+#Royal #multicine ul li#SitioRoyal{
+    /*position: absolute;
+    left: 80%;
+    top:0%;
+    transform: translate(10%, -50%);
+    -webkit-transform: translate(10%, -50%);
+    font-size:1.3em;
+    color:#fff;
+    -webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    height:40px;*/
+    margin-top:-18px;
+    z-index:999999;
+}
+#content #ListadoPrecios ul#ColorGeneral > li {
+    color:#3a3a3a;
+}
+#content #ListadoPrecios ul#ColorGeneral > li span#TCR{
+    color:#0745b6;
+}
+#Footer img{
+    float:right;
+    width:100%;
+    z-index:9999;
+}
+@media screen and (max-width:1224px) {
+    /*LAYOUT*/
+#multicine ul li#Welcome h1{
+    margin-top:10px;
+    z-index:999999;
+}
+#multicine ul li#Welcome img{
+    width:35%;
+    float:left;
+    z-index:999999;
+
+}
+#multicine ul li#Welcome{
+    width: 100%;
+
+    /*color: #fff;
+    font-family: sans-serif;
+    font-weight: normal;
+    font-style: italic;*/
+    /*border-left: 4px solid #d9ab46;*/
+    /*-webkit-transform:skew(-10deg); -moz-transform:skew(10deg); -o-transform:skew(20deg);*/
+    /*border-bottom-right-radius:100px;*/
+    /*-moz-box-shadow: 10px 0px 5px 5px rgba(51, 51, 51, 0.57) ;
+    -webkit-box-shadow: 10px 0px 5px 5px rgba(51, 51, 51, 0.57) ;
+    box-shadow: 10px 0px 5px 5px rgba(51, 51, 51, 0.57) ;*/
+    position:absolute;
+    z-index:9999;
+    height:70px;
+    float:left;
+    list-style:none;
+
+}
+#multicine h1{
+    padding:2%;
+    font-size:1.3em;
+    z-index:999999;
+}
+#Royal {
+    background: #f2ae00;
+    color: #333;
+    text-align: center;
+    font-family: sans-serif;
+    height: 52px;
+    -moz-box-shadow: 10px 11px 151px 15px rgba(51, 51, 51, 0.57);
+    -webkit-box-shadow: 10px 0px 5px 5px rgba(51, 51, 51, 0.57);
+    box-shadow: 10px 11px 151px 15px rgba(51, 51, 51, 0.57);
+    -moz-transition: all ease 500ms ease-in-out;
+    -o-transition: all ease 500ms ease-in-out;
+    -webkit-transition: all ease 500ms ease-in-out;
+    transition: all ease 500ms ease-in-out;
+    z-index:999999;
+}
+#title{
+    -moz-box-shadow: 10px 1px 9px 5px rgba(51, 51, 51, 0.57) ;
+    -webkit-box-shadow: 10px 9px 5px 5px rgba(51, 51, 51, 0.57) ;
+    box-shadow: 10px 1px 5px 9px rgba(51, 51, 51, 0.57) ;
+    z-index:999999;
+}
+
+#Royal #multicine ul li#RoyalFilms h1{
+    position: absolute;
+    left: 50%;
+    top:0%;
+    transform: translate(-30%, -25%);
+    -webkit-transform: translate(-30%, -25%);
+    font-weight:bold;
+    font-size:3em;
+    font-family: Arial;
+    color:#333;
+    z-index:9999;
+    
+}
+#content{
+    width:1578px;
+    height:800px;
+    z-index:999999;
+}
+
+#Royal #multicine ul li#SitioRoyal img{
+    position:absolute;
+    width:25%;
+    float:right;
+    z-index:999999;
+    right:-10px;
+}
+#Royal #multicine ul li#SitioRoyal{
+    /*position: absolute;
+    left: 80%;
+    top:0%;
+    transform: translate(10%, -50%);
+    -webkit-transform: translate(10%, -50%);
+    font-size:1.3em;
+    color:#fff;
+    -webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    height:40px;*/
+    margin-top:-15px;
+    z-index:999999;
+}
+
+}

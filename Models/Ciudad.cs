@@ -31,6 +31,7 @@ namespace CinemaPOS.Models
         public Nullable<int> TeatroCreacion { get; set; }
         public string CreadoPor { get; set; }
         public string ModificadoPor { get; set; }
+        public string ErpID { get; set; }
     
         public virtual ICollection<ClienteRoyal> ClienteRoyal { get; set; }
         public virtual Departamento Departamento { get; set; }

@@ -265,7 +265,7 @@ namespace CinemaPOS
         public bool SincronizarTerceros()
         {
             InicializarConexiones("CONNCENTRAL", "CONNLOCAL");
-            List<Tercero> sincronizacionterceros = dbCentral.Tercero.Where(f => f.Sincronizado == false).ToList();
+            List<Tercero> sincronizacionterceros = dbCentral.Tercero/*.Where(f => f.Sincronizado == false)*/.ToList();
             Int32 rowid = 0;
             try
             {
@@ -295,7 +295,7 @@ namespace CinemaPOS
                 TerceroReferencia.FechaCreacion = TerceroCentral.FechaCreacion;
                 TerceroReferencia.ModificadoPor = TerceroCentral.ModificadoPor;
                 TerceroReferencia.FechaModificacion = TerceroCentral.FechaModificacion;
-                TerceroReferencia.Sincronizado = true;
+                //TerceroReferencia.Sincronizado = true;
                 TerceroReferencia.TipoIdentificacionID = TerceroCentral.TipoIdentificacionID;
                 TerceroReferencia.FechaNacimiento = TerceroCentral.FechaNacimiento;
                 TerceroReferencia.SexoID = TerceroCentral.SexoID;
@@ -306,7 +306,7 @@ namespace CinemaPOS
                 catch { return false; }
 
                 GuardarHistorico(TerceroCentral.RowID, "Terceros", TerceroReferencia.RowID, "Terceros", "Actualizacion");
-                TerceroCentral.Sincronizado = true;
+                //TerceroCentral.Sincronizado = true;
 
                 dbCentral.SaveChanges();
             }
@@ -328,7 +328,7 @@ namespace CinemaPOS
                 TerceroReferencia.FechaCreacion = TerceroCentral.FechaCreacion;
                 TerceroReferencia.ModificadoPor = TerceroCentral.ModificadoPor;
                 TerceroReferencia.FechaModificacion = TerceroCentral.FechaModificacion;
-                TerceroReferencia.Sincronizado = true;
+                //TerceroReferencia.Sincronizado = true;
                 TerceroReferencia.TipoIdentificacionID = TerceroCentral.TipoIdentificacionID;
                 TerceroReferencia.FechaNacimiento = TerceroCentral.FechaNacimiento;
                 TerceroReferencia.SexoID = TerceroCentral.SexoID;
@@ -339,7 +339,7 @@ namespace CinemaPOS
                 }
                 catch { return false; }
                 GuardarHistorico(TerceroCentral.RowID, "Terceros", TerceroReferencia.RowID, "Terceros", "Creación");
-                TerceroCentral.Sincronizado = true;
+                //TerceroCentral.Sincronizado = true;
                 dbCentral.SaveChanges();
             }
             if (sincronizacionterceros.Count == 0)

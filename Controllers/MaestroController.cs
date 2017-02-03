@@ -1101,7 +1101,7 @@ namespace CinemaPOS.Controllers.Master
             ObjTercero.Descripcion = formulario["descripcion"];
             ObjTercero.Correo = formulario["correo"];
             ObjTercero.Activo = true;
-            ObjTercero.Sincronizado = false;
+            //ObjTercero.Sincronizado = false;
             if (ObjTercero.RowID == 0)
             {
                 ObjTercero.CreadoPor = Session["usuario_creacion"].ToString();

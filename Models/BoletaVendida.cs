@@ -27,6 +27,7 @@ namespace CinemaPOS.Models
         public string ModificadoPor { get; set; }
         public Nullable<System.DateTime> FechaModificacion { get; set; }
         public Nullable<int> ControlIngresoID { get; set; }
+        public Nullable<int> ValorAdicional { get; set; }
     
         public virtual UsuarioSistema UsuarioSistema { get; set; }
         public virtual Funcion Funcion { get; set; }

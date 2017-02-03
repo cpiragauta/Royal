@@ -308,7 +308,108 @@ namespace CinemaPOS.Controllers
         }
         #endregion
 
+        #region LISTA PRECIOS
+        [CheckSessionOutAttribute]
+        public ActionResult TvShowListaPrecios()
+        {
+            return View();
+        }
 
+        public string TVShowPrecios(string Teatro)
+        {
+            string ResultPrecios = "";
+            string GrupoD = "";
+            int i = 0;
+            Teatro = "SAN MARTIN";
+            var Teatros = db.Teatro.Where(f => f.Nombre.Contains(Teatro.ToUpper())).FirstOrDefault();
+            List<TvShowListaPrecios> ListadoPrecios = new List<TvShowListaPrecios>();
+            #region CONSULTAS
+            var ListadoDias = (from Dias in db.GrupoDias
+                               select new
+                               {
+                                   RowID = Dias.RowID,
+                                   Nombre = Dias.Nombre,
+                                   Dias = Dias.Dias,
+                                   HoraInicio = Dias.HoraInicio,
+                                   HoraFin = Dias.HoraFin
+                               }).Distinct().Take(5).ToList();
+
+            ListadoPrecios = (from Precios in db.TvShowListaPrecios.Where(f => f.Teatro == Teatros.Nombre.ToUpper()).ToList()
+                              select new TvShowListaPrecios
+                              {
+                                  RowIDTarifa = Precios.RowIDTarifa,
+                                  RowIDEncabezado = Precios.RowIDEncabezado,
+                                  Dias = Precios.Dias,
+                                  Precio = Precios.Precio,
+                                  Formato = Precios.Formato,
+                                  TipoTarifa = Precios.TipoTarifa,
+                                  Teatro = Precios.Teatro,
+                                  Servicio = Precios.Servicio,
+                                  FechaInicial = Precios.FechaInicial,
+                                  FechaFinal = Precios.FechaFinal,
+                                  HoraInicial = Precios.HoraInicial,
+                                  HoraFinal = Precios.HoraFinal,
+                                  RowIDGrupoDias = Precios.RowIDGrupoDias,
+                                  GrupoDias = Precios.GrupoDias
+                              }).Distinct().ToList();
+            #endregion
+
+            #region CONTENIDOS
+            foreach (var item in ListadoDias)
+            {
+                GrupoD += "<li class='uno'>"+item.Nombre+"</li>";
+            }
+
+            foreach (var item in ListadoPrecios)
+            {
+                ResultPrecios += "<div class=\"col-md-12\">" +
+                            "<div id=\"TitulosPrecios\" >" +
+                                 "<div class=\"row\">" +
+                                "<div class=\"col-md-2\"></div>" +
+                                "<div id=\"Logos\">" +
+                                    "<div class=\"col-md-4\">" +
+                                        "<img src =\"~/Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 2D-01.png\" />" +
+                                    "</div>" +
+                                    "<div class=\"col-md-4\">" +
+                                        "<img src=\"~/Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 3D-01.png\" id=\"Segunda\" />" +
+                                    "</div>" +
+                                "</div>" +
+                            "</div>" +
+                        "</div>" +
+                        "<br />" +
+                        "<div id=\"GenAll\">" +
+                            "<div class=\"row\" id=\"GenAll2\">" +
+                                "<div class=\"col-md-2\">" +
+                                    "<ul id=\"DiasPrecios\"> " +
+                                        GrupoD +
+                                    "</ul>" +
+                                "</div>" +
+                                "<div class=\"col-md-4\">" +
+                                    "<ul id=\"ColorGeneral\"> " +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                    "</ul>" +
+                                "</div>" +
+                                "<div class=\"col-md-4\">" +
+                                    "<ul id=\"ColorGeneral\" >" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                    "</ul>" +
+                                "</div> " +
+                            "</div> " +
+                       "</div>" +
+                    "</div>";
+            }
+            #endregion
+            return ResultPrecios;
+        }
+        #endregion
     }
 
 
