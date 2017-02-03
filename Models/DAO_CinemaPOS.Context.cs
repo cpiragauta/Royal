@@ -94,6 +94,11 @@ namespace CinemaPOS.Models
         public virtual DbSet<VistaCierreCaja> VistaCierreCaja { get; set; }
         public virtual DbSet<FuncionesTvShow> FuncionesTvShow { get; set; }
         public virtual DbSet<SillaBloqueo> SillaBloqueo { get; set; }
+        public virtual DbSet<BoletaReservada> BoletaReservada { get; set; }
+        public virtual DbSet<Reserva> Reserva { get; set; }
+        public virtual DbSet<BloqueoSillaslol> BloqueoSillaslol { get; set; }
+        public virtual DbSet<Producto> Producto { get; set; }
+        public virtual DbSet<ProductoVendido> ProductoVendido { get; set; }
     
         public virtual int Eliminar_sillas_sala(Nullable<int> rowIDSala)
         {

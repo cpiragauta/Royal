@@ -173,11 +173,11 @@ namespace CinemaPOS.Controllers
 
             return View((object)Data_Table);
         }
-        [CheckSessionOutAttribute]
+        [CheckSessionOutAttribute]  
         public ActionResult VistaSalasTeatro()
         {
             int TeatroID = int.Parse(Session["RowID_Teatro"].ToString());
-            ViewBag.Salas = db.Sala.Where(s => s.TeatroID == TeatroID).ToList();
+            ViewBag.Salas = db.Sala.Where(s => s.TeatroID == TeatroID && s.Estado.Codigo=="ENFUNCIONAMIENTO").ToList();
             return View();
         }
         [CheckSessionOutAttribute]

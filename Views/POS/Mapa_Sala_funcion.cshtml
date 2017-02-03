@@ -210,8 +210,23 @@
 
 
     function abrirmodalpago(){
+        debugger
+        var Costo = 0;
+        $(".item-producto").each(function (element) {
+            debugger
+            Costo += $(this).data("product-cost-total");
+            console.log(Costo)
+            console.log($(this).data("product-cost-total"));
+        });
+        $("#precio-total-producto").val(Costo);
         $("#demo-modal-wo-anim").modal('show');
-        $(".total-facturar").val(parseInt($("#precio-total-boletas").val()));
+        if (isNaN( $("#precio-total-producto").val())||$("#precio-total-producto").val()=="") {
+            $(".total-facturar").val(parseInt($("#precio-total-boletas").val()));
+        }
+        else{
+            $(".total-facturar").val(parseInt($("#precio-total-boletas").val())+parseInt($("#precio-total-producto").val()));
+        }
+        
     }
     function CrearCambio(){
         console.log($("#efectivo").val())
@@ -226,6 +241,23 @@
             alert("Verifique el efectivo ingresado");
         }
         else{
+            var Costo = 0;
+
+
+            $("#precio-total-producto").val(Costo);
+            var RowID_Productos="";
+            var CantidadxProducto="";
+            var abrirmodal=0;
+            $(".item-producto").each(function(element,index){
+                debugger
+                Costo += $(this).data("product-cost-total");
+                if ($(this).data("product-ref")=="product-ref") {
+                    abrirmodal=1;
+                }
+                RowID_Productos+= $(this).data("product-id")+",";
+                CantidadxProducto+=$(this).data("product-quantity-sale")+",";
+            });
+            
             var boletas=0;
             var idsillas="";
             $(".Seleccionada").each(function (index,element){
@@ -243,13 +275,15 @@
                     data:{
                         IDSillas:idsillas,
                         IDTarifas:$("#tarifaID").val(),
+                        IDProductos:RowID_Productos,
+                        CantidadProductoID:CantidadxProducto,
                         RowIDFuncion:$("#RowIDFuncion").val(),
                         Efectivo:$("#efectivo").val(),
                         Cambio:$("#cambio").val(),
                         Total:$("#totalAfacturar").val()
                     },success:function(data){
                         debugger
-                        console.log(data.html);
+                        //console.log(data.html);
                         $("#panel-boletas-imprimir").append(data.html);
                         var mode = 'iframe'; //popup
                         var close = mode == "popup";
@@ -259,6 +293,9 @@
                         //swal('','Venta terminada');
                         $("#demo-modal-wo-anim").modal('hide');
                         $("#myModal1").modal('hide');
+                        $("#boletas-comprar").empty();
+                        $("#ver_sala").removeAttr("onclick");
+                        $("#panel-tarifas-funcion").empty();
                     },error:function(){
                         swal('','Verifica la información','warning')
                     }

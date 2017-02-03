@@ -116,11 +116,12 @@ namespace CinemaPOS.Controllers.Cuenta
             Session["estadousuario"] = "";
             Session["POS"] = "INACTIVO";
             UsuarioSistema usuario = db.UsuarioSistema.FirstOrDefault(f => f.NombreUsuario == username && f.Contrasena == passwd );
-            Session["RowID_Teatro"] = usuario.TeatroID;
+           
             List<TipoMenu> tipoMenu;
             List<Menu> menu;
             if (usuario != null)
             {
+                Session["RowID_Teatro"] = usuario.TeatroID;
                 if (usuario.Activo==false)
                 {
                     Session["estadousuario"] = "El usuario está inactivo.";

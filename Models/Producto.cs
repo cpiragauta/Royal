@@ -12,24 +12,21 @@ namespace CinemaPOS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ControlIngreso
+    public partial class Producto
     {
-        public ControlIngreso()
+        public Producto()
         {
-            this.BoletaVendida = new HashSet<BoletaVendida>();
             this.ProductoVendido = new HashSet<ProductoVendido>();
         }
     
         public int RowID { get; set; }
-        public double Efectivo { get; set; }
-        public double Total { get; set; }
-        public double Cambio { get; set; }
-        public Nullable<int> UsuarioID { get; set; }
-        public Nullable<System.DateTime> Fecha { get; set; }
-        public Nullable<System.TimeSpan> Hora { get; set; }
+        public string NombreProducto { get; set; }
+        public string Referencia { get; set; }
+        public int Rowid_erp { get; set; }
+        public string Descripcion { get; set; }
+        public int Costo { get; set; }
+        public Nullable<System.DateTime> FechaUltimaSincronizacion { get; set; }
     
-        public virtual ICollection<BoletaVendida> BoletaVendida { get; set; }
-        public virtual UsuarioSistema UsuarioSistema { get; set; }
         public virtual ICollection<ProductoVendido> ProductoVendido { get; set; }
     }
 }

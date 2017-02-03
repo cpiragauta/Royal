@@ -18,6 +18,7 @@ namespace CinemaPOS.Models
         {
             this.BoletaVendida = new HashSet<BoletaVendida>();
             this.SillaBloqueo = new HashSet<SillaBloqueo>();
+            this.BoletaReservada = new HashSet<BoletaReservada>();
         }
     
         public int RowID { get; set; }
@@ -44,5 +45,6 @@ namespace CinemaPOS.Models
         public virtual ICollection<BoletaVendida> BoletaVendida { get; set; }
         public virtual Sala Sala { get; set; }
         public virtual ICollection<SillaBloqueo> SillaBloqueo { get; set; }
+        public virtual ICollection<BoletaReservada> BoletaReservada { get; set; }
     }
 }

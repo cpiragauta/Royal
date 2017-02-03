@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using CinemaPOS.ModelosPropios;
 using System.Data;
 using System.Drawing.Printing;
+using CinemaPOS.ModelosPropios;
 namespace CinemaPOS.Controllers
 {
     public class POSController : Controller
@@ -183,7 +184,8 @@ namespace CinemaPOS.Controllers
         {
             string hoy = "12/01/2016"/* DateTime.Now.ToString("dd/MM/yyyy")*/;
             //cuadno la programacion sea creada quitar comentarios y enviar en el where conversionfecha
-            int RowID_Teatro = int.Parse(Session["RowID_Teatro"].ToString());
+            Taquilla objTaquillas = (Taquilla)(Session["Taquilla"]);
+            int RowID_Teatro = objTaquillas.TeatroID;//int.Parse(Session["RowID_Teatro"].ToString());
             DateTime hoy1 = DateTime.Parse(fecha_programacion);
             string conversionfecha = hoy1.ToString("MM/dd/yyyy");
             var hora_actual = (DateTime.Now.ToString("HH:mm")).Split(':');
@@ -391,7 +393,7 @@ namespace CinemaPOS.Controllers
                 {
                     html_tarifas += "<div class='row'>";
                 }
-                        html_tarifas += "<div class='panel media middle panel-tarifa-funcion col-sm-5 mar-all' title='"+ tarifafuncion.ListaDetalle.Nombre + "' onclick='javascript:adicionar_item(" + tarifafuncion.RowID + ",1)'>";
+                        html_tarifas += "<div class='panel media middle panel-tarifa-funcion col-sm-5 mar-all' data-type-rate='"+tarifafuncion.ListaDetalle.Opcion1.Codigo+"' title='"+ tarifafuncion.ListaDetalle.Nombre + "' onclick='javascript:adicionar_item(" + tarifafuncion.RowID + ",1,this)'>";
                             html_tarifas += "<div class='media-left bg-mint pad-all'>";
                                 html_tarifas += "<i class='demo-pli-coin icon-3x'></i><br />";
                             html_tarifas += "</div>";
@@ -401,7 +403,6 @@ namespace CinemaPOS.Controllers
                                 html_tarifas += "<p class='text-overflow'>" + tarifafuncion.ListaDetalle.Nombre + " </p>";
                                 html_tarifas += "<p class='text-muted mar-no text-bold'>Servicio:</p>";
                                 html_tarifas += "<p>"+tarifafuncion.ListaDetalle.Opcion1.Nombre+"</p>";
-
                             //  html_tarifas += "<div class='col-sm-6 mar-hor '  style='width:40%;' onclick='javascript:adicionar_item(" + tarifafuncion.RowID + ",1)'>";
                             //html_tarifas += "<div class='panel " + clase + " panel-colorful' title='" + tarifafuncion.ListaDetalle.Nombre + "' style='height:50%'>";
                             //html_tarifas += "<div class='pad-all text-center'>";
@@ -426,7 +427,7 @@ namespace CinemaPOS.Controllers
         {
             ListaPrecioFuncion ItemVenta = db.ListaPrecioFuncion.Where(lpf => lpf.RowID == RowID_ListaFuncion).FirstOrDefault();
             string html_item_venta = "";
-            html_item_venta += "<div class='panel panel-primary panel-colorful item-venta item-elimina" + ItemVenta.RowID + " mar-all'  >";
+            html_item_venta += "<div class='panel  panel-primary panel-colorful item-venta item-elimina" + ItemVenta.RowID + " mar-all' data-element-sale='boleta' >";
             html_item_venta += "<div class='pad-all media'>";
             html_item_venta += "<div class='media-left'>";
             html_item_venta += "<span class='text-2x text-bold' id='cantidad-total-" + ItemVenta.RowID + "'>" + cantidadnueva + "</span>";
@@ -599,25 +600,49 @@ namespace CinemaPOS.Controllers
             return View();
         }
         [CheckSessionOutAttribute]
-        public JsonResult TerminarVenta(string IDSillas, string IDTarifas, int RowIDFuncion,int Efectivo,int Cambio,int Total)
+        public JsonResult TerminarVenta(string IDSillas, string IDTarifas, int RowIDFuncion,int Efectivo,int Cambio,int Total,string IDProductos,string CantidadProductoID)
         {
-            ControlIngreso objControlIngreso = new ControlIngreso();
-            objControlIngreso.Cambio = Cambio;
-            objControlIngreso.Efectivo = Efectivo;
-            objControlIngreso.Total = Total;
-            db.ControlIngreso.Add(objControlIngreso);
-            db.SaveChanges();
-            int RowIDControl = objControlIngreso.RowID;
+            
+            
             UsuarioSistema usuariotaquilla = (UsuarioSistema)(Session["usuario"]);
             Taquilla taquillas = (Taquilla)(Session["Taquilla"]);
             string Boletas = "";
             BoletaVendida objBoleta = new BoletaVendida();
+            ControlIngreso objControlIngreso = new ControlIngreso();
+            objControlIngreso.Cambio = Cambio;
+            objControlIngreso.Efectivo = Efectivo;
+            objControlIngreso.Total = Total;
+            objControlIngreso.Fecha = DateTime.Now;
+            objControlIngreso.Fecha = DateTime.Now;
+            objControlIngreso.UsuarioID = usuariotaquilla.RowID;
+            db.ControlIngreso.Add(objControlIngreso);
+            db.SaveChanges();
             var RowIDSillas = IDSillas.TrimEnd(',').Split(',');
             int RowIDTarifa = int.Parse(IDTarifas.Split(',')[0].ToString());
             int RowIDSilla = 0;
             int CantidadBoletasValidadas = 0;
+            int RowIDControl = objControlIngreso.RowID;
             string tipo_respuesta = "";
             string Respuesta = "";
+            var RowidProducto = IDProductos.TrimEnd(',').Split(',');
+            var CantidadxProducto = CantidadProductoID.TrimEnd(',').Split(',');
+            ProductoVendido ObjProdVend = new ProductoVendido();
+            if (RowidProducto.Length>0)
+            {
+                
+                for (int i = 0; i < RowidProducto.Length; i++)
+                {
+                    if (RowidProducto[i] != "")
+                    {
+                        ObjProdVend.ProductoID = int.Parse(RowidProducto[i].ToString());
+                        ObjProdVend.ControlIngresoID = objControlIngreso.RowID;
+                        ObjProdVend.Cantidad = short.Parse(CantidadxProducto[i].ToString());
+                        db.ProductoVendido.Add(ObjProdVend);
+                        db.SaveChanges();
+                    }
+                   
+                }
+            }
             int[] rowid_sillasvendidas = new int[RowIDSillas.Length];
             List<BoletaVendida> ListaBoletas = new List<Models.BoletaVendida>();
             for (int i = 0; i < RowIDSillas.Length; i++)
@@ -767,6 +792,110 @@ namespace CinemaPOS.Controllers
 
             return boletas;
             
+        }
+
+        public ActionResult VenderProductos()
+        {
+            string info_table = "";
+            UsuarioSistema obj_usuario = (UsuarioSistema)(Session["usuario"]);
+
+            //List<Producto> list_product=db.Producto.Where(p=>p.)
+            DateTime fecha = ModelosPropios.Util.FechaInsertar(DateTime.Now.ToShortDateString());
+            //ControlCajaUsuarioEntrega ControlUsuario = db.ControlCajaUsuarioEntrega.Where(pr => pr.UsuarioID == obj_usuario.RowID && pr.FechaEntrega == fecha).FirstOrDefault();
+            List<Producto> Producto = db.Producto.ToList();
+            foreach (var Productos in Producto)
+            {
+
+                //info_table += "<div class='row'>";
+                    info_table += "<div class='col-sm-6' data-tipo-producto='"+Productos.RowID+ "' data-cantidad-producto=0  data-ref-producto='"+Productos.Referencia+"' onclick='adicionar_producto(" + Productos.RowID+ ",this)'";
+                        info_table += "<div class=\"panel panel-primary panel-colorful\">";
+                            info_table += "<div class=\"pad-all text-center\">";
+                                info_table += "<span class=\"text-3x text-thin\">"+Productos.Costo+"</span>";
+                                    info_table += "<p>"+Productos.NombreProducto+"</p>";
+                                    info_table+="<i class='demo-pli-shopping-bag icon-lg'></i>";
+                            info_table += " </div>";
+                    info_table += "</div>";
+                info_table += "</div>";
+               // info_table += "</div>";
+                //info_table += "<td>";
+                //info_table += "</td>";
+
+
+            }
+            return View((object)info_table);
+        }
+
+        public string AdicionarProducto(int RowID_Producto,int cantidad)
+        {
+            Producto producto_venta = db.Producto.Where(p => p.RowID == RowID_Producto).FirstOrDefault();
+            string html_producto = "";
+            html_producto += "<div id='" + producto_venta.RowID + "' data-product-ref='"+producto_venta.Referencia+"' data-product-id='" + producto_venta.RowID+ "' data-product-quantity-sale='"+cantidad+"' data-element-sale='producto' data-product-cost-total='" + cantidad * producto_venta.Costo + "' class='panel panel-success panel-colorful item-producto'>";
+                html_producto += "<div class='pad-all media'>";
+                html_producto += "<div class='<div class='media-left'>";
+                    html_producto += "<i class='demo-pli-male icon-3x icon-fw'></i>";
+                html_producto += "</div>";
+            html_producto += "<div class='media-body'>";
+            html_producto += "<p class='h3 text-light mar-no media-heading'>"+producto_venta.NombreProducto+"</p>";
+            html_producto += "<p class='h3 text-light mar-no media-heading'>"+producto_venta.Costo+"</p>";
+            html_producto += "<p class='h3 text-light mar-no media-heading' class='Cantidad_Producto'>"+ cantidad+"</p>";
+            html_producto += "<p class='h3 text-light mar-no media-heading'>" + cantidad*producto_venta.Costo+"</p>";
+            html_producto += "</div>";
+            html_producto += "</div>";
+            //html_producto += "<div class='progress progress-xs progress-success mar-no'>";
+            html_producto += "<a href=\"javascript:eliminar_producto(\'" + producto_venta.RowID + "\')\"><i class='ion-ios-close text-2x'></i></a>";
+            //html_producto += "</div>";
+                 html_producto += "</div>";
+            return html_producto;
+        }
+        public ActionResult AsignarTarjeta(string Cedula)
+        {
+            ViewBag.TipoIdentificacion = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOIDENTIFICACION").ToList();
+            ViewBag.Ciudades = db.Ciudad.ToList();
+            ViewBag.SexoID = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOSEXO" && f.Activo == true).ToList();
+            ViewBag.Clasificacion = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOCLIENTE" && f.Activo == true).ToList();
+            ViewBag.preferencias = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOGENEROPELICULA" && f.Activo == true).ToList();
+            ClienteRoyal ObjCliente = new ClienteRoyal();
+            if (Cedula!=null)
+            {
+                ObjCliente = db.ClienteRoyal.Where(cr=>cr.Documento==Cedula).FirstOrDefault();
+                if (ObjCliente==null)
+                {
+                    return View(new ClienteRoyal());
+                }
+                return View( ObjCliente);
+            }
+            else
+            {
+                return View(new ClienteRoyal());
+            }
+        }
+        public JsonResult ValidarTCR(string Ntarjeta)
+        {
+            string respuesta = "";
+            string tipo_respuesta = "";
+            TarjetaMembresiaClienteRoyal objTarjeta = db.TarjetaMembresiaClienteRoyal.Where(lol => lol.TarjetaMembresia.Codigo == Ntarjeta).FirstOrDefault();
+            try
+            {
+                objTarjeta.NoRedencionesAprob = 4;
+                tipo_respuesta = "success";
+                respuesta = "Tarjeta encontrada";
+            }
+            catch (Exception)
+            {
+                tipo_respuesta = "warning";
+                respuesta = "Respuesta tarjeta no se encuentra en el sistema ";
+            }
+            
+            //if (objTarjeta!=null)
+            //{
+                
+            //}
+            //else
+            //{
+               
+            //}
+            objTarjeta = new TarjetaMembresiaClienteRoyal();
+            return Json(new { respuesta=respuesta,objetotarjeta=objTarjeta,tipo_respuesta=tipo_respuesta },JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="ae8727279e94475199cbe851b869d483" Name="Diagram1" ZoomLevel="88">
+      <Diagram DiagramId="ae8727279e94475199cbe851b869d483" Name="Diagram1" ZoomLevel="83">
         <EntityTypeShape EntityType="CinemaPOSModel.DetalleConvenio" Width="1.5" PointX="10.5" PointY="83.125" />
         <EntityTypeShape EntityType="CinemaPOSModel.EncabezadoConvenio" Width="1.5" PointX="5.25" PointY="71.375" />
         <EntityTypeShape EntityType="CinemaPOSModel.Actividades" Width="1.5" PointX="8.25" PointY="77.75" />
@@ -208,6 +208,20 @@
         <AssociationConnector Association="CinemaPOSModel.FK__SillaBloq__Usuar__5A054B78" />
         <AssociationConnector Association="CinemaPOSModel.FK__SillaBloq__Funci__5911273F" />
         <AssociationConnector Association="CinemaPOSModel.FK__SillaBloq__Silla__581D0306" />
+        <EntityTypeShape EntityType="CinemaPOSModel.BoletaReservada" Width="1.5" PointX="30" PointY="57.875" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaRes__Funci__68536ACF" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaRes__Silla__69478F08" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaRes__Taqui__6A3BB341" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaRes__Tarif__6B2FD77A" />
+        <AssociationConnector Association="CinemaPOSModel.FK__BoletaRes__Usuar__6C23FBB3" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Reserva" Width="1.5" PointX="8.25" PointY="54.625" />
+        <AssociationConnector Association="CinemaPOSModel.FK__Reserva__EstadoI__7B663F43" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ControlIn__Usuar__1FA39FB9" />
+        <EntityTypeShape EntityType="CinemaPOSModel.BloqueoSillaslol" Width="1.5" PointX="11.375" PointY="8.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.Producto" Width="1.5" PointX="7.375" PointY="17" />
+        <EntityTypeShape EntityType="CinemaPOSModel.ProductoVendido" Width="1.5" PointX="9.625" PointY="5.125" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ProductoV__Produ__2744C181" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ProductoV__Contr__2838E5BA" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
