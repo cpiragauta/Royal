@@ -1,50 +1,61 @@
 ﻿li#FuncionGlobal #TituloFuncion {
     background-image: url(../../Repositorio_Imagenes/Imagenes_Generales/TvShowFondo.png);
-    padding: 30PX;
+    padding: 15px;
     color: #fff;
-    font-family: sans-serif;
+    font-family: Arial;
     width: 65%;
     position: absolute;
-    left: 20%;
+    left: 19%;
     border-top: 2px solid #d2b71c;
     -moz-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
     -webkit-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
     box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
-    z-index:1;
+    z-index: 1;
+}
 
-}
-li#FuncionGlobal #TituloFuncion h2#FormatoVersion{
-    position:absolute;
-    background-image: url(../../Repositorio_Imagenes/Imagenes_Generales/FondoFormatos.png);
-    float:right;
-    right:20px;
-    top:-10px;
-    font-size:1em;
-    display:block;
-    text-align:center;
-    color:#333;
-    padding:20px;
-    margin-right:-20px;
-    z-index:2;
-    -moz-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
-    -webkit-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
-    box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
+    li#FuncionGlobal #TituloFuncion #Titulo {
+        font-size: 2em;
+    }
 
-}
-li#FuncionGlobal #General #Afiche{
-    position:absolute;
-    float:left;
-    left:163px;
-    z-index:4;
+    li#FuncionGlobal #TituloFuncion h3 {
+        color: #fff;
+        font-size: 1.4em;
+    }
 
+    li#FuncionGlobal #TituloFuncion h2#FormatoVersion {
+        position: absolute;
+        background-image: url(../../Repositorio_Imagenes/Imagenes_Generales/FondoFormatos.png);
+        float: right;
+        right: 20px;
+        top: -10px;
+        font-size: 1em;
+        display: block;
+        text-align: center;
+        color: #333;
+        padding: 20px;
+        margin-right: -20px;
+        z-index: 2;
+        -moz-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
+        -webkit-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
+        box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
+        width: 5%;
+    }
+
+li#FuncionGlobal #General #Afiche {
+    position: absolute;
+    float: left;
+    left: 70px;
+    z-index: 4;
 }
-li#FuncionGlobal #General #Afiche img{
-    width:20%;
-    height:125px;
-    -moz-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
-    -webkit-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
-    box-shadow: 2px 8px 2px 0px rgba(0, 0, 0, 0.40);
-}
+
+    li#FuncionGlobal #General #Afiche img {
+        width: 35%;
+        /*height:125px;*/
+        -moz-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
+        -webkit-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
+        box-shadow: 2px 8px 2px 0px rgba(0, 0, 0, 0.40);
+        margin-bottom: 670px;
+    }
 /*.triangulo-equilatero-bottom-left {
      position:absolute;
      width: 0;
@@ -59,35 +70,38 @@ li#FuncionGlobal #General #Afiche img{
 
 }*/
 
-li#FuncionGlobal #TituloFuncion h2#FormatoVersion span{
+/*li#FuncionGlobal #TituloFuncion h2#FormatoVersion span{
     display:block;
     font-size:.8em;
-}
+}*/
 li#FuncionGlobal {
     margin-top: 10px;
-    padding-bottom: 110px;
-    -moz-transition: all  100ms ease-out;
-    -o-transition: all  100ms ease-out;
-    -webkit-transition: all  100ms ease-out;
-    transition: all  100ms ease-out;
+    padding-bottom: 280px;
+    -moz-transition: all 100ms ease-out;
+    -o-transition: all 100ms ease-out;
+    -webkit-transition: all 100ms ease-out;
+    transition: all 100ms ease-out;
 }
-li#FuncionGlobal  #Horarios{
-    background-image: url(../../Repositorio_Imagenes/Imagenes_Generales/TvShowFondo.png);
-    width:40%;
-    position: absolute;
-    float:left;
-    margin-top:80px;
-    left:20%;
-    border-top:0px;
-    padding:1%;
-    color:#fff;
-    font-family: sans-serif;
-    display:table-cell;
-    -moz-box-shadow: 375px 0px 0px 0px #0a0f20;
-    -webkit-box-shadow: 375px 0px 0px 0px #0a0f20;
-    box-shadow: 375px 0px 0px 0px #0a0f20;
 
-}
+    li#FuncionGlobal #Horarios {
+        background-image: url(../../Repositorio_Imagenes/Imagenes_Generales/TvShowFondo.png);
+        width: 37%;
+        position: absolute;
+        float: left;
+        margin-top: 65px;
+        left: 19%;
+        border-top: 0px;
+        padding: 1%;
+        color: #fff;
+        font-family: sans-serif;
+        display: table-cell;
+        -moz-box-shadow: 400px 0px 0px 0px #0a0f20;
+        -webkit-box-shadow: 400px 0px 0px 0px #0a0f20;
+        box-shadow: 400px 0px 0px 0px #0a0f20;
+        height: 140px;
+        font-family: Arial;
+        font-size: 2.5em;
+    }
 
 /*li#FuncionGlobal #HorarioPrincipal{
     back
@@ -160,13 +174,164 @@ li#FuncionGlobal  #Horarios{
 .modal-footer:after {
   clear: both;
 }*/
-#Royal #multicine ul li#SitioRoyal h1{
+#Royal #multicine ul li#SitioRoyal h1 {
     position: absolute;
     left: 80%;
-    top:0%;
+    top: 0%;
     transform: translate(10%, 0%);
     -webkit-transform: translate(10%, 0%);
-    height:0px;
-    font-family:FuturaKoyuIta;
+    height: 0px;
+    font-family: FuturaKoyuIta;
+}
 
+img#Icono3D, img#Icono2D {
+    width: 100%;
+    margin-top: 5px;
+    /*-webkit-box-shadow: 5px 7px 5px 0px rgba(60, 85, 78, 0.36);
+    -moz-box-shadow:    5px 7px 5px 0px rgba(60, 85, 78, 0.36);
+    box-shadow:         5px 7px 5px 0px rgba(60, 85, 78, 0.36);*/
+}
+
+#IconosGeneral {
+    position: absolute;
+    z-index: 999;
+    margin-top:220px;
+    margin-left: 175px;
+}
+
+    #IconosGeneral img#IconosFunciones {
+        width: 7%;
+        -webkit-box-shadow: 1px 7px 9px 0px rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 1px 7px 9px 0px rgba(0, 0, 0, 0.19);
+        box-shadow: 1px 7px 9px 0px rgba(0, 0, 0, 0.19);
+    }
+
+footer {
+    position: absolute;
+    z-index: 9999999;
+    margin-top: -212px;
+}
+
+@media screen and (min-width:2124px) {
+    li#FuncionGlobal #TituloFuncion {
+        background-image: url(../../Repositorio_Imagenes/Imagenes_Generales/TvShowFondo.png);
+        padding: 15px;
+        color: #fff;
+        font-family: Arial;
+        width: 65%;
+        position: absolute;
+        left: 19%;
+        border-top: 2px solid #d2b71c;
+        -moz-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
+        -webkit-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
+        box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
+        z-index: 1;
+    }
+
+        li#FuncionGlobal #TituloFuncion #Titulo {
+            font-size: 2em;
+        }
+
+        li#FuncionGlobal #TituloFuncion h3 {
+            color: #fff;
+            font-size: 1.4em;
+        }
+
+        li#FuncionGlobal #TituloFuncion h2#FormatoVersion {
+            position: absolute;
+            background-image: url(../../Repositorio_Imagenes/Imagenes_Generales/FondoFormatos.png);
+            float: right;
+            right: 20px;
+            top: -10px;
+            font-size: 1em;
+            display: block;
+            text-align: center;
+            color: #333;
+            padding: 20px;
+            margin-right: -20px;
+            z-index: 2;
+            -moz-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
+            -webkit-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
+            box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
+            width: 5%;
+        }
+
+    li#FuncionGlobal #General #Afiche {
+        position: absolute;
+        float: left;
+        left: 163px;
+        z-index: 4;
+    }
+
+        li#FuncionGlobal #General #Afiche img {
+            width: 35%;
+            -moz-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
+            -webkit-box-shadow: 2px 8px 2px 2px rgba(0, 0, 0, 0.40);
+            box-shadow: 2px 8px 2px 0px rgba(0, 0, 0, 0.40);
+            margin-bottom: 670px;
+        }
+
+    li#FuncionGlobal {
+        margin-top: 10px;
+        padding-bottom: 280px;
+        -moz-transition: all 100ms ease-out;
+        -o-transition: all 100ms ease-out;
+        -webkit-transition: all 100ms ease-out;
+        transition: all 100ms ease-out;
+    }
+
+        li#FuncionGlobal #Horarios {
+            background-image: url(../../Repositorio_Imagenes/Imagenes_Generales/TvShowFondo.png);
+            width: 37%;
+            position: absolute;
+            float: left;
+            margin-top: 65px;
+            left: 19%;
+            border-top: 0px;
+            padding: 1%;
+            color: #fff;
+            font-family: sans-serif;
+            display: table-cell;
+            -moz-box-shadow: 500px 0px 0px 0px #0a0f20;
+            -webkit-box-shadow: 500px 0px 0px 0px #0a0f20;
+            box-shadow: 500px 0px 0px 0px #0a0f20;
+            height: 140px;
+            font-family: Arial;
+            font-size: 2.5em;
+        }
+
+    #Royal #multicine ul li#SitioRoyal h1 {
+        position: absolute;
+        left: 80%;
+        top: 0%;
+        transform: translate(10%, 0%);
+        -webkit-transform: translate(10%, 0%);
+        height: 0px;
+        font-family: FuturaKoyuIta;
+    }
+
+    img#Icono3D, img#Icono2D {
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    #IconosGeneral {
+        position: absolute;
+        z-index: 999;
+        margin-top: 220px;
+        margin-left: 230px;
+    }
+
+        #IconosGeneral img#IconosFunciones {
+            width: 7%;
+            -webkit-box-shadow: 1px 7px 9px 0px rgba(0, 0, 0, 0.19);
+            -moz-box-shadow: 1px 7px 9px 0px rgba(0, 0, 0, 0.19);
+            box-shadow: 1px 7px 9px 0px rgba(0, 0, 0, 0.19);
+        }
+
+    footer {
+        position: absolute;
+        z-index: 99999;
+        margin-top: 57px;
+    }
 }

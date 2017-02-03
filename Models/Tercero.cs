@@ -42,13 +42,19 @@ namespace CinemaPOS.Models
         public Nullable<System.DateTime> FechaCreacion { get; set; }
         public string ModificadoPor { get; set; }
         public Nullable<System.DateTime> FechaModificacion { get; set; }
-        public Nullable<bool> Sincronizado { get; set; }
         public Nullable<int> TipoIdentificacionID { get; set; }
         public Nullable<System.DateTime> FechaNacimiento { get; set; }
         public Nullable<int> SexoID { get; set; }
         public Nullable<int> RowIDCentral { get; set; }
         public Nullable<int> RowIDCreacion { get; set; }
         public Nullable<int> TeatroCreacion { get; set; }
+        public Nullable<bool> ind_cliente { get; set; }
+        public Nullable<bool> ind_proveedor { get; set; }
+        public Nullable<bool> ind_empleado { get; set; }
+        public Nullable<bool> ind_accionista { get; set; }
+        public Nullable<bool> ind_otros { get; set; }
+        public Nullable<bool> ind_interno { get; set; }
+        public Nullable<int> ERPRowID { get; set; }
     
         public virtual ICollection<EncabezadoConvenio> EncabezadoConvenio { get; set; }
         public virtual Ciudad Ciudad { get; set; }

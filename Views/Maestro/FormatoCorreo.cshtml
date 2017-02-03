@@ -12,54 +12,6 @@
 <script src="~/Content/js/demo/form-text-editor.js"></script>
 
 <script>
-    $(document).ready(function () {
-        //new Switchery(document.getElementById('demo-sw-checked'));
-        @*if(@Model.RowID > 0){
-            var rowid = @Model.RowID;
-            $.ajax({
-                type: "POST",
-                url: "/Masters/Consulta_formato",
-                data: {
-                    rowid_formato: rowid,
-                },
-                success: function (data2) {
-                    debugger
-                    $(".note-editable").append(data2);
-                },
-                error: function (request) {
-                    debugger
-                    Mensajes(request.responseText.substring(1, (request.responseText.length -1)), 'error', '');
-                }
-            });
-        }
-
-        debugger*@
-    })
-
-    function guardarFormatoCorreo() {
-        debugger
-        var RowID_Encabezado = $(".RowID_Encabezado").val();
-        var htmlText = $(".note-editable").html();
-        $.ajax({
-            type: "POST",
-            url: "/Masters/Registrar_formatoCorreo",
-            data: {
-                formulario: $("#formCorreo").serialize(),
-                formato: htmlText,
-                rowid_formato: RowID_Encabezado,
-            },
-            success: function (data2) {
-                debugger
-                Mensajes(data2.mensaje, "success", '');
-                window.location = "/Masters/VistaPlantillasCorreo";
-            },
-            error: function (request) {
-                debugger
-                Mensajes(request.responseText.substring(1, (request.responseText.length - 1)), 'error', '');
-            }
-        });
-    }
-
     function RegistrarAdjunto() {
         ruta = null;
         hasChangue = false;
@@ -94,10 +46,8 @@
 
     }
 
-    function adicionarParametro() {
-        debugger
-        var parametro = $("#parametro").val();
-        $(".note-editable").append("<h6>" + parametro + "</h6>");
+    function adicionarParametro(value) {
+        $(".note-editable").append("<h6>" + value + "</h6>");
     }
 
 </script>
@@ -110,55 +60,34 @@
 <div class="panel">
     <div class="panel-body">
 
-        <form id="formCorreo" data-toggle="validator" role="form">
+        <form id="formCorreo" >
             <input type="hidden" class="RowidPlantilla" name="RowidPlantilla" value="@Model.RowID" />
-            <label class="col-md-1 control-label text-left" for="asunto">Asunto:</label>
-            <div class="col-md-3">
-                <input type="text" id="asunto" name="asunto" style="width: 100%" class="form-control" value="@Model.Titulo" required="required">
-            </div>
-            @*<div class="row">
-                    <label class="col-md-1 control-label text-left" for="descripcion">Descripción</label>
-                    <div class="col-md-6">
-                        <textarea name="descripcion" id="descripcion" class="form-control" style="resize: none" cols="20" rows="3">@Model.</textarea>
-                    </div>
-                </div>*@
-            <div class="row ">
-                @*<div class="form-group align-left">
-                        <label class="col-md-1 control-label text-left" for="descripcion">Activo</label>
-                        @if (@Model.estado.Equals(true))
-                            {
-                                <input id="demo-sw-checked" type="checkbox" name="activo" checked>
-                            }
-                            else
-                            {
-                                <input id="demo-sw-checked" type="checkbox" name="activo">
-                            }
-                    </div>*@
-                <div class="form-group align-left">
-                    <label class="col-md-1 control-label text-left" for="parametro">Parámetros</label>
-                    <select id="parametro" name="parametro" class="col-md-2 form-control" style="min-width:50px; width: 200px" required>
-                        <option value="" disabled selected>Seleccione una opcion</option>
-                        <option value="__ClienteNombre">Nombre del cliente</option>
-                        <option value="__ClienteCedula">Cedula del cliente</option>
-                    </select>
-                    <div class="col-md-1">
-                        @*<input class="btn btn-success glyphicon glyphicon-paperclip" id="adicionar" name="adicionar" style="float: left"  onclick="javascript:adicionarParametro()">*@
-                        <button type="button" class="btn" style="background-color: white;" title="Adicionar parámetro" onclick="javascript:adicionarParametro()">
-                            <i class="glyphicon glyphicon-edit "></i>
-                        </button>
-
-                    </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label">*Nombre:</label>
+                    <input type="text" id="Nombre" name="Nombre" class="form-control" maxlength="40" required value="@Model.NombrePlantilla">
                 </div>
-
-                <form id="formulario_adjuntos" enctype="multipart/form-data">
-                    <center>
-                        <input type="file" maxlength="20480" name="file_adjunto" id="file_adjunto" multiple>
-
-                        <button type="button" class="btn  fileupload-exists" onclick="javascript:RegistrarAdjunto()" style="color:gray;background-color:white">
-                            <i class="glyphicon glyphicon-paperclip icon-white"></i> Adjuntar
-                        </button>
-                    </center>
-                </form>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label">*Titulo:</label>
+                    <input type="text" id="Titulo" name="Titulo" class="form-control" maxlength="20" required value="@Model.Titulo">
+                </div>
+            </div>
+            <p id="CuerpoPlantilla" hidden> @Model.CuerpoMsj</p>
+           
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label">Parámetros:</label>
+                    <select class="form-control" name="parametro" id="parametro" onchange="adicionarParametro(this.value)">
+                        <option value="" disabled selected>Seleccione una opcion</option>
+                        <option value="__NOMBRE_USUARIO_PQRS">Nombre Usuario PQRS</option>
+                        <option value="__TIPO_SOLICITUD">Tipo Solicitud PQRS</option>
+                        <option value="_TEATRO">Teatro</option>
+                        <option value="__FECHA_SUCESO">Fecha Suceso PQRS</option>
+                        <option value="__DESCRIPCION">Descripción PQRS</option>
+                    </select>
+                </div>
             </div>
 
             <div class="row ">
@@ -173,13 +102,13 @@
             <div class="row ">
                 <div class="col-md-11">
                     @if (Model.RowID == 0)
-            {
-            <input class="btn btn-success" id="guardar" name="guardar" style="float: right" value="Guardar" onclick="javascript:guardarFormatoCorreo()">
-            }
-            else
-            {
-            <input class="btn btn-success" id="actualizar" name="actualizar" style="float: right" value="Actualizar" onclick="javascript:guardarFormatoCorreo()">
-            }
+                    {
+                        <input class="btn btn-success" id="guardar" name="guardar" style="float: right" value="Guardar" onclick="javascript:GuardarFormatoCorreo()">
+                    }
+                    else
+                    {
+                        <input class="btn btn-success" id="actualizar" name="actualizar" style="float: right" value="Actualizar" onclick="javascript:GuardarFormatoCorreo()">
+                    }
                 </div>
             </div>
         </form>
@@ -188,51 +117,57 @@
 </div>
 
 
-<!--GUARDAR HABEAS DATA-->
 <script>
-    function GuardarHabeasData() {
-        var habeas = $(".note-editable").text();
-        if (habeas == null || habeas == "") {
-            Alerts("Campo requerido.", "warning");
+    function GuardarFormatoCorreo() {
+        debugger
+        var validator = $("#formCorreo").validate();
+        var Plantilla = $(".note-editable").text();
+        if (Plantilla == null || Plantilla == "") {
+            Alerts("Complete los campos requeridos", "warning");
             $(".note-editable").css("border", "1px solid #B71C1C");
-        } else {
-            debugger
-            ModalProcesandoShow();
-            var htmlHabeas = $(".note-editable").html();
+            return;
+        } 
+        if (validator.form()) {
+           
+            var TextoPlantilla = $(".note-editable").html();
             $.ajax({
                 type: "POST",
-                url: "/Maestro/GuardarHabeasData",
+                url: "/Maestro/GuardarFormatoCorreo/",
                 data: {
-                    habeas: htmlHabeas,
+                    formulario: $("#formCorreo").serialize(),
+                    TextoPlantilla: TextoPlantilla,
                 },
                 success: function (data) {
-                    ModalProcesandoHiden();
-
-                    if (data == "ok") {
-                        Alerts("Datos almacenados correctamente.", "success");
-                        return;
-                    } else {
-                        Alerts("Error al guardar los datos.", "danger");
-                    }
-
+                    debugger
+                    swal("OK", data, "success");
+                    window.location = "/Maestro/VistaPlantillasCorreo";
                 },
-                error: function (data) {
-                    ModalProcesandoHiden();
-                    Alerts("Error al guardar los datos.", "danger");
+                error: function (request) {
+                    debugger
+                    swal("", "Error Guardando información", "error");
                 }
             });
+        }
+        else{
+            Alerts("Complete los campos requeridos", "warning");
+
         }
     }
 
 </script>
 <script>
     $(document).ready(function () {
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+
+        var rowid = @Model.RowID;
+            $(".note-editable").prepend($("#CuerpoPlantilla").text());
         ModalProcesandoShow();
         $.ajax({
             type: "POST",
             url: "/Maestro/CargarPlantillaCorreos",
             data: {
-                RowidPlantilla: $("#RowidPlantilla").val()
+                RowidPlantilla: rowid
             },
             success: function (data) {
                 ModalProcesandoHiden();

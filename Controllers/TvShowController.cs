@@ -73,11 +73,14 @@ namespace CinemaPOS.Controllers
         }
         public string TvString(string FechaValidar)
         {
+            DateTime FormatoHora;
+            var FormatoPelicula = "";
+            var ImgServicio = "";
             if (string.IsNullOrEmpty(FechaValidar))
             {
                 FechaValidar = Convert.ToString(DateTime.Now.ToString("MM/dd/yyyy"));
             }
-            List<Util.FuncionEncabezado> a = (from reg in db.Funciones.Where(f => f.FechaFuncion == FechaValidar)
+            List<Util.FuncionEncabezado> a = (from reg in db.FuncionesTvShow.Where(f => f.FechaFuncion == FechaValidar)
                                               select new Util.FuncionEncabezado
                                               {
                                                   titulo = reg.TituloLocal,
@@ -86,6 +89,7 @@ namespace CinemaPOS.Controllers
                                                   pelicula = reg.RowID_EncabezadoPelicula,
                                                   peliculaDetalleID = reg.RowID_Detalle,
                                                   Poster = reg.Afiche,
+                                                  Servicio = reg.Servicio,
                                                   //Lista = db.Funciones.Where(f=>f.RowID_EncabezadoPelicula==reg.RowID_EncabezadoPelicula).ToList()
 
                                               }).Distinct().ToList();
@@ -97,7 +101,8 @@ namespace CinemaPOS.Controllers
                                                         Formato = reg.Formato,
                                                         pelicula = reg.pelicula,
                                                         Poster = reg.Poster,
-                                                        Lista = db.Funciones.Where(f => f.DetallePeliculaID == reg.peliculaDetalleID).Distinct().ToList()
+                                                        Servicio = reg.Servicio,
+                                                        Lista = db.FuncionesTvShow.Where(f => f.DetallePeliculaID == reg.peliculaDetalleID && f.FechaFuncion == FechaValidar).Distinct().ToList()
 
                                                     }).ToList();
 
@@ -109,27 +114,74 @@ namespace CinemaPOS.Controllers
                 {
                     item.Poster = "../Repositorio_Imagenes/Poster_Peliculas/SING.jpg";
                 }
+                #region TIPO VERSION
+                if (item.version.Contains(Util.Constantes.TIPO_VERSION_2D))
+                {
+                    FormatoPelicula = "<img src=\"../../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Negro_Sin_Fondo/logo 2D-01-Funciones.png\" id='Icono2D'/>";
+                }
+                else
+                {
+                    FormatoPelicula = "<img src=\"../../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Negro_Sin_Fondo/logo 3D-01-Funciones.png\" id='Icono3D'/>";
+                }
+                #endregion
+                #region TIPO SERVICIOS
+                switch (item.Servicio)
+                {
+                    case Util.Constantes.SERVICIO_4DX:
+                        ImgServicio = "../../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Fondo_Negro/LOGOS_SALAS_ROYAL_FILMS2-01.png";
+                        break;
+                    case Util.Constantes.SERVICIO_4TD:
+                        ImgServicio = "";
+                        break;
+                    case Util.Constantes.SERVICIO_Atmos:
+                        ImgServicio = "";
+                        break;
+                    case Util.Constantes.SERVICIO_Covan:
+                        ImgServicio = "../../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Fondo_Negro/LOGOS_SALAS_ROYAL_FILMS2-06.png";
+                        break;
+                    case Util.Constantes.SERVICIO_GENERAL:
+                        ImgServicio = "";
+                        break;
+                    case Util.Constantes.SERVICIO_PLUS:
+                        ImgServicio = "../../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Fondo_Negro/LOGOS_SALAS_ROYAL_FILMS2-07.png";
+                        break;
+                    case Util.Constantes.SERVICIO_ULTRA:
+                        ImgServicio = "../../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Fondo_Negro/LOGOS_SALAS_ROYAL_FILMS2-02.png";
+                        break;
+                    case Util.Constantes.SERVICIO_VIP:
+                        ImgServicio = "../../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Fondo_Negro/LOGOS_SALAS_ROYAL_FILMS2-05.png";
+                        break;
+                    default:
+                        break;
+                }
+                #endregion
                 resultad += "<li id=\"FuncionGlobal\">" +
                        "<div class='col-md-12'>" +
+                            "<div id=\"IconosGeneral\">" +
+                                "<img src='" + ImgServicio + "' id='IconosFunciones'/>" +
+                            "</div>" +
                        "<div class=\"row\" id=\"General\">" +
                             "<div class=\"col-md-2 \" id=\"Afiche\">" +
-                                "<img src=" + "../" + item.Poster + " alt=\"\" /></div>" +
-                        "   <div class=\"col-md-2 \" id=\"TituloFuncion\">" +
-                         "      <div id = \"Titulo\" > " + item.titulo + "<div id='PrinFormarto'><div class='triangulo-equilatero-bottom-left '></div><h2 id='FormatoVersion'>" + item.version + "<span>" + item.Formato + "</span></h2></div></div>" +
-                         "  </div>" +
+                                "<img src=" + "../" + item.Poster + " alt=\"\" />" +
+                                "</div>" +
+                        "<div class=\"col-md-2 \" id=\"TituloFuncion\">" +
+                         "<div id = \"Titulo\" ><h3 class='text-5x'> " + item.titulo + "</h3><div id='PrinFormarto'><div class='triangulo-equilatero-bottom-left '></div><h2 id='FormatoVersion'>" + FormatoPelicula + "<span>" + "</span></h2></div></div>" +
+                         "</div>" +
 
                         "</div>" +
                 "</div>";
                 resultad += "<div class='row' id='CompleteContent'><div class='col-md-12' id='Horarios'>";
-                IEnumerable<Funciones> list = item.Lista.GroupBy(x => x.HoraInicial).Select(y => y.First());
-
-                foreach (var funcion in list)
+                //IEnumerable<Funciones> list = item.Lista.GroupBy(x => x.PeliculaIdioma).Select(y => y.First());
+                resultad += item.Formato + ": ";
+                foreach (var funcion in item.Lista)
                 {
                     //if (contador==0)
                     //{
 
                     //}
-                    resultad += "   " + funcion.HoraInicial + "  |   ";
+                    FormatoHora = Convert.ToDateTime(funcion.HoraInicial.ToString());
+
+                    resultad += " " + FormatoHora.ToString("hh:mm") + "  -";
 
                     //if (contador == 5)
                     //{
@@ -141,6 +193,7 @@ namespace CinemaPOS.Controllers
                     //    contador++;
                     //}
                 }
+                resultad = resultad.TrimEnd('-');
                 //if (contador<7)
                 //{
                 resultad += "</div></div>";
@@ -176,14 +229,21 @@ namespace CinemaPOS.Controllers
                                    {
                                        Trailer = trailer.Trailer,
                                        Afiche = trailer.Afiche,
-                                       Formato = (Detalle.TipoFormatoID==0)?"":db.Opcion.Where(f=>f.RowID==Detalle.TipoFormatoID).FirstOrDefault().Nombre,
+                                       Formato = (Detalle.TipoFormatoID == 0) ? "" : db.Opcion.Where(f => f.RowID == Detalle.TipoFormatoID).FirstOrDefault().Nombre,
                                        Nombre = trailer.TituloLocal,
-                                       Vers = (trailer.TipoIdiomaOriginalID==0)?"":db.Opcion.Where(f=>f.RowID==trailer.TipoIdiomaOriginalID).FirstOrDefault().Nombre,
-                                       Clasf = (trailer.TipoClasificacionID==0)?"":db.Opcion.Where(f=>f.RowID==trailer.TipoClasificacionID).FirstOrDefault().Nombre
+                                       Vers = (trailer.TipoIdiomaOriginalID == 0) ? "" : db.Opcion.Where(f => f.RowID == trailer.TipoIdiomaOriginalID).FirstOrDefault().Nombre,
+                                       Clasf = (trailer.TipoClasificacionID == 0) ? "" : db.Opcion.Where(f => f.RowID == trailer.TipoClasificacionID).FirstOrDefault().Nombre
 
                                    }).ToList();
             foreach (var item in PeliculaTrailer)
             {
+                if (item.Trailer.Contains("www.youtube.com"))
+                {
+                }
+                else
+                {
+                    ReplaceTrailer = "www.youtube.com/embed/" + item.Trailer + "?rel=0&amp;controls=0&amp;showinfo=0&autoplay=1;vq=hd720&enablejsapi=1";
+                }
                 if (item.Trailer.Contains("watch?v="))
                 {
                     ReplaceTrailer = item.Trailer.Replace("watch?v=", "embed/");
@@ -193,49 +253,50 @@ namespace CinemaPOS.Controllers
                 {
                     ItemActive = "item";
                 }
-                if (item.Afiche!="")
+                if (item.Afiche != "")
                 {
-                    ItemAfiches = "../"+item.Afiche;
-                }else
+                    ItemAfiches = "../" + item.Afiche;
+                }
+                else
                 {
                     ItemAfiches = "../Repositorio_Imagenes/Imagenes_Generales/NoDisponibleAfiche.png";
                 }
-                ContentTrailer += "<div class='"+ItemActive+"'>" +
+                ContentTrailer += "<div class='" + ItemActive + "'>" +
                  "<div class=\"col-sm-12\" id=\"Funciones\">" +
                          "<div class=\"row\">" +
                              "<div class=\"col-md-12\" style=\"margin-top:50px;\" id=\"Videos\">" +
                                         "<div id=\"video\">" +
-                                            "<iframe width=\"800\" height=\"440\" src="+ReplaceTrailer+" frameborder =\"0\" allowfullscreen id=\"youtubeVideo\">"+
-                                "</iframe>"+
-                            "</div>"+
+                                            "<iframe width=\"800\" height=\"440\" src=" + ReplaceTrailer + " frameborder =\"0\" allowfullscreen id=\"youtubeVideo\">" +
+                                "</iframe>" +
+                            "</div>" +
                         "</div>" +
                     "</div>" +
                     "<div id=\"AficheEspacio\">" +
                         "<div class=\"center-block\">" +
-                              "<img src='"+ ItemAfiches + "'/>"+
+                              "<img src='" + ItemAfiches + "'/>" +
                         "</div>" +
                     "</div>" +
                     "<div class=\"row\">" +
                         "<div class=\"col-md-6 col-md-offset-1\">" +
                                       "<div id=\"formato\">" +
-                                          "<p>"+ "FORMATO" + "</p>"+
-                                          "<h2 style=\"display:block;\">"+item.Formato+"</h2>"+
+                                          "<p>" + "FORMATO" + "</p>" +
+                                          "<h2 style=\"display:block;\">" + item.Formato + "</h2>" +
                             "</div>" +
                             "<div class=\"col-md-12 col-md-offset-2\" id=\"NamePelicula\">" +
-                                          "<div id=\"Pelicula\">" +item.Nombre+"</div>" +
+                                          "<div id=\"Pelicula\">" + item.Nombre + "</div>" +
                             "</div>" +
                         "</div>" +
                         "<div class=\"row\">" +
                             "<div class=\"col-md-4 col-md-offset-2\" id=\"NameLang\">" +
                                           "<div id=\"Idioma\">" +
-                                              "<span>"+ "VERSIÓN" + "</span>"+
-                                              "<h2 style=\"display:block;\">"+item.Vers+"</h2>" +
+                                              "<span>" + "VERSIÓN" + "</span>" +
+                                              "<h2 style=\"display:block;\">" + item.Vers + "</h2>" +
                                 "</div>" +
                             "</div>" +
                             "<div class=\"col-md-4 col-md-offset-1\" id=\"NameClasf\">" +
                                           "<div id=\"Clasf\">" +
-                                              "<span>"+ "CLASIFICACIÓN" + "</span>" +
-                                    "<h2 style=\"display:block;\"> "+item.Clasf+"</h2>"+
+                                              "<span>" + "CLASIFICACIÓN" + "</span>" +
+                                    "<h2 style=\"display:block;\"> " + item.Clasf + "</h2>" +
                                 "</div>" +
                             "</div>" +
                         "</div>" +
@@ -247,7 +308,108 @@ namespace CinemaPOS.Controllers
         }
         #endregion
 
+        #region LISTA PRECIOS
+        [CheckSessionOutAttribute]
+        public ActionResult TvShowListaPrecios()
+        {
+            return View();
+        }
 
+        public string TVShowPrecios(string Teatro)
+        {
+            string ResultPrecios = "";
+            string GrupoD = "";
+            int i = 0;
+            Teatro = "SAN MARTIN";
+            var Teatros = db.Teatro.Where(f => f.Nombre.Contains(Teatro.ToUpper())).FirstOrDefault();
+            List<TvShowListaPrecios> ListadoPrecios = new List<TvShowListaPrecios>();
+            #region CONSULTAS
+            var ListadoDias = (from Dias in db.GrupoDias
+                               select new
+                               {
+                                   RowID = Dias.RowID,
+                                   Nombre = Dias.Nombre,
+                                   Dias = Dias.Dias,
+                                   HoraInicio = Dias.HoraInicio,
+                                   HoraFin = Dias.HoraFin
+                               }).Distinct().Take(5).ToList();
+
+            ListadoPrecios = (from Precios in db.TvShowListaPrecios.Where(f => f.Teatro == Teatros.Nombre.ToUpper()).ToList()
+                              select new TvShowListaPrecios
+                              {
+                                  RowIDTarifa = Precios.RowIDTarifa,
+                                  RowIDEncabezado = Precios.RowIDEncabezado,
+                                  Dias = Precios.Dias,
+                                  Precio = Precios.Precio,
+                                  Formato = Precios.Formato,
+                                  TipoTarifa = Precios.TipoTarifa,
+                                  Teatro = Precios.Teatro,
+                                  Servicio = Precios.Servicio,
+                                  FechaInicial = Precios.FechaInicial,
+                                  FechaFinal = Precios.FechaFinal,
+                                  HoraInicial = Precios.HoraInicial,
+                                  HoraFinal = Precios.HoraFinal,
+                                  RowIDGrupoDias = Precios.RowIDGrupoDias,
+                                  GrupoDias = Precios.GrupoDias
+                              }).Distinct().ToList();
+            #endregion
+
+            #region CONTENIDOS
+            foreach (var item in ListadoDias)
+            {
+                GrupoD += "<li class='uno'>"+item.Nombre+"</li>";
+            }
+
+            foreach (var item in ListadoPrecios)
+            {
+                ResultPrecios += "<div class=\"col-md-12\">" +
+                            "<div id=\"TitulosPrecios\" >" +
+                                 "<div class=\"row\">" +
+                                "<div class=\"col-md-2\"></div>" +
+                                "<div id=\"Logos\">" +
+                                    "<div class=\"col-md-4\">" +
+                                        "<img src =\"~/Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 2D-01.png\" />" +
+                                    "</div>" +
+                                    "<div class=\"col-md-4\">" +
+                                        "<img src=\"~/Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 3D-01.png\" id=\"Segunda\" />" +
+                                    "</div>" +
+                                "</div>" +
+                            "</div>" +
+                        "</div>" +
+                        "<br />" +
+                        "<div id=\"GenAll\">" +
+                            "<div class=\"row\" id=\"GenAll2\">" +
+                                "<div class=\"col-md-2\">" +
+                                    "<ul id=\"DiasPrecios\"> " +
+                                        GrupoD +
+                                    "</ul>" +
+                                "</div>" +
+                                "<div class=\"col-md-4\">" +
+                                    "<ul id=\"ColorGeneral\"> " +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                    "</ul>" +
+                                "</div>" +
+                                "<div class=\"col-md-4\">" +
+                                    "<ul id=\"ColorGeneral\" >" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                    "</ul>" +
+                                "</div> " +
+                            "</div> " +
+                       "</div>" +
+                    "</div>";
+            }
+            #endregion
+            return ResultPrecios;
+        }
+        #endregion
     }
 
 

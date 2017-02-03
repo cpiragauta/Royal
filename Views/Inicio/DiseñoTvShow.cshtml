@@ -6,7 +6,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
         <title>@ViewBag.Title - CinemaPOS</title>
         <link href="~/Content/img/favicon.png" rel="shortcut icon" type="image/x-icon" />
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
@@ -16,14 +16,14 @@
     </head>
     <body>
         
-        <div id="container" class="effect aside-float aside-bright mainnav-lg">
+        <div id="container" class="effect aside-float aside-bright mainnav-lg" style="z-index:999999;">
             <div id="title">
                 <div id="Royal" style="display:none">
-                    <div id="multicine">
+                    <div id="multicine" style="z-index:999999;">
                         <ul>
-                            <li id="Welcome"><h1>BIENVENIDO A MULTICINE</h1></li>
+                            <li id="Welcome">@*<h1>BIENVENIDO A MULTICINE</h1>*@<img src="~/Repositorio_Imagenes/Imagenes_Generales/bienvenido_00372.png"/></li>
                             <li id="RoyalFilms"><h1>ROYAL FILMS</h1></li>
-                            <li id="SitioRoyal"><h1>www.royal-films.com</h1></li>
+                            <li id="SitioRoyal">@*<h1>www.royal-films.com</h1>*@ <img src="~/Repositorio_Imagenes/Imagenes_Generales/www.png"/></li>
                         </ul>
                     </div>
                 </div>
@@ -31,7 +31,11 @@
             <div id="content">
                 @RenderBody()
             </div>
+
         </div>
+        <footer>
+            <img src="~/Repositorio_Imagenes/Imagenes_Generales/CORTO_00296.png" />
+        </footer>
     </body>
 
 </html>

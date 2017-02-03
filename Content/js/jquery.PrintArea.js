@@ -64,13 +64,36 @@
     };
 
     var PrintArea = {
-        print : function( PAWindow ) {
+        print: function (PAWindow) {
+            debugger;
             var paWindow = PAWindow.win;
 
             $(PAWindow.doc).ready(function(){
-                paWindow.focus();
+                //paWindow.focus();
                 paWindow.print();
+                $.ajax({
+                    type: "POST",
+                    url: "/ConveniosCupones/PressEnter",
+                    
+                    });
+                System.Windows.Forms.SendKeys.SendWait("{ENTER}");
 
+
+                $(document).keydown(function (event) {
+                    if (event.keyCode == 13) {
+                        alert("keypressed");
+                    }
+                });
+
+                var e = $.Event("keydown");
+                e.which = 13;
+                e.keyCode = 13;
+                $(document).trigger(e);
+                SendKeys.Send("{ENTER}");
+                //paWindow.focus();
+
+
+                
                 if ( settings.mode == modes.popup && settings.popClose )
                     setTimeout(function() { paWindow.close(); }, 2000);
             });
@@ -148,7 +171,8 @@
             });
             return copy;
         },
-        getPrintWindow : function () {
+        getPrintWindow: function () {
+            debugger;
             switch ( settings.mode )
             {
                 case modes.iframe :
@@ -159,7 +183,8 @@
                     return { win : p, doc : p.doc };
             }
         },
-        Iframe : function () {
+        Iframe: function () {
+            debugger;
             var frameId = settings.id;
             var iframeStyle = 'border:0;position:absolute;width:0px;height:0px;right:0px;top:0px;';
             var iframe;
@@ -170,7 +195,8 @@
                 document.body.appendChild(iframe);
                 $(iframe).attr({ style: iframeStyle, id: frameId, src: "#" + new Date().getTime() });
                 iframe.doc = null;
-                iframe.doc = iframe.contentDocument ? iframe.contentDocument : ( iframe.contentWindow ? iframe.contentWindow.document : iframe.document);
+                iframe.doc = iframe.contentDocument ? iframe.contentDocument : (iframe.contentWindow ? iframe.contentWindow.document : iframe.document);
+
             }
             catch( e ) { throw e + ". iframes may not be supported in this browser."; }
 
