@@ -881,7 +881,7 @@
                                     </div>*@
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-6" id="afiche_miniatura">
                             <div class="form-group">
                                 <label class="control-label">Thumbnail</label>
                                 <div class="fileupload fileupload-new" data-provides="fileupload">
@@ -903,7 +903,7 @@
                                         <span class="btn btn-file">
                                             <span class="fileupload-new">Seleccionar imagen</span>
                                             <span class="fileupload-exists">Cambiar</span>
-                                            <input type="file" accept="image/jpeg,image/png,image/gif" onchange="ValidarImagen(this,400,400,10000000)" class="default image_invoice_clone" name="thumbnail">
+                                            <input type="file" accept="image/jpeg,image/png,image/gif" onchange="ValidarImagen(this,400,400,10000000,'afiche_miniatura')" class="default image_invoice_clone" name="thumbnail">
                                         </span>
                                         @*<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>*@
                                     </div>
@@ -1280,8 +1280,8 @@
                 console.log(this.height.toFixed(0));
                 console.log(this.width.toFixed(0));
                 debugger
-                if (( this.height.toFixed(0)) <  (this.width.toFixed(0)) ){
-                    Alerts("La altura de la imagen debe ser mayor al ancho.", "warning")
+                if ( img.height <= img.width ){
+                    Alerts("La altura de la imagen debe ser mayor al ancho 1.", "warning")
                     $(this).attr({ value: '' });
                     $(".zoom").find("img").attr({ src: ruta });
                 }
