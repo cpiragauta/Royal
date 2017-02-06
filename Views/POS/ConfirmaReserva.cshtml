@@ -1,0 +1,267 @@
+﻿@model CinemaPOS.Models.Reserva
+@{
+    Layout = null;
+}
+
+
+@*jksfbjksdbfkjsdbksf*@
+<!--Demo script [ DEMONSTRATION ]-->
+<script src="~/Content/js/demo/nifty-demo.min.js"></script>
+<!--Bootbox Modals [ OPTIONAL ]-->
+<script src="~/Content/plugins/bootbox/bootbox.min.js"></script>
+<!--Modals [ SAMPLE ]-->
+<script src="~/Content/js/demo/ui-modals.js"></script>
+
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+<script src="~/Content/plugins/masked-input/jquery.maskedinput.js"></script>
+<script src="~/Content/js/demo/form-validation.js"></script>
+
+<!--Nifty Stylesheet [ REQUIRED ]-->
+<link href="~/Content/css/nifty.min.css" rel="stylesheet">
+
+<!--Demo [ DEMONSTRATION ]-->
+<link href="~/Content/css/demo/nifty-demo.min.css" rel="stylesheet">
+
+<link href="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.css" rel="stylesheet">
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.js"></script>
+
+
+@*<script src="~/Content/js/jquery-2.2.4.min.js"></script>
+
+    <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+
+    <script src="~/Content/js/jquery.dataTables.min1.10.10.js"></script>
+    <link href="~/Content/Tables.min.css" rel="stylesheet" />
+    <link href="~/Content/js/JqueryDataRables/jquery.dataTables.min.css" rel="stylesheet" />
+
+    <link href="~/Content/css/EstiloTablasFiltros.css" rel="stylesheet" />*@
+
+
+<script>
+    $(document).ready(function () {
+        debugger
+        $("#myModalReserva").modal("show"); //Para Mostrar el modal
+         ModalProcesandoHiden();
+    });
+
+    function Alerts(menssage, tipo) {
+        //warning,success,error
+        $.niftyNoty({
+            type: tipo,
+            container: "floating",
+            title: menssage,
+            message: "",
+            closeBtn: true,
+            timer: 5000
+        });
+    }
+
+
+    function LiberarManualmente() {
+        $.ajax({
+            type: "POST",
+            url: "/CallCenter/LiberarManualmente",
+            data: {
+                formulario: $("#FormularioReserva").serialize(),
+            },
+            success: function (data) {
+                $('#myModalReserva').modal('toggle');
+                Alerts(data.respuestaTeatro, data.tipoRespuestaTeatro);
+                Alerts(data.respuestaCentral, data.tipoRespuestaCentral);
+            },
+            error: function (data) {
+                $('#myModalReserva').modal('toggle');
+                Alerts(data.respuestaTeatro, data.tipoRespuestaTeatro);
+                Alerts(data.respuestaCentral, data.tipoRespuestaCentral);
+            }
+        });
+    }
+
+    function GuardarReserva() {
+        debugger
+        // var val = $("#FormularioReserva").validate();
+        //if (validator.form()) {
+
+        $.ajax({
+            type: "POST",
+            url: "/CallCenter/GuardarReserva",
+            data: {
+                formulario: $("#FormularioReserva").serialize(),
+            },
+            success: function (data) {
+                $('#myModalReserva').modal('toggle');
+                Alerts(data.respuestaTeatro, data.tipoRespuestaTeatro);
+                Alerts(data.respuestaCentral, data.tipoRespuestaCentral);
+            },
+            error: function (data) {
+                $('#myModalReserva').modal('toggle');
+                Alerts(data.respuestaTeatro, data.tipoRespuestaTeatro);
+                Alerts(data.respuestaCentral, data.tipoRespuestaCentral);
+            }
+        });
+
+        //}
+        //else {
+        //    alert("Ingrese los campos Obligatorios");
+        //}
+    }
+
+</script>
+<style>
+    .form-control {
+        height: inherit;
+    }
+</style>
+
+
+<div class="modal fade" id="myModalReserva" data-backdrop="static" data-keyboard="true" style="overflow: hidden;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <i class="pci-cross pci-circle"></i>
+                </button>
+                @if (Model.RowID != 0)
+                {
+                    <h1>Reserva @Model.CodigoReserva</h1>
+                }
+                else
+                {
+                    <h1>Confirmación Reserva</h1>
+                }
+            </div>
+
+            <div class="modal-body">
+                <form id="FormularioReserva">
+                    <input type="hidden" id="RowID_Reserva" name="RowID_Reserva" value="@Model.RowID" />
+                    <input type="hidden" id="CodigoReserva" name="CodigoReserva" value="@Model.CodigoReserva" />
+                    <input type="hidden" id="DatosSillasSeleccionadas" name="DatosSillasSeleccionadas" value="@ViewBag.DatosSillasSeleccionadas" />
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>*Identificacion Cliente: </label>
+                            <input class="form-control" type="text" name="Identificacion" value="@Model.ClienteID" required />
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>*Nombres Cliente: </label>
+                            <input class="form-control" type="text" name="NombresCliente" value="@Model.NombresCliente" required />
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>*Teléfono Cliente: </label>
+                            <input class="form-control" type="text" name="TelefonoCliente" value="@Model.TelefonoCliente" required />
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label>Estado: </label>
+                            @if (Model.Estado != null)
+                            {
+                                <input class="form-control" type="text" name="Estado" value="@Model.Estado.Nombre" readonly />
+                            }
+                            else
+                            {
+                                <input class="form-control" type="text" name="Estado" value="@Model.Estado" readonly />
+                            }
+                        </div>
+                    </div>
+
+
+                </form>
+                @if (Model.RowID != 0)
+                {
+
+                    <table id="demo-dt-basic" class="table table-striped table-bordered" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px; display:none">ID</th>
+                                <th>Fecha Función</th>
+                                <th>Sala</th>
+                                <th>Función</th>
+                                <th class="min-tablet">Silla</th>
+                                <th>Fecha Reserva</th>
+                                <th class="min-desktop">Fecha Creación</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.Boletas != null)
+                            {
+                                foreach (CinemaPOS.Models.BoletaReservada item in ViewBag.Boletas)
+                                {
+                                    <tr>
+                                        <td style="display: none;">@item.RowID</td>
+                                        <td>@item.Funcion.Fecha.Value.ToShortDateString()</td>
+                                        <td>@item.Funcion.Sala.Nombre</td>
+                                        <td>@item.Funcion.DetallePelicula.EncabezadoPelicula.TituloLocal @item.Funcion.DetallePelicula.Opcion.Codigo - @item.Funcion.DetallePelicula.Opcion1.Codigo</td>
+                                        <td>@item.MapaSala.Columna - @item.MapaSala.Fila</td>
+                                        <td>@item.FechaReserva</td>
+                                        <td>@item.FechaCreacion</td>
+                                        <td><a href="@Url.Action("Teatro","Maestro",new {RowID_Teatro=item.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+            <div class="modal-footer">
+
+                @if (Model.RowID != 0)
+                {
+                    <input class="btn btn-danger" value="Liberar Reserva" onclick="javascript:LiberarManualmente()">
+                }
+                else
+                {
+                    <input class="btn btn-success" value="Confirmar" onclick="javascript:GuardarReserva()">
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var cont = 0;
+
+        var aoColumnDefsType = [
+           //{ "sType": "title-numeric", "aTargets": [3] },
+           //{ "sType": "title-numeric", "aTargets": [7] },
+           { "bSortable": false, "aTargets": [0] }//,
+           //{ "bSortable": false, "aTargets": [8] },
+           //{ "bSortable": false, "aTargets": [9] },
+           //{ "sClass": "center", "aTargets": [2, 3, 4, 5, 6, 7] }
+        ];
+
+        var table = $('#demo-dt-basic').DataTable({
+            "processing": true,
+            "bFilter": true,
+            "bPaginate": true,
+            "info": true,
+            "bDestroy": true,
+            aLengthMenu: [
+                [6],
+                [6]
+            ],
+            "iDisplayLength": 10,
+            "order": [[0, "desc"]],
+            "aoColumnDefs": aoColumnDefsType
+            //"aaSorting": [[2,'desc']]
+        });
+
+        // Apply the search
+        table.columns().every(function () {
+            var that = this;
+
+            $('input', this.footer()).on('keyup change', function () {
+                if (that.search() !== this.value) {
+                    that
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+    });
+</script>

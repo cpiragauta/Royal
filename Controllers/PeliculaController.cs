@@ -383,33 +383,29 @@ namespace CinemaPOS.Controllers.Pelicula
             ObjPelicula = db.EncabezadoPelicula.Where(ep => ep.RowID == RowID_Pelicula).FirstOrDefault();
             if (ObjPelicula != null)
             {
-                if (afiche != null)
-                {
-                    try
-                    {
-                        ruta_fiche = ObjPelicula.TituloLocal + Path.GetExtension(afiche.FileName);
-                        afiche.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Poster_Peliculas/" + ruta_fiche));
-                        ruta_fiche = "Repositorio_Imagenes/Poster_Peliculas/" + ruta_fiche;
-                    }
-                    catch (Exception)
-                    {
-                    }
+                //if (afiche != null)
+                //{
+                //    try
+                //    {
+                //        ruta_fiche = ObjPelicula.TituloLocal + Path.GetExtension(afiche.FileName);
+                //        ruta_fiche = ruta_fiche.Replace(" ", "_").Replace(":","");
+                //        afiche.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Poster_Peliculas/" + ruta_fiche));
+                //        ruta_fiche = "Repositorio_Imagenes/Poster_Peliculas/" + ruta_fiche;
+                //    }
+                //    catch (Exception)
+                //    {
+                //    }
                     
-                }
-                // inserta solamente el afiche en miniatura
-                if (thumbnail != null)
-                {
-                    ruta_thumbnail = ObjPelicula.TituloLocal + "_thumbnail" + Path.GetExtension(thumbnail.FileName);
-                    afiche.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Poster_Peliculas/" + ruta_thumbnail));
-                    ruta_thumbnail = "Repositorio_Imagenes/Poster_Peliculas/" + ruta_thumbnail;
-                }
-                ObjPelicula.Afiche = ruta_fiche;
-                ObjPelicula.Thumbnail = ruta_thumbnail;
-                ObjPelicula.Teaser = formulario["teaser"];
-                ObjPelicula.Trailer = formulario["trailer"];
-                ObjPelicula.FechaModificacion = DateTime.Now;
-                ObjPelicula.ModificadoPor = Session["usuario_creacion"].ToString();
-                db.SaveChanges();
+                //}
+                //// inserta solamente el afiche en miniatura
+                //if (thumbnail != null)
+                //{
+                //    ruta_thumbnail = ObjPelicula.TituloLocal + "_thumbnail" + Path.GetExtension(thumbnail.FileName);
+                //    ruta_thumbnail = ruta_thumbnail.Replace(" ", "_").Replace(":","");
+                //    afiche.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Poster_Peliculas/" + ruta_thumbnail));
+                //    ruta_thumbnail = "Repositorio_Imagenes/Poster_Peliculas/" + ruta_thumbnail;
+                //}
+              
            
 
                 //Actualiza solamente el afiche
@@ -418,11 +414,14 @@ namespace CinemaPOS.Controllers.Pelicula
                     try
                     {
                         ruta_fiche = ObjPelicula.TituloLocal + Path.GetExtension(afiche.FileName);
+                        ruta_fiche = ruta_fiche.Replace(" ", "_").Replace(":","");
                         var path = System.IO.Path.Combine(Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales"), ruta_fiche);
                         path = System.IO.Path.Combine(Server.MapPath("/" + ObjPelicula.Afiche));
                         if (System.IO.File.Exists(path))
                         {
                             System.IO.File.Delete(path);
+                            ObjPelicula.FechaModificacion = DateTime.Now;
+                            ObjPelicula.ModificadoPor = Session["usuario_creacion"].ToString();
                         }
                         afiche.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Poster_Peliculas/" + ruta_fiche));
                     }
@@ -436,16 +435,24 @@ namespace CinemaPOS.Controllers.Pelicula
                 if (thumbnail != null)
                 {
                     ruta_thumbnail = ObjPelicula.TituloLocal + "_thumbnail" + Path.GetExtension(thumbnail.FileName);
+                    ruta_thumbnail = ruta_thumbnail.Replace(" ", "_").Replace(":", "");
                     var path = System.IO.Path.Combine(Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales"), ruta_thumbnail);
-                    path = System.IO.Path.Combine(Server.MapPath("/" + ObjPelicula.Afiche));
+                    path = System.IO.Path.Combine(Server.MapPath("/" + ObjPelicula.Thumbnail));
                     if (System.IO.File.Exists(path))
                     {
                         System.IO.File.Delete(path);
+                        ObjPelicula.FechaModificacion = DateTime.Now;
+                        ObjPelicula.ModificadoPor = Session["usuario_creacion"].ToString();
                     }
-
                     thumbnail.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Poster_Peliculas/" + ruta_thumbnail));
                     ruta_thumbnail = "Repositorio_Imagenes/Poster_Peliculas/" + ruta_thumbnail;
                 }
+
+                ObjPelicula.Afiche = ruta_fiche;
+                ObjPelicula.Thumbnail = ruta_thumbnail;
+                ObjPelicula.Teaser = formulario["teaser"];
+                ObjPelicula.Trailer = formulario["trailer"];                
+                db.SaveChanges();
             }
             #endregion
             return Json(new {tipo_respuesta="success",respuesta="La información ha sido guardada exitosamente" });
