@@ -508,7 +508,7 @@ namespace CinemaPOS.Controllers.Master
                         string clase_posicionX = "posicion_x" + i + "_" + j + "";
                         string clase_posicionY = "posicion_y" + i + "_" + j + "";
                         //clase ="posicion_objeto"+i+"_"+j+"";
-                        Data_Table = Data_Table + " <td style = 'padding:0px;border:solid 1px; WIDTH: 50PX; HEIGHT: 50PX;'  class=" + clase + " onclick = asignar_silla('" + clase + "') ><input type='hidden' name='" + clase_posicionX + "' value=" + i + " /><input type = 'hidden' name='" + clase_posicionY + "' value=" + j + "  />";
+                        Data_Table = Data_Table + " <td style ='padding:0px;border:solid 1px; width:40px;height:40px'  class=" + clase + " onclick = asignar_silla('" + clase + "') ><input type='hidden' name='" + clase_posicionX + "' value=" + i + " /><input type = 'hidden' name='" + clase_posicionY + "' value=" + j + "  />";
 
 
                         if (ObjSala.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault() != null)
@@ -520,7 +520,7 @@ namespace CinemaPOS.Controllers.Master
                             }
                             Data_Table = Data_Table + "<input type ='hidden' class='" + tipoobjeto + "' name='" + clase + "' value=" + ObjSala.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault().ObjetoID + ">";
                             Data_Table = Data_Table + "<strong><small></small ></strong >";
-                            Data_Table = Data_Table + "<img style ='width:50px' src='/" + ObjSala.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault().SalaObjeto.Imagen + "' />";
+                            Data_Table = Data_Table + "<img style ='width:40px' src='/" + ObjSala.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault().SalaObjeto.Imagen + "' />";
 
                         }
                         Data_Table = Data_Table + "</td>";

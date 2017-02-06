@@ -488,18 +488,18 @@ namespace CinemaPOS.Controllers
                 CantidadColumnas = int.Parse(SillaMapa.SalaColumnas.ToString());
                 if (ContadorColumnas== 0)
                 {
-                    Data_Table = Data_Table + "<tr class='fila_" + i + "' style='padding:0px,0px,0px,0px;'>";
+                    Data_Table = Data_Table + "<tr class='fila_" + i + "' style='padding: 0px 0px 0px 0px;height:30px;>";
                     i++;
                 }
                 if (SillaMapa.TipoObjeto=="SILLA")
                 {
                     if (SillaMapa.SillaBloqueada==1)
                     {
-                        Data_Table = Data_Table + " <td id='" + SillaMapa.RowIDSillaMapa + "' class='disabled' style='background: #FF8000;' >";
+                        Data_Table = Data_Table + " <td id='" + SillaMapa.RowIDSillaMapa + "' class='disabled' style='background: #FF8000; padding: 0px 0px 0px 0px;' >";
                     }
                     else if (SillaMapa.SillaVendida==1)
                     {
-                        Data_Table = Data_Table + " <td id='" + SillaMapa.RowIDSillaMapa + "' class='disabled' style='background: #B0BEC5;' >";
+                        Data_Table = Data_Table + " <td id='" + SillaMapa.RowIDSillaMapa + "' class='disabled' style='background: #B0BEC5; padding: 0px 0px 0px 0px;' >";
                     }
                     else
                     {
@@ -508,11 +508,11 @@ namespace CinemaPOS.Controllers
                 }
                 else
                 {
-                    Data_Table = Data_Table + " <td id='" + SillaMapa.RowIDSillaMapa + "'>";
+                    Data_Table = Data_Table + " <td id='" + SillaMapa.RowIDSillaMapa + "' style='padding: 0px 0px 0px 0px;'>";
                 }
                 ContadorColumnas++;
                 Data_Table = Data_Table + "<strong><small>"+SillaMapa.SillaColumna+"&nbsp;"+(SillaMapa.SillaFila+1) +"</small ></strong >";
-                Data_Table = Data_Table + "<img style ='border:none;width:50px' src='/" + SillaMapa.ImagenObjeto + "' />";
+                Data_Table = Data_Table + "<img style ='border:none;width:40px' class='img-sm' src='/" + SillaMapa.ImagenObjeto + "' />";
                 if (ContadorColumnas== CantidadColumnas)
                 {
                     Data_Table = Data_Table + " </tr>";
