@@ -144,16 +144,6 @@
     <Compile Include="Controllers\TvShowController.cs" />
     <Compile Include="Controllers\UsuarioRolController.cs" />
     <Compile Include="Controllers\VentaEmpresarialController.cs" />
-    <Compile Include="DB_9CAC35_cinemaposDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DB_9CAC35_cinemaposDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="DB_9CAC35_cinemaposDataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DB_9CAC35_cinemaposDataSet1.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2466,9 +2456,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Reportes\Summary.pdf" />
-    <Content Include="DB_9CAC35_cinemaposDataSet.xsc">
-      <DependentUpon>DB_9CAC35_cinemaposDataSet.xsd</DependentUpon>
-    </Content>
     <Content Include="Content\font-own\icomoon.eot" />
     <Content Include="Content\font-own\icomoon.ttf" />
     <Content Include="Content\font-own\icomoon.woff" />
@@ -2486,25 +2473,6 @@
     <Content Include="Content\Fuente Royal\FuturaExtraBoldIta.ttf" />
     <Content Include="Content\Fuente Royal\FuturaLighItalic.ttf" />
     <Content Include="Content\Fuente Royal\FuturaLight.ttf" />
-    <None Include="DB_9CAC35_cinemaposDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DB_9CAC35_cinemaposDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="DB_9CAC35_cinemaposDataSet.xss">
-      <DependentUpon>DB_9CAC35_cinemaposDataSet.xsd</DependentUpon>
-    </Content>
-    <Content Include="DB_9CAC35_cinemaposDataSet1.xsc">
-      <DependentUpon>DB_9CAC35_cinemaposDataSet1.xsd</DependentUpon>
-    </Content>
-    <None Include="DB_9CAC35_cinemaposDataSet1.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DB_9CAC35_cinemaposDataSet1.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="DB_9CAC35_cinemaposDataSet1.xss">
-      <DependentUpon>DB_9CAC35_cinemaposDataSet1.xsd</DependentUpon>
-    </Content>
     <None Include="Properties\PublishProfiles\Royal.pubxml" />
     <Content Include="Views\CRM\Actividades.cshtml" />
     <Content Include="Views\CRM\ClienteRoyal.cshtml" />
