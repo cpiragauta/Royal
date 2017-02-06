@@ -18,9 +18,9 @@
         $("#modal-video").modal("hide");
     }
 
-    
 
-   
+
+
     function valida_formularioInformacionGeneral() {
         hasChangue = false;
         var validator = $("#formulario_InfoGeneral").validate();
@@ -44,7 +44,7 @@
                 data= JSON.parse(data);
                 debugger
                 if (data.tipo_respuesta=="success") {
-                    swal("OK", data.respuesta, data.tipo_respuesta); 
+                    swal("OK", data.respuesta, data.tipo_respuesta);
                     $(".RowID_Pelicula").val(data.rowID)
                     jQuery(".Detalle_Pelicula").slideDown();
                     window.location = "/Pelicula/Pelicula/?RowID_Pelicula=" + data.rowID;
@@ -58,7 +58,7 @@
             }
         })
     }
-   
+
 
     function valida_formularioConfiguracion() {
         hasChangue = false;
@@ -83,7 +83,7 @@
                 data= JSON.parse(data);
                 debugger
                 if (data.tipo_respuesta=="success") {
-                    swal("OK", data.respuesta, data.tipo_respuesta); 
+                    swal("OK", data.respuesta, data.tipo_respuesta);
                 }
                 if (data.tipo_respuesta=="warning") {
                     swal("Advertencia",data.respuesta,data.tipo_respuesta);
@@ -118,7 +118,7 @@
                 data= JSON.parse(data);
                 debugger
                 if (data.tipo_respuesta=="success") {
-                    swal("OK", data.respuesta, data.tipo_respuesta); 
+                    swal("OK", data.respuesta, data.tipo_respuesta);
                 }
                 if (data.tipo_respuesta=="warning") {
                     swal("Advertencia",data.respuesta,data.tipo_respuesta);
@@ -137,7 +137,7 @@
             enviar_formularioPorcentajes();
         }
     }
-    
+
     function enviar_formularioPorcentajes() {
         var f = $(this);
         var formData = new FormData(document.getElementById("formulario_Porcentajes"));
@@ -153,7 +153,7 @@
                 data= JSON.parse(data);
                 debugger
                 if (data.tipo_respuesta=="success") {
-                    swal("OK", data.respuesta, data.tipo_respuesta); 
+                    swal("OK", data.respuesta, data.tipo_respuesta);
                 }
                 if (data.tipo_respuesta=="warning") {
                     swal("Advertencia",data.respuesta,data.tipo_respuesta);
@@ -180,7 +180,7 @@
             $(".Detalle_Pelicula").slideUp();
         }
 
-        
+
         $('.solo-numero').keyup(function () {
             this.value = (this.value + '').replace(/[^0-9]/g, '');
         });
@@ -404,7 +404,7 @@
         <div class="panel-control">
             <!--Nav tabs-->
             <ul class="nav nav-tabs">
-                <li class="active" id="TabPrincipal"><a data-toggle="tab" href="#TabInfoGeneral">Información General</a></li>                
+                <li class="active" id="TabPrincipal"><a data-toggle="tab" href="#TabInfoGeneral">Información General</a></li>
                 <li><a data-toggle="tab" href="#TabConfiguracion" id="Tab-Media" class="TabConfiguracion Detalle_Pelicula">Configuración</a></li>
                 <li><a data-toggle="tab" href="#TabMedia" id="Tab-Media" class="TabMedia Detalle_Pelicula">Media</a></li>
                 <li><a data-toggle="tab" href="#TabPorcentajes" id="Tab-Porcentajes" class="TabPorcentajes Detalle_Pelicula">Porcentajes</a></li>
@@ -501,9 +501,9 @@
                                 </div>
                             </div>
                         </div>
-                      
-                       
-                    </div>                          
+
+
+                    </div>
 
                     <div class="row">
 
@@ -649,7 +649,7 @@
                     </div>
 
                     <div class="row">
-                       
+
 
                         <div class="col-sm-6">
                             <div class="form-group">
@@ -762,11 +762,11 @@
                                         </div>
                                     </div>
                                     @*<div class="col-sm-1" style="width: 27.5px;">
-                                    <a href="#" class="close"><i class="ion-ios-close"></i></a>
-                                </div>
-                                <div class="col-sm-1" style="width: 27.5px;">
-                                    <hr class="btn-danger" />
-                                </div>*@
+                                            <a href="#" class="close"><i class="ion-ios-close"></i></a>
+                                        </div>
+                                        <div class="col-sm-1" style="width: 27.5px;">
+                                            <hr class="btn-danger" />
+                                        </div>*@
                                 </div>
                             }
                         }
@@ -842,7 +842,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="control-label">Afiche</label>
-                                
+
 
                                 <div class="fileupload fileupload-new" data-provides="fileupload">
                                     <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
@@ -869,16 +869,16 @@
                                     </div>
                                 </div>
                                 @*<div class="">
-                                    <label class="control-label">Peso Mínimo: 60 KB</label>
-                                    <br />
-                                    <label class="control-label">Peso Máximo: 30 MB</label>
-                                    <br />
-                                    <label class="control-label">Ancho Máximo: 720px</label>
-                                    <br />
-                                    <label class="control-label">Alto Minímo: 400px</label>
-                                    <br />
-                                    <label class="control-label">Alto Máximo: 1200px</label>
-                                </div>*@                                
+                                        <label class="control-label">Peso Mínimo: 60 KB</label>
+                                        <br />
+                                        <label class="control-label">Peso Máximo: 30 MB</label>
+                                        <br />
+                                        <label class="control-label">Ancho Máximo: 720px</label>
+                                        <br />
+                                        <label class="control-label">Alto Minímo: 400px</label>
+                                        <br />
+                                        <label class="control-label">Alto Máximo: 1200px</label>
+                                    </div>*@
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -989,7 +989,7 @@
                         foreach (CinemaPOS.Models.PorcentajeParticipacion porcentajespeliculas in Model.PorcentajeParticipacion)
                         {
                             <div class="controls">
-                               
+
                                 <div class="row ultimo-control">
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -1136,7 +1136,7 @@
             </div>
         </div>
 
-        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="modal-video" data-backdrop="static" data-keyboard="false" style="overflow: hidden;">
@@ -1248,7 +1248,7 @@
         .load(urlWithCont.trim())
         .dialog('open');
     }
-    
+
 
     function ValidarAfiche(obj,widht,height,size) {
         var uploadFile = obj.files[0];
@@ -1279,13 +1279,13 @@
                 console.log(algo2);
                 console.log(this.height.toFixed(0));
                 console.log(this.width.toFixed(0));
-                
-                if (( this.height.toFixed(0) - this.width.toFixed(0) ) <=  (this.width.toFixed(0)/2)) {
+                debugger
+                if (( this.height.toFixed(0)) <  (this.width.toFixed(0)) ){
                     Alerts("La altura de la imagen debe ser mayor al ancho.", "warning")
                     $(this).attr({ value: '' });
                     $(".zoom").find("img").attr({ src: ruta });
                 }
-                
+
                 if (uploadFile.size > 3000000) {
                     Alerts('El peso de la imagen no puede exceder de 3 MB', "warning")
                     $(this).attr({ value: '' });

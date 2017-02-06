@@ -897,5 +897,64 @@ namespace CinemaPOS.Controllers
             objTarjeta = new TarjetaMembresiaClienteRoyal();
             return Json(new { respuesta=respuesta,objetotarjeta=objTarjeta,tipo_respuesta=tipo_respuesta },JsonRequestBehavior.AllowGet);
         }
+        #region CallCenter
+
+
+        [CheckSessionOutAttribute]
+        public ActionResult ConfirmaReserva(string RowIdCallCenter, FormCollection formulario, String DatosSillasSeleccionadas, int? RowIDTeatro)
+        {
+            /**/
+            ViewBag.DatosSillasSeleccionadas = DatosSillasSeleccionadas;
+            if (!String.IsNullOrEmpty(RowIdCallCenter))
+            {
+                if (RowIDTeatro != null)
+                {
+                    String cadena = db.Teatro.FirstOrDefault(f => f.RowID == RowIDTeatro).CadenaBD;
+                    db.Database.Connection.ConnectionString = cadena;
+                }
+                Reserva reserva;
+                //Busco por Codigo Reserva 
+                reserva = db.Reserva.FirstOrDefault(f => f.CodigoReserva.Equals(RowIdCallCenter));
+
+                //Busco Por Telefono
+                if (reserva == null)
+                {
+                    reserva = db.Reserva.FirstOrDefault(f => f.TelefonoCliente.Equals(RowIdCallCenter));
+                    ViewBag.Boletas = db.BoletaReservada.Where(f => f.ReservaID == reserva.RowID).ToList();
+                }
+                if (reserva == null)
+                {
+                    reserva = new Reserva();
+                }
+                return View(reserva);
+            }
+            return View(new Reserva());
+        }
+
+        private FormCollection DeSerialize(FormCollection formulario)
+        {
+            FormCollection collection = new FormCollection();
+            //un-encode, and add spaces back in
+            string querystring = Uri.UnescapeDataString(formulario["formulario"]).Replace("+", " ");
+            var split = querystring.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
+            Dictionary<string, string> items = new Dictionary<string, string>();
+            foreach (string s in split)
+            {
+                string text = s.Substring(0, s.IndexOf("="));
+                string value = s.Substring(s.IndexOf("=") + 1);
+
+                if (items.Keys.Contains(text))
+                    items[text] = items[text] + "," + value;
+                else
+                    items.Add(text, value);
+            }
+            foreach (var i in items)
+            {
+                collection.Add(i.Key, i.Value);
+            }
+            return collection;
+        }
+
+        #endregion
     }
 }

@@ -25,8 +25,12 @@ namespace CinemaPOS.Models
         public Nullable<System.DateTime> FechaCreacion { get; set; }
         public string ModificadoPor { get; set; }
         public Nullable<System.DateTime> FechaModificacion { get; set; }
+        public int ReservaID { get; set; }
+        public Nullable<int> EstadoID { get; set; }
     
+        public virtual Estado Estado { get; set; }
         public virtual Funcion Funcion { get; set; }
+        public virtual Reserva Reserva { get; set; }
         public virtual MapaSala MapaSala { get; set; }
         public virtual Taquilla Taquilla { get; set; }
         public virtual ListaDetalle ListaDetalle { get; set; }
