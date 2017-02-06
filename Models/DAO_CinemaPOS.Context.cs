@@ -98,6 +98,9 @@ namespace CinemaPOS.Models
         public virtual DbSet<GrupoDias> GrupoDias { get; set; }
         public virtual DbSet<ProductoVendido> ProductoVendido { get; set; }
         public virtual DbSet<TvShowListaPrecios> TvShowListaPrecios { get; set; }
+        public virtual DbSet<BoletaReservada> BoletaReservada { get; set; }
+        public virtual DbSet<Reserva> Reserva { get; set; }
+        public virtual DbSet<BloqueoSillaslol> BloqueoSillaslol { get; set; }
     
         public virtual int Eliminar_sillas_sala(Nullable<int> rowIDSala)
         {
@@ -237,6 +240,19 @@ namespace CinemaPOS.Models
                 new ObjectParameter("funcion", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VerMapaVenta_Result>("VerMapaVenta", funcionParameter);
+        }
+    
+        public virtual int Sp_Integracion_Crear_Tercero(string tipoTercero, string identificacion)
+        {
+            var tipoTerceroParameter = tipoTercero != null ?
+                new ObjectParameter("TipoTercero", tipoTercero) :
+                new ObjectParameter("TipoTercero", typeof(string));
+    
+            var identificacionParameter = identificacion != null ?
+                new ObjectParameter("Identificacion", identificacion) :
+                new ObjectParameter("Identificacion", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Sp_Integracion_Crear_Tercero", tipoTerceroParameter, identificacionParameter);
         }
     }
 }

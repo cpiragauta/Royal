@@ -15,7 +15,7 @@ namespace CinemaPOS.Controllers.Pelicula
         [CheckSessionOutAttribute]
         public ActionResult Pelicula(int? RowID_Pelicula)
         {
-            ViewBag.Distribuidor = db.Tercero.Where(t => t.Opcion2.Codigo == "DISTRIBUIDOR" && t.Activo == true).ToList();
+            ViewBag.Distribuidor = db.Tercero.Where(t => t.Opcion2.Codigo == "EMPRESA" && t.Activo == true).ToList();
             ViewBag.Pais = db.Pais.ToList();
             ViewBag.Clasificacion = db.Opcion.Where(c => c.Tipo.Codigo == "TIPOCLASIFICACIONPELICULA" && c.Activo == true).ToList();
             ViewBag.Version = db.Opcion.Where(c => c.Tipo.Codigo == "TIPOVERSION" && c.Activo == true).ToList();

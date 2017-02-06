@@ -14,7 +14,12 @@ namespace CinemaPOS.Models
     
     public partial class Reserva
     {
-        public long RowID { get; set; }
+        public Reserva()
+        {
+            this.BoletaReservada = new HashSet<BoletaReservada>();
+        }
+    
+        public int RowID { get; set; }
         public string CodigoReserva { get; set; }
         public string ClienteID { get; set; }
         public string NombresCliente { get; set; }
@@ -26,6 +31,8 @@ namespace CinemaPOS.Models
         public string ModificadoPor { get; set; }
         public Nullable<System.DateTime> FechaModificacion { get; set; }
     
+        public virtual ICollection<BoletaReservada> BoletaReservada { get; set; }
         public virtual Estado Estado { get; set; }
+        public virtual Estado Estado1 { get; set; }
     }
 }
