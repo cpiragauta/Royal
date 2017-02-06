@@ -904,6 +904,7 @@ namespace CinemaPOS.Controllers
         public ActionResult ConfirmaReserva(string RowIdCallCenter, FormCollection formulario, String DatosSillasSeleccionadas, int? RowIDTeatro)
         {
             /**/
+            RowIdCallCenter = RowIdCallCenter.TrimStart('\'').TrimEnd('\'');
             ViewBag.DatosSillasSeleccionadas = DatosSillasSeleccionadas;
             if (!String.IsNullOrEmpty(RowIdCallCenter))
             {
@@ -920,11 +921,14 @@ namespace CinemaPOS.Controllers
                 if (reserva == null)
                 {
                     reserva = db.Reserva.FirstOrDefault(f => f.TelefonoCliente.Equals(RowIdCallCenter));
-                    ViewBag.Boletas = db.BoletaReservada.Where(f => f.ReservaID == reserva.RowID).ToList();
                 }
                 if (reserva == null)
                 {
                     reserva = new Reserva();
+                }
+                else
+                {
+                    ViewBag.Boletas = db.BoletaReservada.Where(f => f.ReservaID == reserva.RowID).ToList();
                 }
                 return View(reserva);
             }

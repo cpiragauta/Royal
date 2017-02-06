@@ -135,8 +135,8 @@ namespace CinemaPOS.Controllers
                     objBoletaReserva.SillaID = RowIDSilla;
                     objBoletaReserva.FechaReserva = DateTime.Now;
                     objBoletaReserva.FechaCreacion = DateTime.Now;
-                    //objBoletaReserva.TaquillaID = taquillas.RowID;
-                    objBoletaReserva.TaquillaID = 53;
+                    objBoletaReserva.TaquillaID = taquillas.RowID;
+                    //objBoletaReserva.TaquillaID = 53;
                     objBoletaReserva.UsuarioID = usuariotaquilla.RowID;
                     objBoletaReserva.ReservaID = reserva.RowID;
                     objBoletaReserva.CreadoPor = "CallCenter";

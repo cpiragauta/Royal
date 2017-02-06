@@ -3,6 +3,7 @@
     Layout = null;
 }
 
+@using System.Globalization;
 
 @*jksfbjksdbfkjsdbksf*@
 <!--Demo script [ DEMONSTRATION ]-->
@@ -182,6 +183,7 @@
                                 <th>Sala</th>
                                 <th>Función</th>
                                 <th class="min-tablet">Silla</th>
+                                <th class="min-tablet">Estado</th>
                                 <th>Fecha Reserva</th>
                                 <th class="min-desktop">Fecha Creación</th>
                                 <th></th>
@@ -189,21 +191,29 @@
                         </thead>
                         <tbody>
                             @if (ViewBag.Boletas != null)
-                            {
-                                foreach (CinemaPOS.Models.BoletaReservada item in ViewBag.Boletas)
-                                {
-                                    <tr>
-                                        <td style="display: none;">@item.RowID</td>
-                                        <td>@item.Funcion.Fecha.Value.ToShortDateString()</td>
-                                        <td>@item.Funcion.Sala.Nombre</td>
-                                        <td>@item.Funcion.DetallePelicula.EncabezadoPelicula.TituloLocal @item.Funcion.DetallePelicula.Opcion.Codigo - @item.Funcion.DetallePelicula.Opcion1.Codigo</td>
-                                        <td>@item.MapaSala.Columna - @item.MapaSala.Fila</td>
-                                        <td>@item.FechaReserva</td>
-                                        <td>@item.FechaCreacion</td>
-                                        <td><a href="@Url.Action("Teatro","Maestro",new {RowID_Teatro=item.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
-                                    </tr>
-                                }
-                            }
+{
+    foreach (CinemaPOS.Models.BoletaReservada item in ViewBag.Boletas)
+    {
+        <tr>
+            <td style="display: none;">@item.RowID</td>
+            @{string Hora_Funcion = DateTime.Parse(item.Funcion.HoraInicial.ToString()).ToString("hh:mm tt", CultureInfo.InvariantCulture);}
+
+            <td>@item.Funcion.Fecha.Value.ToShortDateString() - @Hora_Funcion</td>
+            <td>@item.Funcion.Sala.Nombre</td>
+            <td>@item.Funcion.DetallePelicula.EncabezadoPelicula.TituloLocal @item.Funcion.DetallePelicula.Opcion.Codigo - @item.Funcion.DetallePelicula.Opcion1.Codigo</td>
+            <td>@item.MapaSala.Columna - @item.MapaSala.Fila</td>
+            <td>
+                @if (item.Estado != null)
+                {
+                    @item.Estado.Nombre
+                }
+            </td>
+            <td>@item.FechaReserva</td>
+            <td>@item.FechaCreacion</td>
+            <td><a href="@Url.Action("Teatro","Maestro",new {RowID_Teatro=item.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
+        </tr>
+    }
+}
                         </tbody>
                     </table>
                 }

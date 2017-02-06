@@ -109,7 +109,7 @@
         if (validator.form()) {
             debugger
             ModalProcesandoShow();
-            var urlWithCont = '../../POS/ConfirmaReserva?RowIdCallCenter=' + $("#codigoReserva").val() + "&RowIDTeatro=" + $("#teatro").val();
+            var urlWithCont = '../../POS/ConfirmaReserva?RowIdCallCenter=' + "'" + $("#codigoReserva").val() + "'" + "&RowIDTeatro=" + $("#teatro").val();
             console.log(urlWithCont);
             $("#DialogReserva").load(urlWithCont.trim())
         }
