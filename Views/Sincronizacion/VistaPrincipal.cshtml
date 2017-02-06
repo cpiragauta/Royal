@@ -1,66 +1,176 @@
-﻿@*@@model IEnumerable<CinemaPOS.Models.SincronizacionMaestros>*@
+﻿
+@{
+    ViewBag.Title = "Vista Principal Sincronización";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+
+<script src="~/Content/js/jquery-2.2.4.min.js"></script>
+
+<script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+
+<script src="~/Content/js/jquery.dataTables.min1.10.10.js"></script>
+<link href="~/Content/Tables.min.css" rel="stylesheet" />
+<link href="~/Content/js/JqueryDataRables/jquery.dataTables.min.css" rel="stylesheet" />
 
 
-    @{
-        ViewBag.Title = "Vista Principal";
-        Layout = "~/Views/Inicio/Diseño.cshtml";
+<link href="~/Content/css/EstiloTablasFiltros.css" rel="stylesheet" />
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Vista Principal</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label">Teatro:*</label>
+                    <select name="Teatro" id="Teatro" class="form-control chosen" required>
+                        <option value="" disabled selected>Seleccione una opción:</option>
+                        @foreach (CinemaPOS.Models.Teatro item in ViewBag.ListaTeatro)
+                        {
+                            <option value="@item.RowID">@item.Nombre  - @item.Ciudad.Nombre</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+            <input class="btn btn-success mar-all" type="submit" value="Sincronizar Opciones" onclick="SincronizarOpciones()">
+            <input class="btn btn-success mar-all" type="submit" value="Sincronizar Estados" onclick="SincronizarEstados()">
+            <input class="btn btn-success mar-all" type="submit" value="Sincronizar Ciudades" onclick="SincronizarCiudades()">
+            <input class="btn btn-success mar-all" type="submit" value="Sincronizar Terceros" onclick="SincronizarTerceros()">
+            <input class="btn btn-success mar-all" type="submit" value="Sincronizar Teatros" onclick="SincronizarTeatros()">
+            <input class="btn btn-success mar-all" type="submit" value="Sincronizar Usuarios" onclick="SincronizarUsuarios()">
+            <input class="btn btn-success mar-all" type="submit" value="Sincronizar Lista Precios" onclick="SincronizarListas()">
+            <input class="btn btn-success mar-all" type="submit" value="Sincronizar Salas" onclick="SincronizarSalas()">
+
+        @if (ViewBag.listaHistorioco != null)
+        {
+            <table id="demo-dt-basic" class="table table-striped table-bordered table-funcion" cellspacing="0" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="width: 10px; display:none">ID</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Registros</th>
+                        <th>Respuesta</th>
+                        <th>Sincronizó</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th style="display: none;padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="ID" placeholder="Buscar ID"></th>
+                        <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Fecha_Inicio" placeholder="Buscar Fecha Inicio"></th>
+                        <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Fecha_Fin" placeholder="Buscar Fecha Fin"></th>
+                        <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Registros" placeholder="Buscar Registros"></th>
+                        <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Respuesta" placeholder="Buscar Respuesta"></th>
+                        <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Sincronizo" placeholder="Buscar Sincronizó"></th>
+                    </tr>
+                </tfoot>
+                <tbody>
+
+                    @foreach (CinemaPOS.Models.HistoricolLog item in ViewBag.listaHistorioco)
+                    {
+
+                        <tr>
+                            <td style="display: none;">@item.RowID</td>
+                            <td>@item.FechaInicio</td>
+                            <td>@item.FechaFin</td>
+                            <td>@item.Registros</td>
+                            <td>@item.Respuesta</td>
+                            <td>@item.Sincronizo</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+</div>
+
+
+<script>
+
+    function SincronizarListas() {
+        if ($("#Teatro").val() != null) {
+            $.ajax({
+                type: "POST",
+                url: "/Sincronizacion/SincronizarListas",
+                data: {
+                    RowIdTeatro: $("#Teatro").val(),
+                },
+                success: function (data) {
+                    alert(data, "success");
+                },
+                error: function (data) {
+                    alert(data, "error");
+                }
+            });
+        } else {
+            alert("Seleccione Teatro");
+        }
     }
-    <head>
-        <!--jQuery [ REQUIRED ]-->
-        <script src="~/Content/js/jquery-2.2.4.min.js"></script>
-        <!--DataTables [ OPTIONAL ]-->
-        <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
-        <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
-        <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
-        <!--DataTables Sample [ SAMPLE ]-->
-        <script src="~/Content/js/demo/tables-datatables.js"></script>
-    </head>
 
-    <script>
     function SincronizarUsuarios() {
         $.ajax({
             type: "POST",
-            url: "/Sincronizacion/SincronizarUsuariosDesdeCentral",
+            url: "/Sincronizacion/SincronizarUsuarios",
             data: {
+                RowIdTeatro: $("#Teatro").val(),
             },
             success: function (data) {
-                debugger
-                Alerts(data, "success");
+                alert(data, "success");
             },
             error: function (data) {
-                Alerts(data, "error");
+                alert(data, "error");
             }
         });
     }
 
-    function SincronizarSalas() {
+    function SincronizarCiudades() {
         $.ajax({
             type: "POST",
-            url: "/Sincronizacion/SincronizarSalasDesdeCentral",
+            url: "/Sincronizacion/SincronizarCiudades",
             data: {
+                RowIdTeatro: $("#Teatro").val(),
             },
             success: function (data) {
-                Alerts(data, "success");
+                alert(data, "success");
             },
             error: function (data) {
-                Alerts(data, "error");
+                alert(data, "error");
             }
         });
     }
 
-    function SincronizarTeatros() {
+    function SincronizarEstados() {
         $.ajax({
             type: "POST",
-            url: "/Sincronizacion/Sincronizarteatroscentral",
+            url: "/Sincronizacion/SincronizarEstados",
             data: {
+                RowIdTeatro: $("#Teatro").val(),
             },
             success: function (data) {
-                Alerts(data, "success");
-                window.location = "/Sincronizacion/VistaPrincipal"
-
+                alert(data, "success");
             },
             error: function (data) {
-                Alerts(data, "error");
+                alert(data, "error");
+            }
+        });
+    }
+
+    function SincronizarOpciones() {
+        $.ajax({
+            type: "POST",
+            url: "/Sincronizacion/SincronizarOpciones",
+            data: {
+                RowIdTeatro: $("#Teatro").val(),
+            },
+            success: function (data) {
+                alert(data, "success");
+            },
+            error: function (data) {
+                alert(data, "error");
             }
         });
     }
@@ -68,75 +178,93 @@
     function SincronizarTerceros() {
         $.ajax({
             type: "POST",
-            url: "/Sincronizacion/SincronizacionTerceros",
+            url: "/Sincronizacion/SincronizarTerceros",
             data: {
+                RowIdTeatro: $("#Teatro").val(),
             },
             success: function (data) {
-                Alerts(data, "success");
-
+                alert(data, "success");
             },
             error: function (data) {
-                Alerts(data, "error");
+                alert(data, "error");
             }
         });
     }
 
-    function SincronizarTaquillas() {
+    function SincronizarTeatros() {
         $.ajax({
             type: "POST",
-            url: "/Sincronizacion/SincronizacionTaquillas",
+            url: "/Sincronizacion/SincronizarTeatros",
             data: {
+                RowIdTeatro: $("#Teatro").val(),
             },
             success: function (data) {
-                Alerts(data, "success");
-
+                alert(data, "success");
             },
             error: function (data) {
-                Alerts(data, "error");
+                alert(data, "error");
             }
         });
     }
-    </script>
 
-    <div class="panel">
-        <div class="panel-heading">
-            <h3 class="panel-title">Vista Principal</h3>
-        </div>
-        <div class="panel-body">
-            <div class="panel-body">
-                <input class="btn btn-success" type="submit" value="Sincronizar Usuarios" onclick="SincronizarUsuarios()">
-                <input class="btn btn-success" type="submit" value="Sincronizar Salas" onclick="SincronizarSalas()">
-                <input class="btn btn-success" type="submit" value="Sincronizar Teatros" onclick="SincronizarTeatros()">
-                <input class="btn btn-success" type="submit" value="Sincronizar Terceros" onclick="SincronizarTerceros()">
-                <input class="btn btn-success" type="submit" value="Sincronizar Taquillas" onclick="SincronizarTaquillas()">
-            </div>
-            <table id="demo-dt-basic" class="table table-striped table-bordered table-funcion" cellspacing="0" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>RowID</th>
-                        <th>RowIDCentral</th>
-                        <th>EntidadCentral</th>
-                        <th>RowIDLocal</th>
-                        <th>EntidadLocal</th>
-                        <th>Sincronizado Por</th>
-                        <th>Fecha Sincronización</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @*@foreach (CinemaPOS.Models.SincronizacionMaestros item in Model)
-                    {
-                        <tr>
-                            <td>@item.RowID</td>
-                            <td>@item.RowIDCentral</td>
-                            <td>@item.EntidadCentral</td>
-                            <td>@item.RowIDLocal</td>
-                            <td>@item.EntidadLocal</td>
-                            <td>@item.SincronizadoPor</td>
-                            <td>@item.FechaSincronizacion</td>
-                            <td>@item.</td>
-                        </tr>
-                    }*@
-                </tbody>
-            </table>
-        </div>
-    </div>
+    function SincronizarSalas() {
+        $.ajax({
+            type: "POST",
+            url: "/Sincronizacion/SincronizarSalas",
+            data: {
+                RowIdTeatro: $("#Teatro").val(),
+            },
+            success: function (data) {
+                alert(data, "success");
+            },
+            error: function (data) {
+                alert(data, "error");
+            }
+        });
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        
+        var cont = 0;
+
+        var aoColumnDefsType = [
+           //{ "sType": "title-numeric", "aTargets": [3] },
+           //{ "sType": "title-numeric", "aTargets": [7] },
+           { "bSortable": false, "aTargets": [0] }//,
+           //{ "bSortable": false, "aTargets": [8] },
+           //{ "bSortable": false, "aTargets": [9] },
+           //{ "sClass": "center", "aTargets": [2, 3, 4, 5, 6, 7] }
+        ];
+
+        var table = $('#demo-dt-basic').DataTable({
+            "processing": true,
+            "bFilter": true,
+            "bPaginate": true,
+            "info": true,
+            "bDestroy": true,
+            aLengthMenu: [
+                [6],
+                [6]
+            ],
+            "iDisplayLength": 10,
+            "order": [[0, "desc"]],
+            "aoColumnDefs": aoColumnDefsType
+            //"aaSorting": [[2,'desc']]
+        });
+
+        // Apply the search
+        table.columns().every(function () {
+            var that = this;
+
+            $('input', this.footer()).on('keyup change', function () {
+                if (that.search() !== this.value) {
+                    that
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+    });
+</script>

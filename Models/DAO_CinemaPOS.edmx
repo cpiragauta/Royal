@@ -4628,9 +4628,17 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
             <End Role="ProductoVendido" EntitySet="ProductoVendido" />
           </AssociationSet>
           <EntitySet Name="TvShowListaPrecios" EntityType="CinemaPOSModel.TvShowListaPrecios" />
+          <EntitySet Name="BloqueoSillaslol" EntityType="CinemaPOSModel.BloqueoSillaslol" />
+          <AssociationSet Name="FK__ListaEnca__Estad__3E2826D9" Association="CinemaPOSModel.FK__ListaEnca__Estad__3E2826D9">
+            <End Role="Estado" EntitySet="Estado" />
+            <End Role="ListaEncabezado" EntitySet="ListaEncabezado" />
+          </AssociationSet>
+          <FunctionImport Name="Sp_Integracion_Crear_Tercero">
+            <Parameter Name="TipoTercero" Mode="In" Type="String" />
+            <Parameter Name="Identificacion" Mode="In" Type="String" />
+          </FunctionImport>
           <EntitySet Name="BoletaReservada" EntityType="CinemaPOSModel.BoletaReservada" />
           <EntitySet Name="Reserva" EntityType="CinemaPOSModel.Reserva" />
-          <EntitySet Name="BloqueoSillaslol" EntityType="CinemaPOSModel.BloqueoSillaslol" />
           <AssociationSet Name="FK__BoletaRes__Estad__3F1C4B12" Association="CinemaPOSModel.FK__BoletaRes__Estad__3F1C4B12">
             <End Role="Estado" EntitySet="Estado" />
             <End Role="BoletaReservada" EntitySet="BoletaReservada" />
@@ -4667,14 +4675,6 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
             <End Role="Estado" EntitySet="Estado" />
             <End Role="Reserva" EntitySet="Reserva" />
           </AssociationSet>
-          <AssociationSet Name="FK__ListaEnca__Estad__3E2826D9" Association="CinemaPOSModel.FK__ListaEnca__Estad__3E2826D9">
-            <End Role="Estado" EntitySet="Estado" />
-            <End Role="ListaEncabezado" EntitySet="ListaEncabezado" />
-          </AssociationSet>
-          <FunctionImport Name="Sp_Integracion_Crear_Tercero">
-            <Parameter Name="TipoTercero" Mode="In" Type="String" />
-            <Parameter Name="Identificacion" Mode="In" Type="String" />
-          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -4962,10 +4962,10 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <NavigationProperty Name="Teatro" Relationship="CinemaPOSModel.FK__Teatro__EstadoID__76818E95" FromRole="Estado" ToRole="Teatro" />
           <NavigationProperty Name="MapaSala" Relationship="CinemaPOSModel.FK__Silla__EstadoID__7D439ABD" FromRole="Estado" ToRole="MapaSala" />
           <NavigationProperty Name="ControlCajaUsuarioEntrega" Relationship="CinemaPOSModel.FK__ControlCa__Estad__1C0818FF" FromRole="Estado" ToRole="ControlCajaUsuarioEntrega" />
+          <NavigationProperty Name="ListaEncabezado" Relationship="CinemaPOSModel.FK__ListaEnca__Estad__3E2826D9" FromRole="Estado" ToRole="ListaEncabezado" />
           <NavigationProperty Name="BoletaReservada" Relationship="CinemaPOSModel.FK__BoletaRes__Estad__3F1C4B12" FromRole="Estado" ToRole="BoletaReservada" />
           <NavigationProperty Name="Reserva" Relationship="CinemaPOSModel.FK__Reserva__EstadoI__396371BC" FromRole="Estado" ToRole="Reserva" />
           <NavigationProperty Name="Reserva1" Relationship="CinemaPOSModel.FK__Reserva__EstadoI__3B4BBA2E" FromRole="Estado" ToRole="Reserva" />
-          <NavigationProperty Name="ListaEncabezado" Relationship="CinemaPOSModel.FK__ListaEnca__Estad__3E2826D9" FromRole="Estado" ToRole="ListaEncabezado" />
         </EntityType>
         <EntityType Name="Impuesto">
           <Key>
@@ -7956,6 +7956,43 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <Property Name="RowIDGrupoDias" Type="Int32" />
           <Property Name="GrupoDias" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="BloqueoSillaslol">
+          <Key>
+            <PropertyRef Name="RowIDObjeto" />
+            <PropertyRef Name="TipoObjeto" />
+            <PropertyRef Name="RowIDSala" />
+            <PropertyRef Name="RowIDSillaMapa" />
+            <PropertyRef Name="SillaVendida" />
+          </Key>
+          <Property Name="RowIDObjeto" Type="Int32" Nullable="false" />
+          <Property Name="NombreObjeto" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ImagenObjeto" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="NumeracionObjeto" Type="Boolean" />
+          <Property Name="TipoObjeto" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RowIDServicioObjeto" Type="Int32" />
+          <Property Name="NombreServicioObjeto" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RowIDSala" Type="Int32" Nullable="false" />
+          <Property Name="NombreSala" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="RowIDSillaMapa" Type="Int32" Nullable="false" />
+          <Property Name="SalaFilas" Type="Int32" />
+          <Property Name="SalaColumnas" Type="Int32" />
+          <Property Name="SillaColumna" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="SillaFila" Type="Int16" />
+          <Property Name="PermitirBloqueo" Type="Int32" />
+          <Property Name="SillaVendida" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__ListaEnca__Estad__3E2826D9">
+          <End Type="CinemaPOSModel.Estado" Role="Estado" Multiplicity="0..1" />
+          <End Type="CinemaPOSModel.ListaEncabezado" Role="ListaEncabezado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estado">
+              <PropertyRef Name="RowID" />
+            </Principal>
+            <Dependent Role="ListaEncabezado">
+              <PropertyRef Name="EstadoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="BoletaReservada">
           <Key>
             <PropertyRef Name="RowID" />
@@ -7999,31 +8036,6 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <NavigationProperty Name="BoletaReservada" Relationship="CinemaPOSModel.FK__BoletaRes__Reser__3C3FDE67" FromRole="Reserva" ToRole="BoletaReservada" />
           <NavigationProperty Name="Estado" Relationship="CinemaPOSModel.FK__Reserva__EstadoI__396371BC" FromRole="Reserva" ToRole="Estado" />
           <NavigationProperty Name="Estado1" Relationship="CinemaPOSModel.FK__Reserva__EstadoI__3B4BBA2E" FromRole="Reserva" ToRole="Estado" />
-        </EntityType>
-        <EntityType Name="BloqueoSillaslol">
-          <Key>
-            <PropertyRef Name="RowIDObjeto" />
-            <PropertyRef Name="TipoObjeto" />
-            <PropertyRef Name="RowIDSala" />
-            <PropertyRef Name="RowIDSillaMapa" />
-            <PropertyRef Name="SillaVendida" />
-          </Key>
-          <Property Name="RowIDObjeto" Type="Int32" Nullable="false" />
-          <Property Name="NombreObjeto" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="ImagenObjeto" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="NumeracionObjeto" Type="Boolean" />
-          <Property Name="TipoObjeto" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="RowIDServicioObjeto" Type="Int32" />
-          <Property Name="NombreServicioObjeto" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="RowIDSala" Type="Int32" Nullable="false" />
-          <Property Name="NombreSala" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
-          <Property Name="RowIDSillaMapa" Type="Int32" Nullable="false" />
-          <Property Name="SalaFilas" Type="Int32" />
-          <Property Name="SalaColumnas" Type="Int32" />
-          <Property Name="SillaColumna" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
-          <Property Name="SillaFila" Type="Int16" />
-          <Property Name="PermitirBloqueo" Type="Int32" />
-          <Property Name="SillaVendida" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK__BoletaRes__Estad__3F1C4B12">
           <End Type="CinemaPOSModel.Estado" Role="Estado" Multiplicity="0..1" />
@@ -8129,18 +8141,6 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
               <PropertyRef Name="RowID" />
             </Principal>
             <Dependent Role="Reserva">
-              <PropertyRef Name="EstadoID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ListaEnca__Estad__3E2826D9">
-          <End Type="CinemaPOSModel.Estado" Role="Estado" Multiplicity="0..1" />
-          <End Type="CinemaPOSModel.ListaEncabezado" Role="ListaEncabezado" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Estado">
-              <PropertyRef Name="RowID" />
-            </Principal>
-            <Dependent Role="ListaEncabezado">
               <PropertyRef Name="EstadoID" />
             </Dependent>
           </ReferentialConstraint>
@@ -9540,6 +9540,29 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="BloqueoSillaslol">
+            <EntityTypeMapping TypeName="CinemaPOSModel.BloqueoSillaslol">
+              <MappingFragment StoreEntitySet="BloqueoSillaslol">
+                <ScalarProperty Name="SillaVendida" ColumnName="SillaVendida" />
+                <ScalarProperty Name="PermitirBloqueo" ColumnName="PermitirBloqueo" />
+                <ScalarProperty Name="SillaFila" ColumnName="SillaFila" />
+                <ScalarProperty Name="SillaColumna" ColumnName="SillaColumna" />
+                <ScalarProperty Name="SalaColumnas" ColumnName="SalaColumnas" />
+                <ScalarProperty Name="SalaFilas" ColumnName="SalaFilas" />
+                <ScalarProperty Name="RowIDSillaMapa" ColumnName="RowIDSillaMapa" />
+                <ScalarProperty Name="NombreSala" ColumnName="NombreSala" />
+                <ScalarProperty Name="RowIDSala" ColumnName="RowIDSala" />
+                <ScalarProperty Name="NombreServicioObjeto" ColumnName="NombreServicioObjeto" />
+                <ScalarProperty Name="RowIDServicioObjeto" ColumnName="RowIDServicioObjeto" />
+                <ScalarProperty Name="TipoObjeto" ColumnName="TipoObjeto" />
+                <ScalarProperty Name="NumeracionObjeto" ColumnName="NumeracionObjeto" />
+                <ScalarProperty Name="ImagenObjeto" ColumnName="ImagenObjeto" />
+                <ScalarProperty Name="NombreObjeto" ColumnName="NombreObjeto" />
+                <ScalarProperty Name="RowIDObjeto" ColumnName="RowIDObjeto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Sp_Integracion_Crear_Tercero" FunctionName="CinemaPOSModel.Store.Sp_Integracion_Crear_Tercero" />
           <EntitySetMapping Name="BoletaReservada">
             <EntityTypeMapping TypeName="CinemaPOSModel.BoletaReservada">
               <MappingFragment StoreEntitySet="BoletaReservada">
@@ -9576,29 +9599,6 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="BloqueoSillaslol">
-            <EntityTypeMapping TypeName="CinemaPOSModel.BloqueoSillaslol">
-              <MappingFragment StoreEntitySet="BloqueoSillaslol">
-                <ScalarProperty Name="SillaVendida" ColumnName="SillaVendida" />
-                <ScalarProperty Name="PermitirBloqueo" ColumnName="PermitirBloqueo" />
-                <ScalarProperty Name="SillaFila" ColumnName="SillaFila" />
-                <ScalarProperty Name="SillaColumna" ColumnName="SillaColumna" />
-                <ScalarProperty Name="SalaColumnas" ColumnName="SalaColumnas" />
-                <ScalarProperty Name="SalaFilas" ColumnName="SalaFilas" />
-                <ScalarProperty Name="RowIDSillaMapa" ColumnName="RowIDSillaMapa" />
-                <ScalarProperty Name="NombreSala" ColumnName="NombreSala" />
-                <ScalarProperty Name="RowIDSala" ColumnName="RowIDSala" />
-                <ScalarProperty Name="NombreServicioObjeto" ColumnName="NombreServicioObjeto" />
-                <ScalarProperty Name="RowIDServicioObjeto" ColumnName="RowIDServicioObjeto" />
-                <ScalarProperty Name="TipoObjeto" ColumnName="TipoObjeto" />
-                <ScalarProperty Name="NumeracionObjeto" ColumnName="NumeracionObjeto" />
-                <ScalarProperty Name="ImagenObjeto" ColumnName="ImagenObjeto" />
-                <ScalarProperty Name="NombreObjeto" ColumnName="NombreObjeto" />
-                <ScalarProperty Name="RowIDObjeto" ColumnName="RowIDObjeto" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="Sp_Integracion_Crear_Tercero" FunctionName="CinemaPOSModel.Store.Sp_Integracion_Crear_Tercero" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

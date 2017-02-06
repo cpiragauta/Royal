@@ -128,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AdminTeatroController.cs" />
+    <Compile Include="Controllers\CallCenterController.cs" />
     <Compile Include="Controllers\ConveniosCuponesController.cs" />
     <Compile Include="Controllers\CRMController.cs" />
     <Compile Include="Controllers\Cuenta\CuentaController.cs" />
@@ -153,11 +154,15 @@
     <Compile Include="Models\Actividades.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BloqueoSillaslol.cs" />
+    <Compile Include="Models\BloqueoSillaslol.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BloqueoSillas_Result.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BoletaReservada.cs" />
+    <Compile Include="Models\BoletaReservada.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BoletasVendidas.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -309,7 +314,9 @@
     <Compile Include="Models\ProductoVendido.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Reserva.cs" />
+    <Compile Include="Models\Reserva.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Rol.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -398,8 +405,8 @@
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoyalSync.asmx.cs">
-      <DependentUpon>RoyalSync.asmx</DependentUpon>
+    <Compile Include="WS_RoyalSync.asmx.cs">
+      <DependentUpon>WS_RoyalSync.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
@@ -1902,7 +1909,6 @@
     </Content>
     <Content Include="Repositorio_Imagenes\Fotos_Empleados\BrayanGetzamha.png" />
     <Content Include="Repositorio_Imagenes\Fotos_Empleados\Brian Camilo  Piragauta.png" />
-    <Content Include="Repositorio_Imagenes\Fotos_Empleados\JamesBernal.jpg" />
     <Content Include="Repositorio_Imagenes\Fotos_Empleados\JamesBernal.png" />
     <Content Include="Repositorio_Imagenes\Fotos_Empleados\Royal-Filmslol.jpg" />
     <Content Include="Repositorio_Imagenes\Fotos_Empleados\Royal-FilmsRoyal.jpg" />
@@ -1913,7 +1919,11 @@
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Caneca.gif" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Cargando.gif" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\CORTO_00296.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\ENCABEZADO TAQUILLA 2.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\ENCABEZADO TAQUILLA.png" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Escalera.gif" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Escalera.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\fg.png" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Fondo-Formato.png" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Fondo-Idiomo.png" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Fondo-TituloPelicula.png" />
@@ -1966,8 +1976,11 @@
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\sIlla discapacitados.png" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Silla Estándar.gif" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Silla Estándar.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Silla General Azul.png" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Silla General Roja.png" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Silla General.png" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Silla Minusválidos.gif" />
+    <Content Include="Repositorio_Imagenes\Imagenes_Generales\Silla Minusválidos.png" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\silla oscar.jpg" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Silla Reducida.gif" />
     <Content Include="Repositorio_Imagenes\Imagenes_Generales\Silla VIP.png" />
@@ -1981,17 +1994,27 @@
     <Content Include="Repositorio_Imagenes\Poster_Peliculas\CIGÜEÑAS.jpg" />
     <Content Include="Repositorio_Imagenes\Poster_Peliculas\CIGÜEÑAS_thumbnail.jpg" />
     <Content Include="Repositorio_Imagenes\Poster_Peliculas\dsafsdaf_thumbnail.jpg" />
-    <Content Include="Repositorio_Imagenes\Poster_Peliculas\imagennodisponible.png" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\EL ARO 3.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\EL ARO 3_thumbnail.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\HASTA EL ÚLTIMO HOMBRE.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\HASTA EL ÚLTIMO HOMBRE_thumbnail.jpg" />
     <Content Include="Repositorio_Imagenes\Poster_Peliculas\JUEGOS SATANICOS.jpg" />
-    <Content Include="Repositorio_Imagenes\Poster_Peliculas\LA LEYENDA DE TARZAN.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\JUEGOS SATANICOS_thumbnail.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\LA LEYENDA DE TARZAN.png" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\LA LEYENDA DE TARZAN2.jpg" />
     <Content Include="Repositorio_Imagenes\Poster_Peliculas\LA VIDA SECRETA DE LAS MASCOTAS.jpg" />
     <Content Include="Repositorio_Imagenes\Poster_Peliculas\LA VIDA SECRETA DE LAS MASCOTAS_thumbnail.jpg" />
     <Content Include="Repositorio_Imagenes\Poster_Peliculas\LOS ILUCIONISTAS.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\Pasajeros.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\PASAJEROS_thumbnail.jpg" />
     <Content Include="Repositorio_Imagenes\Poster_Peliculas\PELICULA 1.jpg" />
-    <Content Include="Repositorio_Imagenes\Poster_Peliculas\PELICULA 1_thumbnail.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\PELICULA DE PRUEBA_thumbnail.jpg" />
     <Content Include="Repositorio_Imagenes\Poster_Peliculas\Silla General.png" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\SING.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\SINGv.png" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\tarzan thumbnail.jpg" />
+    <Content Include="Repositorio_Imagenes\Poster_Peliculas\Tarzan_la_pelicula.jpg" />
     <Content Include="Repositorio_Imagenes\Poster_Peliculas\UN ESPIA Y MEDIO .jpg" />
-    <Content Include="RoyalSync.asmx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -2003,6 +2026,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\Sincronizacion\VistaPrincipal.cshtml" />
+    <Content Include="WS_RoyalSync.asmx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2509,10 +2533,10 @@
     <Content Include="Views\AdminTeatro\BloquearSilla.cshtml" />
     <Content Include="Views\TvShow\TVShowTrailers.cshtml" />
     <Content Include="Views\TvShow\TvShowListaPrecios.cshtml" />
-    <Content Include="Views\CallCenter\VistaSeleccionarTeatro.cshtml" />
     <Content Include="Views\POS\AsignarTarjeta.cshtml" />
     <Content Include="Views\POS\ConfirmaReserva.cshtml" />
     <Content Include="Views\POS\VenderProductos.cshtml" />
+    <Content Include="Views\CallCenter\VistaSeleccionarTeatro.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

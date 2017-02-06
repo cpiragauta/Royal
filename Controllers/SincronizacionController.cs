@@ -11,63 +11,72 @@ namespace CinemaPOS.Controllers
     {
         CinemaPOSEntities db = new CinemaPOSEntities();
 
+        [CheckSessionOutAttribute]
         public ActionResult VistaPrincipal()
         {
-            //return View(db.SincronizacionMaestros.ToList());
+            ViewBag.ListaTeatro = db.Teatro.Where(f => f.Estado.Codigo == "ABIERTO").ToList();
+            List<HistoricolLog> Lista = db.HistoricolLog.ToList(); 
+            if (Lista.Count != 0) //Si no tiene registros no seteo el viewBag para que no muestre la tabla
+            {
+                ViewBag.listaHistorioco = db.HistoricolLog.ToList();
+            }
             return View();
         }
-
-        [CheckSessionOutAttribute]
-        public String SincronizarUsuariosDesdeCentral()
+        public string SincronizarTerceros(int RowIdTeatro)
         {
-            String respuesta = "";
-            RoyalSync WS = new RoyalSync();
-            WS.SincronizarUsuariosSistema();
-            return "SINCRONIZADO OK";
+            WS_RoyalSinc ws = new WS_RoyalSinc();
+            ws.SincronizarTerceros(RowIdTeatro);
+            return "Sincronizado";
         }
-
-        public String SincronizarSalasDesdeCentral()
+        public string SincronizarOpciones(int RowIdTeatro)
         {
-            String respuesta = "";
-            RoyalSync WS = new RoyalSync();
-            WS.SincronizarSalasSistema();
-            return "SINCRONIZADO OK";
-        }
-
-        public String Sincronizarteatroscentral()
-        {
-            String respuesta = "SINCRONIZADO OK";
-            RoyalSync WS = new RoyalSync();
-            while ((WS.SincronizarTeatros() == false))
+            WS_RoyalSinc ws = new WS_RoyalSinc();
+            if (String.IsNullOrEmpty(ws.ValidarConexion(RowIdTeatro)))
             {
-                WS = new RoyalSync();
-                WS.SincronizarTeatros();
+                return "Conexion Fallida";
             }
-            return respuesta;
-        }
-
-        public String SincronizacionTerceros()
-        {
-            String respuesta = "SINCRONIZADO OK";
-            RoyalSync WS = new RoyalSync();
-            while ((WS.SincronizarTerceros() == false))
+            else
             {
-                WS = new RoyalSync();
-                WS.SincronizarTerceros();
+                ws.SincronizarOpciones(RowIdTeatro);
             }
-            return respuesta;
+            return "Sincronizado";
         }
-
-        public String SincronizacionTaquillas()
+        public string SincronizarEstados(int RowIdTeatro)
         {
-            String respuesta = "SINCRONIZADO OK";
-            RoyalSync WS = new RoyalSync();
-            while ((WS.SincronizarTaquillas() == false))
+            WS_RoyalSinc ws = new WS_RoyalSinc();
+            ws.SincronizarEstado(RowIdTeatro);
+            return "Sincronizado";
+        }
+        public string SincronizarCiudades(int RowIdTeatro)
+        {
+            WS_RoyalSinc ws = new WS_RoyalSinc();
+            ws.SincronizarCiudad(RowIdTeatro);
+            return "Sincronizado";
+        }
+        public string SincronizarUsuarios(int RowIdTeatro)
+        {
+            WS_RoyalSinc ws = new WS_RoyalSinc();
+            ws.SincronizarUsuarios(RowIdTeatro);
+            return "Sincronizado";
+        }
+        public string SincronizarTeatros(int RowIdTeatro)
+        {
+            WS_RoyalSinc ws = new WS_RoyalSinc();
+            ws.SincronizarTeatros(RowIdTeatro);
+            return "Sincronizado";
+        }
+        public string SincronizarListas(int RowIdTeatro)
+        {
+            WS_RoyalSinc ws = new WS_RoyalSinc();
+            if (String.IsNullOrEmpty(ws.ValidarConexion(RowIdTeatro)))
             {
-                WS = new RoyalSync();
-                WS.SincronizarTaquillas();
+                return "Conexion Fallida";
             }
-            return respuesta;
+            else
+            {
+                ws.SincronizarListaEncabezado(RowIdTeatro);
+            }
+            return "Sincronizado";
         }
     }
 }

@@ -215,9 +215,10 @@
         <AssociationConnector Association="CinemaPOSModel.FK__ControlIn__Usuar__1FA39FB9" />
         <AssociationConnector Association="CinemaPOSModel.FK__ProductoV__Contr__2838E5BA" />
         <EntityTypeShape EntityType="CinemaPOSModel.TvShowListaPrecios" Width="1.5" PointX="11.375" PointY="3.75" />
+        <EntityTypeShape EntityType="CinemaPOSModel.BloqueoSillaslol" Width="1.5" PointX="11.375" PointY="12.75" />
+        <AssociationConnector Association="CinemaPOSModel.FK__ListaEnca__Estad__3E2826D9" />
         <EntityTypeShape EntityType="CinemaPOSModel.BoletaReservada" Width="1.5" PointX="30" PointY="57.5" />
         <EntityTypeShape EntityType="CinemaPOSModel.Reserva" Width="1.5" PointX="27.75" PointY="52" />
-        <EntityTypeShape EntityType="CinemaPOSModel.BloqueoSillaslol" Width="1.5" PointX="11.375" PointY="12.75" />
         <AssociationConnector Association="CinemaPOSModel.FK__BoletaRes__Estad__3F1C4B12" />
         <AssociationConnector Association="CinemaPOSModel.FK__BoletaRes__Funci__68536ACF" />
         <AssociationConnector Association="CinemaPOSModel.FK__BoletaRes__Reser__3C3FDE67" />
@@ -227,7 +228,6 @@
         <AssociationConnector Association="CinemaPOSModel.FK__BoletaRes__Usuar__6C23FBB3" />
         <AssociationConnector Association="CinemaPOSModel.FK__Reserva__EstadoI__396371BC" />
         <AssociationConnector Association="CinemaPOSModel.FK__Reserva__EstadoI__3B4BBA2E" />
-        <AssociationConnector Association="CinemaPOSModel.FK__ListaEnca__Estad__3E2826D9" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
