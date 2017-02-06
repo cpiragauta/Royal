@@ -653,7 +653,7 @@
             $(".tarifas_id").each(function (index, element) {
                 RowID_Tarifas += $(this).val() + ',';
             })
-            var urlWithCont = '../POS/Mapa_Sala_funcion?RowID_Sala=' + SalaID + '&cantidad_sillas_venta=' + cantidad + '&RowIDFuncion=' + RowID_Funcion + '&RowIDTarifas=' + RowID_Tarifas + '';
+            var urlWithCont = '/POS/Mapa_Sala_funcion?RowID_Sala=' + SalaID + '&cantidad_sillas_venta=' + cantidad + '&RowIDFuncion=' + RowID_Funcion + '&RowIDTarifas=' + RowID_Tarifas + '';
             $("#Dialog").load(urlWithCont.trim()).dialog('open');
         }
 

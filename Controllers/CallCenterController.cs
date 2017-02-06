@@ -34,6 +34,7 @@ namespace CinemaPOS.Controllers
 	            }
                 String ip = Session["IP"].ToString();
                 Taquilla taquilla = db.Taquilla.FirstOrDefault(f => f.IP == ip);
+                Session["Taquilla"] = taquilla;
                 Session["RowID_Taquilla"] = taquilla.RowID;
                 taquilla.TeatroID = teatro.RowID;
                 db.SaveChanges();

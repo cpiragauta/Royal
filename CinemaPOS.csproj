@@ -154,11 +154,15 @@
     <Compile Include="Models\Actividades.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BloqueoSillaslol.cs" />
+    <Compile Include="Models\BloqueoSillaslol.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BloqueoSillas_Result.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BoletaReservada.cs" />
+    <Compile Include="Models\BoletaReservada.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BoletasVendidas.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -310,7 +314,9 @@
     <Compile Include="Models\ProductoVendido.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Reserva.cs" />
+    <Compile Include="Models\Reserva.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Rol.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
