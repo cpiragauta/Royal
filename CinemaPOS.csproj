@@ -128,7 +128,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AdminTeatroController.cs" />
-    <Compile Include="Controllers\CallCenterController.cs" />
     <Compile Include="Controllers\ConveniosCuponesController.cs" />
     <Compile Include="Controllers\CRMController.cs" />
     <Compile Include="Controllers\Cuenta\CuentaController.cs" />
@@ -145,6 +144,16 @@
     <Compile Include="Controllers\TvShowController.cs" />
     <Compile Include="Controllers\UsuarioRolController.cs" />
     <Compile Include="Controllers\VentaEmpresarialController.cs" />
+    <Compile Include="DB_9CAC35_cinemaposDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DB_9CAC35_cinemaposDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DB_9CAC35_cinemaposDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DB_9CAC35_cinemaposDataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -154,15 +163,10 @@
     <Compile Include="Models\Actividades.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BloqueoSillaslol.cs">
-      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\BloqueoSillas_Result.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BoletaReservada.cs">
-      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\BoletaReservada.cs" />
     <Compile Include="Models\BoletasVendidas.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -314,9 +318,7 @@
     <Compile Include="Models\ProductoVendido.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Reserva.cs">
-      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\Reserva.cs" />
     <Compile Include="Models\Rol.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -2464,6 +2466,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Reportes\Summary.pdf" />
+    <Content Include="DB_9CAC35_cinemaposDataSet.xsc">
+      <DependentUpon>DB_9CAC35_cinemaposDataSet.xsd</DependentUpon>
+    </Content>
     <Content Include="Content\font-own\icomoon.eot" />
     <Content Include="Content\font-own\icomoon.ttf" />
     <Content Include="Content\font-own\icomoon.woff" />
@@ -2481,6 +2486,25 @@
     <Content Include="Content\Fuente Royal\FuturaExtraBoldIta.ttf" />
     <Content Include="Content\Fuente Royal\FuturaLighItalic.ttf" />
     <Content Include="Content\Fuente Royal\FuturaLight.ttf" />
+    <None Include="DB_9CAC35_cinemaposDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DB_9CAC35_cinemaposDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="DB_9CAC35_cinemaposDataSet.xss">
+      <DependentUpon>DB_9CAC35_cinemaposDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="DB_9CAC35_cinemaposDataSet1.xsc">
+      <DependentUpon>DB_9CAC35_cinemaposDataSet1.xsd</DependentUpon>
+    </Content>
+    <None Include="DB_9CAC35_cinemaposDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DB_9CAC35_cinemaposDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="DB_9CAC35_cinemaposDataSet1.xss">
+      <DependentUpon>DB_9CAC35_cinemaposDataSet1.xsd</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\Royal.pubxml" />
     <Content Include="Views\CRM\Actividades.cshtml" />
     <Content Include="Views\CRM\ClienteRoyal.cshtml" />
@@ -2516,10 +2540,6 @@
     <Content Include="Views\AdminTeatro\BloquearSilla.cshtml" />
     <Content Include="Views\TvShow\TVShowTrailers.cshtml" />
     <Content Include="Views\TvShow\TvShowListaPrecios.cshtml" />
-    <Content Include="Views\CallCenter\VistaSeleccionarTeatro.cshtml" />
-    <Content Include="Views\POS\AsignarTarjeta.cshtml" />
-    <Content Include="Views\POS\ConfirmaReserva.cshtml" />
-    <Content Include="Views\POS\VenderProductos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
