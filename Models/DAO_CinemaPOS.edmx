@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CinemaPOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CinemaPOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BoletaReservada">
           <Key>
             <PropertyRef Name="RowID" />
@@ -3126,6 +3126,9 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
         <Function Name="Eliminar_sillas_sala" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RowIDSala" Type="int" Mode="In" />
         </Function>
+        <Function Name="EstadisticaFuncion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RowIDFuncion" Type="int" Mode="In" />
+        </Function>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -4676,7 +4679,10 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
             <End Role="Reserva" EntitySet="Reserva" />
           </AssociationSet>
           <FunctionImport Name="VerMapaVenta" ReturnType="Collection(CinemaPOSModel.VerMapaVenta_Result1)">
-            <Parameter Name="funcion" Mode="In" Type="Int32" />
+          <Parameter Name="funcion" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="EstadisticaFuncion" ReturnType="Collection(CinemaPOSModel.EstadisticaFuncion_Result)">
+            <Parameter Name="RowIDFuncion" Mode="In" Type="Int32" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
@@ -8170,6 +8176,14 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <Property Type="Int32" Name="SillaBloqueada" Nullable="false" />
           <Property Type="Int32" Name="SillaReservada" Nullable="false" />
         </ComplexType>
+        <ComplexType Name="EstadisticaFuncion_Result">
+          <Property Type="Int32" Name="SillasVendidas" Nullable="true" />
+          <Property Type="Int32" Name="rowid" Nullable="false" />
+          <Property Type="Int32" Name="Capacidad" Nullable="true" />
+          <Property Type="Int32" Name="Rowid_Detalle" Nullable="false" />
+          <Property Type="Int32" Name="SillasBloqueadas" Nullable="true" />
+          <Property Type="Int32" Name="SillasReservadas" Nullable="true" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9623,6 +9637,18 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
                 <ScalarProperty Name="SillaVendida" ColumnName="SillaVendida" />
                 <ScalarProperty Name="SillaBloqueada" ColumnName="SillaBloqueada" />
                 <ScalarProperty Name="SillaReservada" ColumnName="SillaReservada" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="EstadisticaFuncion" FunctionName="CinemaPOSModel.Store.EstadisticaFuncion">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CinemaPOSModel.EstadisticaFuncion_Result">
+                <ScalarProperty Name="SillasVendidas" ColumnName="SillasVendidas" />
+                <ScalarProperty Name="rowid" ColumnName="rowid" />
+                <ScalarProperty Name="Capacidad" ColumnName="Capacidad" />
+                <ScalarProperty Name="Rowid_Detalle" ColumnName="Rowid_Detalle" />
+                <ScalarProperty Name="SillasBloqueadas" ColumnName="SillasBloqueadas" />
+                <ScalarProperty Name="SillasReservadas" ColumnName="SillasReservadas" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -254,5 +254,14 @@ namespace CinemaPOS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VerMapaVenta_Result1>("VerMapaVenta", funcionParameter);
         }
+    
+        public virtual ObjectResult<EstadisticaFuncion_Result> EstadisticaFuncion(Nullable<int> rowIDFuncion)
+        {
+            var rowIDFuncionParameter = rowIDFuncion.HasValue ?
+                new ObjectParameter("RowIDFuncion", rowIDFuncion) :
+                new ObjectParameter("RowIDFuncion", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<EstadisticaFuncion_Result>("EstadisticaFuncion", rowIDFuncionParameter);
+        }
     }
 }

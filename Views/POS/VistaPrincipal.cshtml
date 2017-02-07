@@ -161,7 +161,7 @@
     }
 
     .poster-peliculas {
-        width: 75px;
+        width: 85px;
         margin: 1px;
     }
 
@@ -507,13 +507,13 @@
     function abrir_modal_valida_tcr(rowid_tarifafuncion, cantidad, element) {
         var lol;
         swal({
-            title: "An input!",
-            text: "Write something interesting:",
+            title: "Verificación tarjeta TCR",
+            text: "Por favor ingreso el codigo de la tarjeta",
             type: "input",
             showCancelButton: true,
             closeOnConfirm: false,
             animation: "slide-from-top",
-            inputPlaceholder: "Write something"
+            inputPlaceholder: "Tarjeta N°"
                     },
             function (inputValue) {
                 if (inputValue === false) return false;
@@ -838,15 +838,34 @@
         $("#DialogCupones").load(urlWithCont.trim()).dialog('open');
 
     }
-    //function hoverfuncion() {
-    //    $(".funcion").hover(
-    //     function () {
-    //         $(this).append($("<span> ***</span>"));
-    //     }, function () {
-    //         $(this).find("span:last").remove();
-    //     }
-    //   );
-    //}
+    function hoverfuncion(element) {
+        
+        $(element).hover(
+         function () {
+             console.log($(this).attr("id"))
+             debugger
+             $.ajax({
+                 url: "InformacionSala",
+                 async: false,
+                 data: { rowidfuncion: $(element).attr("id") },
+                 success: function (data) {
+                     debugger
+                     var sillas_vendidas=data.SillasVendidas;
+                     var capacidad=data["Capacidad"];
+                     var bloqueadas=data.SillasBloqueadas;
+                     var reservas=data.SillasReservadas;
+                     $("#" + data.Rowid_Detalle + "").find("#Vendidas").empty().text("Vendidas " + sillas_vendidas + "");
+                     $("#" + data.Rowid_Detalle + "").find("#Reservadas").empty().text("Reservadas " + reservas + "");
+                     $("#" + data.Rowid_Detalle + "").find("#Disponible").empty().text("Disponible " + capacidad + "");
+                     $("#" + data.Rowid_Detalle + "").find("#porcentaje_ocupacion").empty().text("Porcentaje ocupación " + ((capacidad / (reservas + sillas_vendidas))*10).toFixed(0) + "%");
+                 }
+             })
+
+         }//, function () {
+         //    $(this).find("span:last").remove();
+         //}
+       );
+    }
    
 
 

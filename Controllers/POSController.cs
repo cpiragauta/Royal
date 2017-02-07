@@ -228,12 +228,16 @@ namespace CinemaPOS.Controllers
                             ruta = @"Repositorio_Imagenes\Imagenes_Generales\nodisponible.png";
                         }
                         html += "<tr>";
-                        html += "<td>";
+                        html += "<td class='pad-no mar-no'>";
                         html += "<img class='poster-peliculas' onerror='imgError(this);' src='/" +ruta + "' > ";
                         html += "</td>";
-                        html += "<td  nombre-peliculas'>";
+                        html += "<td class='nombre-peliculas' id="+funciones.DetallePeliculaID+">";
                         html += "<h5>" + funciones.TituloLocal + "</h5>";
                         html += "<h5>" + funciones.PeliculaVersion + funciones.PeliculaIdioma + "</h5>";
+                        html += "<button class=\"btn btn-xs btn-default col-sm-10\" id='Vendidas'>Vendidas</button></br>";
+                        html += "<button class=\"btn btn-xs btn-default col-sm-10\" id='Reservadas'>Reservadas</button></br>";
+                        html += "<button class=\"btn btn-xs btn-default col-sm-10\" id='Disponible'>Disponible</button></br>";
+                        html += "<button class=\"btn btn-xs btn-default col-sm-10\" id='porcentaje_ocupacion'>Porcentaje ocupación</button>";
                         html += "</td>";
                         informacion_pelicula = true;
                     }
@@ -263,10 +267,11 @@ namespace CinemaPOS.Controllers
                                         html += "<div class='item'>";
                                          html += "<div class='contenedor-funciones col-sm-12'>";
                                     }
-                                            html += "<div class='col-sm-3 funcion mar-hor text-center' onmouseover='hoverfuncion()' onclick='javascrip:get_tarifas(" + funciones.RowID_Funcion + ")'>";
+                                            html += "<div class='col-sm-3 funcion mar-hor text-center' id='"+funciones.RowID_Funcion+"' onmouseover='hoverfuncion(this)' onclick='javascrip:get_tarifas(" + funciones.RowID_Funcion + ")'>";
                                                 string Hora_Funcion = DateTime.Parse(funciones.HoraInicial.ToString()).ToString("hh:mm tt", CultureInfo.InvariantCulture);
                                                 html += "<h5 class='text-main hora_funcion'>" + Hora_Funcion + "</h5>";
                                                 html += "<p>" + funciones.NombreSala + "<br />Disponible: 120</p>";
+                                                
                                             html += "</div>";
                                             contador_funciones_div++;
                                             cantidad_funciones_html++;
@@ -910,6 +915,18 @@ namespace CinemaPOS.Controllers
             //}
             objTarjeta = new TarjetaMembresiaClienteRoyal();
             return Json(new { respuesta=respuesta,objetotarjeta=objTarjeta,tipo_respuesta=tipo_respuesta },JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult InformacionSala(int rowidfuncion)
+        {
+            EstadisticaFuncion_Result DataF= db.EstadisticaFuncion(rowidfuncion).FirstOrDefault();
+            //var Data = (from func in DataF
+            //        select new
+            //        {
+            //            Capacidad = func.Capacidad,
+            //            SillasBloqueadas = func.SillasBloqueadas,
+            //            SillasReservadas = func.SillasReservadas
+            //        }).FirstOrDefault();
+            return Json(DataF,JsonRequestBehavior.AllowGet);
         }
         #region CallCenter
 
