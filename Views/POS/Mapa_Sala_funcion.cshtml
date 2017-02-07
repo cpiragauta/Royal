@@ -221,6 +221,31 @@
         }
         
     }
+
+    function ModalConfirmarReserva(){
+        debugger
+            var boletas=0;
+            var idsillas="";
+            $(".Seleccionada").each(function (index,element){
+                console.log($(this).attr('id'));
+                idsillas+=$(this).attr('id')+',';
+                boletas++;
+            })
+            if ($("#cantidad-ventas").val() !=boletas) {
+                alert("Faltan sillas por seleccionar");
+            }
+            var DatosSillasSeleccionadas = $("#RowIDFuncion").val()+"_"+$("#tarifaID").val()+"_"+idsillas;
+            if ($("#cantidad-ventas").val() ==boletas) {
+                $("#demo-modal-wo-anim").modal('hide');
+                $("#myModal1").modal('hide');
+
+                ModalProcesandoShow();
+                var urlWithCont = '../../POS/ConfirmaReserva?DatosSillasSeleccionadas=' + DatosSillasSeleccionadas;
+                $("#Dialog").load(urlWithCont.trim())
+            }
+        
+        }
+
     function CrearCambio(){
         console.log($("#efectivo").val())
         console.log($(".total-facturar").val())
@@ -397,7 +422,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="abrirmodalpago()" >Pagar</button>
+                    <button type="button" class="btn btn-success" onclick="abrirmodalpago()">Pagar</button>
+                    <button type="button" class="btn btn-info" onclick="ModalConfirmarReserva()" >Confirmar Reserva</button>
                 </div>
             </div>
         </div><!-- /.modal-content -->

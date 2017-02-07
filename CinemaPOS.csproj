@@ -32,6 +32,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -396,6 +397,9 @@
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VerMapaVenta_Result.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VerMapaVenta_Result1.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VistaCierreCaja.cs">

@@ -489,7 +489,7 @@ namespace CinemaPOS.Controllers
         {
             string Data_Table = "";
             //VerMapaVenta_Result ObjVerMapaFuncion = new VerMapaVenta_Result();
-            List<VerMapaVenta_Result> objsillas =db.VerMapaVenta(RowID_Funcion).ToList();
+            List<VerMapaVenta_Result1> objsillas =db.VerMapaVenta(RowID_Funcion).ToList();
             int ContadorColumnas = 0;
             int CantidadColumnas = 0;
             int i = 0;
@@ -510,6 +510,10 @@ namespace CinemaPOS.Controllers
                     else if (SillaMapa.SillaVendida==1)
                     {
                         Data_Table = Data_Table + " <td id='" + SillaMapa.RowIDSillaMapa + "' class='disabled' style='background: #B0BEC5; padding: 0px 0px 0px 0px;' >";
+                    }
+                    else if (SillaMapa.SillaReservada == 1)
+                    {
+                        Data_Table = Data_Table + " <td id='" + SillaMapa.RowIDSillaMapa + "' class='disabled' style='background: #FFA726; padding: 0px 0px 0px 0px;' >";
                     }
                     else
                     {
@@ -914,6 +918,9 @@ namespace CinemaPOS.Controllers
         public ActionResult ConfirmaReserva(string RowIdCallCenter, FormCollection formulario, String DatosSillasSeleccionadas, int? RowIDTeatro)
         {
             /**/
+            if(!String.IsNullOrEmpty(RowIdCallCenter)){
+                RowIdCallCenter = RowIdCallCenter.TrimStart('\'').TrimEnd('\'');
+            }
             ViewBag.DatosSillasSeleccionadas = DatosSillasSeleccionadas;
             if (!String.IsNullOrEmpty(RowIdCallCenter))
             {
@@ -930,11 +937,14 @@ namespace CinemaPOS.Controllers
                 if (reserva == null)
                 {
                     reserva = db.Reserva.FirstOrDefault(f => f.TelefonoCliente.Equals(RowIdCallCenter));
-                    ViewBag.Boletas = db.BoletaReservada.Where(f => f.ReservaID == reserva.RowID).ToList();
                 }
                 if (reserva == null)
                 {
                     reserva = new Reserva();
+                }
+                else
+                {
+                    ViewBag.Boletas = db.BoletaReservada.Where(f => f.ReservaID == reserva.RowID).ToList();
                 }
                 return View(reserva);
             }

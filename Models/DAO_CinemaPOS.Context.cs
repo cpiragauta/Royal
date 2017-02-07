@@ -233,15 +233,6 @@ namespace CinemaPOS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BloqueoSillas_Result>("BloqueoSillas");
         }
     
-        public virtual ObjectResult<VerMapaVenta_Result> VerMapaVenta(Nullable<int> funcion)
-        {
-            var funcionParameter = funcion.HasValue ?
-                new ObjectParameter("funcion", funcion) :
-                new ObjectParameter("funcion", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VerMapaVenta_Result>("VerMapaVenta", funcionParameter);
-        }
-    
         public virtual int Sp_Integracion_Crear_Tercero(string tipoTercero, string identificacion)
         {
             var tipoTerceroParameter = tipoTercero != null ?
@@ -253,6 +244,15 @@ namespace CinemaPOS.Models
                 new ObjectParameter("Identificacion", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Sp_Integracion_Crear_Tercero", tipoTerceroParameter, identificacionParameter);
+        }
+    
+        public virtual ObjectResult<VerMapaVenta_Result1> VerMapaVenta(Nullable<int> funcion)
+        {
+            var funcionParameter = funcion.HasValue ?
+                new ObjectParameter("funcion", funcion) :
+                new ObjectParameter("funcion", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VerMapaVenta_Result1>("VerMapaVenta", funcionParameter);
         }
     }
 }
