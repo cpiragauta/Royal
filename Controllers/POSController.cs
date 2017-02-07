@@ -211,15 +211,25 @@ namespace CinemaPOS.Controllers
                 int contador_funciones_pelicula = 1;
                 int contador_funciones_div = 0;
                 int valida_cantidad_funciones = 0;
+                string ruta = "";
                 foreach (var funciones in peliculas_vista)
                 {
                     
                     if (informacion_pelicula == false)
                     {
-
+                        ruta = System.IO.Path.Combine(Server.MapPath("~/"+ funciones.Afiche+""));
+                        ruta=ruta.Replace('/','\\');
+                        if (System.IO.File.Exists(ruta))
+                        {
+                            ruta = funciones.Afiche;
+                        }
+                        else
+                        {
+                            ruta = @"Repositorio_Imagenes\Imagenes_Generales\nodisponible.png";
+                        }
                         html += "<tr>";
                         html += "<td>";
-                        html += "<img class='poster-peliculas' src='/" + funciones.Afiche + "' > ";
+                        html += "<img class='poster-peliculas' onerror='imgError(this);' src='/" +ruta + "' > ";
                         html += "</td>";
                         html += "<td  nombre-peliculas'>";
                         html += "<h5>" + funciones.TituloLocal + "</h5>";
@@ -253,7 +263,7 @@ namespace CinemaPOS.Controllers
                                         html += "<div class='item'>";
                                          html += "<div class='contenedor-funciones col-sm-12'>";
                                     }
-                                            html += "<div class='col-sm-3 funcion mar-hor text-center' onclick='javascrip:get_tarifas(" + funciones.RowID_Funcion + ")'>";
+                                            html += "<div class='col-sm-3 funcion mar-hor text-center' onmouseover='hoverfuncion()' onclick='javascrip:get_tarifas(" + funciones.RowID_Funcion + ")'>";
                                                 string Hora_Funcion = DateTime.Parse(funciones.HoraInicial.ToString()).ToString("hh:mm tt", CultureInfo.InvariantCulture);
                                                 html += "<h5 class='text-main hora_funcion'>" + Hora_Funcion + "</h5>";
                                                 html += "<p>" + funciones.NombreSala + "<br />Disponible: 120</p>";
@@ -488,7 +498,7 @@ namespace CinemaPOS.Controllers
                 CantidadColumnas = int.Parse(SillaMapa.SalaColumnas.ToString());
                 if (ContadorColumnas== 0)
                 {
-                    Data_Table = Data_Table + "<tr class='fila_" + i + "' style='padding: 0px 0px 0px 0px;height:30px;>";
+                    Data_Table = Data_Table + "<tr class='fila_" + i + "' style='padding: 0px 0px 0px 0px;height:30px;'>";
                     i++;
                 }
                 if (SillaMapa.TipoObjeto=="SILLA")

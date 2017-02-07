@@ -65,7 +65,7 @@
 </style>
 <script>
     //$("h2").append();
-    $(document).ready(function () {
+    @*$(document).ready(function () {
         Cargar_Sillas_Bloqueadas();
         $(".list_funciones_sala").chosen({width:"100%;"});
         var htmlvis = "@Model";
@@ -74,7 +74,7 @@
         $("#phtml").append(htmlvis);
         $("#mapa-sala").append($("#phtml").text());
         $(".pantalla").width($("#mapa-sala").width())
-    })
+    })*@
 
     function Cargar_Sillas_Bloqueadas() {
         $.ajax({
