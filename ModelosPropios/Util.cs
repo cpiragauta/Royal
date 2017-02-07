@@ -131,9 +131,10 @@ namespace CinemaPOS.ModelosPropios
             public const string SERVICIO_Covan = "Covan";
             public const string SERVICIO_Atmos = "Atmos";
 
-
-
-
+            /*FORMATOS PELICULA*/
+            public const string FORMATO_2D = "2D";
+            public const string FORMATO_3D = "3D";
+            public const string FORMATO_4D = "4D";
 
         }
         public class Actividades

@@ -34,7 +34,7 @@
                 <br />
                 <br/>
                 <div id="ListadoPrecios">
-                    <div class="col-md-12">
+                    @*<div class="col-md-12">
                         <div id="TitulosPrecios">
                             <div class="row">
                                 <div class="col-md-2"></div>
@@ -76,7 +76,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
             </div>
             <div id="Footer" class="navbar-fixed-bottom">
@@ -96,24 +96,24 @@
 
 <!--CARGAR DIAS-->
 <script>
-    //function ListadoPrecios() {
+    function ListadoPrecios() {
 
-    //    $.ajax({
-    //        url: "TVShowPrecios",
-    //        success: function (data) {
-    //            $('#ListadoPrecios').append(data);
-    //            $(".uno").each(function (index, element) {
-    //                console.log(index)
-    //                console.log(element)
-    //                $(".precios" + (index+1) + "").height(($(element).height()-8))
+        $.ajax({
+            url: "TVShowPrecios",
+            success: function (data) {
+                $('#ListadoPrecios').append(data);
+                $(".uno").each(function (index, element) {
+                    console.log(index)
+                    console.log(element)
+                    $(".precios" + (index+1) + "").height(($(element).height()-8))
                     
-    //            });
-    //            //$('#slider1').tinycarousel({ interval: true, axis: "y" });
+                });
+                //$('#slider1').tinycarousel({ interval: true, axis: "y" });
 
-    //        }
-    //    })
-    //}
-    //$(document).ready(function () {
-    //    ListadoPrecios();
-    //})
+            }
+        })
+    }
+    $(document).ready(function () {
+        ListadoPrecios();
+    })
 </script>
