@@ -319,6 +319,8 @@ namespace CinemaPOS.Controllers
         {
             string ResultPrecios = "";
             string GrupoD = "";
+            string ImgFormato = "";
+            string ImagenF = "";
             int i = 0;
             Teatro = "SAN MARTIN";
             var Teatros = db.Teatro.Where(f => f.Nombre.Contains(Teatro.ToUpper())).FirstOrDefault();
@@ -357,22 +359,40 @@ namespace CinemaPOS.Controllers
             #region CONTENIDOS
             foreach (var item in ListadoDias)
             {
-                GrupoD += "<li class='uno'>"+item.Nombre+"</li>";
+                GrupoD += "<li class='uno'>" + item.Nombre + "</li>";
             }
 
             foreach (var item in ListadoPrecios)
             {
+                #region IMAGENES FORMATOS
+                switch (item.Formato)
+                {
+                    case Util.Constantes.FORMATO_2D:
+                        ImgFormato = "../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 2D-01.png";
+                        ImagenF += "<div class=\"col-md-4\">" +
+                            "<img src ='" + ImgFormato + "' />" +
+                        "</div>";
+                        break;
+                    case Util.Constantes.FORMATO_3D:
+                        ImgFormato = "../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 3D-01.png";
+                        ImagenF += "<div class=\"col-md-4\">" +
+                                    "<img src ='" + ImgFormato + "' />" +
+                                "</div>";
+                        break;
+                    case Util.Constantes.FORMATO_4D:
+                        ImgFormato = "../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 4dx-01.png";
+                        ImagenF += "<div class=\"col-md-4\">" +
+                                    "<img src ='" + ImgFormato + "' />" +
+                                "</div>";
+                        break;
+                }
+                #endregion
                 ResultPrecios += "<div class=\"col-md-12\">" +
                             "<div id=\"TitulosPrecios\" >" +
                                  "<div class=\"row\">" +
                                 "<div class=\"col-md-2\"></div>" +
                                 "<div id=\"Logos\">" +
-                                    "<div class=\"col-md-4\">" +
-                                        "<img src =\"~/Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 2D-01.png\" />" +
-                                    "</div>" +
-                                    "<div class=\"col-md-4\">" +
-                                        "<img src=\"~/Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 3D-01.png\" id=\"Segunda\" />" +
-                                    "</div>" +
+                                    ImagenF+
                                 "</div>" +
                             "</div>" +
                         "</div>" +
@@ -386,11 +406,11 @@ namespace CinemaPOS.Controllers
                                 "</div>" +
                                 "<div class=\"col-md-4\">" +
                                     "<ul id=\"ColorGeneral\"> " +
-                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
-                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
-                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
-                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
-                                        "<li class=\"precios1\"><span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\">" + item.Precio + "<span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\">" + item.Precio + "<span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\">" + item.Precio + "<span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\">" + item.Precio + "<span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\">" + item.Precio + "<span id =\"TCR\" ></span></li>" +
                                     "</ul>" +
                                 "</div>" +
                                 "<div class=\"col-md-4\">" +
