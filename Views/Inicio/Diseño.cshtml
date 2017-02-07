@@ -1487,9 +1487,10 @@
         });
     });
 
-    function ValidarImagen(obj,widht,height,size) {
+    function ValidarImagen(obj, widht, height, size,id_contenedor) {
+        debugger
         var uploadFile = obj.files[0];
-        var ruta = $(".fileupload-new").find("img").attr("src");
+        var ruta = $("#"+id_contenedor+"").find(".fileupload-new").find("img").attr("src");
         if (ruta==null) {
             ruta = $(".zoom").find("img").attr("src");
         }
@@ -1508,22 +1509,25 @@
                 if (this.width.toFixed(0) >= widht && this.height.toFixed(0) >= height) {
                     Alerts("Las medidas deben ser: " + widht + " * " + height + "", "warning")
                     $(this).attr({ value: '' });
-                    $(".zoom").find("img").attr({ src: ruta });
+                    $("#" + id_contenedor + "").find(".zoom").find("img").attr({ src: ruta });
                 }
                 else if (uploadFile.size > size) {
                     Alerts('El peso de la imagen no puede exceder los ' + size + '')
                     $(this).attr({ value: '' });
-                    $(".zoom").find("img").attr({ src: ruta });
+                    $("#" + id_contenedor + "").find(".zoom").find("img").attr({ src: ruta });
                 }
                 if (uploadFile.size > size) {
                     Alerts('El peso de la imagen no puede exceder los ' + size + '')
                     $(this).attr({ value: '' });
-                    $(".zoom").find("img").attr({ src: ruta });
+                    $("#" + id_contenedor + "").find(".zoom").find("img").attr({ src: ruta });
                 }
                 
             };
             img.src = URL.createObjectURL(uploadFile);
         }
     }
+    $(document).ready(function () {
+        $("body").removeClass("stop-scrolling");
+    })
 
 </script>

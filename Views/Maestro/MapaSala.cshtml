@@ -67,10 +67,13 @@
                     $("." + clase + "").find("img").remove();
                     $("." + clase + "").find(".objeto").remove();
                     $("." + clase + "").find("small").empty();
+                    $("." + clase + "").find("i").empty();
+                    $("." + clase + "").empty();
+
                 }
                 else {
                     if ($(".cantidad_sillas").text()<(@Model.Capacidad)||claseObjeto!="Silla") {
-                        $("." + clase + "").append("<strong><i class='ion-close-circled icon-remove-element'></i><small></small></strong><img  src='" + Ruta + "' style='width:50px'/><input type='hidden' class='" + tipobjeto + "' name='" + clase + "' value='" + RowID_TipoSilla + "'/>");
+                        $("." + clase + "").append("<strong><i class='ion-close-circled icon-remove-element'></i><small></small></strong><img  src='" + Ruta + "' style='width:40px'/><input type='hidden' class='" + tipobjeto + "' name='" + clase + "' value='" + RowID_TipoSilla + "'/>");
                     }
 
                     else{
@@ -129,6 +132,7 @@
                         RowID_TipoSilla: $(".TipoSilla").val()
                     },
                     success: function (data) {
+                        $("td").empty()
                         var Ruta = "/"
                         var RowID_TipoSilla;
                         var Numerar;
@@ -146,18 +150,20 @@
                             for (var j = 0; j <$(".cantidad_columna").val();  j++) {
                                 var clase="posicion_objeto"+i+"_"+j+"";
                                 debugger;
+                                calcular_cantidad_sillas();
                                 $("#Silla").attr({ 'src': Ruta, style: "width:30px" });
                                 //adicionar_cantidad();
+                                console.log(clase)
                                 $("." + clase + "").find("img").remove();
                                 $("." + clase + "").find(".objeto").remove();
                                 $("." + clase + "").find("strong").remove();
-                                if ($(".cantidad_sillas").text() > $(".CapacidadMaxima").text() && claseObjeto == "Silla") {
+                                if (parseInt( $(".cantidad_sillas").text()) >= parseInt($(".CapacidadMaxima").text())) {
                                     swal("La capacidad máxima de la sala ha sido alcanzada", "");
                                 }
                                 else{
-                                    $("." + clase + "").append("<strong><i class='ion-close-circled icon-remove-element'></i><small></small></strong><img  src='" + Ruta + "' style='width:50px'/><input type='hidden' class='" + tipobjeto + "' name='" + clase + "' value='" + RowID_TipoSilla + "'/>");
+                                    $("." + clase + "").append("<strong><i class='ion-close-circled icon-remove-element'></i><small></small></strong><img src='" + Ruta + "' style='width:40px'/><input type='hidden' class='" + tipobjeto + "' name='" + clase + "' value='" + RowID_TipoSilla + "'/>");
                                     $(".icon-remove-element").css("display","none");  
-                                    calcular_cantidad_sillas();
+                                    
                                 }
 
                             }
@@ -166,6 +172,7 @@
 
                         calcular_cantidad_sillas();
                         asignar_nombres();
+                        $("body").removeClass("stop-scrolling");
                     },
                     error: function (data) {
                         swal("Advertenvia", data, "warning");
@@ -237,7 +244,7 @@
     }
 
     img {
-        width: 50px;
+        width: 40px;
         z-index: 0;
     }
 
@@ -358,18 +365,17 @@
     <div class="panel-footer text-right">
             <button onclick="javascript:guardar_sala()" class="btn btn-success "> <strong> &nbsp;Guardar&nbsp;</strong></button>
     </div>
+    <div style="overflow-x:scroll;margin-top:10px;">
+        <form id="mapa_sala">
+            <table id="esquema_mapa" style="border:double;width:@(Model.Cantidad_Columnas *40)px" class="table-responsive"></table>
+            <div class="pantalla" style="width:@(Model.Cantidad_Columnas *40)px">
+                <center><h1>Pantalla</h1></center>
+            </div>
+
+        </form>
+    </div>  
 </div>
 
 
 
-<div style="overflow-x:scroll;margin-top:10px;">
-    <form id="mapa_sala">
-        <table id="esquema_mapa" style="border:double;width:@(Model.Cantidad_Columnas *50)px" class="table table-responsive">
-          
-        </table>
-        <div class="pantalla" style="width:@(Model.Cantidad_Columnas *50)px">
-            <center><h1>Pantalla</h1></center>
-        </div>
 
-    </form>
-</div>

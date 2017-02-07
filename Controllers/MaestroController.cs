@@ -378,7 +378,7 @@ namespace CinemaPOS.Controllers.Master
         public JsonResult EliminarItem(int RowID_Detalle, int RowID_Encabezado)
         {
             ListaDetalle objdetalle = db.ListaDetalle.Where(lt => lt.RowID == RowID_Detalle).FirstOrDefault();
-            if (objdetalle.ListaPrecioFuncion.Count()!=0)
+            if (objdetalle.ListaPrecioFuncion.Count() != 0)
             {
                 return Json(new { RowID_Encabezado = RowID_Encabezado, tipo_respuesta = "warning", respuesta = "La tarifa no puede ser eliminada, ya se encuentra asociada a una función" });
             }
@@ -508,7 +508,7 @@ namespace CinemaPOS.Controllers.Master
                         string clase_posicionX = "posicion_x" + i + "_" + j + "";
                         string clase_posicionY = "posicion_y" + i + "_" + j + "";
                         //clase ="posicion_objeto"+i+"_"+j+"";
-                        Data_Table = Data_Table + " <td style = 'padding:0px;border:solid 1px; WIDTH: 50PX; HEIGHT: 50PX;'  class=" + clase + " onclick = asignar_silla('" + clase + "') ><input type='hidden' name='" + clase_posicionX + "' value=" + i + " /><input type = 'hidden' name='" + clase_posicionY + "' value=" + j + "  />";
+                        Data_Table = Data_Table + " <td style ='padding:0px;border:solid 1px; width:40px;height:40px'  class=" + clase + " onclick = asignar_silla('" + clase + "') ><input type='hidden' name='" + clase_posicionX + "' value=" + i + " /><input type = 'hidden' name='" + clase_posicionY + "' value=" + j + "  />";
 
 
                         if (ObjSala.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault() != null)
@@ -520,7 +520,7 @@ namespace CinemaPOS.Controllers.Master
                             }
                             Data_Table = Data_Table + "<input type ='hidden' class='" + tipoobjeto + "' name='" + clase + "' value=" + ObjSala.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault().ObjetoID + ">";
                             Data_Table = Data_Table + "<strong><small></small ></strong >";
-                            Data_Table = Data_Table + "<img style ='width:50px' src='/" + ObjSala.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault().SalaObjeto.Imagen + "' />";
+                            Data_Table = Data_Table + "<img style ='width:40px' src='/" + ObjSala.MapaSala.Where(s => s.PosicionX == i && s.PosicionY == j).FirstOrDefault().SalaObjeto.Imagen + "' />";
 
                         }
                         Data_Table = Data_Table + "</td>";
@@ -541,7 +541,7 @@ namespace CinemaPOS.Controllers.Master
             ViewBag.Servicios = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOSERVICIO" && f.Activo == true).ToList();
             ViewBag.Estados = db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOSALA").ToList();
             ViewBag.Audios = db.Opcion.Where(f => f.Tipo.Codigo == "TIPOAUDIO" && f.Activo == true).ToList();
-            ViewBag.Teatros = db.Teatro.Where(f=> f.Estado.Codigo == "ABIERTO").ToList();
+            ViewBag.Teatros = db.Teatro.Where(f => f.Estado.Codigo == "ABIERTO").ToList();
             if (RowId_Sala != null && RowId_Sala != 0)
             {
                 RowId_Sala = int.Parse(Request.Params["RowId_Sala"].ToString());
@@ -559,17 +559,17 @@ namespace CinemaPOS.Controllers.Master
             string respuesta = "";
             formulario = DeSerialize(formulario);
             Sala ObjSala = new Sala();
-            int estadoid= int.Parse(formulario["estado"]);
+            int estadoid = int.Parse(formulario["estado"]);
             if (RowID_Sala == 0)
             {
                 Estado objestado = db.Estado.Where(es => es.RowID == estadoid).FirstOrDefault();
-                if (objestado.Codigo== "ENFUNCIONAMIENTO")
-                {
-                    if (objestado.MapaSala.Count()==0)
-                    {
-                        return Json(new { tipo_respuesta = "warning",respuesta= "La sala no cuenta con mapa" });
-                    }
-                }
+                //if (objestado.Codigo== "ENFUNCIONAMIENTO")
+                //{
+                //    if (objestado.MapaSala.Count()==0)
+                //    {
+                //        return Json(new { tipo_respuesta = "warning",respuesta= "La sala no cuenta con mapa" });
+                //    }
+                //}
                 ObjSala.Nombre = formulario["nombre"];
                 ObjSala.TipoAudioID = int.Parse(formulario["tipo_audio"]);
                 //db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOSALA" && e.Nombre == "EnFuncionamiento").Select(e => e.RowID).First().ToString()
@@ -596,14 +596,14 @@ namespace CinemaPOS.Controllers.Master
             else if (RowID_Sala != null)
             {
                 Estado objestado = db.Estado.Where(es => es.RowID == estadoid).FirstOrDefault();
-                if (objestado.Codigo == "ENFUNCIONAMIENTO")
-                {
-                    List<MapaSala> ObjetosSala = db.MapaSala.Where(f => f.SalaID == RowID_Sala).ToList();
-                    if (ObjetosSala.Count() == 0)
-                    {                        
-                        return Json(new { tipo_respuesta = "warning", respuesta = "La sala no cuenta con mapa" });
-                    }
-                }
+                //if (objestado.Codigo == "ENFUNCIONAMIENTO")
+                //{
+                //    List<MapaSala> ObjetosSala = db.MapaSala.Where(f => f.SalaID == RowID_Sala).ToList();
+                //    if (ObjetosSala.Count() == 0)
+                //    {                        
+                //        return Json(new { tipo_respuesta = "warning", respuesta = "La sala no cuenta con mapa" });
+                //    }
+                //}
                 int cantidad = db.FormatoSala.Where(fs => fs.SalaID == RowID_Sala).Count();
                 for (int i = 0; i < cantidad; i++)
                 {
@@ -639,7 +639,7 @@ namespace CinemaPOS.Controllers.Master
                 }
                 respuesta = "Actualizado Correctamente";
             }
-            return Json(new {tipo_respuesta="success", respuesta = respuesta });
+            return Json(new { tipo_respuesta = "success", respuesta = respuesta });
         }
 
         [CheckSessionOutAttribute]
@@ -742,7 +742,7 @@ namespace CinemaPOS.Controllers.Master
         public ActionResult VistaSilla()
         {
             ViewBag.TipoSillas = db.SalaObjeto.ToList();
-          
+
             return View();
         }
 
@@ -774,12 +774,14 @@ namespace CinemaPOS.Controllers.Master
                     {
                         estado = false;
                     }
-                    
+
 
                     string adjunto = formulario["nombre"] + Path.GetExtension(documento.FileName);
+                    adjunto = adjunto.Replace(" ", "_");
                     documento.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales/" + adjunto));
+                    adjunto = "Repositorio_Imagenes/Imagenes_Generales/" + adjunto;
                     ObjSillaTipo.Nombre = formulario["nombre"];
-                    ObjSillaTipo.Imagen = Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales/" + adjunto);
+                    ObjSillaTipo.Imagen =  adjunto;
                     ObjSillaTipo.CreadoPor = Session["usuario_creacion"].ToString();
                     ObjSillaTipo.FechaCreacion = DateTime.Now;
                     ObjSillaTipo.Numeracion = numeracion;
@@ -802,6 +804,7 @@ namespace CinemaPOS.Controllers.Master
                 if (documento != null)
                 {
                     adjunto = formulario["nombre"] + Path.GetExtension(documento.FileName);
+                    adjunto = adjunto.Replace(" ", "_");
                     var path = System.IO.Path.Combine(Server.MapPath("~/Repositorio_Imagenes/Imagenes_Generales"), adjunto);
 
                     if (System.IO.File.Exists(path))
@@ -863,7 +866,7 @@ namespace CinemaPOS.Controllers.Master
             {
                 //Valido que no existan mapas con este objeto
                 int CantidadObjetos = db.MapaSala.Where(f => f.ObjetoID == RowID_TipoSilla).ToList().Count();
-                if (CantidadObjetos>0)
+                if (CantidadObjetos > 0)
                 {
                     Respuesta = "No se puede eliminar este objeto, se encuentra asociado a un mapa";
                     TipoRespuesta = "warning";
@@ -978,11 +981,41 @@ namespace CinemaPOS.Controllers.Master
             }
             return ObjTeatro;
         }
+
+        [CheckSessionOutAttribute]
         public string Getip_Teatro(int? RowIDTeatro)
         {
             Teatro objteatro = db.Teatro.Where(t => t.RowID == RowIDTeatro).FirstOrDefault();
             return objteatro.IP.ToString();
         }
+
+        [CheckSessionOutAttribute]
+        public bool ValidarConexion(String CadenaBD)
+        {
+            bool conexionExitosa = false;
+            String cadenaActual = db.Database.Connection.ConnectionString;
+            try
+            {
+                if (String.IsNullOrEmpty(CadenaBD))
+                {
+                    return false;
+                }
+
+                db.Database.Connection.ConnectionString = CadenaBD;
+                //Prueba para ver si puede consultar
+                List<Taquilla> asd = db.Taquilla.ToList();
+                //Le devuelvo la conexion que tenia
+                db.Database.Connection.ConnectionString = cadenaActual;
+                conexionExitosa = true;
+            }
+            catch (Exception)
+            {
+                db.Database.Connection.ConnectionString = cadenaActual;
+                conexionExitosa = false;
+            }
+            return conexionExitosa;
+        }
+
         #endregion
 
         #region Tercero
@@ -1043,7 +1076,7 @@ namespace CinemaPOS.Controllers.Master
                 catch (Exception ex)
                 { return Json("Error " + ex.Message); }
                 respuesta = "Guardado Correctamente";
-                if (formulario["tipo_sello"]!=null)
+                if (formulario["tipo_sello"] != null)
                 {
                     var rowid_Sello = formulario["tipo_sello"].Split(',');
                     foreach (var item in rowid_Sello)
@@ -1059,7 +1092,7 @@ namespace CinemaPOS.Controllers.Master
                         db.SaveChanges();
                     }
                 }
-                
+
 
 
             }
@@ -1082,7 +1115,7 @@ namespace CinemaPOS.Controllers.Master
         public Tercero CargarDatosTercero(Tercero ObjTercero, FormCollection formulario)
         {
             ObjTercero.TipoTerceroID = int.Parse(formulario["tipo_tercero"].ToString());
-            
+
             ObjTercero.Identificacion = formulario["identificacion"].ToString();
             int RowIdIdentificacion = Int32.Parse(formulario["tipo_tercero"].ToString());
             ObjTercero.Apellidos = "";
@@ -1232,7 +1265,7 @@ namespace CinemaPOS.Controllers.Master
         {
             var TipoTerceros = db.Opcion.Where(f => f.Codigo == Util.Constantes.TIPO_SELLO).FirstOrDefault();
             var data = (from sello in db.Tercero.Where(f => f.TipoTerceroID == TipoTerceros.RowID)
-                            //join distribuidor in db.Sello_Distribuidor on sello.TipoTerceroID equals distribuidor.SelloID
+                        //join distribuidor in db.Sello_Distribuidor on sello.TipoTerceroID equals distribuidor.SelloID
                         select new
                         {
                             rowid = sello.RowID,
@@ -1270,7 +1303,7 @@ namespace CinemaPOS.Controllers.Master
                 }
             }
             return result;
-        }   
+        }
 
         #endregion
 
@@ -1505,7 +1538,7 @@ namespace CinemaPOS.Controllers.Master
         {
             ViewBag.Taquilla = db.Taquilla.ToList();
             ViewBag.Teatros = db.Teatro.ToList();
-            ViewBag.Estado = db.Estado.Where(e=>e.TipoEstado.Codigo== "TIPOTAQUILLA").ToList();
+            ViewBag.Estado = db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOTAQUILLA").ToList();
             if (RowID_Lista != null)
             {
                 return View(db.Taquilla.Where(le => le.RowID == RowID_Lista).FirstOrDefault());
@@ -1543,6 +1576,7 @@ namespace CinemaPOS.Controllers.Master
                     objTaq.FechaInicial = DateTime.Parse(formulario["fechainicial"]);
                     objTaq.FechaFinal = DateTime.Parse(formulario["fechafinal"]);
                     objTaq.IP = formulario["ip"];
+                    objTaq.Prefijo = formulario["prefijo"];
                     //objTaq.Resoluciones = formulario["resoluciones"];
                     objTaq.TeatroID = Convert.ToInt32(formulario["teatro"]);
                     objTaq.EstadoID = Convert.ToInt32(formulario["estado"]);
@@ -1563,12 +1597,13 @@ namespace CinemaPOS.Controllers.Master
                     objTaq.FechaInicial = DateTime.Parse(formulario["fechainicial"]);
                     objTaq.FechaFinal = DateTime.Parse(formulario["fechafinal"]);
                     objTaq.IP = formulario["ip"];
+                    objTaq.Prefijo = formulario["prefijo"];
                     //objTaq.Resoluciones = formulario["resoluciones"];
                     objTaq.TeatroID = Convert.ToInt32(formulario["teatro"]);
                     objTaq.EstadoID = Convert.ToInt32(formulario["estado"]);
                     objTaq.ModificadoPor = Session["usuario_creacion"].ToString();
                     objTaq.FechaModificacion = DateTime.Now;
-                    
+
                     db.SaveChanges();
                 }
                 int codigo_encabezado = objTaq.RowID;
@@ -1879,7 +1914,7 @@ namespace CinemaPOS.Controllers.Master
                 tarjetaID.TarjetaMembresiaID = membresia.RowID;
                 tarjetaID.ClienteRoyalID = cliente.RowID;
                 tarjetaID.FechaActivacion = DateTime.Now;
-                tarjetaID.EstadoID = TipoEstado.RowID; 
+                tarjetaID.EstadoID = TipoEstado.RowID;
                 tarjetaID.NoRedencionesAprob = Util.Constantes.REDENCIONES_No4;
                 if (rowID == null || rowID == 0)
                 { db.TarjetaMembresiaClienteRoyal.Add(tarjetaID); }
@@ -2240,7 +2275,7 @@ namespace CinemaPOS.Controllers.Master
         {
             String plantilla = "";
 
-            if (RowidPlantilla != null && RowidPlantilla !=0)
+            if (RowidPlantilla != null && RowidPlantilla != 0)
             {
                 plantilla = db.Plantillas.FirstOrDefault(f => f.RowID == RowidPlantilla).CuerpoMsj;
             }
@@ -2254,7 +2289,7 @@ namespace CinemaPOS.Controllers.Master
             formulario = DeSerialize(formulario);
             int RowIDPlantilla = Convert.ToInt32(formulario["RowidPlantilla"].ToString());
             Plantillas plantilla;
-            if (RowIDPlantilla !=0)
+            if (RowIDPlantilla != 0)
             {
                 plantilla = db.Plantillas.FirstOrDefault(f => f.RowID == RowIDPlantilla);
                 plantilla.UsuarioMod = Session["usuario_creacion"].ToString();
@@ -2298,7 +2333,7 @@ namespace CinemaPOS.Controllers.Master
             foreach (Estado item in objestado)
             {
                 estadoactualiza = db.Estado.Where(e => e.RowID == item.RowID).FirstOrDefault();
-                estadoactualiza.Codigo = item.Nombre.Replace(" ","").ToUpper();
+                estadoactualiza.Codigo = item.Nombre.Replace(" ", "").ToUpper();
                 db.SaveChanges();
             }
             return "Actualizacion exitosa";

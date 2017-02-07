@@ -16,16 +16,19 @@
                 documento = $(".imagen_actualiza").val();
             }
             //formData.append(f.attr("name"), $(this)[0].files[0]);
+            ModalProcesandoShow();
             $.ajax({
                 url: "/Maestro/GuardarSilla",
                 type: "post",
                 dataType: "html",
                 data: formData,
                 success: function (data) {
+                    ModalProcesandoHiden();
                     swal("La informacion fue almacenada", data, "success");
                     window.location = "/Maestro/VistaSilla/"
                 },
                 error: function () {
+                    ModalProcesandoHiden();
                     console.log("Error");
                 },
                 cache: false,
@@ -52,6 +55,7 @@
         function (isConfirm) {
             debugger
             if (isConfirm) {
+                ModalProcesandoShow();
                 $.ajax({
                     type: "POST",
                     url: "/Maestro/EliminarObjeto",
@@ -59,15 +63,23 @@
                         RowID_TipoSilla: $(".RowID_TipoSilla").val()
                     },
                     success: function (data) {
-
+                        ModalProcesandoHiden();
+                        debugger
                         if(data.TipoRespuesta == "success"){
                             swal("OK", data.Respuesta, "success");
                             window.location = "/Maestro/VistaSilla/"
                         }else{
-                            swal("Advertencia", data.Respuesta, data.TipoRespuesta);
+                            swal({
+                                title: "Advertencia",
+                                text: data.Respuesta,
+                                timer: 5000,
+                                showConfirmButton: false
+                            });
                         }
                     },
                     error: function (data) {
+                        ModalProcesandoHiden();
+                        debugger
                         swal("Error, no se pudo borrar el elemento", data, "warning");
                     }
                 });

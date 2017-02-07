@@ -1,0 +1,167 @@
+﻿@{
+    ViewBag.Title = "VenderProductos";
+    //Layout = "~/Views/Inicio/Diseño.cshtml";
+    //Layout = null;
+}
+@*<link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
+<script src="~/Content/js/jquery-2.2.4.min.js"></script>
+<script src="~/Content/js/bootstrap.min.js"></script>*@
+<script>
+   // $(document).ready(function () {
+    $("#modal_producto").modal("show");
+    @*var htmlvis = "@Model";
+        $("#html_v").text("@Model");
+    $("#div_product").append($("#html_v").text());*@
+
+
+    var htmlvis = "@Model";
+
+    $("#html_v").append(htmlvis);
+
+    $("#div_product").append($("#html_v").text());
+
+    function adicionar_producto(RowID_Producto, element) {
+        debugger
+       // $("#boletas-comprar #" + RowID_Producto + "").find
+        //Cantidad_Producto
+        //alert($(element).data("tipo-producto"))
+        var valida_tcr = 0;
+        var Cantidad = parseInt($(element).data("cantidad-producto"));
+        $(element).data("cantidad-producto", "" + (Cantidad + 1) + "");
+        Cantidad = parseInt($(element).data("cantidad-producto"));
+        if ($(element).data("ref-producto") == "TarTcr") {
+            swal({
+                title: '¿Esta seguro?',
+                text: "¿Desea realizar la activación del un cliente royal",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si',
+                cancelButtonText: 'No',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    $("#modal-tcr").modal("show");
+                    $.ajax({
+                        url: "AdicionarProducto",
+                        data: { RowID_Producto: RowID_Producto, cantidad: Cantidad },
+                        success: function (data) {
+                            $("#boletas-comprar #" + RowID_Producto + "").remove();
+                            $("#boletas-comprar").append(data);
+                            var Costo = 0;
+                            $(".item-producto").each(function (element) {
+                                debugger
+                                Costo += $(this).data("product-cost-total");
+                                console.log(Costo)
+                                console.log($(this).data("product-cost-total"));
+                            });
+                            $("#precio-total-producto").val(Costo);
+                            //$("#precio-total-boletas").val(parseInt($("#precio-total-boletas").val()) + Costo);
+
+                        },
+                        error: function (data) {
+
+                        }
+                    })
+                } 
+            })
+            
+        } else {
+            $.ajax({
+                url: "AdicionarProducto",
+                data: { RowID_Producto: RowID_Producto, cantidad: Cantidad },
+                success: function (data) {
+                    $("#boletas-comprar #" + RowID_Producto + "").remove();
+                    $("#boletas-comprar").append(data);
+                    var Costo = 0;
+                    $(".item-producto").each(function (element) {
+                        debugger
+                        Costo += $(this).data("product-cost-total");
+                        console.log(Costo)
+                        console.log($(this).data("product-cost-total"));
+                    });
+                    $("#precio-total-producto").val(Costo);
+                    //$("#precio-total-boletas").val(parseInt($("#precio-total-boletas").val()) + Costo);
+
+                },
+                error: function (data) {
+
+                }
+            })
+        }
+    }
+    function abrirmodaltcr() {
+        $.ajax({
+            url: "AsignarTarjeta",
+            data:{Cedula:$("#cedula").val()},
+            success: function (data) {
+                debugger
+                $("#body-modal-tcr").append(data);
+            }
+
+        })
+    }
+    //$(".pantalla").width($("#mapa-sala").width())
+    //});
+</script>
+<div class="modal fade" id="modal_producto" data-backdrop="static" data-keyboard="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="div_product"></div>
+            </div>
+            <div class="modal-footer bord-no">
+                <button class="text-right btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+    @*<div class="modal fade" id="modal-tcr" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true" data-backdrop="static" data-keyboard="true" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-body" id="body-modal-tcr">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Identificacion</label>
+                        <input type="text" class="form-control" id="cedula" />
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button onclick="abrirmodaltcr()" class="btn btn-success">Buscar</button>
+            </div>
+        </div>
+
+    </div>*@
+
+<div class="modal fade" id="modal-tcr" data-backdrop="static" data-keyboard="false" style="overflow: auto; border-radius:2px;">
+    <div class="modal-dialog" style="width:500px ;margin-top:-25px;height:auto;box-shadow:2px 3px 9px 3px rgba(51, 51, 51, 0.22);">
+        <div class="modal-content"style="overflow-y:scroll;">
+            <div class="modal-header" style="padding: 5px;">
+                <button type="button" class="close salir" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" style="padding:1px;color:#455A64;font-weight:normal;font-family:'Segoe UI';text-align:center;"><b>Crear Sello</b></h4>
+            </div>
+            <div class="modal-body" style="overflow-x: hidden; overflow-y: hidden;">
+                <br />
+                <div class="col-sm-4" >
+                    <div class="form-group" >
+                        <label class="control-label">Identificacion</label>
+                        <input type="text" class="form-control" id="cedula" style="height:30px;width:300px;"/>
+                    </div>
+                </div >
+                <div class="col-sm-12" >
+                    <div id="body-modal-tcr"></div>
+                </div>
+                
+            </div>
+            <div class="modal-footer bord-no">
+                <button onclick="abrirmodaltcr()" class="text-right btn btn-success">Buscar</button>
+                <button class="text-right btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <p id="html_v" style="display:none;"></p>

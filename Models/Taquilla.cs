@@ -17,6 +17,7 @@ namespace CinemaPOS.Models
         public Taquilla()
         {
             this.BoletaVendida = new HashSet<BoletaVendida>();
+            this.BoletaReservada = new HashSet<BoletaReservada>();
         }
     
         public int RowID { get; set; }
@@ -43,5 +44,6 @@ namespace CinemaPOS.Models
         public virtual Opcion Opcion { get; set; }
         public virtual Teatro Teatro { get; set; }
         public virtual ICollection<BoletaVendida> BoletaVendida { get; set; }
+        public virtual ICollection<BoletaReservada> BoletaReservada { get; set; }
     }
 }

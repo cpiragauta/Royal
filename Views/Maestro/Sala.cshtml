@@ -5,7 +5,7 @@
 }
 
 <script>
-   
+
     function guardar_sala() {
         var validator = $("#formulario_sala").validate();
 
@@ -20,8 +20,8 @@
                 },
                 success: function (data) {
                     debugger
-                   
-                    if (data.tipo_respuesta!="warning") {
+
+                    if (data.tipo_respuesta != "warning") {
                         window.location = "/Maestro/VistaSala/";
                         swal("OK", data.respuesta, data.tipo_respuesta);
                     }
@@ -255,7 +255,7 @@
                     <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Guardar">
                 }
             }
-            
+
         </div>
 
     </form>

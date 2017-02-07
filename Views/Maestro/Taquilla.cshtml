@@ -45,61 +45,61 @@
     }
 </script>
 <script>
-        function guardar_taquilla(encabezado) {
-            if (!$("#formulario_taquilla").validate().form()) {
-                return false;
-            }
-            if ($(".RowID_Encabezado").val() == 0) {
-                $.ajax({
-                    type: "POST",
-                    url: "/Maestro/Guardar_Taquilla",
-                    data: {
-                        RowID_Encabezado: $(".RowID_Encabezado").val(),
-                        formulario: $("#formulario_taquilla").serialize(),
-                    },
-                    success: function (data) {
-                        debugger;
-                        if (data) {
-                            swal("OK", "Creado...", "success");
-                            window.location = "/Maestro/VistaTaquilla"
-                        } else {
-                            swal("ERROR", "Error al guardar...", "ERROR");
-                        }
-                    },
-                    error: function () {
-                        swal("Error al guardar la informacion de taquilla", "");
-                    }
-                });
-            }
-
-
-            if ($(".RowID_Encabezado").val() != 0) {
-                $.ajax({
-                    type: "POST",
-                    url: "/Maestro/Guardar_Taquilla",
-                    data: {
-                        RowID_Encabezado: jQuery(".RowID_Encabezado").val(),
-                        RowID_Detalle: jQuery(".RowID_Detalle").val(),
-                        formulario: $("#formulario_taquilla").serialize(),
-                    },
-
-                    success: function (data) {
-                        debugger;
-
-                        if (data) {
-                            swal("OK", "ACTUALIZADO...", "success");
-                            window.location = "/Maestro/VistaTaquilla"
-                        } else {
-                            sweetAlert("ERROR", "ERROR ACTUALIZANDO", "error");
-                        }
-                    },
-                    error: function (data) {
-                        sweetAlert("", data.respuesta, "error");
-                    }
-
-                });
-            }
+    function guardar_taquilla(encabezado) {
+        if (!$("#formulario_taquilla").validate().form()) {
+            return false;
         }
+        if ($(".RowID_Encabezado").val() == 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/Guardar_Taquilla",
+                data: {
+                    RowID_Encabezado: $(".RowID_Encabezado").val(),
+                    formulario: $("#formulario_taquilla").serialize(),
+                },
+                success: function (data) {
+                    debugger;
+                    if (data) {
+                        swal("OK", "Creado...", "success");
+                        window.location = "/Maestro/VistaTaquilla"
+                    } else {
+                        swal("ERROR", "Error al guardar...", "ERROR");
+                    }
+                },
+                error: function () {
+                    swal("Error al guardar la informacion de taquilla", "");
+                }
+            });
+        }
+
+
+        if ($(".RowID_Encabezado").val() != 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/Guardar_Taquilla",
+                data: {
+                    RowID_Encabezado: jQuery(".RowID_Encabezado").val(),
+                    RowID_Detalle: jQuery(".RowID_Detalle").val(),
+                    formulario: $("#formulario_taquilla").serialize(),
+                },
+
+                success: function (data) {
+                    debugger;
+
+                    if (data) {
+                        swal("OK", "ACTUALIZADO...", "success");
+                        window.location = "/Maestro/VistaTaquilla"
+                    } else {
+                        sweetAlert("ERROR", "ERROR ACTUALIZANDO", "error");
+                    }
+                },
+                error: function (data) {
+                    sweetAlert("", data.respuesta, "error");
+                }
+
+            });
+        }
+    }
 </script>
 
 
@@ -133,7 +133,13 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label">Nombre:*</label>
-                        <input name="nombre" id="nombre" class="form-control" value="@Model.Nombre" required>
+                        <input name="nombre" id="nombre" class="form-control" value="@Model.Nombre" maxlength="50" required>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label class="control-label">Prefijo:*</label>
+                        <input name="prefijo" id="prefijo" class="form-control" value="@Model.Prefijo" maxlength="10" required>
                     </div>
                 </div>
                 <div class="col-sm-3">
@@ -159,6 +165,10 @@
                         </div>
                     </div>
                 </div>
+
+
+            </div>
+            <div class="row">
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label">Teatro:*</label>
@@ -179,8 +189,6 @@
                     </div>
                 </div>
 
-            </div>
-            <div class="row">
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label">IP:*</label>

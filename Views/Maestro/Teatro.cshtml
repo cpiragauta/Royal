@@ -29,6 +29,39 @@
         }
     }
 
+    function ValidarConexion() {
+
+        var validator = $("#CadenaBD").val();
+
+        if (validator != "") {
+            ModalProcesandoShow();
+            $.ajax({
+                type: "POST",
+                url: "/Maestro/ValidarConexion",
+                data: {
+                    CadenaBD: validator,
+                },
+                success: function (data) {
+                    ModalProcesandoHiden();
+                    debugger;
+                    if (data == "True") {
+                        swal("OK", "Conexión Exitosa", "success")
+                    } else {
+                        swal("Advertencia", "No es posible establecer conexión con la cadena ingresada", "warning")
+                    }
+                },
+                error: function (data) {
+                    ModalProcesandoHiden();
+                    swal("Advertencia", "No es posible establecer conexión con la cadena ingresada", "warning")
+                }
+            });
+        }
+        else {
+            Alerts("Ingrese La cadena de conexión", "warning");
+        }
+    }
+
+
 
     $(document).ready(function () {
         $.validator.setDefaults({ ignore: ":hidden:not(select)" });
@@ -40,11 +73,9 @@
 
 
 <style>
-
     .Mayus {
         text-transform: uppercase;
     }
-
 </style>
 <div>
     <p>
@@ -155,14 +186,17 @@
                     </select>
                 </div>
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-8">
                 <div class="form-group">
                     <label class="control-label">Cadena BD:*</label>
-                    <input type="text" class="form-control" value="@Model.CadenaBD" name="CadenaBD" required>
+                    <input type="text" class="form-control" value="@Model.CadenaBD" name="CadenaBD" id="CadenaBD" required>
                 </div>
             </div>
+            <div class="col-sm-2">
 
-          
+                <input style="margin-top: 14%;" class=" btn btn-info" value="Validar Cadena" onclick="ValidarConexion()">
+            </div>
+
 
 
 
@@ -188,7 +222,7 @@
                     <input class="btn btn-danger add-tooltip" data-toggle="tooltip" data-original-title="Acción Denegada." value="Guardar">
                 }
             }
-            
+
 
         </div>
 

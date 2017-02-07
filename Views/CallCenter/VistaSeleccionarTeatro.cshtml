@@ -1,0 +1,120 @@
+﻿@{
+    ViewBag.Title = "Vista Seleccionar Teatro";
+    Layout = "~/Views/Inicio/Diseño.cshtml";
+}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<div id="DialogReserva"></div>
+<div class="panel">
+    <div class="panel-body">
+        <form class="col-sm-6 form-control mar-all" name="vistaCallCenter" id="vistaCallCenter" onsubmit="return false">
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="form-group ">
+                        <label class="control-label ">Teatro:*</label>
+                        <select name="teatro" class="chosen  form-control" id="select-teatro" required>
+                            <option value="" disabled selected>Elija una opcion</option>
+                            @foreach (CinemaPOS.Models.Teatro teatros in ViewBag.ListaTeatros)
+                            {
+                                <option value="@teatros.RowID">@teatros.Nombre - @teatros.Ciudad.Nombre</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <input class="btn btn-success" type="submit" value="Seleccionar Teatro" onclick="ValidarConexion()">
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+        <form class="col-sm-12 form-control mar-all" name="formBuscar" id="formBuscar" onsubmit="return false">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                        <label class="control-label ">Teatro:*</label>
+                        <select name="teatro" id="teatro" class="chosen  form-control" id="select-teatro" required>
+                            <option value="" disabled selected>Elija una opcion</option>
+                            @foreach (CinemaPOS.Models.Teatro teatros in ViewBag.ListaTeatros)
+                            {
+                                <option value="@teatros.RowID">@teatros.Nombre - @teatros.Ciudad.Nombre</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group  add-tooltip" data-toggle="tooltip" data-original-title="También puede buscar por No. de Teléfono">
+                        <label class="control-label">*Código Reserva:</label>
+                        <input id="codigoReserva" type="text" class="form-control Mayus" name="codigoReserva" required>
+                    </div>
+                    <div class="col-sm-2">
+                        <input class="btn btn-success" type="submit" value="Buscar Reserva" onclick="BuscarReserva()">
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        </div>
+</div>
+
+<script>
+
+    $(function () {
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        jQuery.validator.messages.required = '*Este campo es obligatorio.';
+
+
+    })
+
+    function ValidarConexion() {
+
+        var validator = $("#vistaCallCenter").validate();
+
+        if (validator.form()) {
+            ModalProcesandoShow();
+            $.ajax({
+                type: "POST",
+                url: "/CallCenter/ValidarConexion",
+                data: {
+                    RowIDTeatro: $("#select-teatro").val(),
+                },
+                success: function (data) {
+                    ModalProcesandoHiden();
+                    debugger;
+                    if (data == "True") {
+                        swal("OK", "Conexión Exitosa", "success")
+                        window.location = "/POS/VistaPrincipal/"
+                    } else {
+                        swal("Advertencia", "No es posible establecer conexión con este Teatro", "warning")
+                    }
+                },
+                error: function (data) {
+                    ModalProcesandoHiden();
+                    swal("Advertencia", "No es posible establecer conexión con este Teatro", "warning")
+                }
+            });
+        }
+        else {
+            Alerts("Ingrese los campos Requeridos", "warning");
+        }
+    }
+
+
+    function BuscarReserva() {
+
+        var validator = $("#formBuscar").validate();
+
+        if (validator.form()) {
+            debugger
+            ModalProcesandoShow();
+            var urlWithCont = '../../POS/ConfirmaReserva?RowIdCallCenter=' + "'" + $("#codigoReserva").val() + "'" + "&RowIDTeatro=" + $("#teatro").val();
+            console.log(urlWithCont);
+            $("#DialogReserva").load(urlWithCont.trim())
+        }
+        else {
+            Alerts("Ingrese los campos Requeridos", "warning");
+        }
+    }
+</script>

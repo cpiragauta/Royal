@@ -62,13 +62,6 @@
     .disabled{
         cursor: not-allowed;
     }
-    table#esquema_mapa td {
-        border: none;
-        padding: 0px;
-        WIDTH: 50PX;
-        HEIGHT: 50PX;
-    }
-
 </style>
 
 <link href="~/Content/plugins/chosen/chosen.min.css" rel="stylesheet">
@@ -210,9 +203,49 @@
 
 
     function abrirmodalpago(){
+        debugger
+        var Costo = 0;
+        $(".item-producto").each(function (element) {
+            debugger
+            Costo += $(this).data("product-cost-total");
+            console.log(Costo)
+            console.log($(this).data("product-cost-total"));
+        });
+        $("#precio-total-producto").val(Costo);
         $("#demo-modal-wo-anim").modal('show');
-        $(".total-facturar").val(parseInt($("#precio-total-boletas").val()));
+        if (isNaN( $("#precio-total-producto").val())||$("#precio-total-producto").val()=="") {
+            $(".total-facturar").val(parseInt($("#precio-total-boletas").val()));
+        }
+        else{
+            $(".total-facturar").val(parseInt($("#precio-total-boletas").val())+parseInt($("#precio-total-producto").val()));
+        }
+        
     }
+
+    function ModalConfirmarReserva(){
+        debugger
+            var boletas=0;
+            var idsillas="";
+            $(".Seleccionada").each(function (index,element){
+                console.log($(this).attr('id'));
+                idsillas+=$(this).attr('id')+',';
+                boletas++;
+            })
+            if ($("#cantidad-ventas").val() !=boletas) {
+                alert("Faltan sillas por seleccionar");
+            }
+            var DatosSillasSeleccionadas = $("#RowIDFuncion").val()+"_"+$("#tarifaID").val()+"_"+idsillas;
+            if ($("#cantidad-ventas").val() ==boletas) {
+                $("#demo-modal-wo-anim").modal('hide');
+                $("#myModal1").modal('hide');
+
+                ModalProcesandoShow();
+                var urlWithCont = '../../POS/ConfirmaReserva?DatosSillasSeleccionadas=' + DatosSillasSeleccionadas;
+                $("#Dialog").load(urlWithCont.trim())
+            }
+        
+        }
+
     function CrearCambio(){
         console.log($("#efectivo").val())
         console.log($(".total-facturar").val())
@@ -226,6 +259,23 @@
             alert("Verifique el efectivo ingresado");
         }
         else{
+            var Costo = 0;
+
+
+            $("#precio-total-producto").val(Costo);
+            var RowID_Productos="";
+            var CantidadxProducto="";
+            var abrirmodal=0;
+            $(".item-producto").each(function(element,index){
+                debugger
+                Costo += $(this).data("product-cost-total");
+                if ($(this).data("product-ref")=="product-ref") {
+                    abrirmodal=1;
+                }
+                RowID_Productos+= $(this).data("product-id")+",";
+                CantidadxProducto+=$(this).data("product-quantity-sale")+",";
+            });
+            
             var boletas=0;
             var idsillas="";
             $(".Seleccionada").each(function (index,element){
@@ -243,13 +293,15 @@
                     data:{
                         IDSillas:idsillas,
                         IDTarifas:$("#tarifaID").val(),
+                        IDProductos:RowID_Productos,
+                        CantidadProductoID:CantidadxProducto,
                         RowIDFuncion:$("#RowIDFuncion").val(),
                         Efectivo:$("#efectivo").val(),
                         Cambio:$("#cambio").val(),
                         Total:$("#totalAfacturar").val()
                     },success:function(data){
                         debugger
-                        console.log(data.html);
+                        //console.log(data.html);
                         $("#panel-boletas-imprimir").append(data.html);
                         var mode = 'iframe'; //popup
                         var close = mode == "popup";
@@ -259,6 +311,9 @@
                         //swal('','Venta terminada');
                         $("#demo-modal-wo-anim").modal('hide');
                         $("#myModal1").modal('hide');
+                        $("#boletas-comprar").empty();
+                        $("#ver_sala").removeAttr("onclick");
+                        $("#panel-tarifas-funcion").empty();
                     },error:function(){
                         swal('','Verifica la información','warning')
                     }
@@ -294,10 +349,6 @@
     }
 </script>
 <style>
-    td {
-        padding: 0px;
-        border: solid 1px;
-    }
 
     img {
         width: 50px;
@@ -319,19 +370,19 @@
     }
 
     #esquema_mapa {
-        width: 50%;
-        height: 50%;
         margin-right: auto;
         margin-left: auto;
     }
-
-    tr {
-        height: 50px;
+        .pantalla {
+        border-radius: 0px 0 100px 100px;
+        background-color: black;
+        margin-right: auto;
+        margin-left: auto;
     }
 </style>
 
 <div class="modal fade" id="myModal1" data-backdrop="static" data-keyboard="true">
-    <div class="modal-dialog" style="width:@((Model.Cantidad_Columnas*50)+100)px;height:@(Model.Cantidad_Filas*50);margin-top: 20px;">
+    <div class="modal-dialog" style="width:@((Model.Cantidad_Columnas*40)+100)px;height:@(Model.Cantidad_Filas*10);margin-top: -35%;">
         <div class="modal-content">
             <div class="modal-header" style="padding: 10px; ">
                 <button type="button" class="ion-close-circled close salir" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -361,15 +412,18 @@
                             <div class="row">
                                 <input type="hidden" class="RowID_Sala"  value="@Request.Params["RowID_Sala"].ToString()" />
 
-                                <table id="esquema_mapa" align="center" style="height:@(Model.Cantidad_Columnas *50)px;width:@(Model.Cantidad_Filas *50)px;margin:0 auto;"></table>
-                                <h1 class="text-center">Pantalla</h1>
+                                <table id="esquema_mapa" align="center" style="height:@(Model.Cantidad_Columnas *35)px;width:@(Model.Cantidad_Filas *35)px;margin:0 auto;"></table>
+                                <div class="pantalla" style="width:@(Model.Cantidad_Columnas *40)px">
+                                    <center><h1>Pantalla</h1></center>
+                                </div>
 
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="abrirmodalpago()" >Pagar</button>
+                    <button type="button" class="btn btn-success" onclick="abrirmodalpago()">Pagar</button>
+                    <button type="button" class="btn btn-info" onclick="ModalConfirmarReserva()" >Confirmar Reserva</button>
                 </div>
             </div>
         </div><!-- /.modal-content -->

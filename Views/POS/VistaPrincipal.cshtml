@@ -86,6 +86,26 @@
 <script src="~/Content/js/demo/tables-datatables.js"></script>
 <link href="~/Content/css/demo/nifty-demo-icons.css" rel="stylesheet" />
 <link href="~/Content/css/CinemaPOS.css" rel="stylesheet" />
+<script src="~/Content/js/sweetalert.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="~/Content/css/sweetalert.css">
+<link href="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.css" rel="stylesheet">
+
+<!--Bootstrap Validator [ OPTIONAL ]-->
+<script src="~/Content/plugins/bootstrap-validator/bootstrapValidator.min.js"></script>
+<script src="~/Content/js/validate.js"></script>
+<script>
+    function ModalProcesandoShow() {
+        $("#ModalProcessing").modal();// initialized with defaults
+        $("#ModalProcessing").modal({ backdrop: 'static', keyboard: false });// initialized with no keyboard
+        $("#ModalProcessing").modal('show');
+    }
+
+    // Oculta Modal de procesando
+    function ModalProcesandoHiden() {
+        $("#ModalProcessing").modal('hide');
+    }
+
+</script>
 <style>
     /* Animación con keyframe llamada "latidos" */
     @@keyframes latidos {
@@ -232,6 +252,16 @@
         transform: scale(1.1);
     }
 </style>
+<div id="loader"></div>
+<div id="dialog"></div>
+<div id="container" style="min-height: 1px">
+    <div id="content" style="min-height: 1px">
+        <div id="DivLoadingPage"></div>
+        <div class="modal fade" data-backdrop="static" data-keyboard="false" id="ModalProcessing">
+            <img src="~/Repositorio_Imagenes/Imagenes_Generales/modal-loading.gif" alt="Loading">
+        </div>
+    </div>
+</div>
 
 <div class="panel">
     <input type="hidden" id="cantidad_boletas" />
@@ -247,8 +277,6 @@
                                     <strong>Información de la estación:</strong>&nbsp;@(ViewBag.InfoTaquilla.Teatro.Nombre + " " + ViewBag.InfoTaquilla.Nombre)
                                 </div>
                             </div>
-
-
                         </div>
                 </di>
             </div>
@@ -349,6 +377,14 @@
                     <h5>Cupones</h5>
                 </div>
             </a>
+            <a class="col-sm-1" style="float:right;" href="javascript:vender_producto()">
+                <div class="row text-center">
+                    <div data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Vender Productos" style="color:black;font-size:3em;cursor:pointer" class="ion-bag text-main icon-3x add-tooltip" disabled></div>
+                </div>
+                <div class="row text-center pad-no" style="margin-top:-10%;">
+                    <h6>Vender Producto</h6>
+                </div>
+            </a>
             <a class="col-sm-1" style="float:right;" href="/Cuenta/limpiarSession">
                 <div class="row text-center">
                     <div data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Cerrar sesión" style="color:black;font-size:3em;cursor:pointer" class="ion-share text-main icon-3x add-tooltip" disabled></div>
@@ -381,10 +417,12 @@
 
                 </div>
                 <div class="row">
-                    <div class="col-sm-6" id="precio-items"><h4>Total $</h4></div>
-                    <div class="col-sm-6" id="cantidad-items"><h4>Total #:</h4></div>
+                    <div class="col-sm-6" id="precio-items"><h4>Total boletas $</h4></div>
+                    <div class="col-sm-6" id="cantidad-items"><h4>Total boletas #:</h4></div>
                     <input type="hidden" id="cantidad_sillas" />
                     <input type="hidden" id="precio-total-boletas" />
+                    <input type="hidden" id="precio-total-producto" />
+
                 </div>
             </div>
         </div>
@@ -393,11 +431,13 @@
 </div>
 <div id="Dialog"></div>
 <div id="DialogCupones"></div>
+<div id="DialogProductos"></div>
 
 <script>
-
+    function eliminar_producto(id){
+        $("#" + id + "").remove();
+    }
     function Fechas(accion) {
-        debugger;
         $.ajax({
             url: "/POS/GetFechaFiltro",
             async: false,
@@ -447,16 +487,72 @@
             })
         
     }
-    function adicionar_item(rowid_tarifafuncion, cantidad) {
-        debugger
+    function adicionar_item(rowid_tarifafuncion, cantidad, element) {
+        if ($(element).data("type-rate") == "TCR") {
+            //abrir ventana para validar la persona con tcr
+            debugger
+            var lol = abrir_modal_valida_tcr(rowid_tarifafuncion, cantidad, element);
+            debugger
+            console.log(lol);
+        }
+        else {
+            boleta_vender(rowid_tarifafuncion, cantidad, element);
+        }
+    }
+    function abrir_modal_valida_tcr(rowid_tarifafuncion, cantidad, element) {
+        var lol;
+        swal({
+            title: "An input!",
+            text: "Write something interesting:",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "Write something"
+                    },
+            function (inputValue) {
+                if (inputValue === false) return false;
+
+                if (inputValue === "") {
+                    swal.showInputError("You need to write something!");
+                    return false
+                }
+                $.ajax({
+                    url: "ValidarTCR",
+                    async:false,
+                    data: { Ntarjeta: inputValue },
+                    success: function (data) {
+                        if (data.tipo_respuesta == "warning") {
+                            debugger
+                            swal("Advertencia", data.respuesta, data.tipo_respuesta);
+                            lol = true;
+                        }
+                        else {
+                            debugger
+                            swal("Valido!", data.respuesta, data.tipo_respuesta);
+                            boleta_vender(rowid_tarifafuncion, cantidad, element);
+                            lol =false;
+                        }
+                        
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        swal("Valido!", data.respuesta, "warning");
+                    }
+                });
+                return lol;
+                //swal("Nice!", "You wrote: " + inputValue, "success");
+            });
+    }
+    function boleta_vender(rowid_tarifafuncion, cantidad, element) {
         var cantidad_actual = $("#cantidad_boletas_tarifa_" + rowid_tarifafuncion + "").val();
         $("#cantidad_boletas_tarifa_" + rowid_tarifafuncion + "").remove();
-        if (cantidad_actual==null) {
+        if (cantidad_actual == null) {
             cantidad_actual = 0;
         }
         var cantidad_boletas = parseInt(cantidad_actual) + parseInt(cantidad);
-        if (cantidad_boletas<=0) {
-            $(".item-elimina "+rowid_tarifafuncion+"").remove()
+        if (cantidad_boletas <= 0) {
+            $(".item-elimina " + rowid_tarifafuncion + "").remove()
         }
         else {
             $.ajax({
@@ -467,8 +563,6 @@
                     cantidadnueva: parseInt(cantidad_actual) + parseInt(cantidad),
                 },
                 success: function (data) {
-                    debugger
-                    console.log($("#boletas-comprar").find())
                     $('.item-elimina' + rowid_tarifafuncion + '').remove();
                     $(".cantidad-boleta").remove()
                     $("#boletas-comprar").append(data);
@@ -479,7 +573,6 @@
                 }
             })
         }
-        
     }
     function ContarBoletasVender() {
         var boletas = 0;
@@ -502,7 +595,6 @@
         $("#cantidad_sillas").val($(".boletas_vender_").val());
     }
     function eliminar_item(clase) {
-        debugger
         var cantidad_actual = $("#cantidad_boletas_tarifa_" + clase + "").val();
         cantidad_actual = cantidad_actual - 1;
 
@@ -553,25 +645,25 @@
         if (SalaID == null || SalaID == 0 || RowID_Funcion == 0 || $(".tarifas_id").length == 0) {
             //swal("Advertencia", "no hay boletas a vender", "warning");
             alert("No hay boleteas para la venta");
-            debugger
 
         }
         else {
-            
             cantidad = $(".boletas_vender_").val();
-            //ModalProcesandoShow();
             var RowID_Tarifas = "";
             $(".tarifas_id").each(function (index, element) {
                 RowID_Tarifas += $(this).val() + ',';
             })
-
-
-
-
-            var urlWithCont = '../POS/Mapa_Sala_funcion?RowID_Sala=' + SalaID + '&cantidad_sillas_venta=' + cantidad + '&RowIDFuncion=' + RowID_Funcion + '&RowIDTarifas=' + RowID_Tarifas + '';
+            var urlWithCont = '/POS/Mapa_Sala_funcion?RowID_Sala=' + SalaID + '&cantidad_sillas_venta=' + cantidad + '&RowIDFuncion=' + RowID_Funcion + '&RowIDTarifas=' + RowID_Tarifas + '';
             $("#Dialog").load(urlWithCont.trim()).dialog('open');
         }
+
+        
     }
+    function vender_producto() {
+        var urlWithCont = 'VenderProductos';
+        $("#DialogProductos").load(urlWithCont.trim()).dialog('open');
+    }
+
     $(document).ready(function () {
         //alert($(window).width()+"wid"+ $(window).height()+'hei');
         mueveReloj();
@@ -585,7 +677,6 @@
         $(".funcion ").each(function (index, element) {
             //var hora_funcion="15:15:00" $(this).find(".hora_funcion").text();
             var hora_funcion="15:15:00";
-            debugger
             var hora_funcion_text = $(element).find(".hora_funcion").text();
             var hora_funcion = parseInt(hora_funcion_text.split[0]) + parseInt(hora_funcion_text.split[0]);
 
@@ -603,7 +694,6 @@
            //     $(this).find(".hora_funcion").addClass("proximamente_iniciar");
            // }
         })
-
     })
     //$(document).keydown(function (event) {
     //    event.preventDefault();
@@ -647,13 +737,11 @@
             }
 
         }
-        debugger;
         if (mensaje == "si") {
             alert("no hay elementos");
         }
     }
     function cancelar_venta(clase, rowid) {
-        debugger
         $(".item-ventas, ." + clase + "").remove();
         $("." + clase + "").remove();
         $("." + rowid + "").each(function () {
@@ -742,3 +830,4 @@
     }
 </script>
 
+ 

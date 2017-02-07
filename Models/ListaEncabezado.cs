@@ -39,5 +39,6 @@ namespace CinemaPOS.Models
         public virtual ICollection<ListaDetalle> ListaDetalle { get; set; }
         public virtual ICollection<OportunidadVenta> OportunidadVenta { get; set; }
         public virtual Teatro Teatro { get; set; }
+        public virtual Estado Estado { get; set; }
     }
 }
