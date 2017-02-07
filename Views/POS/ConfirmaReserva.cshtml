@@ -43,7 +43,7 @@
     $(document).ready(function () {
         debugger
         $("#myModalReserva").modal("show"); //Para Mostrar el modal
-         ModalProcesandoHiden();
+        ModalProcesandoHiden();
     });
 
     function Alerts(menssage, tipo) {
@@ -58,6 +58,8 @@
         });
     }
 
+    
+
 
     function LiberarManualmente() {
         $.ajax({
@@ -68,19 +70,37 @@
             },
             success: function (data) {
                 $('#myModalReserva').modal('toggle');
-                Alerts(data.respuestaTeatro, data.tipoRespuestaTeatro);
-                Alerts(data.respuestaCentral, data.tipoRespuestaCentral);
+                Alerts(data.respuesta, data.tipoRespuesta);
             },
             error: function (data) {
                 $('#myModalReserva').modal('toggle');
-                Alerts(data.respuestaTeatro, data.tipoRespuestaTeatro);
-                Alerts(data.respuestaCentral, data.tipoRespuestaCentral);
+                Alerts(data.respuesta, data.tipoRespuesta);
+            }
+        });
+    }
+
+
+    function LiberarBoletaManualmente(RowID_Boleta, TeatroID) {
+        debugger
+        $.ajax({
+            type: "POST",
+            url: "/CallCenter/LiberarBoletaManualmente",
+            data: {
+                RowID_Boleta: RowID_Boleta,
+                TeatroID : TeatroID
+            },
+            success: function (data) {
+                $('#myModalReserva').modal('toggle');
+                Alerts(data.respuesta, data.tipoRespuesta);
+            },
+            error: function (data) {
+                $('#myModalReserva').modal('toggle');
+                Alerts(data.respuesta, data.tipoRespuesta);
             }
         });
     }
 
     function GuardarReserva() {
-        debugger
         // var val = $("#FormularioReserva").validate();
         //if (validator.form()) {
 
@@ -126,6 +146,11 @@
                 @if (Model.RowID != 0)
                 {
                     <h1>Reserva @Model.CodigoReserva</h1>
+                    CinemaPOS.Models.BoletaReservada item = ((List<CinemaPOS.Models.BoletaReservada>)(ViewBag.Boletas)).First();
+                    @item.Funcion.DetallePelicula.EncabezadoPelicula.TituloLocal @:
+                    @item.Funcion.DetallePelicula.Opcion.Codigo @:
+                    @item.Funcion.DetallePelicula.Opcion1.Codigo @: - 
+                    @item.Funcion.EncabezadoProgramacion.Teatro.Nombre @:
                 }
                 else
                 {
@@ -138,6 +163,10 @@
                     <input type="hidden" id="RowID_Reserva" name="RowID_Reserva" value="@Model.RowID" />
                     <input type="hidden" id="CodigoReserva" name="CodigoReserva" value="@Model.CodigoReserva" />
                     <input type="hidden" id="DatosSillasSeleccionadas" name="DatosSillasSeleccionadas" value="@ViewBag.DatosSillasSeleccionadas" />
+                    @if (Model.BoletaReservada.Count != 0)
+                    {
+                        <input type="hidden" id="TeatroID" name="TeatroID" value="@Model.BoletaReservada.First().Funcion.EncabezadoProgramacion.TeatroID" />
+                    }
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label>*Identificacion Cliente: </label>
@@ -181,38 +210,40 @@
                                 <th style="width: 10px; display:none">ID</th>
                                 <th>Fecha Función</th>
                                 <th>Sala</th>
-                                <th>Función</th>
                                 <th class="min-tablet">Silla</th>
-                                <th class="min-tablet">Estado</th>
                                 <th>Fecha Reserva</th>
                                 <th class="min-desktop">Fecha Creación</th>
+                                <th class="min-tablet">Estado</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (ViewBag.Boletas != null)
-{
-    foreach (CinemaPOS.Models.BoletaReservada item in ViewBag.Boletas)
-    {
-        <tr>
-            <td style="display: none;">@item.RowID</td>
-            @{string Hora_Funcion = DateTime.Parse(item.Funcion.HoraInicial.ToString()).ToString("hh:mm tt", CultureInfo.InvariantCulture);}
+                           @if (ViewBag.Boletas != null)
+                            {
+                                foreach (CinemaPOS.Models.BoletaReservada item in ViewBag.Boletas)
+                                {
+                                    <tr>
+                                        <td style="display: none;">@item.RowID</td>
+                                        @{string Hora_Funcion = DateTime.Parse(item.Funcion.HoraInicial.ToString()).ToString("hh:mm tt", CultureInfo.InvariantCulture);}
 
-            <td>@item.Funcion.Fecha.Value.ToShortDateString() - @Hora_Funcion</td>
-            <td>@item.Funcion.Sala.Nombre</td>
-            <td>@item.Funcion.DetallePelicula.EncabezadoPelicula.TituloLocal @item.Funcion.DetallePelicula.Opcion.Codigo - @item.Funcion.DetallePelicula.Opcion1.Codigo</td>
-            <td>@item.MapaSala.Columna - @item.MapaSala.Fila</td>
-            <td>
-                @if (item.Estado != null)
-                {
-                    @item.Estado.Nombre
-                }
-            </td>
-            <td>@item.FechaReserva</td>
-            <td>@item.FechaCreacion</td>
-            <td><a href="@Url.Action("Teatro","Maestro",new {RowID_Teatro=item.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>
-        </tr>
-    }
+                                        <td>@item.Funcion.Fecha.Value.ToShortDateString() - @Hora_Funcion</td>
+                                        <td>@item.Funcion.Sala.Nombre</td>
+                                        <td>@item.MapaSala.Columna - @item.MapaSala.Fila</td>
+                                       
+                                        <td>@item.FechaReserva</td>
+                                        <td>@item.FechaCreacion</td>
+                                        <td>
+                                            @if (item.Estado != null)
+                                            {
+                                                @item.Estado.Nombre
+                                            }
+                                        </td>
+                                        <td title="Liberar Boleta"  >
+                                            <a style="cursor: pointer;" onclick="LiberarBoletaManualmente(@item.RowID, @item.Funcion.EncabezadoProgramacion.TeatroID)">
+                                                <i class="ion-link"></i>
+                                            </a></td>
+                                    </tr>
+                                }
 }
                         </tbody>
                     </table>
@@ -232,46 +263,4 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        var cont = 0;
 
-        var aoColumnDefsType = [
-           //{ "sType": "title-numeric", "aTargets": [3] },
-           //{ "sType": "title-numeric", "aTargets": [7] },
-           { "bSortable": false, "aTargets": [0] }//,
-           //{ "bSortable": false, "aTargets": [8] },
-           //{ "bSortable": false, "aTargets": [9] },
-           //{ "sClass": "center", "aTargets": [2, 3, 4, 5, 6, 7] }
-        ];
-
-        var table = $('#demo-dt-basic').DataTable({
-            "processing": true,
-            "bFilter": true,
-            "bPaginate": true,
-            "info": true,
-            "bDestroy": true,
-            aLengthMenu: [
-                [6],
-                [6]
-            ],
-            "iDisplayLength": 10,
-            "order": [[0, "desc"]],
-            "aoColumnDefs": aoColumnDefsType
-            //"aaSorting": [[2,'desc']]
-        });
-
-        // Apply the search
-        table.columns().every(function () {
-            var that = this;
-
-            $('input', this.footer()).on('keyup change', function () {
-                if (that.search() !== this.value) {
-                    that
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-    });
-</script>
