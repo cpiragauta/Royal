@@ -112,13 +112,14 @@
             },
             success: function (data) {
                 $('#myModalReserva').modal('toggle');
-                Alerts(data.respuestaTeatro, data.tipoRespuestaTeatro);
-                Alerts(data.respuestaCentral, data.tipoRespuestaCentral);
+                $("#boletas-comprar").empty();
+                $("#ver_sala").removeAttr("onclick");
+                $("#panel-tarifas-funcion").empty();
+                swal("Reserva confirmada con exito","Codigo de reserva: " + data.codigoReserva)
             },
             error: function (data) {
                 $('#myModalReserva').modal('toggle');
-                Alerts(data.respuestaTeatro, data.tipoRespuestaTeatro);
-                Alerts(data.respuestaCentral, data.tipoRespuestaCentral);
+                swal("Error Guardando Reserva");
             }
         });
 

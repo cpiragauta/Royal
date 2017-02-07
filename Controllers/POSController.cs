@@ -911,6 +911,7 @@ namespace CinemaPOS.Controllers
             objTarjeta = new TarjetaMembresiaClienteRoyal();
             return Json(new { respuesta=respuesta,objetotarjeta=objTarjeta,tipo_respuesta=tipo_respuesta },JsonRequestBehavior.AllowGet);
         }
+
         #region CallCenter
 
 

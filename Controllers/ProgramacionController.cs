@@ -482,7 +482,7 @@ namespace CinemaPOS.Controllers
                 listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Codigo == "ENFUNCIONAMIENTO").OrderBy(f => f.RowID).ToList();
             }
             System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
-            int cantDias = DiasACorrer + 5;
+            int cantDias = DiasACorrer + 7;
 
             tabla += "  <thead>";
             tabla += "<tr>";

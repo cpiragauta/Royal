@@ -391,6 +391,16 @@
                     <h6>Vender Producto</h6>
                 </div>
             </a>
+            
+            <a class="col-sm-1" style="float:right;" href="javascript:ModalRedimirReserva()">
+                <div class="row text-center">
+                    <div data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Redimir Reserva" style="color:black;font-size:3em;cursor:pointer" class="ion-aperture text-main icon-3x add-tooltip"></div>
+                </div>
+                <div class="row text-center pad-no" style="margin-top:-10%;">
+                    <h5>Reservas</h5>
+
+                </div>
+            </a>
             <a class="col-sm-1" style="float:right;" href="/Cuenta/limpiarSession">
                 <div class="row text-center">
                     <div data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Cerrar sesión" style="color:black;font-size:3em;cursor:pointer" class="ion-share text-main icon-3x add-tooltip" disabled></div>
@@ -438,8 +448,53 @@
 <div id="Dialog"></div>
 <div id="DialogCupones"></div>
 <div id="DialogProductos"></div>
+<div id="DialogReserva"></div>
 
 <script>
+
+    function ModalRedimirReserva() {
+        swal({
+            title: "Reservas",
+            text: "Ingrese Código de la reserva:",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "COD1234"
+        },
+            function (inputValue) {
+                if (inputValue === false) return false;
+
+                if (inputValue === "") {
+                    swal.showInputError("Campo Obligatorio");
+                    return false
+                }
+                $.ajax({
+                    url: "/CallCenter/RedimirReserva",
+                    async: false,
+                    data: { CodigoReserva: inputValue },
+                    success: function (data) {
+                        debugger
+                        if (data.tipoRespuesta == "warning") {
+                            swal("Advertencia", data.respuesta, data.tipoRespuesta);
+                        }
+                        else {
+                            swal("OK", data.respuesta, data.tipoRespuesta);
+                           // boleta_vender(rowid_tarifafuncion, cantidad, element);
+                        }
+
+                    },
+                    error: function (data) {
+                        debugger
+                        swal("Advertencia", data.respuesta, "warning");
+                    }
+                });
+            });
+    }
+
+
+
+
     function eliminar_producto(id){
         $("#" + id + "").remove();
     }
@@ -549,6 +604,7 @@
                 //swal("Nice!", "You wrote: " + inputValue, "success");
             });
     }
+
     function boleta_vender(rowid_tarifafuncion, cantidad, element) {
         var cantidad_actual = $("#cantidad_boletas_tarifa_" + rowid_tarifafuncion + "").val();
         $("#cantidad_boletas_tarifa_" + rowid_tarifafuncion + "").remove();
