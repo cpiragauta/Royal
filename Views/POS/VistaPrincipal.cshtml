@@ -560,7 +560,6 @@
         }
     }
     function abrir_modal_valida_tcr(rowid_tarifafuncion, cantidad, element) {
-        var lol;
         swal({
             title: "Verificación tarjeta TCR",
             text: "Por favor ingreso el codigo de la tarjeta",
@@ -591,7 +590,6 @@
                             debugger
                             swal("Valido!", data.respuesta, data.tipo_respuesta);
                             boleta_vender(rowid_tarifafuncion, cantidad, element);
-                            lol =false;
                         }
                         
                     },
@@ -606,6 +604,7 @@
     }
 
     function boleta_vender(rowid_tarifafuncion, cantidad, element) {
+        console.log($(element).data("type-rate"));
         var cantidad_actual = $("#cantidad_boletas_tarifa_" + rowid_tarifafuncion + "").val();
         $("#cantidad_boletas_tarifa_" + rowid_tarifafuncion + "").remove();
         if (cantidad_actual == null) {
@@ -621,6 +620,7 @@
                 async: false,
                 data: {
                     RowID_ListaFuncion: rowid_tarifafuncion,
+                    tipo_boleta:$(element).data("type-rate"),
                     cantidadnueva: parseInt(cantidad_actual) + parseInt(cantidad),
                 },
                 success: function (data) {

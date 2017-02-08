@@ -249,7 +249,7 @@ namespace CinemaPOS.Controllers
                     }
                             if (cantidad_funciones_consulta > 3 && carrusel==true)
                             {
-                                html += "<div id ='" + funciones.DetallePeliculaID + "' class='carousel slide' data-ride='carousel' data-interval='false'>";
+                                html += "<div id ='carousel_" + funciones.DetallePeliculaID + "' class='carousel slide' data-ride='carousel' data-interval='false'>";
                                 html += " <div class='carousel-inner text-center'>";
                                 
                                 carrusel = false;
@@ -290,8 +290,8 @@ namespace CinemaPOS.Controllers
                             html += "</div>";
                             
                             html += "</div>";
-                            html += "<a class='carousel-control left control-izquierdo' data-slide='prev' href='#" + funciones.DetallePeliculaID + "' ><i class='demo-pli-arrow-left icon-3x'></i></a>";
-                            html += "<a class='carousel-control right control-derecho' data-slide='next' href='#" + funciones.DetallePeliculaID + "' ><i class='demo-pli-arrow-right icon-3x'></i></a>";
+                            html += "<a class='carousel-control left control-izquierdo' data-slide='prev' href='#carousel_" + funciones.DetallePeliculaID + "' ><i class='demo-pli-arrow-left icon-3x'></i></a>";
+                            html += "<a class='carousel-control right control-derecho' data-slide='next' href='#carousel_" + funciones.DetallePeliculaID + "' ><i class='demo-pli-arrow-right icon-3x'></i></a>";
                         }
                         html += "</td>";
                     }
@@ -438,11 +438,11 @@ namespace CinemaPOS.Controllers
             return html_tarifas;
         }
         [CheckSessionOutAttribute]
-        public string AdicionarItemVenta(int RowID_ListaFuncion, short? cantidadnueva,short?cantidad_anterior)
+        public string AdicionarItemVenta(int RowID_ListaFuncion, short? cantidadnueva,short?cantidad_anterior,string tipo_boleta)
         {
             ListaPrecioFuncion ItemVenta = db.ListaPrecioFuncion.Where(lpf => lpf.RowID == RowID_ListaFuncion).FirstOrDefault();
             string html_item_venta = "";
-            html_item_venta += "<div class='panel  panel-primary panel-colorful item-venta item-elimina" + ItemVenta.RowID + " mar-all' data-element-sale='boleta' >";
+            html_item_venta += "<div class='panel  panel-primary panel-colorful item-venta item-elimina" + ItemVenta.RowID + " mar-all' data-element-sale='boleta' data-type-rate='"+ tipo_boleta + "' data-quantity-ticket='"+cantidadnueva+"' >";
             html_item_venta += "<div class='pad-all media'>";
             html_item_venta += "<div class='media-left'>";
             html_item_venta += "<span class='text-2x text-bold' id='cantidad-total-" + ItemVenta.RowID + "'>" + cantidadnueva + "</span>";
