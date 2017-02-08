@@ -1055,9 +1055,9 @@
             <div id="Tabla" class="tab-pane fade">
                 <input type="hidden" id="Cant_Dias" name="Cant_Dias" value="0" />
                 <div class="col-sm-11">
-                    <a class="btn btn-success btn-icon add-tooltip" href="javascript:MoverFuncionesGraficas(-5)" data-toggle="tooltip" data-placement="bottom" data-original-title="5 días atras"><i class="ion-arrow-left-a icon-lg"></i> </a>
+                    <a class="btn btn-success btn-icon add-tooltip" href="javascript:MoverFuncionesGraficas(-7)" data-toggle="tooltip" data-placement="bottom" data-original-title="7 días atras"><i class="ion-arrow-left-a icon-lg"></i> </a>
                     <a class="btn btn-success btn-icon add-tooltip" href="javascript:CargarFuncionesGraficas()" data-toggle="tooltip" data-placement="bottom" data-original-title="Refrescar Funciones"><i class="glyphicon glyphicon-refresh icon-lg"></i></a>
-                    <a class="btn btn-success btn-icon add-tooltip" href="javascript:MoverFuncionesGraficas(5)" data-toggle="tooltip" data-placement="bottom" data-original-title="5 días adelante"><i class="ion-arrow-right-a icon-lg"></i> </a>
+                    <a class="btn btn-success btn-icon add-tooltip" href="javascript:MoverFuncionesGraficas(7)" data-toggle="tooltip" data-placement="bottom" data-original-title="7 días adelante"><i class="ion-arrow-right-a icon-lg"></i> </a>
                 </div>
                 <div class="col-sm-1">
                     <a class="btn btn-dark btn-icon add-tooltip" href="javascript:ModalEliminarFunMasivo()" data-toggle="tooltip" data-placement="bottom" data-original-title="Eliminar Funciones Masivamente"><i class="ion-trash-a icon-lg"></i> </a>
@@ -1072,7 +1072,7 @@
                                         <td class="day Bordes" id="table-header-days">
                                             <p>Sala/Día</p>
                                         </td>
-                                        @for (int i = 0; i < 5; i++)
+                                        @for (int i = 0; i < 7; i++)
                                         {
                                             System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
                                             String fechaEncabezado = Model.FechaInicial.Value.AddDays(i).ToString("dd/MM/yyyy");
@@ -1098,7 +1098,7 @@
                                                         @itemSala.Nombre 
                                                     </p>
                                                 </td>
-                                                @for (int i = 0; i < 5; i++)
+                                                @for (int i = 0; i < 7; i++)
                                                 {
                                                     <td class="Bordes">
                                                         @foreach (CinemaPOS.Models.Funcion funcion in ViewBag.listaFunciones)

@@ -93,7 +93,7 @@ namespace CinemaPOS.Controllers
             string IDSillas = DatosSillas[2];
             AsignarBoletasAReserva(IDSillas, tarifaID, RowIDFuncion, reserva);
 
-            return Json(new { respuesta = respuesta});
+            return Json(new { codigoReserva = codigoReserva });
         }
 
 
@@ -137,9 +137,10 @@ namespace CinemaPOS.Controllers
                     objBoletaReserva.FechaCreacion = DateTime.Now;
                     objBoletaReserva.TaquillaID = taquillas.RowID;
                     //objBoletaReserva.TaquillaID = 53;
+                    objBoletaReserva.Estado = db.Estado.FirstOrDefault(f => f.Codigo == "RESERVADA" && f.TipoEstado.Codigo == "TIPORESERVA");
                     objBoletaReserva.UsuarioID = usuariotaquilla.RowID;
                     objBoletaReserva.ReservaID = reserva.RowID;
-                    objBoletaReserva.CreadoPor = "CallCenter";
+                    objBoletaReserva.CreadoPor = Session["usuario_creacion"].ToString();
                     db.BoletaReservada.Add(objBoletaReserva);
                     db.SaveChanges();
                     rowid_sillasvendidas[i] = int.Parse(objBoletaReserva.RowID.ToString());
@@ -255,7 +256,44 @@ namespace CinemaPOS.Controllers
         }
 
 
-       
+        
+
+        [CheckSessionOutAttribute]
+        public JsonResult RedimirReserva(string CodigoReserva)
+        {
+            /**/
+            string tipoRespuesta = "warning", respuesta = "";
+            if (String.IsNullOrEmpty(CodigoReserva))
+            {
+                return Json(new { tipoRespuesta = tipoRespuesta, respuesta = "Ingrese un código valido" });
+            }
+            else
+            {
+                Reserva reserva;
+                //Busco por Codigo Reserva 
+                reserva = db.Reserva.FirstOrDefault(f => f.CodigoReserva.Equals(CodigoReserva));
+                if(reserva != null){
+                    respuesta = "Codigo valido";
+                    tipoRespuesta = "success";
+                }
+
+                //Busco Por Telefono
+                if (reserva == null)
+                {
+                    reserva = db.Reserva.FirstOrDefault(f => f.TelefonoCliente.Equals(CodigoReserva));
+                    if (reserva != null)
+                    {
+                        respuesta = "Codigo valido";
+                        tipoRespuesta = "success";
+                    }
+                }
+                if (reserva == null)
+                {
+                    respuesta = "No se encontro reserva con el código " + CodigoReserva;
+                }
+            }
+            return Json(new { tipoRespuesta = tipoRespuesta, respuesta = respuesta },JsonRequestBehavior.AllowGet);
+        }
 
 
     }

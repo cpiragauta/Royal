@@ -35,7 +35,7 @@
                         <td>@ControlUsuario.CantidadGafasNin</td>
                         <td>@ControlUsuario.CantidadBonoRegalo</td>
                         <td><a class="glyphicon glyphicon-pencil" href="@Url.Action("ControlCajaUsuario", "AdminTeatro", new { RowIDControl=ControlUsuario.RowID })"></a></td>
-                        <td><button class="glyphicon ion-clipboard" onclick="cargar_contro_ingreso(@ControlUsuario.RowID)"></button></td>
+                        <td><button class="glyphicon ion-clipboard" title="Cierre De Caja" onclick="cargar_contro_ingreso(@ControlUsuario.RowID)"></button></td>
                     </tr>
                 }
             </tbody>
@@ -45,7 +45,7 @@
 <script>
     //ModalProcesandoShow();
     function cargar_contro_ingreso(rowid_control_ingreso) {
-        var urlWithCont = '../AdminTeatro/RegistrarIngreso?RowIDControlentrega='+rowid_control_ingreso;
+        var urlWithCont = '../../AdminTeatro/RegistrarIngreso?RowIDControlentrega='+rowid_control_ingreso;
         $("#Dialog")
         .load(urlWithCont.trim())
         .dialog('open');
