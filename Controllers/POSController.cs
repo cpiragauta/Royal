@@ -756,43 +756,68 @@ namespace CinemaPOS.Controllers
             }
             return Json(new { tipo_respuesta=tipo_respuesta, Respuesta = Respuesta, data = ListaBoletas,html=Boletas }, JsonRequestBehavior.AllowGet);
         }
-        [CheckSessionOutAttribute]
-        public ActionResult ValidaCupones()
-        {
-            /**/
-            return View();
-        }
         public string valida_estado_cupon(string codigo_barras)
         {
-            String des = "65B7A47635";
+            //String des = "65B7A47635";
             string respuesta = "";
-            Encriptacion encrip = new Encriptacion(System.Text.Encoding.UTF8);
-            RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
-            byte[] key = new byte[32]; 
-            byte[] iv = new byte[32];
-            rngCsp.GetBytes(key);
-            rngCsp.GetBytes(iv);
-            des = encrip.Decrypt(des, key, iv);
-            
-            DetalleConvenio cupon_valida = db.DetalleConvenio.Where(dc => dc.Codigo == codigo_barras).FirstOrDefault();
-            if (cupon_valida!=null)
+            //Encriptacion encrip = new Encriptacion(System.Text.Encoding.UTF8);
+            //RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
+            //byte[] key = new byte[32]; 
+            //byte[] iv = new byte[32];
+            //rngCsp.GetBytes(key);
+            //rngCsp.GetBytes(iv);
+            //des = encrip.Decrypt(des, key, iv);
+
+            //Busco el convenio en el local
+            DetalleConvenio cupon_valida = db.DetalleConvenio.FirstOrDefault(dc => dc.Codigo == codigo_barras);
+
+
+            //En caso de que no lo encuentre lo busco en el central
+            if (cupon_valida == null)
             {
-                db.Database.Connection.ConnectionString = (db.Parametros.Where(p => p.cod_parametro == "CONNCENTRAL").FirstOrDefault().valor_parametros); //db.DetalleConvenio.Where(dc => dc.Codigo == "65B7A47636").FirstOrDefault();
-                string con=db.Database.Connection.DataSource.ToString();
-                cupon_valida = db.DetalleConvenio.Where(dc => dc.Codigo == codigo_barras).FirstOrDefault();
-                db.Database.Connection.Close();
-                if (cupon_valida.Estado.Codigo.ToUpper()== "REDIMIDO")
+                String cadenaActual = db.Database.Connection.ConnectionString;
+                db.Database.Connection.ConnectionString = (db.Teatro.Where(p => p.Nombre == "CENTRAL").FirstOrDefault().CadenaBD);
+                try
                 {
-                    respuesta = "EL convenio " + cupon_valida.EncabezadoConvenio.Nombre + " ya ha sido redimido ";
+                    cupon_valida = db.DetalleConvenio.FirstOrDefault(dc => dc.Codigo == codigo_barras);
+                }
+                catch (Exception)
+                {
+                    cupon_valida = null;
+                }
+                if (cupon_valida != null)
+                {
+                    if (cupon_valida.Estado.Codigo.ToUpper() == ModelosPropios.Util.Constantes.ESTADO_CONVENIO_REDIMIDO)
+                    {
+                        respuesta = "EL convenio " + cupon_valida.EncabezadoConvenio.Nombre + " " + cupon_valida.Codigo + " ya ha sido redimido ";
+                    }
+                    else
+                    {
+                        //Si lo encuentro le cambio el estado a redimido
+                        cupon_valida.EstadoID = db.Estado.Where(es => es.TipoEstado.Codigo == ModelosPropios.Util.Constantes.TIPO_ESTADO_CONVENIO && es.Codigo == ModelosPropios.Util.Constantes.ESTADO_CONVENIO_REDIMIDO).FirstOrDefault().RowID;
+                        db.SaveChanges();
+                        respuesta = "Convenio redimido";
+                    }
+                }
+                
+                //Le devuelvo la cadena que tenia
+                db.Database.Connection.ConnectionString = cadenaActual;
+            }
+            else
+            {
+                if (cupon_valida.Estado.Codigo.ToUpper() == ModelosPropios.Util.Constantes.ESTADO_CONVENIO_REDIMIDO)
+                {
+                    respuesta = "EL convenio " + cupon_valida.EncabezadoConvenio.Nombre + " " + cupon_valida.Codigo + " ya ha sido redimido ";
                 }
                 else
                 {
+                    //Si lo encuentro le cambio el estado a redimido
                     cupon_valida.EstadoID = db.Estado.Where(es => es.TipoEstado.Codigo == ModelosPropios.Util.Constantes.TIPO_ESTADO_CONVENIO && es.Codigo == ModelosPropios.Util.Constantes.ESTADO_CONVENIO_REDIMIDO).FirstOrDefault().RowID;
                     db.SaveChanges();
                     respuesta = "Convenio redimido";
                 }
             }
-            else
+            if (cupon_valida == null)
             {
                 respuesta = "EL convenio no existe";
             }

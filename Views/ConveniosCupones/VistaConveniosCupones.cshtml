@@ -44,7 +44,7 @@
                         <td>@item.FechaInicio.Value.ToString("dd/MM/yyyy")</td>
                         <td>@item.FechaFinal.Value.ToString("dd/MM/yyyy")</td>
                         <td>@item.Estado.Nombre</td>
-                        <td>@item.Cantidad </td>
+                        <td>@item.DetalleConvenio.Count</td>
                         <td>@item.CreadoPor</td>
                         <td>@item.FechaCreacion.Value.ToString("dd/MM/yyyy")</td>
                         <td><a href="@Url.Action("ConveniosCupones", "ConveniosCupones", new { RowId_Covenio = item.RowID })"><i class="glyphicon glyphicon-pencil"></i></a></td>

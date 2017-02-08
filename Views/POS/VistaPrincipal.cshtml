@@ -377,7 +377,7 @@
             
             <a class="col-sm-1" style="float:right;">
                 <div class="row text-center">
-                    <div id="" onclick="validar_cupon()" data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Redención de convenios y venta empresarial" style="color:black;font-size:3em;cursor:pointer" class="ion-ios-barcode text-main icon-3x add-tooltip" disabled></div>
+                    <div id="" onclick="ModalRedimirCupones()" data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Redención de convenios y venta empresarial" style="color:black;font-size:3em;cursor:pointer" class="ion-ios-barcode text-main icon-3x add-tooltip" disabled></div>
                 </div>
                 <div class="row text-center pad-no" style="margin-top:-10%;">
                     <h5>Cupones</h5>
@@ -446,11 +446,45 @@
     <input type="hidden" id="RowID_Funcion" />
 </div>
 <div id="Dialog"></div>
-<div id="DialogCupones"></div>
 <div id="DialogProductos"></div>
 <div id="DialogReserva"></div>
 
 <script>
+
+
+    function ModalRedimirCupones() {
+
+        swal({
+            title: "Cupones",
+            text: "Ingrese código del cupón:",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "ABC123"
+        },
+            function (inputValue) {
+                if (inputValue === false) return false;
+
+                if (inputValue === "") {
+                    swal.showInputError("Campo Obligatorio");
+                    return false
+                }
+                $.ajax({
+                    url: "/POS/valida_estado_cupon",
+                    data: { codigo_barras: inputValue },
+                    success: function (data) {
+                        swal(data);
+                       // $("#cupones").empty().append(data);
+                        //adicionar_item(37);
+                    },
+                    error: function (data) {
+                        alert(data);
+                    }
+                })
+            });
+    }
+
 
     function ModalRedimirReserva() {
         swal({
@@ -888,24 +922,17 @@
             }
         }
     }
-    function validar_cupon() {
-        var urlWithCont = '../POS/ValidaCupones';
-        console.log(urlWithCont);
-        $("#DialogCupones").load(urlWithCont.trim()).dialog('open');
-
-    }
+   
     function hoverfuncion(element) {
         
         $(element).hover(
          function () {
              console.log($(this).attr("id"))
-             debugger
              $.ajax({
                  url: "InformacionSala",
-                 async: false,
+                 //async: false,
                  data: { rowidfuncion: $(element).attr("id") },
                  success: function (data) {
-                     debugger
                      var sillas_vendidas=data.SillasVendidas;
                      var capacidad=data["Capacidad"];
                      var bloqueadas=data.SillasBloqueadas;
