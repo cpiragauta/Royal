@@ -408,7 +408,7 @@ namespace CinemaPOS.Controllers
                 {
                     html_tarifas += "<div class='row'>";
                 }
-                        html_tarifas += "<div class='panel media middle panel-tarifa-funcion col-sm-5 mar-all' data-type-rate='"+tarifafuncion.ListaDetalle.Opcion1.Codigo+"' title='"+ tarifafuncion.ListaDetalle.Nombre + "' onclick='javascript:adicionar_item(" + tarifafuncion.RowID + ",1,this)'>";
+                        html_tarifas += "<div class='panel media middle panel-tarifa-funcion col-sm-5 mar-all' data-quantity-ticket='0' data-validate='1' data-type-rate='" + tarifafuncion.ListaDetalle.Opcion1.Codigo+"' title='"+ tarifafuncion.ListaDetalle.Nombre + "' onclick='javascript:adicionar_item(" + tarifafuncion.RowID + ",1,this)'>";
                             html_tarifas += "<div class='media-left bg-mint pad-all'>";
                                 html_tarifas += "<i class='demo-pli-coin icon-3x'></i><br />";
                             html_tarifas += "</div>";
@@ -440,41 +440,58 @@ namespace CinemaPOS.Controllers
         [CheckSessionOutAttribute]
         public string AdicionarItemVenta(int RowID_ListaFuncion, short? cantidadnueva,short?cantidad_anterior,string tipo_boleta)
         {
-            ListaPrecioFuncion ItemVenta = db.ListaPrecioFuncion.Where(lpf => lpf.RowID == RowID_ListaFuncion).FirstOrDefault();
+             ListaPrecioFuncion ItemVenta = db.ListaPrecioFuncion.Where(lpf => lpf.RowID == RowID_ListaFuncion).FirstOrDefault();
             string html_item_venta = "";
-            html_item_venta += "<div class='panel  panel-primary panel-colorful item-venta item-elimina" + ItemVenta.RowID + " mar-all' data-element-sale='boleta' data-type-rate='"+ tipo_boleta + "' data-quantity-ticket='"+cantidadnueva+"' >";
-            html_item_venta += "<div class='pad-all media'>";
-            html_item_venta += "<div class='media-left'>";
-            html_item_venta += "<span class='text-2x text-bold' id='cantidad-total-" + ItemVenta.RowID + "'>" + cantidadnueva + "</span>";
-            html_item_venta += "</div>";
-            html_item_venta += "<div class='media-body'>";
-            html_item_venta += "<div class='col-sm-9'>";
-            html_item_venta += "<p class='h3 text-light mar-no media-heading'>" + ItemVenta.Funcion.DetallePelicula.EncabezadoPelicula.TituloLocal + "&nbsp;" + ItemVenta.Funcion.DetallePelicula.Opcion.Nombre + "&nbsp;" + ItemVenta.Funcion.DetallePelicula.Opcion1.Nombre + "</p>";
-            html_item_venta += "<span class='suma-costo-pedido' id='total-costo" + ItemVenta.RowID + "'>$ " + ItemVenta.ListaDetalle.Precio * cantidadnueva + "</span>";
-            html_item_venta += "<input type='hidden' class='precio-items-" + ItemVenta.RowID + "' value='" + ItemVenta.ListaDetalle.Precio + "'>";
-            html_item_venta += "<input type='hidden' class='cantidad-boleta-" + ItemVenta.RowID + "' value='" + cantidadnueva + "'></span>";
-            html_item_venta += "<input type='hidden' class='tarifas_id' value='" + ItemVenta.ListaDetalle.RowID + "'></span>";
-            html_item_venta += "</div>";
-            
-            html_item_venta += "</div>";
-            html_item_venta += "<div class='media-right mar-rgt'>";
-            html_item_venta += "<button class='btn btn-info btn-icon' onclick=javascript:adicionar_item(" + RowID_ListaFuncion + ",5) style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-cart icon-3x'></i><i class='icon-2x mar-rgt'>+5</i></button>";
-            html_item_venta += "<button class='btn btn-info btn-icon mar-top' onclick=javascript:adicionar_item(" + RowID_ListaFuncion + ",10) style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-cart icon-3x'></i><i class='icon-2x'>+10</i></button>";
-            html_item_venta += "<button class='btn btn-info btn-icon mar-top' onclick='javascript:adicionar_item(" + ItemVenta.RowID + ",-1)' style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-trash icon-3x'></i></button>";
-            html_item_venta += "</div>";
-            html_item_venta += "</div>";
-            
-           
+            if (cantidadnueva>4&& tipo_boleta=="TCR")
+            {
+                return html_item_venta = "Maximo redenciones alcanzada";
+            }
+            else
+            {
+                html_item_venta += "<div class='panel  panel-primary panel-colorful item-venta item-elimina" + ItemVenta.RowID + " mar-all' data-element-sale='boleta' data-type-rate='" + tipo_boleta + "' data-quantity-ticket='" + cantidadnueva + "' >";
+                html_item_venta += "<div class='pad-all media'>";
+                html_item_venta += "<div class='media-left'>";
+                html_item_venta += "<span class='text-2x text-bold' id='cantidad-total-" + ItemVenta.RowID + "'>" + cantidadnueva + "</span>";
+                html_item_venta += "</div>";
+                html_item_venta += "<div class='media-body'>";
+                html_item_venta += "<div class='col-sm-9'>";
+                html_item_venta += "<p class='h3 text-light mar-no media-heading'>" + ItemVenta.Funcion.DetallePelicula.EncabezadoPelicula.TituloLocal + "&nbsp;" + ItemVenta.Funcion.DetallePelicula.Opcion.Nombre + "&nbsp;" + ItemVenta.Funcion.DetallePelicula.Opcion1.Nombre + "</p>";
+                html_item_venta += "<span class='suma-costo-pedido' id='total-costo" + ItemVenta.RowID + "'>$ " + ItemVenta.ListaDetalle.Precio * cantidadnueva + "</span>";
+                html_item_venta += "<input type='hidden' class='precio-items-" + ItemVenta.RowID + "' value='" + ItemVenta.ListaDetalle.Precio + "'>";
+                html_item_venta += "<input type='hidden' class='cantidad-boleta-" + ItemVenta.RowID + "' value='" + cantidadnueva + "'></span>";
+                html_item_venta += "<input type='hidden' class='tarifas_id' value='" + ItemVenta.ListaDetalle.RowID + "'></span>";
+                html_item_venta += "</div>";
 
-            //<div class='progress progress-xs progress-dark-base mar-no'>
-            //	<div role = 'progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' class='progress-bar progress-bar-light' style='width: 75%'></div>
-            //</div>
-            html_item_venta += "<div class='pad-all text-sm bg-trans-dark'>";
-            html_item_venta += "<span class='text-bold'>" + ItemVenta.ListaDetalle.Nombre + "</span>";
-            html_item_venta += "<a href=\"javascript:cancelar_venta(\'item-elimina" + ItemVenta.RowID + "','" + ItemVenta.RowID + "\')\" class='close'><i class='ion-ios-close text-2x'></i></a>";
-            html_item_venta += "</div>";
-            html_item_venta += "</div>";
-            html_item_venta += "<input type='hidden' value='" + cantidadnueva + "' name='" + RowID_ListaFuncion + "' id='cantidad_boletas_tarifa_"+RowID_ListaFuncion+"' class='boletas_vender_ " + RowID_ListaFuncion + "'>";
+                html_item_venta += "</div>";
+                html_item_venta += "<div class='media-right mar-rgt'>";
+                if (tipo_boleta == "TCR")
+                {
+                    html_item_venta += "<button class='btn btn-info btn-icon' data-validate='0'  data-type-rate='" + tipo_boleta + "' data-quantity-ticket='" + cantidadnueva + "' onclick=javascript:adicionar_item(" + RowID_ListaFuncion + ",3,this) style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-cart icon-3x'></i><i class='icon-2x mar-rgt'>+3</i></button>";
+                    html_item_venta += "<button class='btn btn-info btn-icon' data-validate='0' data-type-rate='" + tipo_boleta + "'   data-quantity-ticket='" + cantidadnueva + "' onclick=javascript:adicionar_item(" + RowID_ListaFuncion + ",1,this) style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-cart icon-3x'></i><i class='icon-2x mar-rgt'>+1</i></button>";
+                }
+                else
+                {
+                    html_item_venta += "<button class='btn btn-info btn-icon' data-validate='0'  data-type-rate='" + tipo_boleta + "' data-quantity-ticket='" + cantidadnueva + "' onclick=javascript:adicionar_item(" + RowID_ListaFuncion + ",5,this) style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-cart icon-3x'></i><i class='icon-2x mar-rgt'>+5</i></button>";
+                    html_item_venta += "<button class='btn btn-info btn-icon mar-top' data-validate='0' data-type-rate='" + tipo_boleta + "' data-quantity-ticket='" + cantidadnueva + "' onclick=javascript:adicionar_item(" + RowID_ListaFuncion + ",10,this) style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-cart icon-3x'></i><i class='icon-2x'>+10</i></button>";
+                }
+
+                html_item_venta += "<button class='btn btn-info btn-icon mar-top' data-type-rate='" + tipo_boleta + "' data-quantity-ticket='" + cantidadnueva + "' onclick='javascript:adicionar_item(" + ItemVenta.RowID + ",-1,this)' style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-trash icon-3x'></i></button>";
+                html_item_venta += "</div>";
+                html_item_venta += "</div>";
+
+
+
+                //<div class='progress progress-xs progress-dark-base mar-no'>
+                //	<div role = 'progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' class='progress-bar progress-bar-light' style='width: 75%'></div>
+                //</div>
+                html_item_venta += "<div class='pad-all text-sm bg-trans-dark'>";
+                html_item_venta += "<span class='text-bold'>" + ItemVenta.ListaDetalle.Nombre + "</span>";
+                html_item_venta += "<a href=\"javascript:cancelar_venta(\'item-elimina" + ItemVenta.RowID + "','" + ItemVenta.RowID + "\')\" class='close'><i class='ion-ios-close text-2x'></i></a>";
+                html_item_venta += "</div>";
+                html_item_venta += "</div>";
+                html_item_venta += "<input type='hidden' value='" + cantidadnueva + "' name='" + RowID_ListaFuncion + "' id='cantidad_boletas_tarifa_" + RowID_ListaFuncion + "' class='boletas_vender_ " + RowID_ListaFuncion + "'>";
+            }
+           
             return html_item_venta;
         }
         [CheckSessionOutAttribute]
