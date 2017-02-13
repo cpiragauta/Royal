@@ -596,11 +596,15 @@
     }
     function adicionar_item(rowid_tarifafuncion, cantidad, element) {
         if ($(element).data("type-rate") == "TCR") {
+            debugger
             //abrir ventana para validar la persona con tcr
-            debugger
-            var lol = abrir_modal_valida_tcr(rowid_tarifafuncion, cantidad, element);
-            debugger
-            console.log(lol);
+            if ($(element).data("validate") == 1) {
+                var lol = abrir_modal_valida_tcr(rowid_tarifafuncion, cantidad, element);
+            }
+            else {
+                boleta_vender(rowid_tarifafuncion, cantidad, element);
+            }
+            
         }
         else {
             boleta_vender(rowid_tarifafuncion, cantidad, element);
@@ -631,10 +635,8 @@
                         if (data.tipo_respuesta == "warning") {
                             debugger
                             swal("Advertencia", data.respuesta, data.tipo_respuesta);
-                            lol = true;
                         }
                         else {
-                            debugger
                             swal("Valido!", data.respuesta, data.tipo_respuesta);
                             boleta_vender(rowid_tarifafuncion, cantidad, element);
                         }
@@ -645,13 +647,15 @@
                         swal("Valido!", data.respuesta, "warning");
                     }
                 });
-                return lol;
                 //swal("Nice!", "You wrote: " + inputValue, "success");
             });
     }
 
     function boleta_vender(rowid_tarifafuncion, cantidad, element) {
-        console.log($(element).data("type-rate"));
+        console.clear();
+        console.log(parseInt($(element).data("quantity-ticket")))
+        console.log(parseInt(cantidad))
+        console.log(parseInt($(element).data("quantity-ticket")) + parseInt(cantidad));
         var cantidad_actual = $("#cantidad_boletas_tarifa_" + rowid_tarifafuncion + "").val();
         $("#cantidad_boletas_tarifa_" + rowid_tarifafuncion + "").remove();
         if (cantidad_actual == null) {
@@ -668,13 +672,20 @@
                 data: {
                     RowID_ListaFuncion: rowid_tarifafuncion,
                     tipo_boleta:$(element).data("type-rate"),
-                    cantidadnueva: parseInt(cantidad_actual) + parseInt(cantidad),
+                    cantidadnueva: parseInt($(element).data("quantity-ticket")) + parseInt(cantidad),
                 },
                 success: function (data) {
-                    $('.item-elimina' + rowid_tarifafuncion + '').remove();
-                    $(".cantidad-boleta").remove()
-                    $("#boletas-comprar").append(data);
-                    ContarBoletasVender();
+                    
+                    if (data == "Maximo redenciones alcanzada") {
+                        swal("Advertencia", "Maximo redenciones alcanzada", "success")
+                    }
+                    else {
+                        $('.item-elimina' + rowid_tarifafuncion + '').remove();
+                        $(".cantidad-boleta").remove()
+                        $("#boletas-comprar").append(data);
+                        ContarBoletasVender();
+                    }
+                    
                 },
                 error: function () {
                     Console.log("Error");
@@ -685,8 +696,8 @@
     function ContarBoletasVender() {
         var boletas = 0;
         var precios = 0;
-        $(".item-ventas").each(function (index) {
-            boletas++;
+        $(".item-venta").each(function (index) {
+            boletas += $(this).data("quantity-ticket");
         })
         //$(".suma-costo-pedido").each(function (index, text) {
         //    console.log(text.text);
@@ -694,12 +705,15 @@
         $(".suma-costo-pedido").each(function (index, element) {
             precios += parseInt($(this).text().replace('$', ''));
         });
+
         $("#precio-items").text("$" + precios);
         $("#precio-total-boletas").val(precios);
         $("#precio-items").empty().append("<h4>Total $:" + precios + "</h4>");
         
         $("#cantidad_boletas").val(boletas);
         $("#cantidad-items").empty().append("<h4>Total #:" + $(".boletas_vender_").val() + "</h4>");
+        //$("#cantidad_sillas").val($(".boletas_vender_").val());
+        $(".boletas_vender_").val(boletas)
         $("#cantidad_sillas").val($(".boletas_vender_").val());
     }
     function eliminar_item(clase) {
@@ -953,7 +967,7 @@
                      $("#" + data.Rowid_Detalle + "").find("#Vendidas").empty().text("Vendidas " + sillas_vendidas + "");
                      $("#" + data.Rowid_Detalle + "").find("#Reservadas").empty().text("Reservadas " + reservas + "");
                      $("#" + data.Rowid_Detalle + "").find("#Disponible").empty().text("Disponible " + capacidad + "");
-                     $("#" + data.Rowid_Detalle + "").find("#porcentaje_ocupacion").empty().text("Porcentaje ocupación " + ((capacidad / (reservas + sillas_vendidas))*10).toFixed(0) + "%");
+                     $("#" + data.Rowid_Detalle + "").find("#porcentaje_ocupacion").empty().text("Porcentaje ocupación " + ( ((reservas + sillas_vendidas)*100)/capacidad).toFixed(0) + "%");
                  }
              })
 
