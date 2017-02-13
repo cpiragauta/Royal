@@ -262,6 +262,9 @@ namespace CinemaPOS.Controllers
         public JsonResult RedimirReserva(string CodigoReserva)
         {
             /**/
+            int? SalaID =0, cantidad =0, RowID_Funcion=0 , RowID_Tarifas=0;
+            String sillasID = "";
+
             string tipoRespuesta = "warning", respuesta = "";
             if (String.IsNullOrEmpty(CodigoReserva))
             {
@@ -291,8 +294,49 @@ namespace CinemaPOS.Controllers
                 {
                     respuesta = "No se encontro reserva con el código " + CodigoReserva;
                 }
+                else
+                {
+                    List<BoletaReservada> Boletas = db.BoletaReservada.Where(f => f.ReservaID == reserva.RowID && f.Estado.Codigo == "RESERVADA").ToList();
+                    RowID_Funcion  = Boletas.First().FuncionID;
+                    SalaID = Boletas.First().Funcion.SalaID;
+                    RowID_Tarifas = Boletas.First().TarifaID;
+                    cantidad = Boletas.Count;
+                    foreach (BoletaReservada item in Boletas)
+                    {
+                        sillasID += item.SillaID + ",";
+                    }
+                    sillasID = sillasID.TrimEnd(',');
+                    //RedimirReserva(reserva.RowID); //Le cambio el estado a la reserva y a las boletas
+                }
             }
-            return Json(new { tipoRespuesta = tipoRespuesta, respuesta = respuesta },JsonRequestBehavior.AllowGet);
+            return Json(new { tipoRespuesta = tipoRespuesta, respuesta = respuesta, SalaID = SalaID, cantidad = cantidad, RowID_Funcion = RowID_Funcion, RowID_Tarifas = RowID_Tarifas, sillasID = sillasID }, JsonRequestBehavior.AllowGet);
+        }
+
+        [CheckSessionOutAttribute]
+        public void RedimirReserva(int idReserva)
+        {
+            try
+            {
+                Estado Redimida = db.Estado.FirstOrDefault(f => f.Codigo == "REDIMIDA" && f.TipoEstado.Codigo == "TIPORESERVA");
+                Reserva reserva = db.Reserva.FirstOrDefault(f => f.RowID == idReserva);
+                reserva.EstadoID = Redimida.RowID;
+                reserva.FechaModificacion = DateTime.Now;
+                reserva.ModificadoPor = Session["usuario_creacion"].ToString();
+                db.SaveChanges();
+                //Busco boletas de la reserva y cambio el estado 
+                List<BoletaReservada> Boletas = db.BoletaReservada.Where(f => f.ReservaID == reserva.RowID && f.Estado.Codigo == "RESERVADA").ToList();
+
+                foreach (BoletaReservada item in Boletas)
+                {
+                    item.EstadoID = Redimida.RowID;
+                    item.FechaModificacion = DateTime.Now;
+                    item.ModificadoPor = Session["usuario_creacion"].ToString();
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
 

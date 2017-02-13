@@ -513,8 +513,21 @@
                             swal("Advertencia", data.respuesta, data.tipoRespuesta);
                         }
                         else {
-                            swal("OK", data.respuesta, data.tipoRespuesta);
-                           // boleta_vender(rowid_tarifafuncion, cantidad, element);
+                            var urlWithCont = '/POS/Mapa_Sala_funcion?RowID_Sala=' + data.SalaID + '&cantidad_sillas_venta=' + data.cantidad + '&RowIDFuncion=' + data.RowID_Funcion + '&RowIDTarifas=' + data.RowID_Tarifas + '';
+                            $("#Dialog").load(urlWithCont.trim());
+                            swal({
+                                title: "OK",
+                                text: data.respuesta,
+                                //showConfirmButton: false,
+                                timer: 4000,
+                            },
+                             function (isConfirm) { //Cuando le de click en ok le cambio el color a las sillas ... no sirve :(
+                                 var lol = data.sillasID.split(',')
+                                 for (var i = 0; i < lol.length; i++) {
+                                     var askjlnd = "#esquema_mapa " + "#" + lol[i] + "";
+                                     var aisdhb = $("#esquema_mapa " + "#" + lol[i] + "").css('background-color', '#4DB6AC').addClass("Seleccionada");
+                                 }
+                             });
                         }
 
                     },
