@@ -17,10 +17,10 @@
 <link href="~/Content/css/demo/nifty-demo.min.css" rel="stylesheet">
 <script src="~/Content/js/nifty.min.js"></script>
 <script src="~/Content/js/demo/nifty-demo.min.js"></script>
-
+<script src="//f.vimeocdn.com/js/froogaloop2.min.js"></script>
 <div id="div"></div>
 <div class="row" id="Contenidos">
-    <div id="demo-carousel" class="carousel slide" data-ride="carousel">
+    <div id="demo-carousel" class="carousel slide" data-ride="carousel" data-interval="3000">
         <div class="carousel-inner">
         </div>
     </div>
@@ -31,17 +31,24 @@
             url: "TvTrailers",
             success: function (data) {
                 $('.carousel-inner').append(data);
+                $("#demo-carousel").carousel({ interval: 10000, infinite: true });
                 $('.carousel-inner li').slideUp('fast');
+                var iframe = document.getElementsByTagName('iframe')[0];
+                var player = $f(iframe);
+
+                player.addEvent('ready', function () {
+                    player.api('setVolume', 0);
+                });
             }
         })
     }
     $(document).ready(function () {
         CargarTrailers();
     });
-    $(document).ready(function () {
-        $("iframe").end(function () {
-            alert('El video ha finalizado!!!');
-        });
-    });
+    //$(document).ready(function () {
+    //    $("iframe").end(function () {
+    //        alert('El video ha finalizado!!!');
+    //    });
+    //});
 </script>
 

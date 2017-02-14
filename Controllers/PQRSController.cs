@@ -79,19 +79,32 @@ namespace CinemaPOS.Controllers.Inicio
         [CheckSessionOutAttribute]
         public JsonResult Guardar_PQRS(FormCollection formulario, int? RowIDTercero)
         {
-            Pqrs Obj_pqrs = new Pqrs();
-
             formulario = DeSerialize(formulario);
+            Pqrs Obj_pqrs = new Pqrs();
+            if (formulario["PQRS_Id"] != null)
+            {
+                if (!String.IsNullOrEmpty(formulario["PQRS_Id"].ToString()))
+                {
+                    int rowId = Convert.ToInt32(formulario["PQRS_Id"].ToString());
+                    Obj_pqrs = db.Pqrs.FirstOrDefault(f => f.RowID == rowId);
+                }
+            }
             Obj_pqrs.TeatroID = int.Parse(formulario["TeatroID"]);
             Obj_pqrs.TipoSolicitudID = int.Parse(formulario["tiposolicitud"]);
             Obj_pqrs.TerceroID = RowIDTercero;
             Obj_pqrs.EstadoID = db.Estado.Where(e => e.TipoEstado.Codigo == "TIPOPQRS" && e.Nombre == "Recibida").FirstOrDefault().RowID;
             Obj_pqrs.Titulo = formulario["Titulo"];
             Obj_pqrs.Descripcion = formulario["descripcion-pqrs"];
-            Obj_pqrs.FechaSuceso = Convert.ToDateTime(formulario["fecha_suceso"]);
+            Obj_pqrs.FechaSuceso = Util.FechaInsertar(formulario["fecha_suceso"]);
             Obj_pqrs.FechaCreacion = DateTime.Now;
             Obj_pqrs.CreadoPor = Session["usuario_creacion"].ToString();
-            db.Pqrs.Add(Obj_pqrs);
+            if (formulario["PQRS_Id"] != null)
+            {
+                if (String.IsNullOrEmpty(formulario["PQRS_Id"].ToString()))
+                {
+                    db.Pqrs.Add(Obj_pqrs);
+                }
+            }
             db.SaveChanges();
             return Json(Obj_pqrs.RowID);
         }
