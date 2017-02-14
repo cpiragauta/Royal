@@ -38,8 +38,15 @@
             guardar_lista_precios();
         }
     }
-</script>
-<script>
+    function valida_formulario_detalle() {
+        debugger
+        hasChangue = false;
+        var validator = $("#formulario_precio").validate();
+        if (validator.form()) {
+            guardar_precio();
+        }
+    }
+
     function guardar_lista_precios(encabezado) {
         if (!$("#formulario_lista_precio").validate().form()) {
             return false;
@@ -55,8 +62,23 @@
                     formulario: $("#formulario_lista_precio").serialize(),
                 },
                 success: function (data) {
-
-                    jQuery(".detalle_lista").slideDown();
+                    $('#fecha_inicial_detalle').datepicker({
+                        format: "dd/mm/yyyy",
+                        todayBtn: "linked",
+                        autoclose: true,
+                        todayHighlight: false,
+                        startDate: $("#fechainicialvigencia").val(),
+                        endDate:$("#fechafinalvigencia").val()
+                    });
+                    $('#fecha_final_detalle').datepicker({
+                        format: "dd/mm/yyyy",
+                        todayBtn: "linked",
+                        autoclose: true,
+                        todayHighlight: false,
+                        startDate: $("#fechainicialvigencia").val(),
+                        endDate:$("#fechafinalvigencia").val()
+                    });
+                    $(".detalle_lista").slideDown();
                     swal("OK", data.respuesta, "success");
                     $("#RowID_Encabezado").val(data.RowID_Encabezado);
                     debugger
@@ -113,7 +135,7 @@
             success: function (data) {
                 console.log();
                 debugger
-                jQuery(".tabla_detalle_lista tbody").empty().append(data);
+                $(".tabla_detalle_lista tbody").empty().append(data);
             },
             error: function () {
                 swal("Error al retornar la informacion de la lista de precios", "");
@@ -121,6 +143,15 @@
         })
     }
     $(document).ready(function () {
+        
+        if (@Model.RowID!=0) {
+            $(".detalle_lista").slideDown();
+            
+        }else{
+            $(".detalle_lista").slideUp();
+        }
+        $(".select-dia").chosen({ width: " 100%;" });
+        //mensajes_valida();
         jQuery(".hora_final").timepicker({ minuteStep: 1, showInputs: true, autoclose:true, disableFocus: false,showMeridian: false });
         jQuery(".hora_inicial").timepicker({ minuteStep: 1, showInputs: true, disableFocus: false, autoclose:true, showMeridian: false });
         jQuery(".fecha_inicial ").datepicker({
@@ -137,10 +168,8 @@
             todayHighlight: false,
             startDate: '1d'
         });
-        jQuery(".select-dia").chosen({ width: " 100%;" });
-        if (@Model.RowID!=0) {
-            $(".detalle_lista").slideDown();
-        }
+        
+
 
     });
     function EliminarItem(RowID_Detalle) {
@@ -160,7 +189,7 @@
                     swal("Ok",data.respuesta,data.tipo_repuesta);
                     llenar_tabla(data.RowID_Encabezado);
                 }
-               
+
             },
             error: function () {
                 swal("Error al eliminar el registro " +RowID_Tarifa+" ", "");
@@ -179,8 +208,8 @@
             success:function(data){
                 //console.clear();
                 data.forEach(function( da){
-                    ///*if (Accion==1) {
-                    //    $(".RowID_Detalle").val(da.RowID);
+                    if (Accion==1) {
+                        $(".RowID_Detalle").val(da.RowID);
                     //    $(".chosen-teatro")/*.attr("selected","selected").*/.val(da.TeatroID);
                     //    $(".chosen-formato").val(da.TipoFormato)/*.attr('disabled', 'disabled')*/;
                     //    $(".precio").val(da.Precio)/*.attr('disabled', 'disabled')*/;
@@ -207,9 +236,9 @@
                     //    //$(".select-dia").chosen({width:"100%;"});
                     //    //$(".select-dia").trigger("liszt:updated")
                     //    $(".select-dia").trigger("chosen:updated");
-                    //}
-                    //else{*/
-                        $(".RowID_Detalle").val("");
+                    }
+                    else{    $(".RowID_Detalle").val("");}
+                    
                         $(".chosen-teatro").val(da.TeatroID).removeAttr('disabled');
                         $(".chosen-formato").val(da.TipoFormato).removeAttr('disabled');
                         $(".precio").val(da.Precio).removeAttr('disabled');
@@ -284,7 +313,7 @@
 
         jQuery.validator.messages.required = '*Este campo es obligatorio.';
         $.validator.setDefaults({ ignore: ":hidden:not(select)" });
-
+       
         $('.solo-numero').keyup(function () {
             this.value = (this.value + '').replace(/[^0-9]/g, '');
         });
@@ -302,6 +331,7 @@
         });
 
         if (@Model.RowID!=0) {
+            debugger
             $(".detalle_lista").slideDown();
         }else{
             $(".detalle_lista").slideUp();
@@ -313,22 +343,7 @@
             todayHighlight: false,
             startDate: '1d'
         });
-        $('#fecha_inicial_detalle').datepicker({
-            format: "dd/mm/yyyy",
-            todayBtn: "linked",
-            autoclose: true,
-            todayHighlight: false,
-            startDate: $("#fechainicialvigencia").val(),
-            endDate:$("#fechafinalvigencia").val()
-        });
-        $('#fecha_final_detalle').datepicker({
-            format: "dd/mm/yyyy",
-            todayBtn: "linked",
-            autoclose: true,
-            todayHighlight: false,
-            startDate: $("#fechainicialvigencia").val(),
-            endDate:$("#fechafinalvigencia").val()
-        });
+        
     })
     function crear_nombre(){
         //console.log($(".select-dia option:selected").removeAttr('selected'));
@@ -579,15 +594,15 @@
                                                 <div class="row bord-no pad-no">
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label class="control-label">Nombre: </label>
-                                                            <input type="text" id="nombre_detalle" name="nombre_detalle" onkeyup="this.value=this.value.toUpperCase()" class="nombre_detalle form-control">
+                                                            <label class="control-label" for="nombre_detalle">Nombre: </label>
+                                                            <input type="text" id="nombre_detalle"  name="nombre_detalle" onkeyup="this.value=this.value.toUpperCase()" class="nombre_detalle form-control" required>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-1">
                                                         <div class="form-group">
-                                                            <label class="control-label">Servicio: </label>
-                                                            <select name="servicios" id="servicios" class="select-servicio form-control" onchange="crear_nombre()">
+                                                            <label class="control-label" for="servicios">Servicio: </label>
+                                                            <select name="servicios" id="servicios"   class="select-servicio form-control" onchange="crear_nombre()" required>
                                                                 @foreach (CinemaPOS.Models.Opcion servicio in ViewBag.Servicios)
                                         {
                                                                     <option value="@servicio.RowID">@servicio.Nombre</option>
@@ -597,22 +612,22 @@
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="form-group">
-                                                            <label for="" class="control-label">Precio Distribuidor: </label>
+                                                            <label  for="precio_distribuidor" class="control-label">Precio Distribuidor: </label>
                                                             @{int formato = 99999; string placeholder = formato.ToString("N0");}
-                                                            <input type="text" name="precio_distribuidor" id="precio_distibuidor" onblur="validamoneda('precio_distibuidor')" placeholder="@placeholder" class="precio_distribuidor form-control " />
+                                                            <input type="text" name="precio_distribuidor"  id="precio_distibuidor" onblur="validamoneda('precio_distibuidor')" placeholder="@placeholder" class="precio_distribuidor form-control " required/>
 
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="form-group">
-                                                            <label for="" class="control-label">Precio Taquilla: </label>
-                                                            <input type="text" name="precio" id="precio" onblur="validamoneda('precio')" placeholder="@placeholder" class="precio form-control" />
+                                                            <label for="precio" class="control-label">Precio Taquilla: </label>
+                                                            <input type="text" name="precio"   id="precio" onblur="validamoneda('precio')" placeholder="@placeholder" class="precio form-control" required />
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-1">
                                                         <div class="form-group">
-                                                            <label for="" class="control-label">Formato: </label>
-                                                            <select name="formato" id="formato" class="chosen-formato form-control" onchange="crear_nombre()" ">
+                                                            <label for="formato" class="control-label">Formato: </label>
+                                                            <select name="formato" id="formato"  class="chosen-formato form-control" onchange="crear_nombre()" required>
                                                                 @foreach (CinemaPOS.Models.Opcion formatos in ViewBag.Formatos)
                                         {
                                                                     <option value="@formatos.RowID">@formatos.Nombre</option>
@@ -622,12 +637,12 @@
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="form-group">
-                                                            <label class="">Tipo tarifa: </label>
-                                                            <select class="form-control" id="tipo_tarifa" name="tipo_tarifa" onchange="crear_nombre()">
+                                                            <label class="" for="tipo_tarifa">Tipo tarifa: </label>
+                                                            <select class="form-control" id="tipo_tarifa"  for="Nombre tarifa" name="tipo_tarifa" onchange="crear_nombre()" required>
                                                                 @foreach (CinemaPOS.Models.Opcion tipo_tarifa in ViewBag.TipoTarifa)
-                                        {
+                                                                {
                                                                     <option value="@tipo_tarifa.RowID">@tipo_tarifa.Nombre</option>
-                                        }
+                                                                }
                                                             </select>
                                                         </div>
                                                     </div>
@@ -635,28 +650,44 @@
                                                 <div class="row">
                                                     <div class="col-sm-2">
                                                         <div class="form-group" id="demo-dp-range-detalle">
-                                                            <label class="control-label">Fecha de vigencia: </label>
+                                                            <label class="control-label" for="fecha_inicial fecha_final">Fecha de vigencia: </label>
                                                             <div class="input-daterange input-group" id="datepicker">
-                                                                <input type="text" name="fecha_inicial" class="form-control" id="fecha_inicial_detalle" onblur="crear_nombre()">
+                                                                @if (Model.RowID != 0)
+                                                                {
+                                                                    <input type="text" name="fecha_inicial" class="form-control" id="fecha_inicial_detalle" value="@Model.FechaInicial.Value.ToString("dd/MM/yyyy")" onblur="crear_nombre()" required>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type="text" name="fecha_inicial" class="form-control" id="fecha_inicial_detalle" onblur="crear_nombre()" required>
+                                                                }
                                                                 <span class="input-group-addon">a:</span>
-                                                                <input type="text" name="fecha_final" id="fecha_final_detalle" class="form-control" onblur="crear_nombre()">
+                                                                @if (Model.RowID != 0)
+                                                                {
+                                                                    <input type="text" name="fecha_final" id="fecha_final_detalle" class="form-control" onblur="crear_nombre()" value="@Model.FechaFinal.Value.ToString("dd/MM/yyyy")" required>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type="text" name="fecha_final" id="fecha_final_detalle" class="form-control" onblur="crear_nombre()" required>
+                                                                }
+
                                                             </div>
+
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="form-group">
-                                                            <label class="control-label">Horario de vigencia: </label>
+                                                            <label for="hora_final hora_inicial" class="control-label">Horario de vigencia: </label>
                                                             <div class="input-daterange input-group" id="datepicker">
-                                                                <input type="text" id="hora_inicial" class="hora_inicial form-control" name="hora_inicial" value="hora_inicial" onblur="crear_nombre()" />
+                                                                <input type="text" id="hora_inicial"  class="hora_inicial form-control" name="hora_inicial" value="hora_inicial" onblur="crear_nombre()" required/>
                                                                 <span class="input-group-addon">a:</span>
-                                                                <input type="text" id="hora_final" class="hora_final form-control" name="hora_final" onblur="crear_nombre()" value="hora_final" />
+                                                                <input type="text" id="hora_final"  class="hora_final form-control" name="hora_final" onblur="crear_nombre()" value="hora_final" required />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-8">
                                                         <div class="form-group">
-                                                            <label class="control-label">Dias de vigencia: </label>
-                                                            <select style="width:10px" class="select-dia" name="dias" multiple="">
+                                                            <label class="control-label" for="dias">Dias de vigencia: </label>
+                                                            <select style="width:10px" class="select-dia"  for="Nombre tarifa" name="dias" multiple="" required>
                                                                 <option value="Lunes">Lunes</option>
                                                                 <option value="Martes">Martes</option>
                                                                 <option value="Miercoles">Miercoles</option>
@@ -676,7 +707,7 @@
                                                             CinemaPOS.Models.UsuarioSistema user = (CinemaPOS.Models.UsuarioSistema)Session["Usuario"];
                                                             if (user.Teatro.Nombre == CinemaPOS.ModelosPropios.Util.Constantes.NOMBRE_TEATRO_CENTRAL)
                                                             {
-                                                                    <input class="btn btn-success" value="Guardar precio" onclick="javascript:guardar_precio()">
+                                                                    <input class="btn btn-success" value="Guardar precio" onclick="javascript:valida_formulario_detalle()">
                                                             }
                                                             else
                                                             {
@@ -799,3 +830,19 @@
 
 
 
+<script>
+    function mensajes_valida(){
+        var mensaje;
+        $(".error").each(function(index,element){
+            //$(element)].append("Campo requerido")
+            
+            if (isNaN( $(element).attr("id"))&&index==1) {
+                Alerts("El campo "+$(element).attr("id")+" es obligatorio","warning");
+            }
+            //mensaje+="El campo "+$(element).attr("id")+"es obligatorio";
+            
+        })
+        
+    }
+    
+</script>

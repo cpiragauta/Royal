@@ -172,7 +172,7 @@ namespace CinemaPOS.ModelosPropios
             public bool url { get; set; }
         }
         public static DateTime FechaInsertar(string FechaConvertir)
-        {
+            {
             try
             {
                 IFormatProvider culture = new CultureInfo("es-ES", true);

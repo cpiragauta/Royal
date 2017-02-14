@@ -28,5 +28,6 @@ namespace CinemaPOS.Models
         public Nullable<System.TimeSpan> HoraFinal { get; set; }
         public Nullable<int> RowIDGrupoDias { get; set; }
         public string GrupoDias { get; set; }
+        public Nullable<int> PrecioTCR { get; set; }
     }
 }

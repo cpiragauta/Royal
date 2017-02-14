@@ -1321,6 +1321,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.TvShowListaPrecios' 
           <Property Name="RowIDEncabezado" Type="int" Nullable="false" />
           <Property Name="Dias" Type="nvarchar" MaxLength="100" />
           <Property Name="Precio" Type="int" />
+          <Property Name="PrecioTCR" Type="int" />
           <Property Name="Formato" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="TipoTarifa" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Teatro" Type="varchar" MaxLength="50" />
@@ -1332,6 +1333,16 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.TvShowListaPrecios' 
           <Property Name="RowIDGrupoDias" Type="int" />
           <Property Name="GrupoDias" Type="nvarchar" MaxLength="70" />
         </EntityType>
+        <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DB_9CAC35_cinemapos.dbo.TVShowTrailers' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="TVShowTrailers">
+          <Property Name="Trailer" Type="nvarchar" MaxLength="300" />
+          <Property Name="Afiche" Type="nvarchar" MaxLength="300" />
+          <Property Name="Formato" Type="nvarchar" MaxLength="255" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" />
+          <Property Name="Vers" Type="nvarchar" MaxLength="255" />
+          <Property Name="Clasf" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="VistaCierreCaja">
@@ -3346,6 +3357,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
     [TvShowListaPrecios].[RowIDEncabezado] AS [RowIDEncabezado], 
     [TvShowListaPrecios].[Dias] AS [Dias], 
     [TvShowListaPrecios].[Precio] AS [Precio], 
+    [TvShowListaPrecios].[PrecioTCR] AS [PrecioTCR], 
     [TvShowListaPrecios].[Formato] AS [Formato], 
     [TvShowListaPrecios].[TipoTarifa] AS [TipoTarifa], 
     [TvShowListaPrecios].[Teatro] AS [Teatro], 
@@ -4682,7 +4694,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <Parameter Name="funcion" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="EstadisticaFuncion" ReturnType="Collection(CinemaPOSModel.EstadisticaFuncion_Result)">
-            <Parameter Name="RowIDFuncion" Mode="In" Type="Int32" />
+          <Parameter Name="RowIDFuncion" Mode="In" Type="Int32" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
@@ -7964,6 +7976,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <Property Name="HoraFinal" Type="Time" Precision="7" />
           <Property Name="RowIDGrupoDias" Type="Int32" />
           <Property Name="GrupoDias" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Name="PrecioTCR" Type="Int32" />
         </EntityType>
         <EntityType Name="BloqueoSillaslol">
           <Key>
@@ -9539,6 +9552,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <EntitySetMapping Name="TvShowListaPrecios">
             <EntityTypeMapping TypeName="CinemaPOSModel.TvShowListaPrecios">
               <MappingFragment StoreEntitySet="TvShowListaPrecios">
+                <ScalarProperty Name="PrecioTCR" ColumnName="PrecioTCR" />
                 <ScalarProperty Name="GrupoDias" ColumnName="GrupoDias" />
                 <ScalarProperty Name="RowIDGrupoDias" ColumnName="RowIDGrupoDias" />
                 <ScalarProperty Name="HoraFinal" ColumnName="HoraFinal" />

@@ -279,6 +279,7 @@ namespace CinemaPOS.Controllers.Master
 
                     else
                     {
+                        
                         ObjDetalle.ListaEncabezadoID = RowID_Encabezado;
                         ObjDetalle.TipoFormatoID = int.Parse(formulario["formato"]);
                         ObjDetalle.TipoServicioID = int.Parse(formulario["servicios"]);
@@ -344,8 +345,6 @@ namespace CinemaPOS.Controllers.Master
                         "</ul>" +
                     "</div>" +
                 "</td>";
-                tabla = tabla + "</td>";
-
                 tabla = tabla + "<td>" + item.Nombre + "</td>";
                 if (item.TipoServicioID != null)
                 {
@@ -368,7 +367,7 @@ namespace CinemaPOS.Controllers.Master
                 }
                 tabla = tabla + "<td>" + item.FechaInicial.Value.ToString("dd/MM/yyyy") + " a " + item.FechaFinal.Value.ToString("dd/MM/yyyy") + "</td>";
                 tabla = tabla + "<td>" + item.HoraInicial + " a " + item.HoraFinal + "</td>";
-                tabla = tabla + "<td style='widht:100px'  class=\"text-overflow\">" + item.DiasAsignados + "</td>";
+                tabla = tabla + "<td style='width:100px'  class=\"text-overflow\">" + item.DiasAsignados + "</td>";
                 tabla = tabla + "<td>" + item.Estado.Nombre + "</td>";
                 tabla = tabla + "</tr>";
             }
