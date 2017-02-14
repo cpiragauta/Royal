@@ -20,6 +20,10 @@
     <a class="btn btn-success" href='@Url.Action("Opcion", "Maestro")'>Nueva opción</a>
 </p>
 
+<head>
+    <meta http-equiv="pragma" content="no-cache">
+</head>
+
 <div class="panel">
     <div class="panel-heading">
         <h3 class="panel-title">Lista de Opciones</h3>
@@ -30,14 +34,13 @@
             <thead>
                 <tr>
                     <th style="width: 10px; display:none">ID</th>
-                    <th>Tipo</th>
-                    <th>Nombre</th>
-                    <th>Código</th>
-                    <th>Código2</th>
+                    <th >Tipo</th>
+                    <th >Nombre</th>
+                    <th >Código</th>
+                    <th >Código2</th>
                     <th>Descripción</th>
-                    <th>Valor defecto</th>
-                    <th>Número orden</th>
-                    <th>Activo</th>
+                    <th >Orden</th>
+                    <th >Activo</th>
                     <th></th>
                 </tr>
             </thead>
@@ -49,7 +52,6 @@
                     <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Codigo" placeholder="Buscar Código"></th>
                     <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Codigo2" placeholder="Buscar Código2"></th>
                     <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Descripcion" placeholder="Buscar Descripción"></th>
-                    <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Valor_defecto" placeholder="Buscar Valor defecto"></th>
                     <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Numero_orden" placeholder="Número orden"></th>
                     <th style="padding: 5px 3px 0px 3px; font-size: small;"><input type="text" style="width: 100%;" id="Activo" placeholder="Buscar Activo"></th>
                     <th></th>
@@ -60,13 +62,12 @@
                 {
                     <tr>
                         <td style="display: none;">@listas_opcion.RowID</td>
-                        <td style="width:auto">@listas_opcion.Tipo.Nombre</td>
-                        <td>@listas_opcion.Nombre</td>
-                        <td>@listas_opcion.Codigo</td>
-                        <td>@listas_opcion.Codigo2</td>
+                        <td style="width:18%">@listas_opcion.Tipo.Nombre</td>
+                        <td style="width:36%">@listas_opcion.Nombre</td>
+                        <td style="width:7%">@listas_opcion.Codigo</td>
+                        <td style="width:7%">@listas_opcion.Codigo2</td>
                         <td style="width:auto">@listas_opcion.Descripcion</td>
-                        <td>@listas_opcion.ValorDefecto</td>
-                        <td>@listas_opcion.NumOrden</td>
+                        <td style="width:6%">@listas_opcion.NumOrden</td>
                         @if (listas_opcion.Activo == true)
                         {
                             <td>SI</td>

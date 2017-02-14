@@ -433,6 +433,7 @@
     <Content Include="Content\css\demo\nifty-demo.css" />
     <Content Include="Content\css\demo\nifty-demo.min.css" />
     <Content Include="Content\css\demo\premium-icon-screenshot.css" />
+    <Content Include="Content\css\EstiloBoleta.css" />
     <Content Include="Content\css\EstiloTablasFiltros.css" />
     <Content Include="Content\css\Forms.css" />
     <Content Include="Content\css\Fuentes.min.css" />
