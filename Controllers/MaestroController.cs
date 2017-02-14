@@ -368,7 +368,7 @@ namespace CinemaPOS.Controllers.Master
                 }
                 tabla = tabla + "<td>" + item.FechaInicial.Value.ToString("dd/MM/yyyy") + " a " + item.FechaFinal.Value.ToString("dd/MM/yyyy") + "</td>";
                 tabla = tabla + "<td>" + item.HoraInicial + " a " + item.HoraFinal + "</td>";
-                tabla = tabla + "<td>" + item.DiasAsignados + "</td>";
+                tabla = tabla + "<td style='widht:100px'  class=\"text-overflow\">" + item.DiasAsignados + "</td>";
                 tabla = tabla + "<td>" + item.Estado.Nombre + "</td>";
                 tabla = tabla + "</tr>";
             }

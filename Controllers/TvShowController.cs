@@ -217,22 +217,20 @@ namespace CinemaPOS.Controllers
 
         public string TvTrailers()
         {
+            
             string ContentTrailer = "";
             string ReplaceTrailer = "";
             string ItemActive = "item active";
             string ItemAfiches = "";
-            var PeliculaTrailer = (from trailer in db.EncabezadoPelicula
-                                   join Clasificacion in db.Opcion on trailer.TipoClasificacionID equals Clasificacion.RowID
-                                   join Idioma in db.Opcion on trailer.TipoIdiomaOriginalID equals Idioma.RowID
-                                   join Detalle in db.DetallePelicula on trailer.RowID equals Detalle.EncabezadoPeliculaID
+            var PeliculaTrailer = (from trailer in db.TVShowTrailers
                                    select new
                                    {
                                        Trailer = trailer.Trailer,
                                        Afiche = trailer.Afiche,
-                                       Formato = (Detalle.TipoFormatoID == 0) ? "" : db.Opcion.Where(f => f.RowID == Detalle.TipoFormatoID).FirstOrDefault().Nombre,
-                                       Nombre = trailer.TituloLocal,
-                                       Vers = (trailer.TipoIdiomaOriginalID == 0) ? "" : db.Opcion.Where(f => f.RowID == trailer.TipoIdiomaOriginalID).FirstOrDefault().Nombre,
-                                       Clasf = (trailer.TipoClasificacionID == 0) ? "" : db.Opcion.Where(f => f.RowID == trailer.TipoClasificacionID).FirstOrDefault().Nombre
+                                       Formato = trailer.Formato,
+                                       Nombre = trailer.Nombre,
+                                       Vers = trailer.Vers,
+                                       Clasf = trailer.Clasf
 
                                    }).ToList();
             foreach (var item in PeliculaTrailer)
@@ -242,7 +240,7 @@ namespace CinemaPOS.Controllers
                 }
                 else
                 {
-                    ReplaceTrailer = "www.youtube.com/embed/" + item.Trailer + "?rel=0&amp;controls=0&amp;showinfo=0&autoplay=1;vq=hd720&enablejsapi=1";
+                    ReplaceTrailer = "https://www.youtube.com/embed/" + item.Trailer + "?rel=0&amp;controls=0&amp;showinfo=0&autoplay=1;vq=hd720&enablejsapi=1";
                 }
                 if (item.Trailer.Contains("watch?v="))
                 {
@@ -266,7 +264,7 @@ namespace CinemaPOS.Controllers
                          "<div class=\"row\">" +
                              "<div class=\"col-md-12\" style=\"margin-top:50px;\" id=\"Videos\">" +
                                         "<div id=\"video\">" +
-                                            "<iframe width=\"800\" height=\"440\" src=" + ReplaceTrailer + " frameborder =\"0\" allowfullscreen id=\"youtubeVideo\">" +
+                                            "<iframe width=\"800\" height=\"440\" src='" + ReplaceTrailer + "' frameborder =\"0\" allowfullscreen id=\"youtubeVideo\" volume=\"0\">" +
                                 "</iframe>" +
                             "</div>" +
                         "</div>" +

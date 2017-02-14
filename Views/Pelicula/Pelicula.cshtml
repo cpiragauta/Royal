@@ -215,24 +215,47 @@
                 });
             });
         }
+        function addDays(date, days) {
+            debugger;
+            var result = new Date(date);
+            result.setDate(result.getDay() + days);
+            return getFormattedDate(result);
+        }
+
+        function getFormattedDate(date) {
+            var year = date.getFullYear();
+            var month = (1 + date.getMonth()).toString();
+            month = month.length > 1 ? month : '0' + month;
+            var day = date.getDate().toString();
+            day = day.length > 1 ? day : '0' + day;
+            return month + '/' + day + '/' + year;
+        }
 
         var quantitybox = 0;
         function clone_panel_porcentaje() {
+            var fecha;
+
+            if ($(".fecha_final_porcentaje").last().val()=="") {
+                fecha =$(".fecha_final_porcentaje").val();
+            }
+            else{
+                fecha=$(".fecha_final_porcentaje").last().val();
+            }
             new_porcentaje = jQuery(".control-clone").clone().removeClass("control-clone").hide().appendTo(".contenido").slideDown().addClass("control-porcentaje controls" + quantitybox);
-            new_porcentaje.find(".fecha_inicial_porcentaje").attr("name", "fecha_inicial_porcentaje[]")
+            new_porcentaje.find(".fecha_inicial_porcentaje").attr("name", "fecha_inicial_porcentaje[]").datepicker('destroy')
                 .datepicker({
                     format: "dd/mm/yyyy",
                     todayBtn: "linked",
                     autoclose: true,
                     todayHighlight: false,
-                    startDate: '1d'
+                    startDate: fecha
                 });
             new_porcentaje.find(".fecha_final_porcentaje").attr("name", "fecha_final_porcentaje[]").datepicker({
                 format: "dd/mm/yyyy",
                 todayBtn: "linked",
                 autoclose: true,
                 todayHighlight: false,
-                startDate: '1d'
+                startDate: "1d"
             });
             new_porcentaje.find(".porcentaje").attr("name", "porcentaje[]");
             new_porcentaje.find(".nombre_porcentaje").attr("name", "nombre_porcentaje[]");
@@ -720,7 +743,7 @@
                         {
                             foreach (CinemaPOS.Models.DetallePelicula DetallesPeliculas in Model.DetallePelicula.Where(dp => dp.EncabezadoPeliculaID == Model.RowID))
                             {
-                                <div class="row  controls">
+                                <div class="row  controls" id="detalle_@DetallesPeliculas.RowID">
                                     <input type="hidden" value="@DetallesPeliculas.RowID" name="RowId_DetallePelicula" />
 
                                     <div class="col-sm-3">
@@ -761,9 +784,10 @@
                                             </select>
                                         </div>
                                     </div>
-                                    @*<div class="col-sm-1" style="width: 27.5px;">
-                                            <a href="#" class="close"><i class="ion-ios-close"></i></a>
-                                        </div>
+                                    <div class="col-sm-1" style="width: 27.5px;">
+                                            <a href="javascript:eliminar_detalle_pelicula(@DetallesPeliculas.RowID)" class=""><i class="ion-ios-close"></i></a>
+                                    </div>
+                                        @*
                                         <div class="col-sm-1" style="width: 27.5px;">
                                             <hr class="btn-danger" />
                                         </div>*@
@@ -994,14 +1018,16 @@
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label class="control-label">Nombre: </label>
-                                            <input type="text" value="@porcentajespeliculas.Nombre" name="nombre_porcentaje[]" class="nombre_porcentaje form-control" disabled>
+                                            <input type="text" value="@porcentajespeliculas.Nombre" name="nombre_porcentaje[]" class="nombre_porcentaje form-control" readonly>
+                                            <input type="hidden" value="@porcentajespeliculas.Nombre" name="nombre_porcentaje[]" class="nombre_porcentaje form-control" readonly>
                                         </div>
                                     </div>
 
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <label class="control-label">Porcentaje distribuidor:(%)</label>
-                                            <input type="text" value="@porcentajespeliculas.Porcentaje" name="porcentaje[]" class="porcentaje form-control" disabled>
+                                            <input type="text" value="@porcentajespeliculas.Porcentaje" name="porcentaje[]" class="porcentaje form-control" readonly>
+                                            <input type="hidden" value="@porcentajespeliculas.Porcentaje" name="porcentaje[]" class="porcentaje form-control" readonly>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
@@ -1009,8 +1035,10 @@
                                             <label class="control-label">Fecha vigencia:</label>
                                             <div class="input-daterange input-group">
                                                 <input type="text" value="@porcentajespeliculas.FechaInicial.Value.ToString("dd/MM/yyyy")" name="fecha_inicial_porcentaje[]" class="fecha_inicial_porcentaje form-control" disabled />
+                                                <input type="hidden" name="fecha_inicial_porcentaje[]" value="@porcentajespeliculas.FechaInicial.Value.ToShortDateString()"/>
                                                 <span class="input-group-addon">a:</span>
                                                 <input type="text" value="@porcentajespeliculas.FechaFinal.Value.ToString("dd/MM/yyyy")" name="fecha_final_porcentaje[]" class="fecha_final_porcentaje form-control" disabled />
+                                                <input type="hidden" name="fecha_final_porcentaje[]" value="@porcentajespeliculas.FechaFinal.Value.ToShortDateString()"/>
                                             </div>
                                         </div>
                                     </div>
@@ -1301,6 +1329,46 @@
             };
             img.src = URL.createObjectURL(uploadFile);
         }
+    }
+    function eliminar_detalle_pelicula(rowid_detalle){
+        swal({
+            title: '¿Esta seguro?',
+            text: "¿Desea eliminar la configuración, recuerda que no se podra eliminar si la configuración se encuentra asociada a una programación?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        type:"POST",
+                        url:"/Pelicula/eliminar_detalle",
+                        data:{rowid_detalle:rowid_detalle},
+                        success:function(data){
+                            if (data.tipo_respuesta=="warning") {
+                                swal("Advertencia",data.respuesta,data.tipo_respuesta);
+                            }
+                            else{
+                                $("#detalle_"+rowid_detalle+"").remove().slideDown();
+                                swal("OK",data.respuesta,data.tipo_respuesta);
+                            }
+                        },
+                        error:function(data){
+
+                        }
+                    })
+                }
+            }
+            
+        }
+    );
     }
 
 </script>

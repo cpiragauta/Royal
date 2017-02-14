@@ -393,6 +393,9 @@
     <Compile Include="Models\TvShowListaPrecios.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TVShowTrailers.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\UsuarioSistema.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
@@ -430,6 +433,7 @@
     <Content Include="Content\css\demo\nifty-demo.css" />
     <Content Include="Content\css\demo\nifty-demo.min.css" />
     <Content Include="Content\css\demo\premium-icon-screenshot.css" />
+    <Content Include="Content\css\EstiloBoleta.css" />
     <Content Include="Content\css\EstiloTablasFiltros.css" />
     <Content Include="Content\css\Forms.css" />
     <Content Include="Content\css\Fuentes.min.css" />
@@ -2511,7 +2515,6 @@
     <Content Include="Views\CRM\ModalReferenciado.cshtml" />
     <Content Include="Views\CRM\NuevoClienteRoyal.cshtml" />
     <Content Include="Views\CRM\RegistroClienteTarjeta.cshtml" />
-    <Content Include="Views\POS\ValidaCupones.cshtml" />
     <Content Include="Views\Programacion\ModalEliminarFuncionMasivo.cshtml" />
     <Content Include="Views\Programacion\ModalReplicarFuncionxDia.cshtml" />
     <Content Include="Views\Programacion\ModalReplicarFuncionxSala.cshtml" />

@@ -241,7 +241,7 @@
 
                 ModalProcesandoShow();
                 var urlWithCont = '../../POS/ConfirmaReserva?DatosSillasSeleccionadas=' + DatosSillasSeleccionadas;
-                $("#Dialog").load(urlWithCont.trim())
+                $("#DialogReserva").load(urlWithCont.trim())
             }
         
         }
@@ -385,25 +385,37 @@
     <div class="modal-dialog" style="width:@((Model.Cantidad_Columnas*40)+100)px;height:@(Model.Cantidad_Filas*10);margin-top: -35%;">
         <div class="modal-content">
             <div class="modal-header" style="padding: 10px; ">
-                <button type="button" class="ion-close-circled close salir" data-dismiss="modal" aria-hidden="true">&times;</button>
+                
                 <div class="row">
                     <div class="col-sm-2">
-                        <p class="pad-no mar-no">Cantidad sillas a vender <h3 id="cantidad_selecionadas" class="mar-no pad-no">@ViewBag.CantidadSillasVenta</h3></p>
+                        <p class="pad-no mar-no">
+                            Cantidad sillas:
+                            <h4 id="cantidad_selecionadas" class="mar-no pad-no">@ViewBag.CantidadSillasVenta</h4>
+                        </p>
                     </div>
                     <div class="col-sm-6">
-                        <p>Tarifa de venta <h3 id="tarifa_venta"> @ViewBag.Tarifa.Nombre</h3></p>
+                        <p>
+                            Tarifa:
+                            <h4 id="tarifa_venta"> @ViewBag.Tarifa.Nombre</h4>
+                        </p>
                     </div>
-                    <div class="col-sm-4">
-                        <h4 class="modal-title"><b>@Model.Nombre</b></h4>
+                    <div class="col-sm-3">
+                        <p>
+                            <h4 class="modal-title"><b>@Model.Nombre</b></h4>
+                            <input type="checkbox" id="multiple-seleccion" /><strong>&nbsp; Elección multiple</strong>
+                        </p>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close form-control" data-dismiss="modal" aria-hidden="true">
+                            <i class="pci-cross pci-circle"></i>
+                        </button>
                     </div>
                 </div>
-                <div class="row">
-                    <input type="checkbox" id="multiple-seleccion" /><strong>&nbsp; Elección multiple</strong>
-                </div>
-                <input type="hidden" value="@ViewBag.Tarifa.RowID" id="tarifaID" />
-                <input type="hidden" id="cantidad-ventas" value="@ViewBag.CantidadSillasVenta" />
-                <input type="hidden" id="RowIDFuncion" value="@ViewBag.Funcion.RowID" />
-            </div>
+
+                    <input type="hidden" value="@ViewBag.Tarifa.RowID" id="tarifaID" />
+                    <input type="hidden" id="cantidad-ventas" value="@ViewBag.CantidadSillasVenta" />
+                    <input type="hidden" id="RowIDFuncion" value="@ViewBag.Funcion.RowID" />
+</div>
             <div class="modal-body" style="height: auto;">
                 <div class="row" id="div_btns">
                     <div class="col-md-12">

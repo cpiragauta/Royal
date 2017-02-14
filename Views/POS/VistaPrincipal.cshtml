@@ -46,8 +46,6 @@
 <!--JAVASCRIPT-->
 <!--=================================================-->
 <!--Pace - Page Load Progress Par [OPTIONAL]-->
-<link href="~/Content/plugins/pace/pace.min.css" rel="stylesheet">
-<script src="~/Content/plugins/pace/pace.min.js"></script>
 
 <!--jQuery [ REQUIRED ]-->
 <script src="~/Content/js/jquery-2.2.4.min.js"></script>
@@ -104,7 +102,14 @@
     function ModalProcesandoHiden() {
         $("#ModalProcessing").modal('hide');
     }
+    //$(document).ready(function () {
+    //    $(".funcion").hover(function () {
+    //        debugger
+    //        console.log($(this).id);
+    //    });
+    //})
 
+    
 </script>
 <style>
     /* Animación con keyframe llamada "latidos" */
@@ -156,7 +161,7 @@
     }
 
     .poster-peliculas {
-        width: 75px;
+        width: 85px;
         margin: 1px;
     }
 
@@ -252,6 +257,7 @@
         transform: scale(1.1);
     }
 </style>
+
 <div id="loader"></div>
 <div id="dialog"></div>
 <div id="container" style="min-height: 1px">
@@ -371,7 +377,7 @@
             
             <a class="col-sm-1" style="float:right;">
                 <div class="row text-center">
-                    <div id="" onclick="validar_cupon()" data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Redención de convenios y venta empresarial" style="color:black;font-size:3em;cursor:pointer" class="ion-ios-barcode text-main icon-3x add-tooltip" disabled></div>
+                    <div id="" onclick="ModalRedimirCupones()" data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Redención de convenios y venta empresarial" style="color:black;font-size:3em;cursor:pointer" class="ion-ios-barcode text-main icon-3x add-tooltip" disabled></div>
                 </div>
                 <div class="row text-center pad-no" style="margin-top:-10%;">
                     <h5>Cupones</h5>
@@ -383,6 +389,16 @@
                 </div>
                 <div class="row text-center pad-no" style="margin-top:-10%;">
                     <h6>Vender Producto</h6>
+                </div>
+            </a>
+            
+            <a class="col-sm-1" style="float:right;" href="javascript:ModalRedimirReserva()">
+                <div class="row text-center">
+                    <div data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="Redimir Reserva" style="color:black;font-size:3em;cursor:pointer" class="ion-aperture text-main icon-3x add-tooltip"></div>
+                </div>
+                <div class="row text-center pad-no" style="margin-top:-10%;">
+                    <h5>Reservas</h5>
+
                 </div>
             </a>
             <a class="col-sm-1" style="float:right;" href="/Cuenta/limpiarSession">
@@ -430,10 +446,102 @@
     <input type="hidden" id="RowID_Funcion" />
 </div>
 <div id="Dialog"></div>
-<div id="DialogCupones"></div>
 <div id="DialogProductos"></div>
+<div id="DialogReserva"></div>
 
 <script>
+
+
+    function ModalRedimirCupones() {
+
+        swal({
+            title: "Cupones",
+            text: "Ingrese código del cupón:",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "ABC123"
+        },
+            function (inputValue) {
+                if (inputValue === false) return false;
+
+                if (inputValue === "") {
+                    swal.showInputError("Campo Obligatorio");
+                    return false
+                }
+                $.ajax({
+                    url: "/POS/valida_estado_cupon",
+                    data: { codigo_barras: inputValue },
+                    success: function (data) {
+                        swal(data);
+                       // $("#cupones").empty().append(data);
+                        //adicionar_item(37);
+                    },
+                    error: function (data) {
+                        alert(data);
+                    }
+                })
+            });
+    }
+
+
+    function ModalRedimirReserva() {
+        swal({
+            title: "Reservas",
+            text: "Ingrese Código de la reserva:",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "COD1234"
+        },
+            function (inputValue) {
+                if (inputValue === false) return false;
+
+                if (inputValue === "") {
+                    swal.showInputError("Campo Obligatorio");
+                    return false
+                }
+                $.ajax({
+                    url: "/CallCenter/RedimirReserva",
+                    async: false,
+                    data: { CodigoReserva: inputValue },
+                    success: function (data) {
+                        debugger
+                        if (data.tipoRespuesta == "warning") {
+                            swal("Advertencia", data.respuesta, data.tipoRespuesta);
+                        }
+                        else {
+                            var urlWithCont = '/POS/Mapa_Sala_funcion?RowID_Sala=' + data.SalaID + '&cantidad_sillas_venta=' + data.cantidad + '&RowIDFuncion=' + data.RowID_Funcion + '&RowIDTarifas=' + data.RowID_Tarifas + '';
+                            $("#Dialog").load(urlWithCont.trim());
+                            swal({
+                                title: "OK",
+                                text: data.respuesta,
+                                //showConfirmButton: false,
+                                timer: 4000,
+                            },
+                             function (isConfirm) { //Cuando le de click en ok le cambio el color a las sillas ... no sirve :(
+                                 var lol = data.sillasID.split(',')
+                                 for (var i = 0; i < lol.length; i++) {
+                                     var askjlnd = "#esquema_mapa " + "#" + lol[i] + "";
+                                     var aisdhb = $("#esquema_mapa " + "#" + lol[i] + "").css('background-color', '#4DB6AC').addClass("Seleccionada");
+                                 }
+                             });
+                        }
+
+                    },
+                    error: function (data) {
+                        debugger
+                        swal("Advertencia", data.respuesta, "warning");
+                    }
+                });
+            });
+    }
+
+
+
+
     function eliminar_producto(id){
         $("#" + id + "").remove();
     }
@@ -457,12 +565,11 @@
             url: "/POS/htmlvista",
             async: false,
             data: { fecha_programacion: $("#fecha_filtro").text(), multicineID: 1 },
-            cache: false,
             success: function (data) {
                 $("#tabla-funciones tbody").empty().append(data);
                 //requestFullScreen();
             },
-            error:console.log("error")
+            error: function () { console.log("error") }
         })
 
     }
@@ -489,26 +596,29 @@
     }
     function adicionar_item(rowid_tarifafuncion, cantidad, element) {
         if ($(element).data("type-rate") == "TCR") {
+            debugger
             //abrir ventana para validar la persona con tcr
-            debugger
-            var lol = abrir_modal_valida_tcr(rowid_tarifafuncion, cantidad, element);
-            debugger
-            console.log(lol);
+            if ($(element).data("validate") == 1) {
+                var lol = abrir_modal_valida_tcr(rowid_tarifafuncion, cantidad, element);
+            }
+            else {
+                boleta_vender(rowid_tarifafuncion, cantidad, element);
+            }
+            
         }
         else {
             boleta_vender(rowid_tarifafuncion, cantidad, element);
         }
     }
     function abrir_modal_valida_tcr(rowid_tarifafuncion, cantidad, element) {
-        var lol;
         swal({
-            title: "An input!",
-            text: "Write something interesting:",
+            title: "Verificación tarjeta TCR",
+            text: "Por favor ingreso el codigo de la tarjeta",
             type: "input",
             showCancelButton: true,
             closeOnConfirm: false,
             animation: "slide-from-top",
-            inputPlaceholder: "Write something"
+            inputPlaceholder: "Tarjeta N°"
                     },
             function (inputValue) {
                 if (inputValue === false) return false;
@@ -525,13 +635,10 @@
                         if (data.tipo_respuesta == "warning") {
                             debugger
                             swal("Advertencia", data.respuesta, data.tipo_respuesta);
-                            lol = true;
                         }
                         else {
-                            debugger
                             swal("Valido!", data.respuesta, data.tipo_respuesta);
                             boleta_vender(rowid_tarifafuncion, cantidad, element);
-                            lol =false;
                         }
                         
                     },
@@ -540,11 +647,15 @@
                         swal("Valido!", data.respuesta, "warning");
                     }
                 });
-                return lol;
                 //swal("Nice!", "You wrote: " + inputValue, "success");
             });
     }
+
     function boleta_vender(rowid_tarifafuncion, cantidad, element) {
+        console.clear();
+        console.log(parseInt($(element).data("quantity-ticket")))
+        console.log(parseInt(cantidad))
+        console.log(parseInt($(element).data("quantity-ticket")) + parseInt(cantidad));
         var cantidad_actual = $("#cantidad_boletas_tarifa_" + rowid_tarifafuncion + "").val();
         $("#cantidad_boletas_tarifa_" + rowid_tarifafuncion + "").remove();
         if (cantidad_actual == null) {
@@ -560,13 +671,21 @@
                 async: false,
                 data: {
                     RowID_ListaFuncion: rowid_tarifafuncion,
-                    cantidadnueva: parseInt(cantidad_actual) + parseInt(cantidad),
+                    tipo_boleta:$(element).data("type-rate"),
+                    cantidadnueva: parseInt($(element).data("quantity-ticket")) + parseInt(cantidad),
                 },
                 success: function (data) {
-                    $('.item-elimina' + rowid_tarifafuncion + '').remove();
-                    $(".cantidad-boleta").remove()
-                    $("#boletas-comprar").append(data);
-                    ContarBoletasVender();
+                    
+                    if (data == "Maximo redenciones alcanzada") {
+                        swal("Advertencia", "Maximo redenciones alcanzada", "success")
+                    }
+                    else {
+                        $('.item-elimina' + rowid_tarifafuncion + '').remove();
+                        $(".cantidad-boleta").remove()
+                        $("#boletas-comprar").append(data);
+                        ContarBoletasVender();
+                    }
+                    
                 },
                 error: function () {
                     Console.log("Error");
@@ -577,8 +696,8 @@
     function ContarBoletasVender() {
         var boletas = 0;
         var precios = 0;
-        $(".item-ventas").each(function (index) {
-            boletas++;
+        $(".item-venta").each(function (index) {
+            boletas += $(this).data("quantity-ticket");
         })
         //$(".suma-costo-pedido").each(function (index, text) {
         //    console.log(text.text);
@@ -586,12 +705,15 @@
         $(".suma-costo-pedido").each(function (index, element) {
             precios += parseInt($(this).text().replace('$', ''));
         });
+
         $("#precio-items").text("$" + precios);
         $("#precio-total-boletas").val(precios);
         $("#precio-items").empty().append("<h4>Total $:" + precios + "</h4>");
         
         $("#cantidad_boletas").val(boletas);
         $("#cantidad-items").empty().append("<h4>Total #:" + $(".boletas_vender_").val() + "</h4>");
+        //$("#cantidad_sillas").val($(".boletas_vender_").val());
+        $(".boletas_vender_").val(boletas)
         $("#cantidad_sillas").val($(".boletas_vender_").val());
     }
     function eliminar_item(clase) {
@@ -663,7 +785,12 @@
         var urlWithCont = 'VenderProductos';
         $("#DialogProductos").load(urlWithCont.trim()).dialog('open');
     }
-
+    function imgError(image) {
+        image.onerror = "";
+        $(image).unbind("error").attr("src", "/Repositorio_Imagenes/Imagenes_Generales/nodisponible.png");
+        //image.src = "/Repositorio_Imagenes/Imagenes_Generales/nodisponible.png";
+        return true;
+    }
     $(document).ready(function () {
         //alert($(window).width()+"wid"+ $(window).height()+'hei');
         mueveReloj();
@@ -674,26 +801,26 @@
             }
         });
         var fechasistema = $("#reloj").text();
-        $(".funcion ").each(function (index, element) {
-            //var hora_funcion="15:15:00" $(this).find(".hora_funcion").text();
-            var hora_funcion="15:15:00";
-            var hora_funcion_text = $(element).find(".hora_funcion").text();
-            var hora_funcion = parseInt(hora_funcion_text.split[0]) + parseInt(hora_funcion_text.split[0]);
+        //$(".funcion ").each(function (index, element) {
+        //    //var hora_funcion="15:15:00" $(this).find(".hora_funcion").text();
+        //    var hora_funcion="15:15:00";
+        //    var hora_funcion_text = $(element).find(".hora_funcion").text();
+        //    var hora_funcion = parseInt(hora_funcion_text.split[0]) + parseInt(hora_funcion_text.split[0]);
 
-           if ((hora_funcion.replace(":", "")) > fechasistema.replace(":", "") && hora_funcion.replace(":", "") < (fechasistema.replace(":", "") + 20)) {
-                console.log("por iniciar");
-                $(this).find(".hora_funcion").addClass("proximamente_cerrar");
-            }
+        //   if ((hora_funcion.replace(":", "")) > fechasistema.replace(":", "") && hora_funcion.replace(":", "") < (fechasistema.replace(":", "") + 20)) {
+        //        console.log("por iniciar");
+        //        $(this).find(".hora_funcion").addClass("proximamente_cerrar");
+        //    }
 
-           else if ((hora_funcion.replace(":", "")) > (fechasistema.replace(":", "")+20)) {
-                console.log("mayor");
-                $(this).find(".hora_funcion").addClass("proximamente_iniciar");
-            }
-           //if ((hora_funcion.replace(":", "") + 20) > fechasistema.replace(":", "")) {
-           //     console.log("mayor");
-           //     $(this).find(".hora_funcion").addClass("proximamente_iniciar");
-           // }
-        })
+        //   else if ((hora_funcion.replace(":", "")) > (fechasistema.replace(":", "")+20)) {
+        //        console.log("mayor");
+        //        $(this).find(".hora_funcion").addClass("proximamente_iniciar");
+        //    }
+        //   //if ((hora_funcion.replace(":", "") + 20) > fechasistema.replace(":", "")) {
+        //   //     console.log("mayor");
+        //   //     $(this).find(".hora_funcion").addClass("proximamente_iniciar");
+        //   // }
+        //})
     })
     //$(document).keydown(function (event) {
     //    event.preventDefault();
@@ -822,12 +949,36 @@
             }
         }
     }
-    function validar_cupon() {
-        var urlWithCont = '../POS/ValidaCupones';
-        console.log(urlWithCont);
-        $("#DialogCupones").load(urlWithCont.trim()).dialog('open');
+   
+    function hoverfuncion(element) {
+        
+        $(element).hover(
+         function () {
+             console.log($(this).attr("id"))
+             $.ajax({
+                 url: "InformacionSala",
+                 //async: false,
+                 data: { rowidfuncion: $(element).attr("id") },
+                 success: function (data) {
+                     var sillas_vendidas=data.SillasVendidas;
+                     var capacidad=data["Capacidad"];
+                     var bloqueadas=data.SillasBloqueadas;
+                     var reservas=data.SillasReservadas;
+                     $("#" + data.Rowid_Detalle + "").find("#Vendidas").empty().text("Vendidas " + sillas_vendidas + "");
+                     $("#" + data.Rowid_Detalle + "").find("#Reservadas").empty().text("Reservadas " + reservas + "");
+                     $("#" + data.Rowid_Detalle + "").find("#Disponible").empty().text("Disponible " + capacidad + "");
+                     $("#" + data.Rowid_Detalle + "").find("#porcentaje_ocupacion").empty().text("Porcentaje ocupación " + ( ((reservas + sillas_vendidas)*100)/capacidad).toFixed(0) + "%");
+                 }
+             })
 
+         }//, function () {
+         //    $(this).find("span:last").remove();
+         //}
+       );
     }
+   
+
+
 </script>
 
  

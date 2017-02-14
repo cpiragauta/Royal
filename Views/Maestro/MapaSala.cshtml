@@ -68,7 +68,7 @@
                     $("." + clase + "").find(".objeto").remove();
                     $("." + clase + "").find("small").empty();
                     $("." + clase + "").find("i").empty();
-                    $("." + clase + "").empty();
+                    //$("." + clase + "").empty();
 
                 }
                 else {
@@ -132,7 +132,7 @@
                         RowID_TipoSilla: $(".TipoSilla").val()
                     },
                     success: function (data) {
-                        $("td").empty()
+                        //$("td").empty()
                         var Ruta = "/"
                         var RowID_TipoSilla;
                         var Numerar;
@@ -157,10 +157,12 @@
                                 $("." + clase + "").find("img").remove();
                                 $("." + clase + "").find(".objeto").remove();
                                 $("." + clase + "").find("strong").remove();
+
                                 if (parseInt( $(".cantidad_sillas").text()) >= parseInt($(".CapacidadMaxima").text())) {
                                     swal("La capacidad máxima de la sala ha sido alcanzada", "");
                                 }
                                 else{
+
                                     $("." + clase + "").append("<strong><i class='ion-close-circled icon-remove-element'></i><small></small></strong><img src='" + Ruta + "' style='width:40px'/><input type='hidden' class='" + tipobjeto + "' name='" + clase + "' value='" + RowID_TipoSilla + "'/>");
                                     $(".icon-remove-element").css("display","none");  
                                     
@@ -268,8 +270,7 @@
             display: block;
             position: absolute;
             z-index: 8888;
-            margin-top: -3%;
-            margin-left: 17px;
+            margin: 0px 1em;
         }
 
         td:hover .icon-remove-element {

@@ -211,19 +211,33 @@ namespace CinemaPOS.Controllers
                 int contador_funciones_pelicula = 1;
                 int contador_funciones_div = 0;
                 int valida_cantidad_funciones = 0;
+                string ruta = "";
                 foreach (var funciones in peliculas_vista)
                 {
                     
                     if (informacion_pelicula == false)
                     {
-
+                        ruta = System.IO.Path.Combine(Server.MapPath("~/"+ funciones.Afiche+""));
+                        ruta=ruta.Replace('/','\\');
+                        if (System.IO.File.Exists(ruta))
+                        {
+                            ruta = funciones.Afiche;
+                        }
+                        else
+                        {
+                            ruta = @"Repositorio_Imagenes\Imagenes_Generales\nodisponible.png";
+                        }
                         html += "<tr>";
-                        html += "<td>";
-                        html += "<img class='poster-peliculas' src='/" + funciones.Afiche + "' > ";
+                        html += "<td class='pad-no mar-no'>";
+                        html += "<img class='poster-peliculas' onerror='imgError(this);' src='/" +ruta + "' > ";
                         html += "</td>";
-                        html += "<td  nombre-peliculas'>";
+                        html += "<td class='nombre-peliculas' id="+funciones.DetallePeliculaID+">";
                         html += "<h5>" + funciones.TituloLocal + "</h5>";
                         html += "<h5>" + funciones.PeliculaVersion + funciones.PeliculaIdioma + "</h5>";
+                        html += "<button class=\"btn btn-xs btn-default col-sm-10\" id='Vendidas'>Vendidas</button></br>";
+                        html += "<button class=\"btn btn-xs btn-default col-sm-10\" id='Reservadas'>Reservadas</button></br>";
+                        html += "<button class=\"btn btn-xs btn-default col-sm-10\" id='Disponible'>Disponible</button></br>";
+                        html += "<button class=\"btn btn-xs btn-default col-sm-10\" id='porcentaje_ocupacion'>Porcentaje ocupación</button>";
                         html += "</td>";
                         informacion_pelicula = true;
                     }
@@ -235,7 +249,7 @@ namespace CinemaPOS.Controllers
                     }
                             if (cantidad_funciones_consulta > 3 && carrusel==true)
                             {
-                                html += "<div id ='" + funciones.DetallePeliculaID + "' class='carousel slide' data-ride='carousel' data-interval='false'>";
+                                html += "<div id ='carousel_" + funciones.DetallePeliculaID + "' class='carousel slide' data-ride='carousel' data-interval='false'>";
                                 html += " <div class='carousel-inner text-center'>";
                                 
                                 carrusel = false;
@@ -253,10 +267,11 @@ namespace CinemaPOS.Controllers
                                         html += "<div class='item'>";
                                          html += "<div class='contenedor-funciones col-sm-12'>";
                                     }
-                                            html += "<div class='col-sm-3 funcion mar-hor text-center' onclick='javascrip:get_tarifas(" + funciones.RowID_Funcion + ")'>";
+                                            html += "<div class='col-sm-3 funcion mar-hor text-center' id='"+funciones.RowID_Funcion+"' onmouseover='hoverfuncion(this)' onclick='javascrip:get_tarifas(" + funciones.RowID_Funcion + ")'>";
                                                 string Hora_Funcion = DateTime.Parse(funciones.HoraInicial.ToString()).ToString("hh:mm tt", CultureInfo.InvariantCulture);
                                                 html += "<h5 class='text-main hora_funcion'>" + Hora_Funcion + "</h5>";
                                                 html += "<p>" + funciones.NombreSala + "<br />Disponible: 120</p>";
+                                                
                                             html += "</div>";
                                             contador_funciones_div++;
                                             cantidad_funciones_html++;
@@ -275,8 +290,8 @@ namespace CinemaPOS.Controllers
                             html += "</div>";
                             
                             html += "</div>";
-                            html += "<a class='carousel-control left control-izquierdo' data-slide='prev' href='#" + funciones.DetallePeliculaID + "' ><i class='demo-pli-arrow-left icon-3x'></i></a>";
-                            html += "<a class='carousel-control right control-derecho' data-slide='next' href='#" + funciones.DetallePeliculaID + "' ><i class='demo-pli-arrow-right icon-3x'></i></a>";
+                            html += "<a class='carousel-control left control-izquierdo' data-slide='prev' href='#carousel_" + funciones.DetallePeliculaID + "' ><i class='demo-pli-arrow-left icon-3x'></i></a>";
+                            html += "<a class='carousel-control right control-derecho' data-slide='next' href='#carousel_" + funciones.DetallePeliculaID + "' ><i class='demo-pli-arrow-right icon-3x'></i></a>";
                         }
                         html += "</td>";
                     }
@@ -393,7 +408,7 @@ namespace CinemaPOS.Controllers
                 {
                     html_tarifas += "<div class='row'>";
                 }
-                        html_tarifas += "<div class='panel media middle panel-tarifa-funcion col-sm-5 mar-all' data-type-rate='"+tarifafuncion.ListaDetalle.Opcion1.Codigo+"' title='"+ tarifafuncion.ListaDetalle.Nombre + "' onclick='javascript:adicionar_item(" + tarifafuncion.RowID + ",1,this)'>";
+                        html_tarifas += "<div class='panel media middle panel-tarifa-funcion col-sm-5 mar-all' data-quantity-ticket='0' data-validate='1' data-type-rate='" + tarifafuncion.ListaDetalle.Opcion1.Codigo+"' title='"+ tarifafuncion.ListaDetalle.Nombre + "' onclick='javascript:adicionar_item(" + tarifafuncion.RowID + ",1,this)'>";
                             html_tarifas += "<div class='media-left bg-mint pad-all'>";
                                 html_tarifas += "<i class='demo-pli-coin icon-3x'></i><br />";
                             html_tarifas += "</div>";
@@ -423,43 +438,60 @@ namespace CinemaPOS.Controllers
             return html_tarifas;
         }
         [CheckSessionOutAttribute]
-        public string AdicionarItemVenta(int RowID_ListaFuncion, short? cantidadnueva,short?cantidad_anterior)
+        public string AdicionarItemVenta(int RowID_ListaFuncion, short? cantidadnueva,short?cantidad_anterior,string tipo_boleta)
         {
-            ListaPrecioFuncion ItemVenta = db.ListaPrecioFuncion.Where(lpf => lpf.RowID == RowID_ListaFuncion).FirstOrDefault();
+             ListaPrecioFuncion ItemVenta = db.ListaPrecioFuncion.Where(lpf => lpf.RowID == RowID_ListaFuncion).FirstOrDefault();
             string html_item_venta = "";
-            html_item_venta += "<div class='panel  panel-primary panel-colorful item-venta item-elimina" + ItemVenta.RowID + " mar-all' data-element-sale='boleta' >";
-            html_item_venta += "<div class='pad-all media'>";
-            html_item_venta += "<div class='media-left'>";
-            html_item_venta += "<span class='text-2x text-bold' id='cantidad-total-" + ItemVenta.RowID + "'>" + cantidadnueva + "</span>";
-            html_item_venta += "</div>";
-            html_item_venta += "<div class='media-body'>";
-            html_item_venta += "<div class='col-sm-9'>";
-            html_item_venta += "<p class='h3 text-light mar-no media-heading'>" + ItemVenta.Funcion.DetallePelicula.EncabezadoPelicula.TituloLocal + "&nbsp;" + ItemVenta.Funcion.DetallePelicula.Opcion.Nombre + "&nbsp;" + ItemVenta.Funcion.DetallePelicula.Opcion1.Nombre + "</p>";
-            html_item_venta += "<span class='suma-costo-pedido' id='total-costo" + ItemVenta.RowID + "'>$ " + ItemVenta.ListaDetalle.Precio * cantidadnueva + "</span>";
-            html_item_venta += "<input type='hidden' class='precio-items-" + ItemVenta.RowID + "' value='" + ItemVenta.ListaDetalle.Precio + "'>";
-            html_item_venta += "<input type='hidden' class='cantidad-boleta-" + ItemVenta.RowID + "' value='" + cantidadnueva + "'></span>";
-            html_item_venta += "<input type='hidden' class='tarifas_id' value='" + ItemVenta.ListaDetalle.RowID + "'></span>";
-            html_item_venta += "</div>";
-            
-            html_item_venta += "</div>";
-            html_item_venta += "<div class='media-right mar-rgt'>";
-            html_item_venta += "<button class='btn btn-info btn-icon' onclick=javascript:adicionar_item(" + RowID_ListaFuncion + ",5) style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-cart icon-3x'></i><i class='icon-2x mar-rgt'>+5</i></button>";
-            html_item_venta += "<button class='btn btn-info btn-icon mar-top' onclick=javascript:adicionar_item(" + RowID_ListaFuncion + ",10) style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-cart icon-3x'></i><i class='icon-2x'>+10</i></button>";
-            html_item_venta += "<button class='btn btn-info btn-icon mar-top' onclick='javascript:adicionar_item(" + ItemVenta.RowID + ",-1)' style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-trash icon-3x'></i></button>";
-            html_item_venta += "</div>";
-            html_item_venta += "</div>";
-            
-           
+            if (cantidadnueva>4&& tipo_boleta=="TCR")
+            {
+                return html_item_venta = "Maximo redenciones alcanzada";
+            }
+            else
+            {
+                html_item_venta += "<div class='panel  panel-primary panel-colorful item-venta item-elimina" + ItemVenta.RowID + " mar-all' data-element-sale='boleta' data-type-rate='" + tipo_boleta + "' data-quantity-ticket='" + cantidadnueva + "' >";
+                html_item_venta += "<div class='pad-all media'>";
+                html_item_venta += "<div class='media-left'>";
+                html_item_venta += "<span class='text-2x text-bold' id='cantidad-total-" + ItemVenta.RowID + "'>" + cantidadnueva + "</span>";
+                html_item_venta += "</div>";
+                html_item_venta += "<div class='media-body'>";
+                html_item_venta += "<div class='col-sm-9'>";
+                html_item_venta += "<p class='h3 text-light mar-no media-heading'>" + ItemVenta.Funcion.DetallePelicula.EncabezadoPelicula.TituloLocal + "&nbsp;" + ItemVenta.Funcion.DetallePelicula.Opcion.Nombre + "&nbsp;" + ItemVenta.Funcion.DetallePelicula.Opcion1.Nombre + "</p>";
+                html_item_venta += "<span class='suma-costo-pedido' id='total-costo" + ItemVenta.RowID + "'>$ " + ItemVenta.ListaDetalle.Precio * cantidadnueva + "</span>";
+                html_item_venta += "<input type='hidden' class='precio-items-" + ItemVenta.RowID + "' value='" + ItemVenta.ListaDetalle.Precio + "'>";
+                html_item_venta += "<input type='hidden' class='cantidad-boleta-" + ItemVenta.RowID + "' value='" + cantidadnueva + "'></span>";
+                html_item_venta += "<input type='hidden' class='tarifas_id' value='" + ItemVenta.ListaDetalle.RowID + "'></span>";
+                html_item_venta += "</div>";
 
-            //<div class='progress progress-xs progress-dark-base mar-no'>
-            //	<div role = 'progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' class='progress-bar progress-bar-light' style='width: 75%'></div>
-            //</div>
-            html_item_venta += "<div class='pad-all text-sm bg-trans-dark'>";
-            html_item_venta += "<span class='text-bold'>" + ItemVenta.ListaDetalle.Nombre + "</span>";
-            html_item_venta += "<a href=\"javascript:cancelar_venta(\'item-elimina" + ItemVenta.RowID + "','" + ItemVenta.RowID + "\')\" class='close'><i class='ion-ios-close text-2x'></i></a>";
-            html_item_venta += "</div>";
-            html_item_venta += "</div>";
-            html_item_venta += "<input type='hidden' value='" + cantidadnueva + "' name='" + RowID_ListaFuncion + "' id='cantidad_boletas_tarifa_"+RowID_ListaFuncion+"' class='boletas_vender_ " + RowID_ListaFuncion + "'>";
+                html_item_venta += "</div>";
+                html_item_venta += "<div class='media-right mar-rgt'>";
+                if (tipo_boleta == "TCR")
+                {
+                    html_item_venta += "<button class='btn btn-info btn-icon' data-validate='0'  data-type-rate='" + tipo_boleta + "' data-quantity-ticket='" + cantidadnueva + "' onclick=javascript:adicionar_item(" + RowID_ListaFuncion + ",3,this) style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-cart icon-3x'></i><i class='icon-2x mar-rgt'>+3</i></button>";
+                    html_item_venta += "<button class='btn btn-info btn-icon' data-validate='0' data-type-rate='" + tipo_boleta + "'   data-quantity-ticket='" + cantidadnueva + "' onclick=javascript:adicionar_item(" + RowID_ListaFuncion + ",1,this) style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-cart icon-3x'></i><i class='icon-2x mar-rgt'>+1</i></button>";
+                }
+                else
+                {
+                    html_item_venta += "<button class='btn btn-info btn-icon' data-validate='0'  data-type-rate='" + tipo_boleta + "' data-quantity-ticket='" + cantidadnueva + "' onclick=javascript:adicionar_item(" + RowID_ListaFuncion + ",5,this) style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-cart icon-3x'></i><i class='icon-2x mar-rgt'>+5</i></button>";
+                    html_item_venta += "<button class='btn btn-info btn-icon mar-top' data-validate='0' data-type-rate='" + tipo_boleta + "' data-quantity-ticket='" + cantidadnueva + "' onclick=javascript:adicionar_item(" + RowID_ListaFuncion + ",10,this) style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-cart icon-3x'></i><i class='icon-2x'>+10</i></button>";
+                }
+
+                html_item_venta += "<button class='btn btn-info btn-icon mar-top' data-type-rate='" + tipo_boleta + "' data-quantity-ticket='" + cantidadnueva + "' onclick='javascript:adicionar_item(" + ItemVenta.RowID + ",-1,this)' style='background-color: rgba(97,208,255,1);width:100%;font-size: 10px;'><i class='ion-ios-trash icon-3x'></i></button>";
+                html_item_venta += "</div>";
+                html_item_venta += "</div>";
+
+
+
+                //<div class='progress progress-xs progress-dark-base mar-no'>
+                //	<div role = 'progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' class='progress-bar progress-bar-light' style='width: 75%'></div>
+                //</div>
+                html_item_venta += "<div class='pad-all text-sm bg-trans-dark'>";
+                html_item_venta += "<span class='text-bold'>" + ItemVenta.ListaDetalle.Nombre + "</span>";
+                html_item_venta += "<a href=\"javascript:cancelar_venta(\'item-elimina" + ItemVenta.RowID + "','" + ItemVenta.RowID + "\')\" class='close'><i class='ion-ios-close text-2x'></i></a>";
+                html_item_venta += "</div>";
+                html_item_venta += "</div>";
+                html_item_venta += "<input type='hidden' value='" + cantidadnueva + "' name='" + RowID_ListaFuncion + "' id='cantidad_boletas_tarifa_" + RowID_ListaFuncion + "' class='boletas_vender_ " + RowID_ListaFuncion + "'>";
+            }
+           
             return html_item_venta;
         }
         [CheckSessionOutAttribute]
@@ -488,7 +520,7 @@ namespace CinemaPOS.Controllers
                 CantidadColumnas = int.Parse(SillaMapa.SalaColumnas.ToString());
                 if (ContadorColumnas== 0)
                 {
-                    Data_Table = Data_Table + "<tr class='fila_" + i + "' style='padding: 0px 0px 0px 0px;height:30px;>";
+                    Data_Table = Data_Table + "<tr class='fila_" + i + "' style='padding: 0px 0px 0px 0px;height:30px;'>";
                     i++;
                 }
                 if (SillaMapa.TipoObjeto=="SILLA")
@@ -500,6 +532,10 @@ namespace CinemaPOS.Controllers
                     else if (SillaMapa.SillaVendida==1)
                     {
                         Data_Table = Data_Table + " <td id='" + SillaMapa.RowIDSillaMapa + "' class='disabled' style='background: #B0BEC5; padding: 0px 0px 0px 0px;' >";
+                    }
+                    else if (SillaMapa.SillaReservada == 1)
+                    {
+                        Data_Table = Data_Table + " <td id='" + SillaMapa.RowIDSillaMapa + "' class='disabled' style='background: #FFA726; padding: 0px 0px 0px 0px;' >";
                     }
                     else
                     {
@@ -737,43 +773,68 @@ namespace CinemaPOS.Controllers
             }
             return Json(new { tipo_respuesta=tipo_respuesta, Respuesta = Respuesta, data = ListaBoletas,html=Boletas }, JsonRequestBehavior.AllowGet);
         }
-        [CheckSessionOutAttribute]
-        public ActionResult ValidaCupones()
-        {
-            /**/
-            return View();
-        }
         public string valida_estado_cupon(string codigo_barras)
         {
-            String des = "65B7A47635";
+            //String des = "65B7A47635";
             string respuesta = "";
-            Encriptacion encrip = new Encriptacion(System.Text.Encoding.UTF8);
-            RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
-            byte[] key = new byte[32]; 
-            byte[] iv = new byte[32];
-            rngCsp.GetBytes(key);
-            rngCsp.GetBytes(iv);
-            des = encrip.Decrypt(des, key, iv);
-            
-            DetalleConvenio cupon_valida = db.DetalleConvenio.Where(dc => dc.Codigo == codigo_barras).FirstOrDefault();
-            if (cupon_valida!=null)
+            //Encriptacion encrip = new Encriptacion(System.Text.Encoding.UTF8);
+            //RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
+            //byte[] key = new byte[32]; 
+            //byte[] iv = new byte[32];
+            //rngCsp.GetBytes(key);
+            //rngCsp.GetBytes(iv);
+            //des = encrip.Decrypt(des, key, iv);
+
+            //Busco el convenio en el local
+            DetalleConvenio cupon_valida = db.DetalleConvenio.FirstOrDefault(dc => dc.Codigo == codigo_barras);
+
+
+            //En caso de que no lo encuentre lo busco en el central
+            if (cupon_valida == null)
             {
-                db.Database.Connection.ConnectionString = (db.Parametros.Where(p => p.cod_parametro == "CONNCENTRAL").FirstOrDefault().valor_parametros); //db.DetalleConvenio.Where(dc => dc.Codigo == "65B7A47636").FirstOrDefault();
-                string con=db.Database.Connection.DataSource.ToString();
-                cupon_valida = db.DetalleConvenio.Where(dc => dc.Codigo == codigo_barras).FirstOrDefault();
-                db.Database.Connection.Close();
-                if (cupon_valida.Estado.Codigo.ToUpper()== "REDIMIDO")
+                String cadenaActual = db.Database.Connection.ConnectionString;
+                db.Database.Connection.ConnectionString = (db.Teatro.Where(p => p.Nombre == "CENTRAL").FirstOrDefault().CadenaBD);
+                try
                 {
-                    respuesta = "EL convenio " + cupon_valida.EncabezadoConvenio.Nombre + " ya ha sido redimido ";
+                    cupon_valida = db.DetalleConvenio.FirstOrDefault(dc => dc.Codigo == codigo_barras);
+                }
+                catch (Exception)
+                {
+                    cupon_valida = null;
+                }
+                if (cupon_valida != null)
+                {
+                    if (cupon_valida.Estado.Codigo.ToUpper() == ModelosPropios.Util.Constantes.ESTADO_CONVENIO_REDIMIDO)
+                    {
+                        respuesta = "EL convenio " + cupon_valida.EncabezadoConvenio.Nombre + " " + cupon_valida.Codigo + " ya ha sido redimido ";
+                    }
+                    else
+                    {
+                        //Si lo encuentro le cambio el estado a redimido
+                        cupon_valida.EstadoID = db.Estado.Where(es => es.TipoEstado.Codigo == ModelosPropios.Util.Constantes.TIPO_ESTADO_CONVENIO && es.Codigo == ModelosPropios.Util.Constantes.ESTADO_CONVENIO_REDIMIDO).FirstOrDefault().RowID;
+                        db.SaveChanges();
+                        respuesta = "Convenio redimido";
+                    }
+                }
+                
+                //Le devuelvo la cadena que tenia
+                db.Database.Connection.ConnectionString = cadenaActual;
+            }
+            else
+            {
+                if (cupon_valida.Estado.Codigo.ToUpper() == ModelosPropios.Util.Constantes.ESTADO_CONVENIO_REDIMIDO)
+                {
+                    respuesta = "EL convenio " + cupon_valida.EncabezadoConvenio.Nombre + " " + cupon_valida.Codigo + " ya ha sido redimido ";
                 }
                 else
                 {
+                    //Si lo encuentro le cambio el estado a redimido
                     cupon_valida.EstadoID = db.Estado.Where(es => es.TipoEstado.Codigo == ModelosPropios.Util.Constantes.TIPO_ESTADO_CONVENIO && es.Codigo == ModelosPropios.Util.Constantes.ESTADO_CONVENIO_REDIMIDO).FirstOrDefault().RowID;
                     db.SaveChanges();
                     respuesta = "Convenio redimido";
                 }
             }
-            else
+            if (cupon_valida == null)
             {
                 respuesta = "EL convenio no existe";
             }
@@ -897,6 +958,18 @@ namespace CinemaPOS.Controllers
             objTarjeta = new TarjetaMembresiaClienteRoyal();
             return Json(new { respuesta=respuesta,objetotarjeta=objTarjeta,tipo_respuesta=tipo_respuesta },JsonRequestBehavior.AllowGet);
         }
+        public JsonResult InformacionSala(int rowidfuncion)
+        {
+            EstadisticaFuncion_Result DataF= db.EstadisticaFuncion(rowidfuncion).FirstOrDefault();
+            //var Data = (from func in DataF
+            //        select new
+            //        {
+            //            Capacidad = func.Capacidad,
+            //            SillasBloqueadas = func.SillasBloqueadas,
+            //            SillasReservadas = func.SillasReservadas
+            //        }).FirstOrDefault();
+            return Json(DataF,JsonRequestBehavior.AllowGet);
+        }
         #region CallCenter
 
 
@@ -904,7 +977,9 @@ namespace CinemaPOS.Controllers
         public ActionResult ConfirmaReserva(string RowIdCallCenter, FormCollection formulario, String DatosSillasSeleccionadas, int? RowIDTeatro)
         {
             /**/
-            RowIdCallCenter = RowIdCallCenter.TrimStart('\'').TrimEnd('\'');
+            if(!String.IsNullOrEmpty(RowIdCallCenter)){
+                RowIdCallCenter = RowIdCallCenter.TrimStart('\'').TrimEnd('\'');
+            }
             ViewBag.DatosSillasSeleccionadas = DatosSillasSeleccionadas;
             if (!String.IsNullOrEmpty(RowIdCallCenter))
             {

@@ -24,7 +24,6 @@ namespace CinemaPOS.Controllers
         public ActionResult Programacion(int? RowID_EncabezadoProgramacion)
         {
             ViewBag.ListaTeatro = db.Teatro.Where(f => f.Estado.Codigo == "ABIERTO").ToList();
-            ViewBag.ListasPrecios = db.ListaEncabezado.ToList();
             ViewBag.ListaEstados = db.Estado.Where(f => f.TipoEstado.Codigo == "TIPOFUNCION");
             if (RowID_EncabezadoProgramacion != null && RowID_EncabezadoProgramacion != 0)
             {
@@ -35,7 +34,7 @@ namespace CinemaPOS.Controllers
                 {
                     ViewBag.listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Codigo == "ENFUNCIONAMIENTO").OrderBy(f => f.RowID);
                     ViewBag.ListaPeliculas = db.TeatroPelicula.Where(f => f.TeatroID == programacion.TeatroID);
-                    ViewBag.ListasPrecios = db.ListaEncabezado.Where(f => f.TeatroID == programacion.TeatroID);
+                    ViewBag.ListasPrecios = db.ListaEncabezado.Where(f => f.TeatroID == programacion.TeatroID && f.FechaInicial >= programacion.FechaInicial);
                 }
                 return View(programacion);
             }
@@ -199,11 +198,11 @@ namespace CinemaPOS.Controllers
         [CheckSessionOutAttribute]
         public JsonResult Guardar_Funciones(FormCollection formulario, int RowID_EncabezadoProgramacion)
         {
-            String respuesta = "", tipoRespuesta = "success";
+            String respuesta1 = "", respuesta2 = "";
             Funcion ObjFuncion = new Funcion();
             formulario = DeSerialize(formulario);
             var HorasFunciones = formulario["HorasFunciones"].Split(',');
-
+            int contadorFunciones = 0;
 
             //DateTime fechaInicialVigencia = DateTime.Parse(formulario["FechaInicial"]);
             //DateTime fechaFinalVigencia = DateTime.Parse(formulario["FechaFinal"]);
@@ -252,12 +251,12 @@ namespace CinemaPOS.Controllers
                                 {
                                     FuncionesExistentes.Add(ObjFuncion);
                                     ObjFuncion = new Funcion();//Limpio el Objeto
-
+                                    contadorFunciones++;
                                 }
                             }
                             else
                             {
-                                respuesta += validacion;
+                                respuesta2 += validacion;
                                 ObjFuncion = new Funcion();//Limpio el Objeto
                             }
                         }
@@ -268,13 +267,12 @@ namespace CinemaPOS.Controllers
                 }
 
             }
-            if (!String.IsNullOrEmpty(respuesta))
+            if (!String.IsNullOrEmpty(respuesta2))
             {
-                tipoRespuesta = "warning";
-                respuesta = "No se puede crear " + respuesta + " Porque entra en conflicto con otra función.";
+                respuesta2 = "No se puede crear " + respuesta2 + " Porque entra en conflicto con otra función.";
             }
-
-            return Json(new { respuesta = respuesta, tipoRespuesta = tipoRespuesta });
+            respuesta1 = contadorFunciones + "";
+            return Json(new { respuesta1 = respuesta1, respuesta2 = respuesta2 });
         }
 
         public Funcion CargarDatosFuncion(Funcion ObjFuncion, FormCollection formulario, int RowID_EncabezadoProgramacion, TimeSpan horaInicial, TimeSpan HoraFinal, DateTime FechaProgramacion)
@@ -367,6 +365,37 @@ namespace CinemaPOS.Controllers
             string tabla = "";
             List<Funcion> ListaFunciones = db.Funcion.Where(ld => ld.EncabezadoProgramacionID == RowID_Encabezado).ToList();
             System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
+            tabla = tabla + " <thead>";
+tabla = tabla + "                        <tr>";
+tabla = tabla + "                            <th></th>";
+tabla = tabla + "                            <th style=\"width:10px;display:none;\"></th>";
+tabla = tabla + "                            <th>Sala</th>";
+tabla = tabla + "                            <th>Servicio</th>";
+tabla = tabla + "                            <th>Película</th>";
+tabla = tabla + "                            <th>Formato</th>";
+tabla = tabla + "                            <th>Fecha</th>";
+tabla = tabla + "                            <th>Hora Inicial - Final</th>";
+tabla = tabla + "                            <th>T. Total</th>";
+tabla = tabla + "                            <th>Precio</th>";
+tabla = tabla + "                            <th>Estado</th>";
+tabla = tabla + "                        </tr>";
+tabla = tabla + "                    </thead>";
+tabla = tabla + "                    <tfoot>";
+tabla = tabla + "                        <tr>";
+tabla = tabla + "                            <th></th>";
+tabla = tabla + "                            <th style=\"width:10px;display:none;\"><input type=\"text\" id=\"ID\" /></th>";
+tabla = tabla + "                            <th style=\"padding: 5px 3px 0px 3px; font-size: small;\"><input type=\"text\" style=\"width: 100%;\" placeholder=\"Buscar Sala\" /></th>";
+tabla = tabla + "                            <th style=\"padding: 5px 3px 0px 3px; font-size: small;\"><input type=\"text\" style=\"width: 100%;\" placeholder=\"Buscar Servicio\" /></th>";
+tabla = tabla + "                            <th style=\"padding: 5px 3px 0px 3px; font-size: small;\"><input type=\"text\" style=\"width: 100%;\" placeholder=\"Buscar Película\" /></th>";
+tabla = tabla + "                            <th style=\"padding: 5px 3px 0px 3px; font-size: small;\"><input type=\"text\" style=\"width: 100%;\" placeholder=\"Buscar Formato\" /></th>";
+tabla = tabla + "                            <th style=\"padding: 5px 3px 0px 3px; font-size: small;\"><input type=\"text\" style=\"width: 100%;\" placeholder=\"Buscar Fecha\" /></th>";
+tabla = tabla + "                            <th style=\"padding: 5px 3px 0px 3px; font-size: small;\"><input type=\"text\" style=\"width: 100%;\" placeholder=\"Buscar Hora Inicial - Final\" /></th>";
+tabla = tabla + "                            <th style=\"padding: 5px 3px 0px 3px; font-size: small;\"><input type=\"text\" style=\"width: 100%;\" placeholder=\"Buscar T. Total\" /></th>";
+tabla = tabla + "                            <th style=\"padding: 5px 3px 0px 3px; font-size: small;\"><input type=\"text\" style=\"width: 100%;\" placeholder=\"Buscar Precio\" /></th>";
+tabla = tabla + "                            <th style=\"padding: 5px 3px 0px 3px; font-size: small;\"><input type=\"text\" style=\"width: 100%;\" placeholder=\"Buscar Estado\" /></th>";
+tabla = tabla + "                        </tr>";
+tabla = tabla + "                    </tfoot>";
+tabla = tabla + "                    <tbody>";
             foreach (Funcion funcion in ListaFunciones)
             {
                 tabla = tabla + "<tr>";
@@ -389,10 +418,17 @@ namespace CinemaPOS.Controllers
                                 "</ul>" +
                             "</div>" +
                         "</td>";
-
-                tabla += "<td>" + funcion.RowID + "</td>";
-                tabla += "<td>" + funcion.Sala.Teatro.Nombre + " - " + funcion.Sala.Nombre + " " + funcion.Sala.ServicioSala.First().Opcion.Codigo + "</td>";
-                tabla += "<td>" + funcion.DetallePelicula.EncabezadoPelicula.TituloLocal + "</td>";
+                tabla += "<td  style=\"width:10px;display:none;\">" +  funcion.RowID+ "</td>";
+                tabla += "<td style=\"width: 9%;\">" + funcion.Sala.Nombre+ "</td>";
+                tabla += "<td style=\"width: 7%;\">" + funcion.Sala.ServicioSala.First().Opcion.Codigo+ "</td>";
+                if (funcion.DetallePelicula.EncabezadoPelicula.TituloLocal.Length >= 15)
+                {
+                    tabla += "<td title=\""+funcion.DetallePelicula.EncabezadoPelicula.TituloLocal+"\">" + funcion.DetallePelicula.EncabezadoPelicula.TituloLocal.Substring(0, 15) + "...</td>";
+                }
+                else
+                {
+                    tabla += "<td>" + funcion.DetallePelicula.EncabezadoPelicula.TituloLocal + "</td>";
+                }
                 tabla += "<td>" + funcion.DetallePelicula.Opcion.Codigo + " " + funcion.DetallePelicula.Opcion1.Codigo2 + "</td>";
                 if (funcion.Fecha != null)
                 {
@@ -421,25 +457,31 @@ namespace CinemaPOS.Controllers
                     tabla += @funcion.HoraFinal;
                 }
                 tabla += "</td>";
-                tabla += "<td>" + (Convert.ToInt32(funcion.TiempoCorto) + funcion.DetallePelicula.EncabezadoPelicula.Duracion + Convert.ToInt32(funcion.TiempoAseo)) + "</td>";
+                tabla += "<td  style=\"width: 8%\">" + (Convert.ToInt32(funcion.TiempoCorto) + funcion.DetallePelicula.EncabezadoPelicula.Duracion + Convert.ToInt32(funcion.TiempoAseo)) + "</td>";
 
-                tabla += "<td>";
-                tabla += "<table>";
+                tabla += "<td style=\"padding: 2px;\">";
+                tabla += "<table  style=\" font-size: smaller; \">";
                 foreach (CinemaPOS.Models.ListaPrecioFuncion precio in funcion.ListaPrecioFuncion)
                 {
                     if (precio.ListaDetalle.TipoListaDetalle != null)
                     {
-                        tabla += "<tr>";
+                        tabla += "<tr style=\"padding: 2px;\">";
                         tabla += "<td>" + precio.ListaDetalle.Precio + " - " + funcion.Sala.ServicioSala.First().Opcion.Codigo + "  " + @precio.ListaDetalle.TipoListaDetalle.Value + "</td>";
                         tabla += "</tr>";
                     }
                     else
                     {
-                        tabla += "<tr>";
+                        tabla += "<tr style=\"padding: 2px;\">";
                         tabla += "<td>" + precio.ListaDetalle.Precio + " - " + funcion.Sala.ServicioSala.First().Opcion.Codigo + "</td>";
                         tabla += "</tr>";
                     }
+                }
+                if (funcion.ListaPrecioFuncion.Count == 0)
+                {
 
+                    tabla += "<tr style=\"padding: 2px;\">";
+                    tabla += "<td>Por Asignar</td>";
+                    tabla += "</tr>";
                 }
                 tabla += "</table>";
                 tabla += "</td>";
@@ -453,6 +495,7 @@ namespace CinemaPOS.Controllers
                 }
                 tabla = tabla + "</tr>";
             }
+            tabla = tabla + "                    </tbody>";
             return tabla;
         }
 
@@ -482,7 +525,7 @@ namespace CinemaPOS.Controllers
                 listaSalas = db.Sala.Where(f => f.TeatroID == programacion.TeatroID && f.Estado.Codigo == "ENFUNCIONAMIENTO").OrderBy(f => f.RowID).ToList();
             }
             System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("Es-Es");
-            int cantDias = DiasACorrer + 5;
+            int cantDias = DiasACorrer + 7;
 
             tabla += "  <thead>";
             tabla += "<tr>";

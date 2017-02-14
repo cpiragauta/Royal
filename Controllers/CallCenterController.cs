@@ -93,7 +93,7 @@ namespace CinemaPOS.Controllers
             string IDSillas = DatosSillas[2];
             AsignarBoletasAReserva(IDSillas, tarifaID, RowIDFuncion, reserva);
 
-            return Json(new { respuesta = respuesta});
+            return Json(new { codigoReserva = codigoReserva });
         }
 
 
@@ -137,9 +137,10 @@ namespace CinemaPOS.Controllers
                     objBoletaReserva.FechaCreacion = DateTime.Now;
                     objBoletaReserva.TaquillaID = taquillas.RowID;
                     //objBoletaReserva.TaquillaID = 53;
+                    objBoletaReserva.Estado = db.Estado.FirstOrDefault(f => f.Codigo == "RESERVADA" && f.TipoEstado.Codigo == "TIPORESERVA");
                     objBoletaReserva.UsuarioID = usuariotaquilla.RowID;
                     objBoletaReserva.ReservaID = reserva.RowID;
-                    objBoletaReserva.CreadoPor = "CallCenter";
+                    objBoletaReserva.CreadoPor = Session["usuario_creacion"].ToString();
                     db.BoletaReservada.Add(objBoletaReserva);
                     db.SaveChanges();
                     rowid_sillasvendidas[i] = int.Parse(objBoletaReserva.RowID.ToString());
@@ -159,43 +160,76 @@ namespace CinemaPOS.Controllers
         [CheckSessionOutAttribute]
         public JsonResult LiberarManualmente(FormCollection formulario)
         {
-            String respuestaCentral = "", tipoRespuestaCentral = "error";
-            String respuestaTeatro = "", tipoRespuestaTeatro = "error";
-            formulario = DeSerialize(formulario);           
-            try //Guardo en el Central
+            String respuesta = "", tipoRespuesta = "error";
+            formulario = DeSerialize(formulario);
+            String cadenaActual = db.Database.Connection.ConnectionString;
+            try 
             {
+                int idTeatro = Convert.ToInt32(formulario["TeatroID"].ToString());
                 string codigoReserva = formulario["CodigoReserva"].ToString();
+                //Establezco conexion con el teatro
+                db.Database.Connection.ConnectionString = db.Teatro.FirstOrDefault(f => f.RowID == idTeatro).CadenaBD;
+                //Busco Reserva y cambio estado
+                Estado LiberadaManual = db.Estado.FirstOrDefault(f => f.Codigo == "LIBERADAMANUAL" && f.TipoEstado.Codigo == "TIPORESERVA");
                 Reserva reserva = db.Reserva.FirstOrDefault(f => f.CodigoReserva == codigoReserva);
-                reserva.Estado = db.Estado.FirstOrDefault(f => f.Codigo == "RESERVADA" && f.TipoEstado.Codigo == "TIPORESERVA");
+                reserva.EstadoID = LiberadaManual.RowID;
                 reserva.FechaModificacion = DateTime.Now;
                 reserva.ModificadoPor = Session["usuario_creacion"].ToString();
                 db.SaveChanges();
-                respuestaCentral = "Reserva Liberada correctamente en Central";
-                tipoRespuestaCentral = "success";
+                //Busco boletas de la reserva y cambio el estado 
+                List<BoletaReservada> Boletas = db.BoletaReservada.Where(f => f.ReservaID == reserva.RowID).ToList();
+
+                foreach (BoletaReservada item in Boletas)
+                {
+                    item.EstadoID = LiberadaManual.RowID;
+                    item.FechaModificacion = DateTime.Now;
+                    item.ModificadoPor = Session["usuario_creacion"].ToString();
+                    db.SaveChanges();
+                }
+                respuesta = "Reserva Liberada correctamente";
+                tipoRespuesta= "success";
+                //Devuelvo la cadena de conexion que tenia
+                db.Database.Connection.ConnectionString = cadenaActual;
             }
             catch (Exception ex)
             {
-                tipoRespuestaCentral = "Error Guardando en el Central";
+                db.Database.Connection.ConnectionString = cadenaActual;
+                tipoRespuesta = "Error Liberando Reserva";
             }
-
-            try //Guardo en el Teatro
-            {
-                //db.Database.Connection.ConnectionString = CadenaActual;
-                //reserva.Estado = db.Estado.FirstOrDefault(f => f.Codigo == "RESERVADA" && f.TipoEstado.Codigo == "TIPORESERVA"); //Busco el estado otra vez por si cambia el id en la bd del teatro
-                //db.Reserva.Add(reserva);
-                //db.SaveChanges();
-                //respuestaCentral = "Guardado Correctamente en el Central";
-                //tipoRespuestaCentral = "success";
-            }
-            catch (Exception ex)
-            {
-                respuestaCentral = "Error Guardado en el Central";
-            }
-
-
-            return Json(new { respuestaTeatro = respuestaTeatro, tipoRespuestaTeatro = tipoRespuestaTeatro, respuestaCentral = respuestaCentral, tipoRespuestaCentral = tipoRespuestaCentral });
+            return Json(new { respuesta = respuesta, tipoRespuesta = tipoRespuesta });
         }
 
+
+        
+
+            [CheckSessionOutAttribute]
+        public JsonResult LiberarBoletaManualmente(int RowID_Boleta, int TeatroID)
+        {
+            String respuesta = "", tipoRespuesta = "error";
+            String cadenaActual = db.Database.Connection.ConnectionString;
+            try 
+            {
+                //Establezco conexion con el teatro
+                db.Database.Connection.ConnectionString = db.Teatro.FirstOrDefault(f => f.RowID == TeatroID).CadenaBD;
+                Estado LiberadaManual = db.Estado.FirstOrDefault(f => f.Codigo == "LIBERADAMANUAL" && f.TipoEstado.Codigo == "TIPORESERVA");
+                //Busco la boleta y cambio el estado 
+                BoletaReservada Boleta = db.BoletaReservada.FirstOrDefault(f => f.RowID == RowID_Boleta);
+                Boleta.EstadoID = LiberadaManual.RowID;
+                Boleta.FechaModificacion = DateTime.Now;
+                Boleta.ModificadoPor = Session["usuario_creacion"].ToString();
+                db.SaveChanges();
+                respuesta = "Boleta Liberada correctamente";
+                tipoRespuesta= "success";
+                //Devuelvo la cadena de conexion que tenia
+                db.Database.Connection.ConnectionString = cadenaActual;
+            }
+            catch (Exception ex)
+            {
+                db.Database.Connection.ConnectionString = cadenaActual;
+                tipoRespuesta = "Error Liberando Reserva";
+            }
+            return Json(new { respuesta = respuesta, tipoRespuesta = tipoRespuesta });
+        }
 
         private FormCollection DeSerialize(FormCollection formulario)
         {
@@ -222,7 +256,88 @@ namespace CinemaPOS.Controllers
         }
 
 
-       
+        
+
+        [CheckSessionOutAttribute]
+        public JsonResult RedimirReserva(string CodigoReserva)
+        {
+            /**/
+            int? SalaID =0, cantidad =0, RowID_Funcion=0 , RowID_Tarifas=0;
+            String sillasID = "";
+
+            string tipoRespuesta = "warning", respuesta = "";
+            if (String.IsNullOrEmpty(CodigoReserva))
+            {
+                return Json(new { tipoRespuesta = tipoRespuesta, respuesta = "Ingrese un código valido" });
+            }
+            else
+            {
+                Reserva reserva;
+                //Busco por Codigo Reserva 
+                reserva = db.Reserva.FirstOrDefault(f => f.CodigoReserva.Equals(CodigoReserva));
+                if(reserva != null){
+                    respuesta = "Codigo valido";
+                    tipoRespuesta = "success";
+                }
+
+                //Busco Por Telefono
+                if (reserva == null)
+                {
+                    reserva = db.Reserva.FirstOrDefault(f => f.TelefonoCliente.Equals(CodigoReserva));
+                    if (reserva != null)
+                    {
+                        respuesta = "Codigo valido";
+                        tipoRespuesta = "success";
+                    }
+                }
+                if (reserva == null)
+                {
+                    respuesta = "No se encontro reserva con el código " + CodigoReserva;
+                }
+                else
+                {
+                    List<BoletaReservada> Boletas = db.BoletaReservada.Where(f => f.ReservaID == reserva.RowID && f.Estado.Codigo == "RESERVADA").ToList();
+                    RowID_Funcion  = Boletas.First().FuncionID;
+                    SalaID = Boletas.First().Funcion.SalaID;
+                    RowID_Tarifas = Boletas.First().TarifaID;
+                    cantidad = Boletas.Count;
+                    foreach (BoletaReservada item in Boletas)
+                    {
+                        sillasID += item.SillaID + ",";
+                    }
+                    sillasID = sillasID.TrimEnd(',');
+                    //RedimirReserva(reserva.RowID); //Le cambio el estado a la reserva y a las boletas
+                }
+            }
+            return Json(new { tipoRespuesta = tipoRespuesta, respuesta = respuesta, SalaID = SalaID, cantidad = cantidad, RowID_Funcion = RowID_Funcion, RowID_Tarifas = RowID_Tarifas, sillasID = sillasID }, JsonRequestBehavior.AllowGet);
+        }
+
+        [CheckSessionOutAttribute]
+        public void RedimirReserva(int idReserva)
+        {
+            try
+            {
+                Estado Redimida = db.Estado.FirstOrDefault(f => f.Codigo == "REDIMIDA" && f.TipoEstado.Codigo == "TIPORESERVA");
+                Reserva reserva = db.Reserva.FirstOrDefault(f => f.RowID == idReserva);
+                reserva.EstadoID = Redimida.RowID;
+                reserva.FechaModificacion = DateTime.Now;
+                reserva.ModificadoPor = Session["usuario_creacion"].ToString();
+                db.SaveChanges();
+                //Busco boletas de la reserva y cambio el estado 
+                List<BoletaReservada> Boletas = db.BoletaReservada.Where(f => f.ReservaID == reserva.RowID && f.Estado.Codigo == "RESERVADA").ToList();
+
+                foreach (BoletaReservada item in Boletas)
+                {
+                    item.EstadoID = Redimida.RowID;
+                    item.FechaModificacion = DateTime.Now;
+                    item.ModificadoPor = Session["usuario_creacion"].ToString();
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
 
 
     }
