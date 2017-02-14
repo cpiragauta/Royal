@@ -1011,23 +1011,23 @@ tabla = tabla + "                    <tbody>";
 
             ListaFunciones = formulario["DetallePelicula"] == null ? ListaFunciones : ListaFunciones.Where(f => f.DetallePeliculaID == Convert.ToInt32(formulario["DetallePelicula"].ToString())).ToList();
             ListaFunciones = formulario["Sala"] == null ? ListaFunciones : ListaFunciones.Where(f => f.SalaID == Convert.ToInt32(formulario["Sala"].ToString())).ToList();
-            ListaFunciones = String.IsNullOrEmpty(formulario["fechaEliminar"].ToString()) ? ListaFunciones: ListaFunciones.Where(f =>  f.Fecha == Convert.ToDateTime(formulario["fechaEliminar"].ToString())).ToList();
+            ListaFunciones = String.IsNullOrEmpty(formulario["fechaEliminar"].ToString()) ? ListaFunciones: ListaFunciones.Where(f =>  f.Fecha == ModelosPropios.Util.FechaInsertar(formulario["fechaEliminar"].ToString())).ToList();
 
-            TimeSpan Horainicial = formulario["hora_inicial"] != null ? TimeSpan.Parse(formulario["hora_inicial"].ToString()) : new TimeSpan();
-            TimeSpan HoraFinal = formulario["hora_final"] != null ? TimeSpan.Parse(formulario["hora_final"].ToString()) : new TimeSpan();
+            //TimeSpan Horainicial = formulario["hora_inicial"] != null ? TimeSpan.Parse(formulario["hora_inicial"].ToString()) : new TimeSpan();
+            //TimeSpan HoraFinal = formulario["hora_final"] != null ? TimeSpan.Parse(formulario["hora_final"].ToString()) : new TimeSpan();
 
-            if (Horainicial != TimeSpan.Zero && HoraFinal != TimeSpan.Zero)
-            {
+            //if (Horainicial != TimeSpan.Zero && HoraFinal != TimeSpan.Zero)
+            //{
                 
-            }
-            else if (Horainicial != TimeSpan.Zero)
-            {
+            //}
+            //else if (Horainicial != TimeSpan.Zero)
+            //{
                 
-            }
-            else if (HoraFinal != TimeSpan.Zero)
-            {
+            //}
+            //else if (HoraFinal != TimeSpan.Zero)
+            //{
 
-            }
+            //}
 
             foreach (var funcion in ListaFunciones)
             {

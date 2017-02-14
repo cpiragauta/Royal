@@ -143,7 +143,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="TARJETAID" class="control-label">*Tarjeta de Membres&iacute;a:</label>
-                        <input type="number" name="TarjetaMembresiaClienteRoyal" value="@ViewBag.Tarjeta" class="form-control"  required id="TarjetaMembresiaClienteRoyal"/>
+                        <input type="number" name="TarjetaMembresiaClienteRoyal" value="@ViewBag.Tarjeta" class="form-control solo-numero" required id="TarjetaMembresiaClienteRoyal" />
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -194,7 +194,7 @@
         jQuery("#tipo_identificacion").chosen({ width: "95%;" });
 
         $('#FechaNacimiento').datepicker({
-            format: "dd-mm-yyyy",
+            format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
             todayHighlight: false
@@ -206,6 +206,10 @@
         if ('@Model.RecibirInformacion' == 'True') {
             $('.switchery').trigger('click');
         }
+
+        $('.solo-numero').keyup(function () {
+            this.value = (this.value + '').replace(/[^0-9]/g, '');
+        });
     });
     $(document).on("change", 'input[type=checkbox]', function () {
         if ($('#checkInfo').is(':checked')) {

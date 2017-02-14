@@ -342,9 +342,51 @@
             success: function (data) {
                 debugger;
                 ModalProcesandoHiden();
-                $(".listaFunciones ").empty();
-                $(".listaFunciones ").append(data);
-                $(".listaFunciones").dataTable();
+                var table = $('.listaFunciones').DataTable();
+                table.destroy();
+                $('.listaFunciones').empty();
+                $('.listaFunciones').append(data);
+               // $('.listaFunciones').DataTable();
+                //$('.listaFunciones').dataTable();
+                var cont = 0;
+
+                var aoColumnDefsType = [
+                   //{ "sType": "title-numeric", "aTargets": [3] },
+                   //{ "sType": "title-numeric", "aTargets": [7] },
+                   { "bSortable": false, "aTargets": [0] }//,
+                   //{ "bSortable": false, "aTargets": [8] },
+                   //{ "bSortable": false, "aTargets": [9] },
+                   //{ "sClass": "center", "aTargets": [2, 3, 4, 5, 6, 7] }
+                ];
+
+                var table = $('#demo-dt-basic').DataTable({
+                    "processing": true,
+                    "bFilter": true,
+                    "bPaginate": true,
+                    "info": true,
+                    "bDestroy": true,
+                    aLengthMenu: [
+                        [6],
+                        [6]
+                    ],
+                    "iDisplayLength": 10,
+                    "order": [[1, "desc"]],
+                    "aoColumnDefs": aoColumnDefsType
+                    //"aaSorting": [[2,'desc']]
+                });
+
+                // Apply the search
+                table.columns().every(function () {
+                    var that = this;
+
+                    $('input', this.footer()).on('keyup change', function () {
+                        if (that.search() !== this.value) {
+                            that
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
             },
             error: function (data) {
                 ModalProcesandoHiden();
@@ -1002,15 +1044,15 @@
                                             </a>
                                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                                 <li>
-                                                    <a href="javascript:EliminarFuncion(@funcion.RowID)" style="color:black;" data-toggle="tooltip" data-placement="bottom" title="Eliminar función No. @funcion.RowID">
+                                                    <a href="javascript:EliminarFuncion(@funcion.RowID)" style="color:black;" data-toggle="tooltip" data-placement="bottom" >
                                                         <i class="ion-trash-a"></i> Eliminar
                                                     </a>
                                                 </li>
-                                                <li>
+                                                @*<li>
                                                     <a href="javascript:Duplicar_Funcion(@funcion.RowID)" style="color:black;" data-toggle="tooltip" data-placement="bottom" title="Duplicar función No. @funcion.RowID">
                                                         <i class="ion-edit"></i> Duplicar
                                                     </a>
-                                                </li>
+                                                </li>*@
                                             </ul>
                                         </div>
                                     </td>
