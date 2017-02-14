@@ -113,7 +113,7 @@
             success: function (data) {
                 console.log();
                 debugger
-                jQuery(".tabla_detalle_lista > tbody").empty().append(data);
+                jQuery(".tabla_detalle_lista tbody").empty().append(data);
             },
             error: function () {
                 swal("Error al retornar la informacion de la lista de precios", "");
@@ -177,29 +177,38 @@
             url:"/Maestro/Buscar_Tarifa",
             data:{ RowID_Tarifa:RowID_Tarifa},
             success:function(data){
+                //console.clear();
                 data.forEach(function( da){
-                    if (Accion==1) {
-                        $(".RowID_Detalle").val(da.RowID);
-                        $(".chosen-teatro").attr("selected","selected").val(da.TeatroID);
-                        $(".chosen-formato").val(da.TipoFormato).attr('disabled', 'disabled');
-                        $(".precio").val(da.Precio).attr('disabled', 'disabled');
-                        $(".nombre_detalle").val(da.Nombre).attr('disabled', 'disabled');
-                        $(".select-servicio").val(da.TipoServicioID).attr('disabled', 'disabled');
-                        $(".precio_distribuidor").val(da.PrecioDistribuidor).attr('disabled', 'disabled');
-                        $(".fecha_inicial").val(da.FechaInicial).attr('disabled', 'disabled');
-                        $(".fecha_final").val(da.FechaFinal ).attr('disabled', 'disabled');
-                        $(".hora_inicial").val(da.HoraInicial);
-                        $(".hora_final").val(da.HoraFinal);
-                        //$(".select-dia").val("").trigger("chosen:updated");
-                        var list=da.DiasAsignados.split(",");
-                        for (var i = 0; i < list.length ; i++) {
-                            $(".select-dia option[value='"+list[i]+"']").removeAttr('selected').attr('selected', 'selected').trigger("chosen:updated");
-                            $(".select-dia").attr('disabled', true).trigger("chosen:updated");
-                            //console.log(list[i]);
-                        }
-                        $(".select-dia").attr('disabled', true).trigger("chosen:updated");
-                    }
-                    else{
+                    ///*if (Accion==1) {
+                    //    $(".RowID_Detalle").val(da.RowID);
+                    //    $(".chosen-teatro")/*.attr("selected","selected").*/.val(da.TeatroID);
+                    //    $(".chosen-formato").val(da.TipoFormato)/*.attr('disabled', 'disabled')*/;
+                    //    $(".precio").val(da.Precio)/*.attr('disabled', 'disabled')*/;
+                    //    $(".nombre_detalle").val(da.Nombre)/*.attr('disabled', 'disabled')*/;
+                    //    $(".select-servicio").val(da.TipoServicioID)/*.attr('disabled', 'disabled')*/;
+                    //    $(".precio_distribuidor").val(da.PrecioDistribuidor)/*.attr('disabled', 'disabled')*/;
+                    //    $("#fecha_inicial_detalle").val(da.FechaInicial)/*.attr('disabled', 'disabled')*/;
+                    //    $("#fecha_final_detalle").val(da.FechaFinal )/*.attr('disabled', 'disabled')*/;
+                    //    $(".hora_inicial").val(da.HoraInicial);
+                    //    $(".hora_final").val(da.HoraFinal);
+                    //    $(".select-dia").val("").trigger("chosen:updated");
+
+                    //    //$(".select-dia option").removeAttr("selected").trigger("chosen:updated");
+                    //    //$(".select-dia").chosen("destroy");
+                    //    var list=da.DiasAsignados.split(",");
+                    //    $(".select-dia option").removeAttr("selected");
+                    //    debugger;
+                    //    for (var i = 0; i < list.length ; i++) {
+                    //        $(".select-dia option[value='"+list[i]+"']").removeAttr('selected').attr('selected', 'selected').trigger("chosen:updated");
+                    //        console.log($(".select-dia option[value='"+list[i]+"']").attr("selected"));
+                    //        //$(".select-dia").attr('disabled', true).trigger("chosen:updated");
+                    //        //console.log(list[i]);
+                    //    }
+                    //    //$(".select-dia").chosen({width:"100%;"});
+                    //    //$(".select-dia").trigger("liszt:updated")
+                    //    $(".select-dia").trigger("chosen:updated");
+                    //}
+                    //else{*/
                         $(".RowID_Detalle").val("");
                         $(".chosen-teatro").val(da.TeatroID).removeAttr('disabled');
                         $(".chosen-formato").val(da.TipoFormato).removeAttr('disabled');
@@ -207,17 +216,35 @@
                         $(".nombre_detalle").val(da.Nombre).removeAttr('disabled');
                         $(".select-servicio").val(da.TipoServicioID).removeAttr('disabled');
                         $(".precio_distribuidor").val(da.PrecioDistribuidor).removeAttr('disabled');
-                        $(".fecha_inicial").val(da.FechaInicial).removeAttr('disabled');
-                        $(".fecha_final").val(da.FechaFinal).removeAttr('disabled');
+                        $("#fecha_inicial_detalle").val(da.FechaInicial)/*.attr('disabled', 'disabled')*/;
+                        $("#fecha_final_detalle").val(da.FechaFinal )/*.attr('disabled', 'disabled')*/;
                         $(".hora_inicial").val(da.HoraInicial).removeAttr('disabled');
                         $(".hora_final").val(da.HoraFinal).removeAttr('disabled');
+                        //$(".select-dia").chosen("destroy");
+                        
                         var list=da.DiasAsignados.split(",");
+                        //$(".select-dia").val(da.DiasAsignados).trigger("chosen:updated");
                         //$(".select-dia").val("").trigger("chosen:updated");
-                        for (var i = 0; i < list.length ; i++) {
-                            $(".select-dia option[value='"+list[i]+"']").attr('selected', 'selected');
-                        }
-                        $(".select-dia").attr('disabled', false).trigger("chosen:updated");
-                    }
+                        //$(".select-dia option").removeAttr("selected");
+                        $(".select-dia option").each(function(index,element){
+                            //var valor =+element.value;
+                            //$(".select-dia").val(valor);
+                            debugger
+                            if (element.value==list[index]) {
+                                $(element).attr("selected","selected").trigger("chosen:updated");
+                            }
+                            else{
+                                $(element).removeAttr("selected").trigger("chosen:updated");
+                            }
+                        })
+                        //for (var i = 0; i < list.length ; i++) {
+                        //    $(".select-dia option[value='"+list[i]+"']").removeAttr('selected').attr('selected', 'selected').trigger("chosen:updated");
+                        //    console.log($(".select-dia option[value='"+list[i]+"']").attr("selected"));
+                        //}
+                    //$(".select-dia").chosen();
+                        $(".select-dia").trigger("liszt:updated");
+                       // $(".select-dia").chosen({width:"100%;"}).trigger("chosen:updated");
+                    //}
                 });
                 //$(".select-dia").val(da.DiasAsignados.split(",")[i]);
 
@@ -230,6 +257,7 @@
             }
         });
     }
+    
     function habilitar_controles(){
         jQuery(".RowID_Detalle").val("")
         $(".chosen-teatro").attr('disabled', false);
@@ -628,7 +656,7 @@
                                                     <div class="col-sm-8">
                                                         <div class="form-group">
                                                             <label class="control-label">Dias de vigencia: </label>
-                                                            <select style="width:10px" class="select-dia" name="dias" multiple="" onchange="crear_nombre()">
+                                                            <select style="width:10px" class="select-dia" name="dias" multiple="">
                                                                 <option value="Lunes">Lunes</option>
                                                                 <option value="Martes">Martes</option>
                                                                 <option value="Miercoles">Miercoles</option>
@@ -662,100 +690,102 @@
 
 
                                         </form>
-
-
-                                        <table id="demo-dt-basic_wrapper" class="table table-striped table-bordered tabla_detalle_lista dataTables_filter" cellspacing="0">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Nombre</th>
-                                                    <th>Servicio</th>
-                                                    <th>Precio Distribuidor</th>
-                                                    <th>Precio</th>
-                                                    <th>Formato</th>
-                                                    <th>Tipo tarifa</th>
-                                                    <th>Fecha Vigencia</th>
-                                                    <th>Horario de vigencia</th>
-                                                    <th>Dias de vigencia</th>
-                                                    <th>Estado</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @if (Model.RowID == 0)
-                        {
-                                                    <tr class="fila_registro">
-                                                        <td class="td_nombre"></td>
-                                                        <td class="td_servicio"></td>
-                                                        <td class="td_precio_distribuidor"></td>
-                                                        <td class="td_precio"></td>
-                                                        <td class="td_formato"></td>
-                                                        <td class="td_fecha_vigencia"></td>
-                                                        <td class="td_horario_vigencia"></td>
-                                                        <td class="td_dias"></td>
-
+                                        <div class="panel-body col-sm-12 mar-no pad-no">
+                                            <table id="demo-dt-basic_wrapper" class="table table-striped table-bordered tabla_detalle_lista dataTables_filter mar-no" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Nombre</th>
+                                                        <th>Servicio</th>
+                                                        <th>Precio Distribuidor</th>
+                                                        <th>Precio</th>
+                                                        <th>Formato</th>
+                                                        <th>Tipo tarifa</th>
+                                                        <th>Fecha Vigencia</th>
+                                                        <th>Horario de vigencia</th>
+                                                        <th>Dias de vigencia</th>
+                                                        <th>Estado</th>
                                                     </tr>
-                        }
+                                                </thead>
+                                                <tbody>
+                                                    @if (Model.RowID == 0)
+                                                    {
+                                                        <tr class="fila_registro">
+                                                            <td class="td_nombre"></td>
+                                                            <td class="td_servicio"></td>
+                                                            <td class="td_precio_distribuidor"></td>
+                                                            <td class="td_precio"></td>
+                                                            <td class="td_formato"></td>
+                                                            <td class="td_fecha_vigencia"></td>
+                                                            <td class="td_horario_vigencia col-sm-3"></td>
+                                                            <td class="td_dias"></td>
 
-                                                @if (Model.RowID != 0)
-                        {
-                            foreach (CinemaPOS.Models.ListaDetalle item in Model.ListaDetalle)
-                            {
-                                <tr>
-                                    <td>
-                                        <div class="dropdown">
-                                            <a class="dropdown-toggle rowlink" data-toggle="dropdown" href="#" title="Opciones función #@item.RowID">
-                                                <i class="glyphicon glyphicon-th-list"></i>
-                                            </a>
-                                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                                <li>
-                                                    <a href='javascript: EliminarItem(@item.RowID)' class="ion-trash-a">
-                                                        Eliminar
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="ion-edit" href="javascript:Bucar_Tarifa(@item.RowID,1)">
-                                                        Editar
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="ion-clipboard" href="javascript:Bucar_Tarifa(@item.RowID,2)">
-                                                        Duplicar
-                                                    </a>
-                                                </li>
-                                            </ul>
+                                                        </tr>
+                                                    }
+
+                                                    @if (Model.RowID != 0)
+                                                    {
+                                                        foreach (CinemaPOS.Models.ListaDetalle item in Model.ListaDetalle)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="dropdown">
+                                                                        <a class="dropdown-toggle rowlink" data-toggle="dropdown" href="#" title="Opciones función #@item.RowID">
+                                                                            <i class="glyphicon glyphicon-th-list"></i>
+                                                                        </a>
+                                                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                                                            <li>
+                                                                                <a href='javascript: EliminarItem(@item.RowID)' class="ion-trash-a">
+                                                                                    Eliminar
+                                                                                </a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a class="ion-edit" href="javascript:Bucar_Tarifa(@item.RowID,1)">
+                                                                                    Editar
+                                                                                </a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a class="ion-clipboard" href="javascript:Bucar_Tarifa(@item.RowID,2)">
+                                                                                    Duplicar
+                                                                                </a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="width:20%" class="text- mar-no">@item.Nombre</td>
+                                                                @if (item.TipoServicioID != null)
+                                                                {
+                                                                    <td>@item.Opcion2.Nombre</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td></td>
+                                                                }
+
+                                                                <td>@item.PrecioDistribuidor.Value.ToString("N0")</td>
+                                                                <td>@item.Precio.Value.ToString("N0")</td>
+                                                                <td>@item.Opcion.Nombre</td>
+                                                                @if (item.TipoListaDetalle != null)
+                                                                {
+                                                                    <td>@item.Opcion1.Nombre</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td></td>
+                                                                }
+                                                                <td>@item.FechaInicial.Value.ToString("dd/MM/yyyy") a: @item.FechaFinal.Value.ToString("dd/MM/yyyy")</td>
+                                                                <td>@item.HoraInicial.Value.ToString(@"hh\:mm") a: @item.HoraFinal.Value.ToString(@"hh\:mm")</td>
+                                                                <td title="@item.DiasAsignados" style="width:100px" class="text-overflow">@item.DiasAsignados</td>
+                                                                <td>@item.Estado.Nombre</td>
+
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
                                         </div>
-                                    </td>
-                                    <td>@item.Nombre</td>
-                                    @if (item.TipoServicioID != null)
-                                    {
-                                        <td>@item.Opcion2.Nombre</td>
-                                    }
-                                    else
-                                    {
-                                        <td></td>
-                                    }
 
-                                    <td>@item.PrecioDistribuidor.Value.ToString("N0")</td>
-                                    <td>@item.Precio.Value.ToString("N0")</td>
-                                    <td>@item.Opcion.Nombre</td>
-                                    @if (item.TipoListaDetalle != null)
-                                    {
-                                        <td>@item.Opcion1.Nombre</td>
-                                    }
-                                    else
-                                    {
-                                        <td></td>
-                                    }
-                                    <td>@item.FechaInicial.Value.ToString("dd/MM/yyyy") a: @item.FechaFinal.Value.ToString("dd/MM/yyyy")</td>
-                                    <td>@item.HoraInicial.Value.ToString(@"hh\:mm") a: @item.HoraFinal.Value.ToString(@"hh\:mm")</td>
-                                    <td>@item.DiasAsignados</td>
-                                    <td>@item.Estado.Nombre</td>
-
-                                </tr>
-                            }
-                        }
-                                            </tbody>
-                                        </table>
+                                        
                                     </div>
                                 </div>
     </div>
