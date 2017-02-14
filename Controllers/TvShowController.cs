@@ -321,6 +321,7 @@ namespace CinemaPOS.Controllers
             string GrupoD = "";
             string ImgFormato = "";
             string ImagenF = "";
+            string ItemActive = "item active";
             int i = 0;
             Teatro = "SAN MARTIN";
             var Teatros = db.Teatro.Where(f => f.Nombre.Contains(Teatro.ToUpper())).FirstOrDefault();
@@ -343,6 +344,7 @@ namespace CinemaPOS.Controllers
                                   RowIDEncabezado = Precios.RowIDEncabezado,
                                   Dias = Precios.Dias,
                                   Precio = Precios.Precio,
+                                  PrecioTCR=Precios.PrecioTCR,
                                   Formato = Precios.Formato,
                                   TipoTarifa = Precios.TipoTarifa,
                                   Teatro = Precios.Teatro,
@@ -355,39 +357,104 @@ namespace CinemaPOS.Controllers
                                   GrupoDias = Precios.GrupoDias
                               }).Distinct().ToList();
             #endregion
-
-            #region CONTENIDOS
-            foreach (var item in ListadoDias)
+            string le = "";
+            string grupo = "";
+            var listavista = db.TvShowListaPrecios.Where(f=>f.Teatro==Teatro).OrderBy(f=>new{f.Formato,f.GrupoDias }).GroupBy(lol => new {lol.Formato,lol.GrupoDias } ).ToList();
+            var lolol = listavista.GroupBy(lol => lol.GroupBy(lll => lll.Formato)).ToList();
+            foreach (var item in listavista)
             {
-                GrupoD += "<li class='uno'>" + item.Nombre + "</li>";
+                int cantidad = 1;
+                
+                //le += "div para grupos";
+                foreach (var precio in item)
+                {
+                    if (precio.Formato == Util.Constantes.FORMATO_3D)
+                    {
+                        //ingresa al string de 3D
+                    }
+                    else
+                    {
+                        if (cantidad == 1)
+                        {
+                            le += "<li class='precios1'>";
+                        }
+                            if (precio.PrecioTCR==0)
+                            {
+                                le += "<span id=''>" + precio.Precio + "<span>";
+                            }
+                            else if (precio.PrecioTCR != 0)
+                            {
+                                le += "<span id='TCR'>" + precio.PrecioTCR + "<span>";
+                            }
+
+                        if (cantidad == item.Count())
+                        {
+                            le += "</li>";
+                        }
+                        //ingresa al string de 2D
+                        cantidad++;
+                    }
+
+                    //le += "<div class='col-md-4'></div>";
+                    //grupo = precio.GrupoDias;
+
+                    //    if (precio.PrecioTCR == 0)
+                    //    {
+                    //        le += "<li class=\"precios1\">" + precio.Formato + precio.GrupoDias + "<span id =\"general\" >" + precio.Precio + "</span></li>";
+                    //    }
+                    //    else
+                    //    {
+                    //        le += "<li class=\"precios1\">" + precio.Formato + precio.GrupoDias + "<span id =\"TCR\" >" + precio.PrecioTCR + "</span></li>";
+                    //    }
+
+                }
+                    //le += "</div>";
+                    //le += "div que contiene tarifas de grupos";
+            }
+            #region CONTENIDOS
+            foreach (var item in listavista)
+            {
+                if (i>=5)
+                {
+                }
+                else
+                {
+                    GrupoD += "<li class='uno'>" + item.FirstOrDefault().GrupoDias + "</li>";
+                }
+                //IEnumerable<TvShowListaPrecios> list = item.Dias.GroupBy().Select(y => y.First());
+                i++;
             }
 
             foreach (var item in ListadoPrecios)
             {
-                #region IMAGENES FORMATOS
-                switch (item.Formato)
+                //#region IMAGENES FORMATOS
+                //switch (item.Formato)
+                //{
+                //    case Util.Constantes.FORMATO_2D:
+                //        ImgFormato = "../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 2D-01.png";
+                //        ImagenF += "<div class=\"col-md-4\">" +
+                //            "<img src ='" + ImgFormato + "' />" +
+                //        "</div>";
+                //        break;
+                //    case Util.Constantes.FORMATO_3D:
+                //        ImgFormato = "../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 3D-01.png";
+                //        ImagenF += "<div class=\"col-md-4\">" +
+                //                    "<img src ='" + ImgFormato + "' />" +
+                //                "</div>";
+                //        break;
+                //    case Util.Constantes.FORMATO_4D:
+                //        ImgFormato = "../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 4dx-01.png";
+                //        ImagenF += "<div class=\"col-md-4\">" +
+                //                    "<img src ='" + ImgFormato + "' />" +
+                //                "</div>";
+                //        break;
+                //}
+                //#endregion
+                if (ResultPrecios.Contains("item active"))
                 {
-                    case Util.Constantes.FORMATO_2D:
-                        ImgFormato = "../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 2D-01.png";
-                        ImagenF += "<div class=\"col-md-4\">" +
-                            "<img src ='" + ImgFormato + "' />" +
-                        "</div>";
-                        break;
-                    case Util.Constantes.FORMATO_3D:
-                        ImgFormato = "../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 3D-01.png";
-                        ImagenF += "<div class=\"col-md-4\">" +
-                                    "<img src ='" + ImgFormato + "' />" +
-                                "</div>";
-                        break;
-                    case Util.Constantes.FORMATO_4D:
-                        ImgFormato = "../Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 4dx-01.png";
-                        ImagenF += "<div class=\"col-md-4\">" +
-                                    "<img src ='" + ImgFormato + "' />" +
-                                "</div>";
-                        break;
+                    ItemActive = "item";
                 }
-                #endregion
-                ResultPrecios += "<div class=\"col-md-12\">" +
+                ResultPrecios += "<div class='" + ItemActive + "'><div id='ListadoPrecios'><div class=\"col-md-12\">" +
                             "<div id=\"TitulosPrecios\" >" +
                                  "<div class=\"row\">" +
                                 "<div class=\"col-md-2\"></div>" +
@@ -406,11 +473,11 @@ namespace CinemaPOS.Controllers
                                 "</div>" +
                                 "<div class=\"col-md-4\">" +
                                     "<ul id=\"ColorGeneral\"> " +
-                                        "<li class=\"precios1\">" + item.Precio + "<span id =\"TCR\" ></span></li>" +
-                                        "<li class=\"precios1\">" + item.Precio + "<span id =\"TCR\" ></span></li>" +
-                                        "<li class=\"precios1\">" + item.Precio + "<span id =\"TCR\" ></span></li>" +
-                                        "<li class=\"precios1\">" + item.Precio + "<span id =\"TCR\" ></span></li>" +
-                                        "<li class=\"precios1\">" + item.Precio + "<span id =\"TCR\" ></span></li>" +
+                                        "<li class=\"precios1\">" + item.Precio + "<span id =\"TCR\" >" + item.PrecioTCR + "</span></li>" +
+                                        "<li class=\"precios1\">" + item.Precio + "<span id =\"TCR\" >" + item.PrecioTCR + "</span></li>" +
+                                        "<li class=\"precios1\">" + item.Precio + "<span id =\"TCR\" >" + item.PrecioTCR + "</span></li>" +
+                                        "<li class=\"precios1\">" + item.Precio + "<span id =\"TCR\" >" + item.PrecioTCR + "</span></li>" +
+                                        "<li class=\"precios1\">" + item.Precio + "<span id =\"TCR\" >" + item.PrecioTCR + "</span></li>" +
                                     "</ul>" +
                                 "</div>" +
                                 "<div class=\"col-md-4\">" +
@@ -424,7 +491,7 @@ namespace CinemaPOS.Controllers
                                 "</div> " +
                             "</div> " +
                        "</div>" +
-                    "</div>";
+                    "</div></div></div>";
             }
             #endregion
             return ResultPrecios;

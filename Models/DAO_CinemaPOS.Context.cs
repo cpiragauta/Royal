@@ -97,10 +97,10 @@ namespace CinemaPOS.Models
         public virtual DbSet<Producto> Producto { get; set; }
         public virtual DbSet<GrupoDias> GrupoDias { get; set; }
         public virtual DbSet<ProductoVendido> ProductoVendido { get; set; }
-        public virtual DbSet<TvShowListaPrecios> TvShowListaPrecios { get; set; }
         public virtual DbSet<BloqueoSillaslol> BloqueoSillaslol { get; set; }
         public virtual DbSet<BoletaReservada> BoletaReservada { get; set; }
         public virtual DbSet<Reserva> Reserva { get; set; }
+        public virtual DbSet<TvShowListaPrecios> TvShowListaPrecios { get; set; }
     
         public virtual int Eliminar_sillas_sala(Nullable<int> rowIDSala)
         {
@@ -253,6 +253,15 @@ namespace CinemaPOS.Models
                 new ObjectParameter("Identificacion", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Sp_Integracion_Crear_Tercero", tipoTerceroParameter, identificacionParameter);
+        }
+    
+        public virtual ObjectResult<EstadisticaFuncion_Result> EstadisticaFuncion(Nullable<int> rowIDFuncion)
+        {
+            var rowIDFuncionParameter = rowIDFuncion.HasValue ?
+                new ObjectParameter("RowIDFuncion", rowIDFuncion) :
+                new ObjectParameter("RowIDFuncion", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<EstadisticaFuncion_Result>("EstadisticaFuncion", rowIDFuncionParameter);
         }
     }
 }

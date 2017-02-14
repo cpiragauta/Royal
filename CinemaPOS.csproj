@@ -237,6 +237,9 @@
     <Compile Include="Models\EnvioMail.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EstadisticaFuncion_Result.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Estado.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>

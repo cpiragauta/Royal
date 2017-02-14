@@ -11,8 +11,17 @@
         <link href="~/Content/img/favicon.png" rel="shortcut icon" type="image/x-icon" />
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
         <script src="~/Content/js/jquery-2.2.4.min.js"></script>
-        <script src="~/Content/js/bootstrap.min.js"></script>
-        <link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
+        <script src="~/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+        <script src="~/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+        <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="~/Content/js/bootstrap.js"></script>
+        <script src="~/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+        <script src="~/Content/js/demo/tables-datatables.js"></script>
+        <link href="~/Content/css/nifty.min.css" rel="stylesheet" />
+        <link href="~/Content/css/demo/nifty-demo-icons.min.css" rel="stylesheet">
+        <link href="~/Content/css/demo/nifty-demo.min.css" rel="stylesheet">
+        <script src="~/Content/js/nifty.min.js"></script>
+        <script src="~/Content/js/demo/nifty-demo.min.js"></script>
         <link href="~/Content/css/Fuentes.min.css" rel="stylesheet" />
         <link href="~/Content/css/TVShowListaPrecios.min.css" rel="stylesheet" />
 
@@ -32,55 +41,60 @@
             </div>
             <div id="content">
                 <br />
-                <br/>
-                <div id="ListadoPrecios">
-                    @*<div class="col-md-12">
-                        <div id="TitulosPrecios">
-                            <div class="row">
-                                <div class="col-md-2"></div>
-                                <div id="Logos">
-                                    <div class="col-md-4">
-                                        <img src="~/Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 2D-01.png" />
+                <br />
+                <div id="demo-carousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        @*<div id="ListadoPrecios">
+                            @*<div class="col-md-12">
+                                    <div id="TitulosPrecios">
+                                        <div class="row">
+                                            <div class="col-md-2"></div>
+                                            <div id="Logos">
+                                                <div class="col-md-4">
+                                                    <img src="~/Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 2D-01.png" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <img src="~/Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 3D-01.png" id="Segunda" />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <img src="~/Repositorio_Imagenes/Imagenes_Generales/Iconos_TvShow/Blanco_Sin_Fondo/logo 3D-01.png" id="Segunda" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <div id="GenAll">
-                            <div class="row" id="GenAll2">
-                                <div class="col-md-2">
-                                    <ul id="DiasPrecios">
+                                    <br />
+                                    <div id="GenAll">
+                                        <div class="row" id="GenAll2">
+                                            <div class="col-md-2">
+                                                <ul id="DiasPrecios">
 
-                                    </ul>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <ul id="ColorGeneral">
+                                                    <li class="precios1">$10.000  <span id="TCR"> $8.000</span></li>
+                                                    <li class="precios2">$10.000   <span id="TCR"> $8.000</span></li>
+                                                    <li class="precios3">$10.000   <span id="TCR"> $8.000</span></li>
+                                                    <li class="precios4">$10.000   <span id="TCR"> $8.000</span></li>
+                                                    <li class="precios5">$10.000   <span id="TCR"> $8.000</span></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <ul id="ColorGeneral">
+                                                    <li class="precios1">$10.000  <span id="TCR"> $8.000</span></li>
+                                                    <li class="precios2">$10.000   <span id="TCR"> $8.000</span></li>
+                                                    <li class="precios3">$10.000   <span id="TCR"> $8.000</span></li>
+                                                    <li class="precios4">$10.000   <span id="TCR"> $8.000</span></li>
+                                                    <li class="precios5">$10.000   <span id="TCR"> $8.000</span></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <ul id="ColorGeneral">
-                                        <li class="precios1">$10.000  <span id="TCR"> $8.000</span></li>
-                                        <li class="precios2">$10.000   <span id="TCR"> $8.000</span></li>
-                                        <li class="precios3">$10.000   <span id="TCR"> $8.000</span></li>
-                                        <li class="precios4">$10.000   <span id="TCR"> $8.000</span></li>
-                                        <li class="precios5">$10.000   <span id="TCR"> $8.000</span></li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-4">
-                                    <ul id="ColorGeneral">
-                                        <li class="precios1">$10.000  <span id="TCR"> $8.000</span></li>
-                                        <li class="precios2">$10.000   <span id="TCR"> $8.000</span></li>
-                                        <li class="precios3">$10.000   <span id="TCR"> $8.000</span></li>
-                                        <li class="precios4">$10.000   <span id="TCR"> $8.000</span></li>
-                                        <li class="precios5">$10.000   <span id="TCR"> $8.000</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>*@
+                        </div>*@
+                    </div>
                 </div>
+
             </div>
             <div id="Footer" class="navbar-fixed-bottom">
-                <img src="~/Repositorio_Imagenes/Imagenes_Generales/PiePrecios.png"/>
+                <img src="~/Repositorio_Imagenes/Imagenes_Generales/PiePrecios.png" />
             </div>
         </div>
     </body>
@@ -101,12 +115,12 @@
         $.ajax({
             url: "TVShowPrecios",
             success: function (data) {
-                $('#ListadoPrecios').append(data);
+                $('.carousel-inner').append(data);
                 $(".uno").each(function (index, element) {
                     console.log(index)
                     console.log(element)
-                    $(".precios" + (index+1) + "").height(($(element).height()-8))
-                    
+                    $(".precios" + (index + 1) + "").height(($(element).height() - 8))
+
                 });
                 //$('#slider1').tinycarousel({ interval: true, axis: "y" });
 

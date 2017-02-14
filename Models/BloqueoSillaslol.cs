@@ -30,5 +30,6 @@ namespace CinemaPOS.Models
         public Nullable<short> SillaFila { get; set; }
         public Nullable<int> PermitirBloqueo { get; set; }
         public int SillaVendida { get; set; }
+        public int SillaReservada { get; set; }
     }
 }
