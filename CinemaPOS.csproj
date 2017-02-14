@@ -405,6 +405,9 @@
     <Compile Include="Models\VerMapaVenta_Result.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\VerMapaVenta_Result1.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\VistaCierreCaja.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>

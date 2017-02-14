@@ -511,7 +511,7 @@ namespace CinemaPOS.Controllers
         {
             string Data_Table = "";
             //VerMapaVenta_Result ObjVerMapaFuncion = new VerMapaVenta_Result();
-            List<VerMapaVenta_Result> objsillas =db.VerMapaVenta(RowID_Funcion).ToList();
+            List<VerMapaVenta_Result1> objsillas =db.VerMapaVenta(RowID_Funcion).ToList();
             int ContadorColumnas = 0;
             int CantidadColumnas = 0;
             int i = 0;

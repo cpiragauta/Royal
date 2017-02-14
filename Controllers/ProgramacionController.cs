@@ -410,11 +410,11 @@ tabla = tabla + "                    <tbody>";
                                             "<i class=\"ion-trash-a\"></i> Eliminar" +
                                         "</a>" +
                                     "</li>" +
-                                    "<li>" +
-                                        "<a href=\"javascript:Duplicar_Funcion(" + funcion.RowID + ")\" style=\"color:black;\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Duplicar función No." + funcion.RowID + "\">" +
-                                            "<i class=\"ion-edit\"></i> Duplicar" +
-                                        "</a>" +
-                                    "</li>" +
+                                    //"<li>" +
+                                    //    "<a href=\"javascript:Duplicar_Funcion(" + funcion.RowID + ")\" style=\"color:black;\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Duplicar función No." + funcion.RowID + "\">" +
+                                    //        "<i class=\"ion-edit\"></i> Duplicar" +
+                                    //    "</a>" +
+                                    //"</li>" +
                                 "</ul>" +
                             "</div>" +
                         "</td>";

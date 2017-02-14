@@ -18,7 +18,6 @@ namespace CinemaPOS.Models
         public int RowIDEncabezado { get; set; }
         public string Dias { get; set; }
         public Nullable<int> Precio { get; set; }
-        public Nullable<int> PrecioTCR { get; set; }
         public string Formato { get; set; }
         public string TipoTarifa { get; set; }
         public string Teatro { get; set; }

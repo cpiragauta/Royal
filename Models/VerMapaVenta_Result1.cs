@@ -11,7 +11,7 @@ namespace CinemaPOS.Models
 {
     using System;
     
-    public partial class VerMapaVenta_Result
+    public partial class VerMapaVenta_Result1
     {
         public int RowIDObjeto { get; set; }
         public string NombreObjeto { get; set; }
@@ -30,5 +30,6 @@ namespace CinemaPOS.Models
         public Nullable<short> SillaFila { get; set; }
         public int SillaVendida { get; set; }
         public int SillaBloqueada { get; set; }
+        public int SillaReservada { get; set; }
     }
 }
