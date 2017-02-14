@@ -18,7 +18,7 @@
     $("#myModal").modal('show');
     //alert();
     $('#fecha_suceso').datepicker({
-        format: "dd-mm-yyyy",
+        format: "dd/mm/yyyy",
         todayBtn: "linked",
         autoclose: true,
         todayHighlight: false
@@ -33,6 +33,7 @@
     function guaradar_pqrs() {
         var validator = $("#formpqrs").validate();
         if (validator.form()) {
+            ModalProcesandoShow();
             $.ajax({
                 type: "POST",
                 url: "/PQRS/Guardar_PQRS",
@@ -41,7 +42,8 @@
                     formulario: $("#formpqrs").serialize()
                 },
                 success:function(data){
-                    $("#PQRS_ID").val(data);
+                    ModalProcesandoHiden();
+                    $("#PQRS_Id").val(data);
                     Alerts("Datos Guardados Correctamente.", "success");
                 }
             })
@@ -79,6 +81,7 @@
                         <div class="tab-content">
                             <div id="divpqrs" class="tab-pane fade in active">
                                 <form id="formpqrs" style="margin-top:10px">
+                                    <input type="hidden" class="PQRS_Id" id="PQRS_Id" name="PQRS_Id"/>
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">
@@ -109,7 +112,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label class="control-label">*Titulo PQRS:</label>
-                                                <input type="text" class="form-control" name="Titulo" required />
+                                                <input type="text" class="form-control" name="Titulo" required maxlength="50" />
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
@@ -123,7 +126,7 @@
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label class="control-label">Descripcion del suceso:</label>
-                                                <textarea name="descripcion-pqrs" class="form-control" cols="2" rows="12" required></textarea>
+                                                <textarea name="descripcion-pqrs" class="form-control" cols="2" rows="12" required maxlength="1000"></textarea>
                                             </div>
                                         </div>
                                     </div>

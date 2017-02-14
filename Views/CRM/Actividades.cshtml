@@ -46,7 +46,7 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="ASUNTO">*Asunto:</label>
-                                <input type="text" name="asunto" value="@Model.asunto" required class="form-control" id="asunto" />
+                                <input type="text" name="asunto" value="@Model.asunto" required class="form-control" id="asunto"  maxlength="50"/>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -79,7 +79,7 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="FECHAINICIO">Fecha Fin:</label>
-                                <input type="text" name="fechaFin" value="@Model.fechaFin" id="fechaFin" class="form-control" />
+                                <input type="text" name="fechaFin" value="@Model.fechaFin" id="fechaFin" class="form-control" required />
                             </div>
                         </div>
                     </div>
@@ -135,7 +135,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="ESTADOS">*Estados:</label>
+                                <label for="ESTADOS">*Estado:</label>
                                 <select name="estadoID" id="estadoID" required>
                                     <option value="" selected disabled>Seleccione una Opci&oacute;n</option>
                                     @foreach (var item in (List<CinemaPOS.Models.Estado>)ViewBag.Estados)

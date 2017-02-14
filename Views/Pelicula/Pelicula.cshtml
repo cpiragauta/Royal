@@ -13,6 +13,14 @@
 <script src="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
 <link href="~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
 <script>
+    $(document).ready(function(){
+        $('.porcentaje').keyup(function () {
+            debugger
+            this.value = (this.value + '').replace(/[^0-9]/g, '');
+            //this.value = (this.value + '').replace(/^[1-9]?[0-9]{1}$|^99$/g, '');
+        });
+    })
+    
     function detener(){
         $("#ytplayer").attr("src","");
         $("#modal-video").modal("hide");
@@ -32,6 +40,7 @@
     function enviar_formularioInformacionGeneral() {
         var f = $(this);
         var formData = new FormData(document.getElementById("formulario_InfoGeneral"));
+        ModalProcesandoShow();
         $.ajax({
             url: "/Pelicula/GuardarPeliculaInfoGeneral?RowID_Pelicula=",
             type: "post",
@@ -41,6 +50,7 @@
             contentType: false,
             processData: false,
             success: function (data) {
+                ModalProcesandoHiden();
                 data= JSON.parse(data);
                 debugger
                 if (data.tipo_respuesta=="success") {
@@ -54,6 +64,7 @@
                 }
             },
             error: function () {
+                ModalProcesandoHiden();
                 swal("","Error Guardando la información","warning")
             }
         })
@@ -71,6 +82,7 @@
     function enviar_formularioConfiguracion() {
         var f = $(this);
         var formData = new FormData(document.getElementById("formulario_Configuracion"));
+        ModalProcesandoShow();
         $.ajax({
             url: "/Pelicula/GuardarPeliculaConfiguracion?RowID_Pelicula=",
             type: "post",
@@ -80,6 +92,7 @@
             contentType: false,
             processData: false,
             success: function (data) {
+                ModalProcesandoHiden();
                 data= JSON.parse(data);
                 debugger
                 if (data.tipo_respuesta=="success") {
@@ -90,6 +103,7 @@
                 }
             },
             error: function () {
+                ModalProcesandoHiden();
                 swal("","Error Guardando la información","warning")
             }
         })
@@ -106,6 +120,7 @@
     function enviar_formularioMedia() {
         var f = $(this);
         var formData = new FormData(document.getElementById("formulario_Media"));
+        ModalProcesandoShow();
         $.ajax({
             url: "/Pelicula/GuardarPeliculaMedia?RowID_Pelicula=",
             type: "post",
@@ -115,6 +130,7 @@
             contentType: false,
             processData: false,
             success: function (data) {
+                ModalProcesandoHiden();
                 data= JSON.parse(data);
                 debugger
                 if (data.tipo_respuesta=="success") {
@@ -126,6 +142,7 @@
             },
             error: function () {
                 swal("","Error Guardando la información","warning")
+                ModalProcesandoHiden();
             }
         })
     }
@@ -141,6 +158,7 @@
     function enviar_formularioPorcentajes() {
         var f = $(this);
         var formData = new FormData(document.getElementById("formulario_Porcentajes"));
+        ModalProcesandoShow();
         $.ajax({
             url: "/Pelicula/GuardarPeliculaPorcentajes?RowID_Pelicula=",
             type: "post",
@@ -150,6 +168,7 @@
             contentType: false,
             processData: false,
             success: function (data) {
+                ModalProcesandoHiden();
                 data= JSON.parse(data);
                 debugger
                 if (data.tipo_respuesta=="success") {
@@ -160,6 +179,7 @@
                 }
             },
             error: function () {
+                ModalProcesandoHiden();
                 swal("","Error Guardando la información","warning")
             }
         })
@@ -167,6 +187,12 @@
 
 </script>
 <script>
+    function validar_procentaje(element){
+        debugger
+        console.log($(element).val())
+        $(element).val(($(element).val() + '').replace(/[^0-9]/g, ''));
+        //this.value = (this.value + '').replace(/^[1-9]?[0-9]{1}$|^99$/g, '');
+    }
     var cantidadcontrol = 0;
     $(document).ready(function () {
         $.validator.setDefaults({ ignore: ":hidden:not(select)" });
@@ -184,6 +210,9 @@
         $('.solo-numero').keyup(function () {
             this.value = (this.value + '').replace(/[^0-9]/g, '');
         });
+        
+        
+            //jQuery(".chosen").chosen({ widht: "100%;" });
 
         $("#genero_pelicula").chosen();
         $('.fecha_estreno').datepicker({
@@ -235,14 +264,14 @@
         function clone_panel_porcentaje() {
             var fecha;
 
-            if ($(".fecha_final_porcentaje").last().val()=="") {
-                fecha =$(".fecha_final_porcentaje").val();
-            }
-            else{
-                fecha=$(".fecha_final_porcentaje").last().val();
-            }
+            $(".fecha_final_porcentaje").each(function(index,element){
+                debugger
+                fecha=$(element).val()
+            });
+            console.log(fecha);
+            debugger
             new_porcentaje = jQuery(".control-clone").clone().removeClass("control-clone").hide().appendTo(".contenido").slideDown().addClass("control-porcentaje controls" + quantitybox);
-            new_porcentaje.find(".fecha_inicial_porcentaje").attr("name", "fecha_inicial_porcentaje[]").datepicker('destroy')
+            new_porcentaje.find(".clone_fecha_inicial_porcentaje").removeClass("clone_fecha_inicial_porcentaje").addClass("fecha_inicial_porcentaje").attr("name", "fecha_inicial_porcentaje[]").datepicker('destroy')
                 .datepicker({
                     format: "dd/mm/yyyy",
                     todayBtn: "linked",
@@ -250,7 +279,7 @@
                     todayHighlight: false,
                     startDate: fecha
                 });
-            new_porcentaje.find(".fecha_final_porcentaje").attr("name", "fecha_final_porcentaje[]").datepicker({
+            new_porcentaje.find(".clone_fecha_final_porcentaje").removeClass("clone_fecha_final_porcentaje").addClass("fecha_final_porcentaje").attr("name", "fecha_final_porcentaje[]").datepicker({
                 format: "dd/mm/yyyy",
                 todayBtn: "linked",
                 autoclose: true,
@@ -1018,16 +1047,16 @@
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label class="control-label">Nombre: </label>
-                                            <input type="text" value="@porcentajespeliculas.Nombre" name="nombre_porcentaje[]" class="nombre_porcentaje form-control" readonly>
-                                            <input type="hidden" value="@porcentajespeliculas.Nombre" name="nombre_porcentaje[]" class="nombre_porcentaje form-control" readonly>
+                                            <input type="text" value="@porcentajespeliculas.Nombre" name="nombre_porcentaje[]" class="nombre_porcentaje form-control" readonly >
+                                            @*<input type="hidden" value="@porcentajespeliculas.Nombre" name="nombre_porcentaje[]" class="nombre_porcentaje form-control" readonly>*@
                                         </div>
                                     </div>
 
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <label class="control-label">Porcentaje distribuidor:(%)</label>
-                                            <input type="text" value="@porcentajespeliculas.Porcentaje" name="porcentaje[]" class="porcentaje form-control" readonly>
-                                            <input type="hidden" value="@porcentajespeliculas.Porcentaje" name="porcentaje[]" class="porcentaje form-control" readonly>
+                                            <input type="text" value="@porcentajespeliculas.Porcentaje" name="porcentaje[]" class="porcentaje form-control solo-numero" readonly>
+                                            @*<input type="hidden" value="@porcentajespeliculas.Porcentaje" name="porcentaje[]" class="porcentaje form-control" readonly>*@
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
@@ -1065,16 +1094,16 @@
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label class="control-label">Porcentaje distribuidor(%):</label>
-                                        <input type="text" class="porcentaje form-control solo-numero">
+                                        <input type="text" onkeyup="validar_procentaje(this)" class="porcentaje form-control menor-99" maxlength="2">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label class="control-label">Fecha vigencia:</label>
                                         <div class="input-daterange input-group">
-                                            <input type="text" class="fecha_inicial_porcentaje form-control" />
+                                            <input type="text" class="clone_fecha_inicial_porcentaje form-control" />
                                             <span class="input-group-addon">a:</span>
-                                            <input type="text" class="fecha_final_porcentaje form-control" />
+                                            <input type="text" class="clone_fecha_final_porcentaje form-control" />
                                         </div>
                                     </div>
                                 </div>

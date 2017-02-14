@@ -97,10 +97,10 @@ namespace CinemaPOS.Models
         public virtual DbSet<Producto> Producto { get; set; }
         public virtual DbSet<GrupoDias> GrupoDias { get; set; }
         public virtual DbSet<ProductoVendido> ProductoVendido { get; set; }
+        public virtual DbSet<TvShowListaPrecios> TvShowListaPrecios { get; set; }
         public virtual DbSet<BloqueoSillaslol> BloqueoSillaslol { get; set; }
         public virtual DbSet<BoletaReservada> BoletaReservada { get; set; }
         public virtual DbSet<Reserva> Reserva { get; set; }
-        public virtual DbSet<TvShowListaPrecios> TvShowListaPrecios { get; set; }
         public virtual DbSet<TVShowTrailers> TVShowTrailers { get; set; }
     
         public virtual int Eliminar_sillas_sala(Nullable<int> rowIDSala)
@@ -247,6 +247,15 @@ namespace CinemaPOS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Sp_Integracion_Crear_Tercero", tipoTerceroParameter, identificacionParameter);
         }
     
+        public virtual ObjectResult<VerMapaVenta_Result1> VerMapaVenta(Nullable<int> funcion)
+        {
+            var funcionParameter = funcion.HasValue ?
+                new ObjectParameter("funcion", funcion) :
+                new ObjectParameter("funcion", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VerMapaVenta_Result1>("VerMapaVenta", funcionParameter);
+        }
+    
         public virtual ObjectResult<EstadisticaFuncion_Result> EstadisticaFuncion(Nullable<int> rowIDFuncion)
         {
             var rowIDFuncionParameter = rowIDFuncion.HasValue ?
@@ -254,15 +263,6 @@ namespace CinemaPOS.Models
                 new ObjectParameter("RowIDFuncion", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<EstadisticaFuncion_Result>("EstadisticaFuncion", rowIDFuncionParameter);
-        }
-    
-        public virtual ObjectResult<VerMapaVenta_Result> VerMapaVenta(Nullable<int> funcion)
-        {
-            var funcionParameter = funcion.HasValue ?
-                new ObjectParameter("funcion", funcion) :
-                new ObjectParameter("funcion", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VerMapaVenta_Result>("VerMapaVenta", funcionParameter);
         }
     }
 }

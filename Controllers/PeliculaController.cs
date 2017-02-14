@@ -473,7 +473,7 @@ namespace CinemaPOS.Controllers.Pelicula
             {
                 if (ObjPelicula.PorcentajeParticipacion.Count() == 0)
                 {
-                    if (formulario["porcentaje[]"] != null)
+                    if (formulario["porcentaje[]"] != null && formulario["fecha_inicial_porcentaje[]"]!=null && formulario["fecha_final_porcentaje[]"]!=null&& formulario["nombre_porcentaje[]"]!=null)
                     {
                         var porcentajes = formulario["porcentaje[]"].Split(',');
                         var fecha_inicio = formulario["fecha_inicial_porcentaje[]"].Split(',');

@@ -19,13 +19,13 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="NOMBRES" class="control-label">*Nombre:</label>
-                        <input type="text" name="Nombre" value="@Model.Nombre" class="form-control" required id="Nombre"/>
+                        <input type="text" name="Nombre" value="@Model.Nombre" class="form-control" required id="Nombre" maxlength="100"/>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="APELLIDOS" class="control-label">*Apellidos:</label>
-                        <input type="text" name="Apellido" value="@Model.Apellido" class="form-control" id="Apellido" required/>
+                        <input type="text" name="Apellido" value="@Model.Apellido" class="form-control" id="Apellido" required maxlength="100"/>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                 <div class="col-sm-4">
                     <div class="form-group" name="TipoID" id="tipoID">
                         <label for="DOCUMENTO">*Identificaci&oacute;n:</label>
-                        <input type="text" name="Documento" value="@Model.Documento" class="form-control" id="Documento" required/>
+                        <input type="text" name="Documento" value="@Model.Documento" class="form-control" id="Documento" required maxlength="50"/>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="CORREO" class="control-label">*Correo:</label>
-                        <input type="email" name="CorreoElectronico" value="@Model.CorreoElectronico" class="form-control" id="CorreoElectronico" required/>
+                        <input type="email" name="CorreoElectronico" value="@Model.CorreoElectronico" class="form-control" id="CorreoElectronico" required maxlength="100"/>
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -115,7 +115,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="TELEFONO" class="control-label">*Tel&eacute;fono:</label>
-                        <input type="text" name="Telefono" value="@Model.Telefono" class="form-control" id="Telefono" required/>
+                        <input type="text" name="Telefono" value="@Model.Telefono" class="form-control" id="Telefono" required maxlength="100"/>
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -143,7 +143,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="TARJETAID" class="control-label">*Tarjeta de Membres&iacute;a:</label>
-                        <input type="number" name="TarjetaMembresiaClienteRoyal" value="@ViewBag.Tarjeta" class="form-control"  required id="TarjetaMembresiaClienteRoyal"/>
+                        <input  type="number" name="TarjetaMembresiaClienteRoyal" value="@ViewBag.Tarjeta" class="form-control solo-numero" required id="TarjetaMembresiaClienteRoyal" />
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -194,7 +194,7 @@
         jQuery("#tipo_identificacion").chosen({ width: "95%;" });
 
         $('#FechaNacimiento').datepicker({
-            format: "dd-mm-yyyy",
+            format: "dd/mm/yyyy",
             todayBtn: "linked",
             autoclose: true,
             todayHighlight: false
@@ -206,6 +206,10 @@
         if ('@Model.RecibirInformacion' == 'True') {
             $('.switchery').trigger('click');
         }
+
+        $('.solo-numero').keyup(function () {
+            this.value = (this.value + '').replace(/[^0-9]/g, '');
+        });
     });
     $(document).on("change", 'input[type=checkbox]', function () {
         if ($('#checkInfo').is(':checked')) {
