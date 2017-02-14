@@ -429,7 +429,7 @@ namespace CinemaPOS.Controllers.Pelicula
                     {
                     }
                     ruta_fiche = "Repositorio_Imagenes/Poster_Peliculas/" + ruta_fiche;
-
+                    ObjPelicula.Afiche = ruta_fiche;
                 }
                 // Actualiza solamente el afiche en miniatura
                 if (thumbnail != null)
@@ -446,10 +446,11 @@ namespace CinemaPOS.Controllers.Pelicula
                     }
                     thumbnail.SaveAs(Server.MapPath("~/Repositorio_Imagenes/Poster_Peliculas/" + ruta_thumbnail));
                     ruta_thumbnail = "Repositorio_Imagenes/Poster_Peliculas/" + ruta_thumbnail;
+                    ObjPelicula.Thumbnail = ruta_thumbnail;
                 }
 
-                ObjPelicula.Afiche = ruta_fiche;
-                ObjPelicula.Thumbnail = ruta_thumbnail;
+               
+                
                 ObjPelicula.Teaser = formulario["teaser"];
                 ObjPelicula.Trailer = formulario["trailer"];                
                 db.SaveChanges();
@@ -1390,7 +1391,23 @@ namespace CinemaPOS.Controllers.Pelicula
                         }).ToList();
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult eliminar_detalle(int rowid_detalle)
+        {
 
+            DetallePelicula obj_detalle_pelicula = db.DetallePelicula.Where(dt => dt.RowID == rowid_detalle).FirstOrDefault();
+            try
+            {
+                db.DetallePelicula.Remove(obj_detalle_pelicula);
+                db.SaveChanges();
+                return Json(new { tipo_respuesta = "success", respuesta = "La configuración se ha eliminado" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(new { tipo_respuesta = "warning", respuesta = "La configuración no se pudo eliminar, se encuentra asociada a una o más funciones" }, JsonRequestBehavior.AllowGet);
+                throw;
+            }
+            
+        }
 
 
     }

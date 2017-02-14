@@ -176,7 +176,7 @@ namespace CinemaPOS.ModelosPropios
             try
             {
                 IFormatProvider culture = new CultureInfo("es-ES", true);
-                return DateTime.ParseExact(FechaConvertir, "dd/MM/yyyy", culture);
+                return DateTime.ParseExact(FechaConvertir, "dd/MM/yyyy", null);
             }
             catch (Exception)
             {
