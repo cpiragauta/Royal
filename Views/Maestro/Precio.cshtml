@@ -496,20 +496,20 @@
                                 <div class="input-daterange input-group" id="datepicker">
                                     @if (Model.FechaInicial != null)
                                     {
-                                        <input type="text" class="form-control" name="fechainicialvigencia" id="fechainicialvigencia" value="@Model.FechaInicial.Value.ToString("dd/MM/yyyy")">
+                                        <input type="text" class="form-control" name="fechainicialvigencia" id="fechainicialvigencia" value="@Model.FechaInicial.Value.ToString("dd/MM/yyyy")" required>
                                     }
                                     else
                                     {
-                                        <input type="text" class="form-control" name="fechainicialvigencia" id="fechainicialvigencia" value="@Model.FechaInicial">
+                                        <input type="text" class="form-control" name="fechainicialvigencia" id="fechainicialvigencia" value="@Model.FechaInicial" required>
                                     }
                                     <span class="input-group-addon">a:</span>
                                     @if (Model.FechaInicial != null)
                                     {
-                                        <input type="text" class="form-control" name="fechafinalvigencia" id="fechafinalvigencia" value="@Model.FechaFinal.Value.ToString("dd/MM/yyyy")">
+                                        <input type="text" class="form-control" name="fechafinalvigencia" id="fechafinalvigencia" value="@Model.FechaFinal.Value.ToString("dd/MM/yyyy")" required>
                                     }
                                     else
                                     {
-                                        <input type="text" class="form-control" name="fechafinalvigencia" id="fechafinalvigencia" value="@Model.FechaFinal">
+                                        <input type="text" class="form-control" name="fechafinalvigencia" id="fechafinalvigencia" value="@Model.FechaFinal" required>
                                     }
 
                                 </div>
@@ -656,7 +656,7 @@
                                                     <div class="col-sm-8">
                                                         <div class="form-group">
                                                             <label class="control-label">Dias de vigencia: </label>
-                                                            <select style="width:10px" class="select-dia" name="dias" multiple="">
+                                                            <select style="width:10px" class="select-dia" name="dias" multiple="" required>
                                                                 <option value="Lunes">Lunes</option>
                                                                 <option value="Martes">Martes</option>
                                                                 <option value="Miercoles">Miercoles</option>

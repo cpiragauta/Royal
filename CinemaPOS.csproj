@@ -393,6 +393,9 @@
     <Compile Include="Models\TvShowListaPrecios.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TVShowTrailers.cs">
+      <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\UsuarioSistema.cs">
       <DependentUpon>DAO_CinemaPOS.tt</DependentUpon>
     </Compile>

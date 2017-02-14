@@ -228,6 +228,7 @@
         <AssociationConnector Association="CinemaPOSModel.FK__BoletaRes__Usuar__6C23FBB3" />
         <AssociationConnector Association="CinemaPOSModel.FK__Reserva__EstadoI__396371BC" />
         <AssociationConnector Association="CinemaPOSModel.FK__Reserva__EstadoI__3B4BBA2E" />
+        <EntityTypeShape EntityType="CinemaPOSModel.TVShowTrailers" Width="1.5" PointX="0.75" PointY="13.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

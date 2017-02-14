@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CinemaPOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CinemaPOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BoletaReservada">
           <Key>
             <PropertyRef Name="RowID" />
@@ -1212,6 +1212,8 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.BoletasVendidas' no 
           <Property Name="NombreTaquilla" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.bu' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.Funciones' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="Funciones">
           <Key>
@@ -1321,6 +1323,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.TvShowListaPrecios' 
           <Property Name="RowIDEncabezado" Type="int" Nullable="false" />
           <Property Name="Dias" Type="nvarchar" MaxLength="100" />
           <Property Name="Precio" Type="int" />
+          <Property Name="PrecioTCR" Type="int" />
           <Property Name="Formato" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="TipoTarifa" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Teatro" Type="varchar" MaxLength="50" />
@@ -1331,6 +1334,20 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.TvShowListaPrecios' 
           <Property Name="HoraFinal" Type="time" Precision="7" />
           <Property Name="RowIDGrupoDias" Type="int" />
           <Property Name="GrupoDias" Type="nvarchar" MaxLength="70" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.TVShowTrailers' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="TVShowTrailers">
+          <Key>
+            <PropertyRef Name="RowID" />
+          </Key>
+          <Property Name="RowID" Type="int" Nullable="false" />
+          <Property Name="Trailer" Type="nvarchar" MaxLength="300" />
+          <Property Name="Afiche" Type="nvarchar" MaxLength="300" />
+          <Property Name="Formato" Type="nvarchar" MaxLength="255" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" />
+          <Property Name="Vers" Type="nvarchar" MaxLength="255" />
+          <Property Name="Clasf" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -2270,6 +2287,8 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <!--Errores durante la generación:
+advertencia 6037: La restricción de clave externa 'FK__Menu__TipoMenuID__035179CE' se ha omitido en el modelo de almacenamiento. La columna 'TipoMenuID' de la tabla 'CinemaPOSModel.Store.Menu' es una clave externa que participa en varias relaciones. No se validará un modelo de entidad de uno a uno, ya que puede existir incoherencia en los datos.
         <Association Name="FK__Menu__TipoMenuID__035179CE">
           <End Role="Tipo" Type="Self.Tipo" Multiplicity="1" />
           <End Role="Menu" Type="Self.Menu" Multiplicity="*" />
@@ -2281,7 +2300,9 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
               <PropertyRef Name="TipoMenuID" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
+        </Association>-->
+        <!--Errores durante la generación:
+advertencia 6037: La restricción de clave externa 'FK__Menu__TipoMenuID__15DA3E5D' se ha omitido en el modelo de almacenamiento. La columna 'TipoMenuID' de la tabla 'CinemaPOSModel.Store.Menu' es una clave externa que participa en varias relaciones. No se validará un modelo de entidad de uno a uno, ya que puede existir incoherencia en los datos.
         <Association Name="FK__Menu__TipoMenuID__15DA3E5D">
           <End Role="TipoMenu" Type="Self.TipoMenu" Multiplicity="1" />
           <End Role="Menu" Type="Self.Menu" Multiplicity="*" />
@@ -2293,7 +2314,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
               <PropertyRef Name="TipoMenuID" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
+        </Association>-->
         <Association Name="FK__Oportunid__Conta__4C564A9F">
           <End Role="Contacto" Type="Self.Contacto" Multiplicity="0..1" />
           <End Role="OportunidadVenta" Type="Self.OportunidadVenta" Multiplicity="*" />
@@ -2450,6 +2471,8 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <!--Errores durante la generación:
+advertencia 6037: La restricción de clave externa 'FK__Reserva__EstadoI__3B4BBA2E' se ha omitido en el modelo de almacenamiento. La columna 'EstadoID' de la tabla 'CinemaPOSModel.Store.Reserva' es una clave externa que participa en varias relaciones. No se validará un modelo de entidad de uno a uno, ya que puede existir incoherencia en los datos.
         <Association Name="FK__Reserva__EstadoI__3B4BBA2E">
           <End Role="Estado" Type="Self.Estado" Multiplicity="0..1" />
           <End Role="Reserva" Type="Self.Reserva" Multiplicity="*" />
@@ -2461,7 +2484,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
               <PropertyRef Name="EstadoID" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
+        </Association>-->
         <Association Name="FK__RolMenu__MenuID__18B6AB08">
           <End Role="Menu" Type="Self.Menu" Multiplicity="1" />
           <End Role="RolMenu" Type="Self.RolMenu" Multiplicity="*" />
@@ -3346,6 +3369,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
     [TvShowListaPrecios].[RowIDEncabezado] AS [RowIDEncabezado], 
     [TvShowListaPrecios].[Dias] AS [Dias], 
     [TvShowListaPrecios].[Precio] AS [Precio], 
+    [TvShowListaPrecios].[PrecioTCR] AS [PrecioTCR], 
     [TvShowListaPrecios].[Formato] AS [Formato], 
     [TvShowListaPrecios].[TipoTarifa] AS [TipoTarifa], 
     [TvShowListaPrecios].[Teatro] AS [Teatro], 
@@ -3357,6 +3381,17 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
     [TvShowListaPrecios].[RowIDGrupoDias] AS [RowIDGrupoDias], 
     [TvShowListaPrecios].[GrupoDias] AS [GrupoDias]
     FROM [dbo].[TvShowListaPrecios] AS [TvShowListaPrecios]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TVShowTrailers" EntityType="Self.TVShowTrailers" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TVShowTrailers].[RowID] AS [RowID], 
+    [TVShowTrailers].[Trailer] AS [Trailer], 
+    [TVShowTrailers].[Afiche] AS [Afiche], 
+    [TVShowTrailers].[Formato] AS [Formato], 
+    [TVShowTrailers].[Nombre] AS [Nombre], 
+    [TVShowTrailers].[Vers] AS [Vers], 
+    [TVShowTrailers].[Clasf] AS [Clasf]
+    FROM [dbo].[TVShowTrailers] AS [TVShowTrailers]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="VistaCierreCaja" EntityType="Self.VistaCierreCaja" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3676,14 +3711,6 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
             <End Role="Tipo" EntitySet="Tipo" />
             <End Role="Menu" EntitySet="Menu" />
           </AssociationSet>
-          <AssociationSet Name="FK__Menu__TipoMenuID__035179CE" Association="Self.FK__Menu__TipoMenuID__035179CE">
-            <End Role="Tipo" EntitySet="Tipo" />
-            <End Role="Menu" EntitySet="Menu" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Menu__TipoMenuID__15DA3E5D" Association="Self.FK__Menu__TipoMenuID__15DA3E5D">
-            <End Role="TipoMenu" EntitySet="TipoMenu" />
-            <End Role="Menu" EntitySet="Menu" />
-          </AssociationSet>
           <AssociationSet Name="FK__Oportunid__Conta__4C564A9F" Association="Self.FK__Oportunid__Conta__4C564A9F">
             <End Role="Contacto" EntitySet="Contacto" />
             <End Role="OportunidadVenta" EntitySet="OportunidadVenta" />
@@ -3733,10 +3760,6 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
             <End Role="ProductoVendido" EntitySet="ProductoVendido" />
           </AssociationSet>
           <AssociationSet Name="FK__Reserva__EstadoI__396371BC" Association="Self.FK__Reserva__EstadoI__396371BC">
-            <End Role="Estado" EntitySet="Estado" />
-            <End Role="Reserva" EntitySet="Reserva" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Reserva__EstadoI__3B4BBA2E" Association="Self.FK__Reserva__EstadoI__3B4BBA2E">
             <End Role="Estado" EntitySet="Estado" />
             <End Role="Reserva" EntitySet="Reserva" />
           </AssociationSet>
@@ -4682,8 +4705,9 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <Parameter Name="funcion" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="EstadisticaFuncion" ReturnType="Collection(CinemaPOSModel.EstadisticaFuncion_Result)">
-            <Parameter Name="RowIDFuncion" Mode="In" Type="Int32" />
+          <Parameter Name="RowIDFuncion" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="TVShowTrailers" EntityType="CinemaPOSModel.TVShowTrailers" />
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -7964,6 +7988,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <Property Name="HoraFinal" Type="Time" Precision="7" />
           <Property Name="RowIDGrupoDias" Type="Int32" />
           <Property Name="GrupoDias" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Name="PrecioTCR" Type="Int32" />
         </EntityType>
         <EntityType Name="BloqueoSillaslol">
           <Key>
@@ -8184,6 +8209,18 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <Property Type="Int32" Name="SillasBloqueadas" Nullable="true" />
           <Property Type="Int32" Name="SillasReservadas" Nullable="true" />
         </ComplexType>
+        <EntityType Name="TVShowTrailers">
+          <Key>
+            <PropertyRef Name="RowID" />
+          </Key>
+          <Property Name="RowID" Type="Int32" Nullable="false" />
+          <Property Name="Trailer" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Afiche" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Formato" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Vers" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Clasf" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9539,6 +9576,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
           <EntitySetMapping Name="TvShowListaPrecios">
             <EntityTypeMapping TypeName="CinemaPOSModel.TvShowListaPrecios">
               <MappingFragment StoreEntitySet="TvShowListaPrecios">
+                <ScalarProperty Name="PrecioTCR" ColumnName="PrecioTCR" />
                 <ScalarProperty Name="GrupoDias" ColumnName="GrupoDias" />
                 <ScalarProperty Name="RowIDGrupoDias" ColumnName="RowIDGrupoDias" />
                 <ScalarProperty Name="HoraFinal" ColumnName="HoraFinal" />
@@ -9652,6 +9690,19 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="TVShowTrailers">
+            <EntityTypeMapping TypeName="CinemaPOSModel.TVShowTrailers">
+              <MappingFragment StoreEntitySet="TVShowTrailers">
+                <ScalarProperty Name="Clasf" ColumnName="Clasf" />
+                <ScalarProperty Name="Vers" ColumnName="Vers" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Formato" ColumnName="Formato" />
+                <ScalarProperty Name="Afiche" ColumnName="Afiche" />
+                <ScalarProperty Name="Trailer" ColumnName="Trailer" />
+                <ScalarProperty Name="RowID" ColumnName="RowID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -9667,7 +9718,7 @@ advertencia 6002: La tabla o vista 'DB_9CAC35_cinemapos.dbo.VistaCierreCaja' no 
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="false" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
       </DesignerInfoPropertySet>

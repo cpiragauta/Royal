@@ -101,6 +101,7 @@ namespace CinemaPOS.Models
         public virtual DbSet<BloqueoSillaslol> BloqueoSillaslol { get; set; }
         public virtual DbSet<BoletaReservada> BoletaReservada { get; set; }
         public virtual DbSet<Reserva> Reserva { get; set; }
+        public virtual DbSet<TVShowTrailers> TVShowTrailers { get; set; }
     
         public virtual int Eliminar_sillas_sala(Nullable<int> rowIDSala)
         {

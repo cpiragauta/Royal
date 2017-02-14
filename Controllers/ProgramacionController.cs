@@ -529,7 +529,7 @@ tabla = tabla + "                    <tbody>";
 
             tabla += "  <thead>";
             tabla += "<tr>";
-            tabla += "<td class=\"day Bordes\" id=\"table-header-days\">";
+            tabla += "<td class=\"day\" id=\"table-header-days\">";
             tabla += "<p>Sala/Día</p>";
             tabla += "</td>";
             for (int i = DiasACorrer; i < cantDias; i++)
@@ -540,7 +540,7 @@ tabla = tabla + "                    <tbody>";
 
                     tabla += "<td class=\"day Bordes\" id=\"table-header-days\">";
                     tabla += "<p>";
-                    tabla += "<a class=\"ion-clipboard\"  href=\"javascript:ModalReplicarFuncionxDia('"+fechaEncabezado+"')\" title=\"Replicar Funciones por Día\"></a>";
+                    //tabla += "<a class=\"ion-clipboard\"  href=\"javascript:ModalReplicarFuncionxDia('"+fechaEncabezado+"')\" title=\"Replicar Funciones por Día\"></a>";
                     tabla += ci.DateTimeFormat.GetDayName(programacion.FechaInicial.Value.AddDays(i).DayOfWeek).ToUpper() + "  " + programacion.FechaInicial.Value.AddDays(i).ToString("dd/MM/yyyy") + "</p>";
                     tabla += "</td>";
                 }
@@ -568,35 +568,47 @@ tabla = tabla + "                    <tbody>";
                             {
                                 if (programacion.FechaInicial.Value.AddDays(i) == funcion.Fecha.Value)
                                 {
-                                    tabla += "<p class=\"Funcion\" onclick=\"javascript:ModalEditarFun(" + funcion.RowID + ")\" style=\"cursor:pointer \">";
-                                    tabla += funcion.DetallePelicula.EncabezadoPelicula.TituloLocal + " ";
+
+                                    tabla += "<div class=\"row Funcion @funcion.Estado.Nombre\" onclick=\"javascript:ModalEditarFun(" + funcion.RowID + ")\" style=\"cursor:pointer\" title=\""+funcion.DetallePelicula.EncabezadoPelicula.TituloLocal+"\">";
+                                    tabla += "<div class=\"col-sm-9\">";
+                                    if (funcion.DetallePelicula.EncabezadoPelicula.TituloLocal.Length >= 15)
+                                    {
+                                        tabla += funcion.DetallePelicula.EncabezadoPelicula.TituloLocal.Substring(0, 15) + "...";
+                                    }
+                                    else
+                                    {
+
+                                        tabla += funcion.DetallePelicula.EncabezadoPelicula.TituloLocal;
+                                    }
+                                    tabla += "<br />";
                                     tabla += funcion.DetallePelicula.Opcion.Codigo + " ";
                                     tabla += funcion.DetallePelicula.Opcion1.Codigo2;
-                                    tabla += "<br /> ";
+                                    tabla += "<br />";
                                     if (funcion.HoraInicial.Value != null)
                                     {
-                                        tabla += funcion.HoraInicial.Value.ToString().Substring(0, 5) + "  ";
-                                    } 
+                                        tabla += funcion.HoraInicial.Value.ToString().Substring(0, 5)+" ";
+                                    }
 
                                     if (funcion.HoraFinal.Value != null)
                                     {
                                         tabla += funcion.HoraFinal.Value.ToString().Substring(0, 5);
                                     }
 
-                                    tabla += "<br />";
+                                    tabla += "</div>";
+                                    tabla += "<div class=\"col-sm-3\">";
                                     if (funcion.ListaPrecioFuncion.Count > 0)
                                     {
-                                        tabla += "<i class=\"ion-cash icon-identificador\" style=\"font-size: x-large;\">&nbsp;</i>";
+                                        tabla += "<i class=\"ion-cash icon-identificador\" style=\"font-size: large;\">&nbsp;</i>";
                                     }
                                     if (funcion.BoletaVendida.Count > 0)
                                     {
-                                        tabla += "<i class=\"ion-ios-film-outline icon-identificador\" style=\"font-size: x-large;\">&nbsp;</i>";
+                                        tabla += "<i class=\"ion-ios-film-outline icon-identificador\" style=\"font-size: large;\">&nbsp;</i>";
                                     }
                                     if (funcion.Estado != null)
                                     {
                                         if (funcion.Estado.Nombre == "Abierta")
                                         {
-                                            tabla += "<i class=\"ion-unlocked \" style=\"font-size: large;\"></i>";
+                                            tabla += "<i class=\"ion-unlocked\" style=\"font-size: large;\"></i>";
                                         }
                                         else if (funcion.Estado.Nombre == "Cerrada")
                                         {
@@ -611,7 +623,9 @@ tabla = tabla + "                    <tbody>";
                                     {
                                         tabla += "<i class=\"ion-alert-circled\" style=\"font-size: large;\"></i>";
                                     }
-                                    tabla += "</p>";
+
+                                    tabla += "</div>";
+                                    tabla += "</div>";
 
                                 }
                             }

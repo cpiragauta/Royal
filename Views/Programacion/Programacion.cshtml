@@ -414,6 +414,8 @@
                 $("#Table").empty();
                 $("#Table").append(data);
                 //$("#Table").append(data);
+                $("#Table_info").hide();
+                $("#Table_paginate").hide();
             },
             error: function (data) {
                 ModalProcesandoHiden();
@@ -1162,7 +1164,7 @@
                                         <td class="day Bordes" id="table-header-days">
                                             <p>
                                                 @{fechaEncabezado = "'" + fechaEncabezado + "'";}
-                                                <a class="ion-clipboard" href="javascript:ModalReplicarFuncionxDia(@fechaEncabezado)" title="Replicar Funciones por Día"></a>
+                                                @*<a class="ion-clipboard" href="javascript:ModalReplicarFuncionxDia(@fechaEncabezado)" title="Replicar Funciones por Día"></a>*@
                                                 @ci.DateTimeFormat.GetDayName(@Model.FechaInicial.Value.AddDays(i).DayOfWeek).ToUpper().Substring(0, 3)  @Model.FechaInicial.Value.AddDays(i).ToString("dd/MM/yyyy")
                                             </p>
                                         </td>

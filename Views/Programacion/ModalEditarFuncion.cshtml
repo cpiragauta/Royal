@@ -38,6 +38,7 @@
             success: function (data) {
                 $('#myModal1').modal('toggle');
                 Alerts(data.respuesta, data.tipoRespuesta) ;
+                CargarFuncionesGraficas();
             },
             error: function (data) {
                 $('#myModal1').modal('toggle');
@@ -60,6 +61,7 @@
                     $('#myModal1').modal('hide');
                 }
                 Alerts(data.Respuesta, data.tipoMensaje) ;
+                CargarFuncionesGraficas();
             },
             error: function (data) {
                 $('#myModal1').modal('toggle');
